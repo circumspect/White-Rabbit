@@ -19,6 +19,7 @@ async def on_message(message):
 
 @bot.command()
 async def start(ctx):
+    start_time = time.time()
     await ctx.send('Starting the game!')
 
 
