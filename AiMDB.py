@@ -16,6 +16,8 @@ async def on_message(message):
     #
     if message.content.startswith('!start'):
         await message.channel.send('Starting the game!')
-        
 
-client.run('NzU2NjM1MzkxNzY2OTU0MDU0.X2Utnw.22s52JuXGd1F54DBnA4ZbRmR9TY')
+with open("token.txt") as token_file:
+    token = token_file.read()
+
+client.run(token)
