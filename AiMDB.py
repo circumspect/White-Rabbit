@@ -1,23 +1,28 @@
 import discord
 import time
+from discord.ext import commands
 
-client = discord.Client()
+bot = commands.Bot(command_prefix="!")
 
-@client.event
+
+@bot.event
 async def on_ready():
-    print('Bot has logged in as {0.user}'.format(client))
+    print(f"Bot has logged in as {bot}")
 
-@client.event
+
+@bot.event
 async def on_message(message):
-    if message.author == client.user:
+    if message.author == bot.user:
         return
+    await bot.process_commands(message)
 
-    
-    #
-    if message.content.startswith('!start'):
-        await message.channel.send('Starting the game!')
+
+@bot.command()
+async def start(ctx):
+    await ctx.send('Starting the game!')
+
 
 with open("token.txt") as token_file:
     token = token_file.read()
 
-client.run(token)
+bot.run(token)
