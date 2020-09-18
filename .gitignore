@@ -1,6 +1,7 @@
 .vscode/**
 Pipfile
 Pipfile.lock
+token.txt
 
 # Byte-compiled / optimized / DLL files
 __pycache__/
