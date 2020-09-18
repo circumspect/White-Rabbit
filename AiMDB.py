@@ -4,6 +4,8 @@ from discord.ext import commands
 
 
 class AliceIsMissing(commands.Cog):
+    characters = ("charlie barnes", "dakota travis", "evan holwell", "jack briarwood", "julia north")
+
     def __init__(self, bot):
         self.bot = bot
 
@@ -19,3 +21,12 @@ class AliceIsMissing(commands.Cog):
     async def start(self, ctx):
         start_time = time.time()
         await ctx.send('Starting the game!')
+
+    @commands.command()
+    async def setup(self, ctx):
+        self.text_channels = {channel.name: channel for channel in ctx.guild.text_channels}
+
+        # send character cards
+        for character in self.characters:
+            channel = self.text_channels[f"{character.split()[0]}-clues"]
+            await channel.send(file=discord.File(f"Images/Cards/Characters/{character.title()}.png"))
