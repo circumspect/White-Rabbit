@@ -5,7 +5,7 @@ import asyncio
 from discord.ext import commands, tasks
 
 
-class AliceBot(commands.Cog):
+class WhiteRabbit(commands.Cog):
     CHARACTERS = (
         "Charlie Barnes", "Dakota Travis",
         "Evan Holwell", "Jack Briarwood", "Julia North"
@@ -26,12 +26,12 @@ class AliceBot(commands.Cog):
             channel.name: channel
             for channel in self.bot.guilds[0].text_channels
         }
-        print(f"Bot has logged in as {self.bot}")
+        print(f"Bot has logged in")
 
     @commands.command()
     async def start(self, ctx):
         if not self.setup:
-            await ctx.send("You have not setup")
+            await ctx.send("Can't start before setting up!")
             return
         self.start_time = time.time()
         self.timer.start()
