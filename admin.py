@@ -19,7 +19,9 @@ class Game:
 
 class Admin(commands.Cog):
     # Image paths
-    CHARACTER_IMAGE_PATH = "Images/Cards/Characters"
+    CHARACTER_IMAGE_DIR = "Images/Cards/Characters"
+    SUSPECT_IMAGE_DIR = "Images/Cards/Suspects"
+    LOCATION_IMAGE_DIR = "Images/Cards/Locations"
     
     CHARACTERS = (
         "Charlie Barnes", "Dakota Travis", "Evan Holwell",
@@ -119,8 +121,10 @@ class Admin(commands.Cog):
         alice = random.choice(glob.glob("Images/Missing Person Posters/*.png"))
         send_image("player-resources", alice)
 
-        # Character cards in character channel
-        send_folder("character-cards", self.CHARACTER_IMAGE_PATH)
+        # Send characters, suspects, and locations to appropriate channels
+        send_folder("character-cards", self.CHARACTER_IMAGE_DIR)
+        send_folder("suspect-cards", self.SUSPECT_IMAGE_DIR)
+        send_folder("location-cards", self.LOCATION_IMAGE_DIR)
 
         # Character and motive cards in clues channels
         motives = list(range(1, 6))
