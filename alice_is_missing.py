@@ -6,11 +6,11 @@ from discord.ext import commands, tasks
 
 
 class AliceIsMissing(commands.Cog):
-    characters = (
+    CHARACTERS = (
         "charlie barnes", "dakota travis",
         "evan holwell", "jack briarwood", "julia north"
     )
-    game_length = 90 * 60
+    GAME_LENGTH = 90 * 60
 
     def __init__(self, bot):
         self.bot = bot
@@ -39,10 +39,10 @@ class AliceIsMissing(commands.Cog):
 
     @tasks.loop(seconds=10)
     async def timer(self):
-        if self.start_time + self.game_length < time.time():
+        if self.start_time + self.GAME_LENGTH < time.time():
             self.timer.cancel()
 
-        remaining_time = self.start_time + self.game_length - time.time()
+        remaining_time = self.start_time + self.GAME_LENGTH - time.time()
         await self.text_channels["group-chat"].send((
             f"{str(int(remaining_time // 60)).zfill(2)}:{str(int(remaining_time % 60)).zfill(2)}"
         ))
@@ -52,16 +52,34 @@ class AliceIsMissing(commands.Cog):
         # send character cards
         motives = list(range(1, 6))
         random.shuffle(motives)
-        for i, character in enumerate(self.characters):
+        for motive, character in zip(motives, self.CHARACTERS):
             channel = self.text_channels[f"{character.split()[0]}-clues"]
             asyncio.ensure_future(channel.send(file=discord.File(
                 f"Images/Cards/Characters/{character.title()}.png"
             )))
             asyncio.ensure_future(channel.send(file=discord.File(
-                f"Images/Cards/Motives/Motive {motives[i]}.png"
+                f"Images/Cards/Motives/Motive {motive}.png"
             )))
         self.setup = True
         await ctx.send("Done setting up")
+
+    @commands.command()
+    async def claim(self, ctx, role: discord.Role):
+        if role.name.lower() not in [name.split()[0] for name in self.CHARACTERS]:
+            await ctx.send("You cannot claim that role")
+        elif role.members:
+            await ctx.send("That role is taken")
+        elif len(ctx.author.roles) > 1:
+            await ctx.send(f"You already have {ctx.author.roles[-1].name}")
+        else:
+            await ctx.author.add_roles(role)
+            await ctx.send(f"You now have role {role.name}")
+
+    @commands.command()
+    async def unclaim(self, ctx):
+        # keep @everyone
+        await ctx.author.edit(roles=[ctx.author.roles[0]])
+        await ctx.send("Removed all roles")
 
 
 def setup(bot):
