@@ -5,7 +5,7 @@ import asyncio
 from discord.ext import commands, tasks
 
 
-class AliceIsMissing(commands.Cog):
+class AliceBot(commands.Cog):
     CHARACTERS = (
         "Charlie Barnes", "Dakota Travis",
         "Evan Holwell", "Jack Briarwood", "Julia North"
@@ -83,4 +83,4 @@ class AliceIsMissing(commands.Cog):
 
 
 def setup(bot):
-    bot.add_cog(AliceIsMissing(bot))
+    bot.add_cog(AliceBot(bot))
