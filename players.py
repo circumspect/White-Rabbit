@@ -21,6 +21,7 @@ class Players(commands.Cog):
     @commands.command()
     async def claim(self, ctx, role: discord.Role):
         """Claim a character role"""
+
         if role.name.title() not in [name.split()[0] for name in self.CHARACTERS]:
             await ctx.send("You cannot claim that role")
         elif role.members:
@@ -34,6 +35,7 @@ class Players(commands.Cog):
     @commands.command()
     async def unclaim(self, ctx):
         """Remove all assigned roles"""
+        
         # Keep @everyone
         await ctx.author.edit(roles=[ctx.author.roles[0]])
         await ctx.send("Cleared your roles!")

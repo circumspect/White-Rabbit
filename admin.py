@@ -35,6 +35,7 @@ class Admin(commands.Cog):
     @commands.command()
     async def start(self, ctx):
         """Begins the game"""
+        
         if not self.setup:
             await ctx.send("Can't start before setting up!")
             return
@@ -51,6 +52,7 @@ class Admin(commands.Cog):
     @commands.command()
     async def show_time(self, ctx):
         """Toggle bot timer"""
+
         self.show_timer = not self.show_timer
         if self.show_timer:
             await ctx.send("Bot timer enabled!")
@@ -74,6 +76,7 @@ class Admin(commands.Cog):
     @commands.command()
     async def setup(self, ctx):
         """Sends out cards and sets up the game"""
+
         if self.started:
             await ctx.send("Game has already begun!")
             return
@@ -94,6 +97,7 @@ class Admin(commands.Cog):
     @commands.command()
     async def wipe(self, ctx, *text_channels: discord.TextChannel):
         """Wipes all messages on the server"""
+
         if not text_channels:
             text_channels = ctx.guild.text_channels
         for text_channel in text_channels:
@@ -102,6 +106,7 @@ class Admin(commands.Cog):
     @commands.command()
     async def load(self, ctx, extension_name: str = "all"):
         """(Re)loads an extension"""
+
         if extension_name == "all":
             loaded_extensions = list(self.bot.extensions.keys())
             for extension in loaded_extensions:
@@ -122,12 +127,14 @@ class Admin(commands.Cog):
     @commands.command()
     async def unload(self, ctx, extension_name: str):
         """Unloads an extension."""
+
         self.bot.unload_extension(extension_name)
         await ctx.send(f"Unloaded {extension_name}")
 
     @commands.command()
     async def quit(self, ctx):
         """Quits the bot"""
+        
         await ctx.send("Thanks for playing!")
         await self.bot.close()
 
