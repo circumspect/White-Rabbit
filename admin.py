@@ -99,7 +99,7 @@ class Admin(commands.Cog):
 
         # Character cards in character channel
         for character in self.CHARACTERS:
-            await self.text_channels["character-cards"].send(file=discord.File(
+            await ctx.text_channels["character-cards"].send(file=discord.File(
                 f"Images/Cards/Characters/{character.title()}.png"
             ))
 
@@ -108,12 +108,19 @@ class Admin(commands.Cog):
         random.shuffle(motives)
         for character, motive in zip(self.CHARACTERS, motives):
             channel = ctx.text_channels[f"{character.lower().split()[0]}-clues"]
-            asyncio.ensure_future(channel.send(file=discord.File(
+            asyncio.create_task(channel.send(file=discord.File(
                 f"Images/Cards/Characters/{character.title()}.png"
             )))
-            asyncio.ensure_future(channel.send(file=discord.File(
+            asyncio.create_task(channel.send(file=discord.File(
                 f"Images/Cards/Motives/Motive {motive}.png"
             )))
+        
+        # 90 minute card for Charlie Barnes
+        channel = ctx.text_channels["charlie-clues"]
+        asyncio.create_task(channel.send(file=discord.File(
+            "Images/Cards/Clues/90/90-1.png"
+            )))
+
         ctx.game.setup = True
         await ctx.send("Running setup")
 
