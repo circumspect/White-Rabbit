@@ -3,14 +3,10 @@ import asyncio
 # 3rd-party
 import discord
 from discord.ext import commands
-
+# Local
+import game
 
 class Players(commands.Cog):
-    CHARACTERS = {
-        "charlie": "Charlie Barnes", "dakota": "Dakota Travis",
-        "evan": "Evan Holwell", "jack": "Jack Briarwood", "julia": "Julia North",
-    }
-
     def __init__(self, bot):
         self.bot = bot
 
@@ -23,12 +19,12 @@ class Players(commands.Cog):
     async def claim(self, ctx, role: discord.Role):
         """Claim a character role"""
 
-        if role.name.title() not in :
+        if role.name.lower() not in game.CHARACTERS:
             await ctx.send("You cannot claim that role")
-        elif role.members:
-            await ctx.send("That role is taken")
         elif len(ctx.author.roles) > 1:
             await ctx.send(f"You already have {ctx.author.roles[-1].name}")
+        elif role.members:
+            await ctx.send("That role is taken")
         else:
             await ctx.author.add_roles(role)
             await ctx.send(f"Gave you {role.name}!")
