@@ -30,6 +30,7 @@ class Game(commands.Cog):
 
     @commands.command()
     async def start(self, ctx):
+        """Begins the game"""
         if not self.setup:
             await ctx.send("Can't start before setting up!")
             return
