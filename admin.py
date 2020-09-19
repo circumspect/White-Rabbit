@@ -105,7 +105,7 @@ class Admin(commands.Cog):
             ))
 
         def send_folder(channel, path):
-            for image in os.scandir(path):
+            for image in sorted(os.scandir(path), key=lambda x: x.name):
                 send_image(channel, os.path.join(path, image.name))
 
         if ctx.game.started:
