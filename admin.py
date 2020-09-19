@@ -81,6 +81,13 @@ class Admin(commands.Cog):
             await ctx.send("Game has already begun!")
             return
 
+        # Character cards in character channel
+        for character in self.CHARACTERS:
+            await self.text_channels["character-cards"].send(file=discord.File(
+                f"Images/Cards/Characters/{character.title()}.png"
+            ))
+
+        # Character and motive cards in clues channels
         motives = list(range(1, 6))
         random.shuffle(motives)
         for character, motive in zip(self.CHARACTERS, motives):
