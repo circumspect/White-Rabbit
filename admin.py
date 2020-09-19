@@ -96,6 +96,12 @@ class Admin(commands.Cog):
     @commands.command()
     async def setup(self, ctx):
         """Sends out cards and sets up the game"""
+        def send_image(channel, filepath):
+            if isinstance(channel, str):
+                channel = ctx.text_channels[channel]
+            asyncio.create_task(channel.send(
+                file=discord.File(filepath)
+            ))
 
         if ctx.game.started:
             await ctx.send("Game has already begun!")
@@ -103,26 +109,19 @@ class Admin(commands.Cog):
 
         await ctx.send("Starting setup")
 
+        send_image("player-resources", "Images/Cards/Misc/Introduction.png")
+
         # Character cards in character channel
-        for card in os.scandir(self.CHARACTER_IMAGE_PATH):
-            asyncio.create_task(ctx.text_channels["character-cards"].send(
-                file=discord.File(self.CHARACTER_IMAGE_PATH + "/" + card.name)
-            ))
+        for character in self.CHARACTERS:
+            send_image("character-cards", f"Images/Cards/Characters/{character.title()}.png")
 
         # Character and motive cards in clues channels
         motives = list(range(1, 6))
         random.shuffle(motives)
         for character, motive in zip(self.CHARACTERS, motives):
             channel = ctx.text_channels[f"{character.lower().split()[0]}-clues"]
-            asyncio.create_task(channel.send(file=discord.File(
-                f"Images/Cards/Characters/{character.title()}.png"
-            )))
-            asyncio.create_task(channel.send(file=discord.File(
-                f"Images/Cards/Motives/Motive {motive}.png"
-            )))
-        
-        # Suspect cards in #suspect-cards
-
+            send_image(channel, f"Images/Cards/Characters/{character.title()}.png")
+            send_image(channel, f"Images/Cards/Motives/Motive {motive}.png")
 
         # 90 minute card for Charlie Barnes
         channel = ctx.text_channels["charlie-clues"]
@@ -137,7 +136,7 @@ class Admin(commands.Cog):
 
         ctx.game.setup = True
 
-    @commands.command()
+    @ commands.command()
     async def wipe(self, ctx, *text_channels: discord.TextChannel):
         """Wipes all messages on the server"""
 
@@ -146,7 +145,7 @@ class Admin(commands.Cog):
         for text_channel in text_channels:
             await text_channel.purge(limit=None)
 
-    @commands.command()
+    @ commands.command()
     async def load(self, ctx, extension_name: str = "all"):
         """(Re)loads an extension"""
 
@@ -167,14 +166,14 @@ class Admin(commands.Cog):
         except discord.ext.commands.errors.ExtensionNotFound:
             await ctx.send(f"Couldn't find {extension_name}")
 
-    @commands.command()
+    @ commands.command()
     async def unload(self, ctx, extension_name: str):
         """Unloads an extension."""
 
         self.bot.unload_extension(extension_name)
         await ctx.send(f"Unloaded {extension_name}")
 
-    @commands.command()
+    @ commands.command()
     async def quit(self, ctx):
         """Quits the bot"""
 
