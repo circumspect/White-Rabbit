@@ -4,11 +4,12 @@ import asyncio
 import discord
 from discord.ext import commands
 
+
 class Players(commands.Cog):
-    CHARACTERS = (
-        "Charlie Barnes", "Dakota Travis", "Evan Holwell",
-            "Jack Briarwood", "Julia North"
-    )
+    CHARACTERS = {
+        "charlie": "Charlie Barnes", "dakota": "Dakota Travis",
+        "evan": "Evan Holwell", "jack": "Jack Briarwood", "julia": "Julia North",
+    }
 
     def __init__(self, bot):
         self.bot = bot
@@ -22,7 +23,7 @@ class Players(commands.Cog):
     async def claim(self, ctx, role: discord.Role):
         """Claim a character role"""
 
-        if role.name.title() not in [name.split()[0] for name in self.CHARACTERS]:
+        if role.name.title() not in :
             await ctx.send("You cannot claim that role")
         elif role.members:
             await ctx.send("That role is taken")
