@@ -5,10 +5,10 @@ import asyncio
 from discord.ext import commands, tasks
 
 
-class WhiteRabbit(commands.Cog):
+class Game(commands.Cog):
     CHARACTERS = (
-        "Charlie Barnes", "Dakota Travis",
-        "Evan Holwell", "Jack Briarwood", "Julia North"
+        "Charlie Barnes", "Dakota Travis", "Evan Holwell",
+            "Jack Briarwood", "Julia North"
     )
     GAME_LENGTH = 90 * 60
 
@@ -39,17 +39,18 @@ class WhiteRabbit(commands.Cog):
 
     @tasks.loop(seconds=10)
     async def timer(self):
+        # Stop if game has ended
         if self.start_time + self.GAME_LENGTH < time.time():
             self.timer.cancel()
 
         remaining_time = self.start_time + self.GAME_LENGTH - time.time()
-        await self.text_channels["group-chat"].send((
+        await self.text_channels["bot-channel"].send((
             f"{str(int(remaining_time // 60)).zfill(2)}:{str(int(remaining_time % 60)).zfill(2)}"
         ))
 
     @commands.command()
     async def setup(self, ctx):
-        # Send character cards
+        """Sends character and motive cards"""
         motives = list(range(1, 6))
         random.shuffle(motives)
         for motive, character in zip(motives, self.CHARACTERS):
@@ -61,10 +62,12 @@ class WhiteRabbit(commands.Cog):
                 f"Images/Cards/Motives/Motive {motive}.png"
             )))
         self.setup = True
-        await ctx.send("Set up complete")
+        await ctx.send("Running setup")
 
+    # Commands for players to claim character roles
     @commands.command()
     async def claim(self, ctx, role: discord.Role):
+        """Claim a character role"""
         if role.name.title() not in [name.split()[0] for name in self.CHARACTERS]:
             await ctx.send("You cannot claim that role")
         elif role.members:
@@ -77,10 +80,11 @@ class WhiteRabbit(commands.Cog):
 
     @commands.command()
     async def unclaim(self, ctx):
-        # keep @everyone
+        """Remove all assigned roles"""
+        # Keep @everyone
         await ctx.author.edit(roles=[ctx.author.roles[0]])
-        await ctx.send("Removed all roles")
+        await ctx.send("Cleared your roles!")
 
 
 def setup(bot):
-    bot.add_cog(AliceBot(bot))
+    bot.add_cog(Game(bot))

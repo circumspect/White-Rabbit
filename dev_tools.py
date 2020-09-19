@@ -2,7 +2,7 @@ import discord
 from discord.ext import commands
 
 
-class Dev(commands.Cog):
+class Admin(commands.Cog):
     def __init__(self, bot):
         self.bot = bot
 
@@ -11,15 +11,15 @@ class Dev(commands.Cog):
 
     @commands.command()
     async def wipe(self, ctx, *text_channels: discord.TextChannel):
+        """Wipes all messages on the server"""
         if not text_channels:
             text_channels = ctx.guild.text_channels
         for text_channel in text_channels:
             await text_channel.purge(limit=None)
-        await ctx.send("Server wiped")
 
     @commands.command()
     async def load(self, ctx, extension_name: str = "all"):
-        """Loads an extension."""
+        """(Re)loads an extension"""
         if extension_name == "all":
             loaded_extensions = list(self.bot.extensions.keys())
             for extension in loaded_extensions:
@@ -27,7 +27,7 @@ class Dev(commands.Cog):
             await ctx.send(f"Reloaded {', '.join(loaded_extensions)}")
             return
 
-        # load extension
+        # Load extension
         try:
             if extension_name in self.bot.extensions:
                 self.bot.reload_extension(extension_name)
@@ -45,10 +45,11 @@ class Dev(commands.Cog):
 
     @commands.command()
     async def quit(self, ctx):
-        """Unloads an extension."""
+        """Quits the bot"""
         await ctx.send("Thanks for playing!")
         await self.bot.close()
 
 
+
 def setup(bot):
-    bot.add_cog(Dev(bot))
+    bot.add_cog(Admin(bot))
