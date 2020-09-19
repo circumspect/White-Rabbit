@@ -1,10 +1,25 @@
+# Built-in
+import asyncio
+import random
+import time
+# 3rd-party
 import discord
 from discord.ext import commands, tasks
 
 
 class Admin(commands.Cog):
+    CHARACTERS = (
+        "Charlie Barnes", "Dakota Travis", "Evan Holwell",
+            "Jack Briarwood", "Julia North"
+    )
+    GAME_LENGTH = 90 * 60
+    TIMER_GAP = 10
+    
     def __init__(self, bot):
         self.bot = bot
+        self.setup = False
+        self.started = False
+        self.show_timer = False
 
     async def cog_check(self, ctx):
         return ctx.author.guild_permissions.administrator
@@ -31,18 +46,30 @@ class Admin(commands.Cog):
         self.start_time = time.time()
         self.timer.start()
         self.started = True
-        await ctx.send('Starting the game!')
+        await ctx.send("Starting the game!")
 
-    @tasks.loop(seconds=10)
+    @commands.command()
+    async def show_time(self, ctx):
+        """Toggle bot timer"""
+        self.show_timer = not self.show_timer
+        if self.show_timer:
+            await ctx.send("Bot timer enabled!")
+        else:
+            await ctx.send("Bot timer disabled!")
+
+
+    @tasks.loop(seconds=TIMER_GAP)
     async def timer(self):
         # Stop if game has ended
         if self.start_time + self.GAME_LENGTH < time.time():
             self.timer.cancel()
 
         remaining_time = self.start_time + self.GAME_LENGTH - time.time()
-        await self.text_channels["bot-channel"].send((
-            f"{str(int(remaining_time // 60)).zfill(2)}:{str(int(remaining_time % 60)).zfill(2)}"
-        ))
+        
+        if self.show_timer:
+            await self.text_channels["bot-channel"].send((
+                f"{str(int(remaining_time // 60)).zfill(2)}:{str(int(remaining_time % 60)).zfill(2)}"
+            ))
 
     @commands.command()
     async def setup(self, ctx):
