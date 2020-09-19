@@ -35,7 +35,7 @@ class Admin(commands.Cog):
     @commands.command()
     async def start(self, ctx):
         """Begins the game"""
-        
+
         if not self.setup:
             await ctx.send("Can't start before setting up!")
             return
@@ -49,15 +49,15 @@ class Admin(commands.Cog):
         self.started = True
         await ctx.send("Starting the game!")
 
-    @commands.command()
+    @commands.command(name="timer")
     async def show_time(self, ctx):
         """Toggle bot timer"""
 
         self.show_timer = not self.show_timer
         if self.show_timer:
-            await ctx.send("Bot timer enabled!")
+            await ctx.send("Showing bot timer!")
         else:
-            await ctx.send("Bot timer disabled!")
+            await ctx.send("Hiding bot timer!")
 
 
     @tasks.loop(seconds=TIMER_GAP)
