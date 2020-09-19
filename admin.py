@@ -125,9 +125,9 @@ class Admin(commands.Cog):
             "Images/Cards/Clues/90/90-1.png"
         )))
         first_message = "Hey! Sorry for the big group text, but I just got "\
-                        "into town for winter break at my dad's "\
-                        "and haven't been able to get ahold of Alice. Just "\
-                        "wondering if any of you have spoken to her?"
+                        "into town for winter break at my dad's and haven't "\
+                        "been able to get ahold of Alice. Just wondering if "\
+                        "any of you have spoken to her?"
         asyncio.create_task(channel.send(first_message))
 
         ctx.game.setup = True
