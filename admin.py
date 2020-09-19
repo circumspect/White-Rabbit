@@ -1,5 +1,6 @@
 # Built-in
 import asyncio
+import os
 import random
 import time
 # 3rd-party
@@ -16,6 +17,9 @@ class Game:
 
 
 class Admin(commands.Cog):
+    # Image paths
+    CHARACTER_IMAGE_PATH = "Images/Cards/Characters"
+    
     CHARACTERS = (
         "Charlie Barnes", "Dakota Travis", "Evan Holwell",
         "Jack Briarwood", "Julia North"
@@ -100,10 +104,10 @@ class Admin(commands.Cog):
         await ctx.send("Starting setup")
 
         # Character cards in character channel
-        for character in self.CHARACTERS:
-            asyncio.create_task(ctx.text_channels["character-cards"].send(file=discord.File(
-                f"Images/Cards/Characters/{character.title()}.png"
-            )))
+        for card in os.scandir(self.CHARACTER_IMAGE_PATH):
+            asyncio.create_task(ctx.text_channels["character-cards"].send(
+                file=discord.File(self.CHARACTER_IMAGE_PATH + "/" + card.name)
+            ))
 
         # Character and motive cards in clues channels
         motives = list(range(1, 6))
@@ -117,6 +121,9 @@ class Admin(commands.Cog):
                 f"Images/Cards/Motives/Motive {motive}.png"
             )))
         
+        # Suspect cards in #suspect-cards
+
+
         # 90 minute card for Charlie Barnes
         channel = ctx.text_channels["charlie-clues"]
         asyncio.create_task(channel.send(file=discord.File(
