@@ -31,7 +31,7 @@ class Admin(commands.Cog):
         ctx.game = self.games.setdefault(ctx.guild.id, Game(ctx.guild))
         ctx.text_channels = {
             channel.name: channel
-            for channel in self.bot.guilds[0].text_channels
+            for channel in ctx.guild.text_channels
         }
 
     async def cog_check(self, ctx):
@@ -83,7 +83,7 @@ class Admin(commands.Cog):
             if game.show_timer:
                 text_channels = {
                     channel.name: channel
-                    for channel in self.bot.guilds[0].text_channels
+                    for channel in game.guild.text_channels
                 }
                 await text_channels["bot-channel"].send((
                     f"{str(int(remaining_time // 60)).zfill(2)}:{str(int(remaining_time % 60)).zfill(2)}"
@@ -96,6 +96,8 @@ class Admin(commands.Cog):
         if ctx.game.started:
             await ctx.send("Game has already begun!")
             return
+
+        await ctx.send("Starting setup")
 
         # Character cards in character channel
         for character in self.CHARACTERS:
@@ -132,6 +134,7 @@ class Admin(commands.Cog):
             text_channels = ctx.guild.text_channels
         for text_channel in text_channels:
             await text_channel.purge(limit=None)
+        await ctx.text_channels["bot-channel"].send("done wiping")
 
     @commands.command()
     async def load(self, ctx, extension_name: str = "all"):
