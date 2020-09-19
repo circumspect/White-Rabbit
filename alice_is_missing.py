@@ -7,8 +7,8 @@ from discord.ext import commands, tasks
 
 class AliceIsMissing(commands.Cog):
     CHARACTERS = (
-        "charlie barnes", "dakota travis",
-        "evan holwell", "jack briarwood", "julia north"
+        "Charlie Barnes", "Dakota Travis",
+        "Evan Holwell", "Jack Briarwood", "Julia North"
     )
     GAME_LENGTH = 90 * 60
 
@@ -49,11 +49,11 @@ class AliceIsMissing(commands.Cog):
 
     @commands.command()
     async def setup(self, ctx):
-        # send character cards
+        # Send character cards
         motives = list(range(1, 6))
         random.shuffle(motives)
         for motive, character in zip(motives, self.CHARACTERS):
-            channel = self.text_channels[f"{character.split()[0]}-clues"]
+            channel = self.text_channels[f"{character.lower().split()[0]}-clues"]
             asyncio.ensure_future(channel.send(file=discord.File(
                 f"Images/Cards/Characters/{character.title()}.png"
             )))
@@ -61,11 +61,11 @@ class AliceIsMissing(commands.Cog):
                 f"Images/Cards/Motives/Motive {motive}.png"
             )))
         self.setup = True
-        await ctx.send("Done setting up")
+        await ctx.send("Set up complete")
 
     @commands.command()
     async def claim(self, ctx, role: discord.Role):
-        if role.name.lower() not in [name.split()[0] for name in self.CHARACTERS]:
+        if role.name.title() not in [name.split()[0] for name in self.CHARACTERS]:
             await ctx.send("You cannot claim that role")
         elif role.members:
             await ctx.send("That role is taken")
@@ -73,7 +73,7 @@ class AliceIsMissing(commands.Cog):
             await ctx.send(f"You already have {ctx.author.roles[-1].name}")
         else:
             await ctx.author.add_roles(role)
-            await ctx.send(f"You now have role {role.name}")
+            await ctx.send(f"Gave you {role.name}!")
 
     @commands.command()
     async def unclaim(self, ctx):
