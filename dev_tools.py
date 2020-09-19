@@ -15,7 +15,7 @@ class Dev(commands.Cog):
             text_channels = ctx.guild.text_channels
         for text_channel in text_channels:
             await text_channel.purge(limit=None)
-        await ctx.send("done wiping")
+        await ctx.send("Server wiped")
 
     @commands.command()
     async def load(self, ctx, extension_name: str = "all"):
@@ -24,7 +24,7 @@ class Dev(commands.Cog):
             loaded_extensions = list(self.bot.extensions.keys())
             for extension in loaded_extensions:
                 self.bot.reload_extension(extension)
-            await ctx.send(f"reloaded {', '.join(loaded_extensions)}")
+            await ctx.send(f"Reloaded {', '.join(loaded_extensions)}")
             return
 
         # load extension
@@ -33,20 +33,20 @@ class Dev(commands.Cog):
                 self.bot.reload_extension(extension_name)
             else:
                 self.bot.load_extension(extension_name)
-            await ctx.send(f"loaded {extension_name}")
+            await ctx.send(f"Loaded {extension_name}")
         except discord.ext.commands.errors.ExtensionNotFound:
-            await ctx.send(f"could not find {extension_name}")
+            await ctx.send(f"Couldn't find {extension_name}")
 
     @commands.command()
     async def unload(self, ctx, extension_name: str):
         """Unloads an extension."""
         self.bot.unload_extension(extension_name)
-        await ctx.send(f"unloaded {extension_name}")
+        await ctx.send(f"Unloaded {extension_name}")
 
     @commands.command()
     async def quit(self, ctx):
         """Unloads an extension."""
-        await ctx.send("quitting")
+        await ctx.send("Thanks for playing!")
         await self.bot.close()
 
 
