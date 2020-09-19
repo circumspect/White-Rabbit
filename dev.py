@@ -6,6 +6,9 @@ class Dev(commands.Cog):
     def __init__(self, bot):
         self.bot = bot
 
+    async def cog_check(self, ctx):
+        return ctx.author.guild_permissions.administrator
+
     @commands.command()
     async def load(self, ctx, extension_name: str = "all"):
         """Loads an extension."""
@@ -31,6 +34,12 @@ class Dev(commands.Cog):
         """Unloads an extension."""
         self.bot.unload_extension(extension_name)
         await ctx.send(f"unloaded {extension_name}")
+
+    @commands.command()
+    async def quit(self, ctx):
+        """Unloads an extension."""
+        await ctx.send("quitting")
+        await self.bot.close()
 
 
 def setup(bot):
