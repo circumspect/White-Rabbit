@@ -23,10 +23,10 @@ class Admin(commands.Cog):
     SUSPECT_IMAGE_DIR = "Images/Cards/Suspects"
     LOCATION_IMAGE_DIR = "Images/Cards/Locations"
     
-    CHARACTERS = (
-        "Charlie Barnes", "Dakota Travis", "Evan Holwell",
-        "Jack Briarwood", "Julia North"
-    )
+    CHARACTERS = {
+        "charlie": "Charlie Barnes", "dakota": "Dakota Travis",
+        "evan": "Evan Holwell", "jack": "Jack Briarwood", "julia": "Julia North",
+    }
     GAME_LENGTH = 90 * 60
     TIMER_GAP = 10
 
@@ -130,10 +130,10 @@ class Admin(commands.Cog):
 
         # Character and motive cards in clues channels
         motives = list(range(1, 6))
-        random.shuffle(motives)
-        for character, motive in zip(self.CHARACTERS, motives):
+        random.shuffle(motives)values
+        for character, motive in zip(self.CHARACTERS.values(), motives):
             channel = ctx.text_channels[f"{character.lower().split()[0]}-clues"]
-            send_image(channel, f"Images/Cards/Characters/{character.title()}.png")
+            send_image(channel, f"Images/Cards/Characters/{character}.png")
             send_image(channel, f"Images/Cards/Motives/Motive {motive}.png")
 
         # 90 minute card for Charlie Barnes
