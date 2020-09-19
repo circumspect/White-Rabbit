@@ -8,7 +8,7 @@ import glob
 import discord
 from discord.ext import commands, tasks
 # Local
-import game
+import gamedata
 
 class Admin(commands.Cog):
     # Image paths
@@ -24,7 +24,7 @@ class Admin(commands.Cog):
         self.games = {}
 
     async def cog_before_invoke(self, ctx):
-        ctx.game = self.games.setdefault(ctx.guild.id, game.Game(ctx.guild))
+        ctx.game = self.games.setdefault(ctx.guild.id, gamedata.Data(ctx.guild))
         ctx.text_channels = {
             channel.name: channel
             for channel in ctx.guild.text_channels
@@ -120,7 +120,7 @@ class Admin(commands.Cog):
         # Character and motive cards in clues channels
         motives = list(range(1, 6))
         random.shuffle(motives)
-        for character, motive in zip(game.CHARACTERS.values(), motives):
+        for character, motive in zip(gamedata.CHARACTERS.values(), motives):
             channel = ctx.text_channels[f"{character.lower().split()[0]}-clues"]
             send_image(channel, f"Images/Cards/Characters/{character}.png")
             send_image(channel, f"Images/Cards/Motives/Motive {motive}.png")
