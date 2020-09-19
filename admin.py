@@ -80,7 +80,7 @@ class Admin(commands.Cog):
 
         motives = list(range(1, 6))
         random.shuffle(motives)
-        for motive, character in zip(motives, self.CHARACTERS):
+        for character, motive in zip(self.CHARACTERS, motives):
             channel = self.text_channels[f"{character.lower().split()[0]}-clues"]
             asyncio.ensure_future(channel.send(file=discord.File(
                 f"Images/Cards/Characters/{character.title()}.png"
