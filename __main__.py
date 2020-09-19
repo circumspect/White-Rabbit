@@ -2,7 +2,7 @@ from discord.ext import commands
 
 bot = commands.Bot(command_prefix="!")
 
-for extension in ["white_rabbit", "dev_tools"]:
+for extension in ["admin", "players"]:
     bot.load_extension(extension)
 
 with open("token.txt") as token_file:
