@@ -10,6 +10,14 @@ class Dev(commands.Cog):
         return ctx.author.guild_permissions.administrator
 
     @commands.command()
+    async def wipe(self, ctx, *text_channels: discord.TextChannel):
+        if not text_channels:
+            text_channels = ctx.guild.text_channels
+        for text_channel in text_channels:
+            await text_channel.purge(limit=None)
+        await ctx.send("done wiping")
+
+    @commands.command()
     async def load(self, ctx, extension_name: str = "all"):
         """Loads an extension."""
         if extension_name == "all":
