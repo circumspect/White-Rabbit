@@ -7,91 +7,107 @@ import discord
 from discord.ext import commands, tasks
 
 
-class Admin(commands.Cog):
-    CHARACTERS = (
-        "Charlie Barnes", "Dakota Travis", "Evan Holwell",
-            "Jack Briarwood", "Julia North"
-    )
-    GAME_LENGTH = 90 * 60
-    TIMER_GAP = 10
-    
-    def __init__(self, bot):
-        self.bot = bot
+class Game:
+    def __init__(self, guild):
+        self.guild = guild
         self.setup = False
         self.started = False
         self.show_timer = False
 
-    async def cog_check(self, ctx):
-        return ctx.author.guild_permissions.administrator
-    
-    @commands.Cog.listener()
-    async def on_ready(self):
-        self.text_channels = {
+
+class Admin(commands.Cog):
+    CHARACTERS = (
+        "Charlie Barnes", "Dakota Travis", "Evan Holwell",
+        "Jack Briarwood", "Julia North"
+    )
+    GAME_LENGTH = 90 * 60
+    TIMER_GAP = 10
+
+    def __init__(self, bot):
+        self.bot = bot
+        self.games = {}
+
+    async def cog_before_invoke(self, ctx):
+        ctx.game = self.games.setdefault(ctx.guild.id, Game(ctx.guild))
+        ctx.text_channels = {
             channel.name: channel
             for channel in self.bot.guilds[0].text_channels
         }
-        print(f"Bot has logged in")
+
+    async def cog_check(self, ctx):
+        return ctx.author.guild_permissions.administrator
+
+    @commands.Cog.listener()
+    async def on_ready(self):
+        print("Bot has logged in")
+        self.timer.start()
 
     @commands.command()
     async def start(self, ctx):
         """Begins the game"""
 
-        if not self.setup:
+        if not ctx.game.setup:
             await ctx.send("Can't start before setting up!")
             return
-        
-        if self.started:
+
+        if ctx.game.started:
             await ctx.send("Game has already begun!")
             return
 
-        self.start_time = time.time()
-        self.timer.start()
-        self.started = True
+        ctx.game.start_time = time.time()
+        ctx.game.started = True
         await ctx.send("Starting the game!")
 
     @commands.command(name="timer")
     async def show_time(self, ctx):
         """Toggle bot timer"""
 
-        self.show_timer = not self.show_timer
-        if self.show_timer:
+        ctx.game.show_timer = not ctx.game.show_timer
+        if ctx.game.show_timer:
             await ctx.send("Showing bot timer!")
         else:
             await ctx.send("Hiding bot timer!")
 
-
     @tasks.loop(seconds=TIMER_GAP)
     async def timer(self):
-        # Stop if game has ended
-        if self.start_time + self.GAME_LENGTH < time.time():
-            self.timer.cancel()
+        for game in self.games.values():
+            # Skip if game has not started
+            if not game.started:
+                continue
+            # Skip if game has ended
+            if game.start_time + self.GAME_LENGTH < time.time():
+                continue
 
-        remaining_time = self.start_time + self.GAME_LENGTH - time.time()
-        
-        if self.show_timer:
-            await self.text_channels["bot-channel"].send((
-                f"{str(int(remaining_time // 60)).zfill(2)}:{str(int(remaining_time % 60)).zfill(2)}"
-            ))
+            remaining_time = game.start_time + self.GAME_LENGTH - time.time()
+
+            if game.show_timer:
+                text_channels = {
+                    channel.name: channel
+                    for channel in self.bot.guilds[0].text_channels
+                }
+                await text_channels["bot-channel"].send((
+                    f"{str(int(remaining_time // 60)).zfill(2)}:{str(int(remaining_time % 60)).zfill(2)}"
+                ))
 
     @commands.command()
     async def setup(self, ctx):
         """Sends out cards and sets up the game"""
 
-        if self.started:
+        if ctx.game.started:
             await ctx.send("Game has already begun!")
             return
 
         motives = list(range(1, 6))
         random.shuffle(motives)
         for character, motive in zip(self.CHARACTERS, motives):
-            channel = self.text_channels[f"{character.lower().split()[0]}-clues"]
+            channel = ctx.text_channels[f"{character.lower().split()[0]}-clues"]
             asyncio.ensure_future(channel.send(file=discord.File(
                 f"Images/Cards/Characters/{character.title()}.png"
             )))
             asyncio.ensure_future(channel.send(file=discord.File(
                 f"Images/Cards/Motives/Motive {motive}.png"
             )))
-        self.setup = True
+        ctx.game.setup = True
         await ctx.send("Running setup")
 
     @commands.command()
@@ -134,10 +150,9 @@ class Admin(commands.Cog):
     @commands.command()
     async def quit(self, ctx):
         """Quits the bot"""
-        
+
         await ctx.send("Thanks for playing!")
         await self.bot.close()
-
 
 
 def setup(bot):
