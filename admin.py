@@ -103,6 +103,10 @@ class Admin(commands.Cog):
                 file=discord.File(filepath)
             ))
 
+        def send_folder(channel, path):
+            for image in os.scandir(path):
+                send_image(channel, os.path.join(path, image.name))
+
         if ctx.game.started:
             await ctx.send("Game has already begun!")
             return
@@ -112,10 +116,7 @@ class Admin(commands.Cog):
         send_image("player-resources", "Images/Cards/Misc/Introduction.png")
 
         # Character cards in character channel
-        for card in os.scandir(self.CHARACTER_IMAGE_PATH):
-            asyncio.create_task(ctx.text_channels["character-cards"].send(
-                file=discord.File(self.CHARACTER_IMAGE_PATH + "/" + card.name)
-            ))
+        send_folder("character-cards", self.CHARACTER_IMAGE_PATH)
 
         # Character and motive cards in clues channels
         motives = list(range(1, 6))
