@@ -20,22 +20,24 @@ class Players(commands.Cog):
         """Claim a character role"""
 
         if role.name.lower() not in gamedata.CHARACTERS:
-            await ctx.send("You cannot claim that role")
+            asyncio.create_task(ctx.send("You cannot claim that role"))
         elif len(ctx.author.roles) > 1:
-            await ctx.send(f"You already have {ctx.author.roles[-1].name}")
+            asyncio.create_task(ctx.send(f"You already have {ctx.author.roles[-1].name}"))
         elif role.members:
-            await ctx.send("That role is taken")
+            asyncio.create_task(ctx.send("That role is taken"))
         else:
-            await ctx.author.add_roles(role)
-            await ctx.send(f"Gave you {role.name}!")
+            asyncio.create_task(ctx.author.add_roles(role))
+            asyncio.create_task(ctx.author.edit(nick=gamedata.CHARACTERS[role.name.lower()]))
+            asyncio.create_task(ctx.send(f"Gave you {role.name}!"))
 
     @commands.command()
     async def unclaim(self, ctx):
         """Remove all assigned roles"""
         
         # Keep @everyone
-        await ctx.author.edit(roles=[ctx.author.roles[0]])
-        await ctx.send("Cleared your roles!")
+        asyncio.create_task(ctx.author.edit(roles=[ctx.author.roles[0]]))
+        asyncio.create_task(ctx.author.edit(nick=None))
+        asyncio.create_task(ctx.send("Cleared your roles!"))
 
 
 def setup(bot):
