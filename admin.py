@@ -101,9 +101,9 @@ class Admin(commands.Cog):
 
         # Character cards in character channel
         for character in self.CHARACTERS:
-            await ctx.text_channels["character-cards"].send(file=discord.File(
+            asyncio.create_task(ctx.text_channels["character-cards"].send(file=discord.File(
                 f"Images/Cards/Characters/{character.title()}.png"
-            ))
+            )))
 
         # Character and motive cards in clues channels
         motives = list(range(1, 6))
@@ -121,10 +121,14 @@ class Admin(commands.Cog):
         channel = ctx.text_channels["charlie-clues"]
         asyncio.create_task(channel.send(file=discord.File(
             "Images/Cards/Clues/90/90-1.png"
-            )))
+        )))
+        first_message = "Hey! Sorry for the big group text, but I just got "\
+                        "into town for winter break at my dad's "\
+                        "and haven't been able to get ahold of Alice. Just "\
+                        "wondering if any of you have spoken to her?"
+        asyncio.create_task(channel.send(first_message))
 
         ctx.game.setup = True
-        await ctx.send("Running setup")
 
     @commands.command()
     async def wipe(self, ctx, *text_channels: discord.TextChannel):
@@ -134,7 +138,6 @@ class Admin(commands.Cog):
             text_channels = ctx.guild.text_channels
         for text_channel in text_channels:
             await text_channel.purge(limit=None)
-        await ctx.text_channels["bot-channel"].send("done wiping")
 
     @commands.command()
     async def load(self, ctx, extension_name: str = "all"):
