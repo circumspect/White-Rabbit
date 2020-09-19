@@ -3,6 +3,7 @@ import asyncio
 import os
 import random
 import time
+import glob
 # 3rd-party
 import discord
 from discord.ext import commands, tasks
@@ -109,7 +110,10 @@ class Admin(commands.Cog):
 
         await ctx.send("Starting setup")
 
+        # Introduction images
         send_image("player-resources", "Images/Cards/Misc/Introduction.png")
+        alice = random.choice(glob.glob("Images/Missing Person Posters/*.png"))
+        send_image("player-resources", alice)
 
         # Character cards in character channel
         for card in os.scandir(self.CHARACTER_IMAGE_PATH):
