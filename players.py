@@ -1,21 +1,17 @@
-import discord
-import time
-import random
+# Built-in
 import asyncio
-from discord.ext import commands, tasks
-
+# 3rd-party
+import discord
+from discord.ext import commands
 
 class Players(commands.Cog):
     CHARACTERS = (
         "Charlie Barnes", "Dakota Travis", "Evan Holwell",
             "Jack Briarwood", "Julia North"
     )
-    GAME_LENGTH = 90 * 60
 
     def __init__(self, bot):
         self.bot = bot
-        self.setup = False
-        self.started = False
 
     @commands.Cog.listener()
     async def on_message(self, message):
