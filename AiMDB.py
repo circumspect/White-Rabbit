@@ -6,7 +6,8 @@ from discord.ext import commands
 
 
 class AliceIsMissing(commands.Cog):
-    characters = ("charlie barnes", "dakota travis", "evan holwell", "jack briarwood", "julia north")
+    characters = ("charlie barnes", "dakota travis",
+                  "evan holwell", "jack briarwood", "julia north")
 
     def __init__(self, bot):
         self.bot = bot
@@ -26,12 +27,21 @@ class AliceIsMissing(commands.Cog):
 
     @commands.command()
     async def setup(self, ctx):
-        self.text_channels = {channel.name: channel for channel in ctx.guild.text_channels}
+        self.text_channels = {
+            channel.name: channel for channel in ctx.guild.text_channels}
 
         # send character cards
         motives = list(range(1, 6))
         random.shuffle(motives)
         for i, character in enumerate(self.characters):
             channel = self.text_channels[f"{character.split()[0]}-clues"]
-            asyncio.ensure_future(channel.send(file=discord.File(f"Images/Cards/Characters/{character.title()}.png")))
-            asyncio.ensure_future(channel.send(file=discord.File(f"Images/Cards/Motives/Motive {motives[i]}.png")))
+            asyncio.ensure_future(channel.send(file=discord.File(
+                f"Images/Cards/Characters/{character.title()}.png"
+            )))
+            asyncio.ensure_future(channel.send(file=discord.File(
+                f"Images/Cards/Motives/Motive {motives[i]}.png"
+            )))
+
+
+def setup(bot):
+    bot.add_cog(AliceIsMissing(bot))
