@@ -20,7 +20,7 @@ class Game:
 class Admin(commands.Cog):
     # Image paths
     CHARACTER_IMAGE_PATH = "Images/Cards/Characters"
-    
+
     CHARACTERS = (
         "Charlie Barnes", "Dakota Travis", "Evan Holwell",
         "Jack Briarwood", "Julia North"
@@ -115,6 +115,8 @@ class Admin(commands.Cog):
         await ctx.send("Starting setup")
 
         # Introduction images
+        send_image("player-resources", "Images/Player Resources/Alice is Missing - Guide.jpg")
+        send_image("player-resources", "Images/Player Resources/Alice is Missing - Character Sheet.jpg")
         send_image("player-resources", "Images/Cards/Misc/Introduction.png")
         alice = random.choice(glob.glob("Images/Missing Person Posters/*.png"))
         send_image("player-resources", alice)
