@@ -3,11 +3,10 @@ import asyncio
 import random
 import time
 import typing
-
 # 3rd-party
 import discord
 from discord.ext import commands, tasks
-
+# Local
 import filepaths
 import gamedata
 import manual
