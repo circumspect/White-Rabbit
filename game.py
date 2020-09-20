@@ -139,7 +139,18 @@ class Game(commands.Cog):
         random.shuffle(clue_buckets)
         for name in names:
             bucket_assignments[name] = clue_buckets.pop()
+        
+        # Print in a code block
+        message = "```"
+        for player in bucket_assignments:
+            bucket_assignments[player].sort(reverse=True)
+            clues = player.title() + ": " + ", ".join(str(bucket_assignments[player][x]) for x in range(len(bucket_assignments[player]))) + "\n"
+            message += clues
+        
+        message += "```"
+        asyncio.create_task(ctx.send(message))
 
+        # Console logging
         print("Randomly assigned clue cards!")
         print(bucket_assignments)
     
