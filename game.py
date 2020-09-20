@@ -62,7 +62,7 @@ class Game(commands.Cog):
             await ctx.send("Game has already begun!")
             return
         elif ctx.game.setup:
-            await ctx.send("Already setup")
+            await ctx.send("Setup already run!")
             return
 
         await ctx.send("Starting setup")
@@ -115,6 +115,11 @@ class Game(commands.Cog):
     @commands.command()
     async def shuffle_clues(self, ctx):
         """Randomizes and assigns clue times"""
+
+        # Stop if fewer than 3 player roles assigned
+        if len(ctx.game.char_roles()) < 3:
+            await ctx.send("Not enough players!")
+            return
 
         player_count = len(ctx.game.char_roles())
         acceptable = False
@@ -195,7 +200,7 @@ class Game(commands.Cog):
             return
 
         if len(ctx.game.char_roles()) < 3:
-            await ctx.send("Not enough players")
+            await ctx.send("Not enough players!")
             return
 
         ctx.game.start_time = time.time()
