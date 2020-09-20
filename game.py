@@ -23,7 +23,8 @@ class Game(commands.Cog):
         self.games = {}
 
     async def cog_before_invoke(self, ctx):
-        ctx.game = self.games.setdefault(ctx.guild.id, gamedata.Data(ctx.guild))
+        ctx.game = self.games.setdefault(ctx.guild.id, 
+                                            gamedata.Data(ctx.guild))
         ctx.text_channels = {
             channel.name: channel
             for channel in ctx.guild.text_channels
@@ -68,10 +69,13 @@ class Game(commands.Cog):
         await ctx.send("Starting setup")
 
         # Introduction images
-        send_image("player-resources", RESOURCE_DIR / "Alice is Missing - Guide.jpg")
-        send_image("player-resources", RESOURCE_DIR / "Alice is Missing - Character Sheet.jpg")
+        send_image("player-resources", RESOURCE_DIR / 
+                    "Alice is Missing - Guide.jpg")
+        send_image("player-resources", RESOURCE_DIR / 
+                    "Alice is Missing - Character Sheet.jpg")
         send_image("player-resources", CARD_DIR / "Misc" / "Introduction.png")
-        alice = random.choice(list(Path("Images/Missing Person Posters").glob("*.png")))
+        alice = random.choice(list(Path(
+                            "Images/Missing Person Posters").glob("*.png")))
         send_image("player-resources", alice)
 
         # Send characters, suspects, and locations to appropriate channels
@@ -86,7 +90,8 @@ class Game(commands.Cog):
             if ctx.game.automatic:
                 send_image(
                     channel,
-                    CARD_DIR / "Motives" / f"Motive {ctx.game.motives[first_name]}.png"
+                    CARD_DIR / "Motives" / 
+                    f"Motive {ctx.game.motives[first_name]}.png"
                 )
 
         # 90 minute card for Charlie Barnes
@@ -182,7 +187,8 @@ class Game(commands.Cog):
                 start = i+1
                 end = len(clue_buckets[bucket])
                 for j in range(start, end):
-                    diff = abs(clue_buckets[bucket][i]-clue_buckets[bucket][j])
+                    diff = clue_buckets[bucket][i]-clue_buckets[bucket][j]
+                    diff = abs(diff)
                     if diff <= 10:
                         return False
         
@@ -253,7 +259,8 @@ class Game(commands.Cog):
             if game.start_time + gamedata.GAME_LENGTH < time.time():
                 continue
 
-            remaining_time = game.start_time + gamedata.GAME_LENGTH - time.time()
+            remaining_time = (game.start_time
+                                + gamedata.GAME_LENGTH - time.time())
 
             if game.show_timer:
                 text_channels = {
@@ -281,7 +288,8 @@ class Game(commands.Cog):
         ))
 
     @commands.command(name="10")
-    async def ten_min_card(self, ctx, character: typing.Union[discord.Member, discord.Role]):
+    async def ten_min_card(self, ctx, 
+                    character: typing.Union[discord.Member, discord.Role]):
         """Assign the 10 minute card to another player"""
         
         if isinstance(character, discord.Member):
