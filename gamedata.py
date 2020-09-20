@@ -12,6 +12,7 @@ SUSPECT_IMAGE_DIR = "Images/Cards/Suspects"
 LOCATION_IMAGE_DIR = "Images/Cards/Locations"
 
 GAME_LENGTH = 90 * 60
+# How often the bot should check the timer
 TIMER_GAP = 10
 
 class Data:
