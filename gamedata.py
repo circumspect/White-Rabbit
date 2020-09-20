@@ -1,4 +1,5 @@
 import discord
+import random
 
 CHARACTERS = {
     "charlie": "Charlie Barnes",
@@ -16,12 +17,21 @@ TIMER_GAP = 10
 CLUE_TIMES = (90, 80, 70, 60, 50, 45, 40, 35, 30, 20)
 BUCKET_SIZES = {3: (3, 3, 4), 4: (2, 2, 3, 3), 5: (2, 2, 2, 2, 2)}
 
+
 class Data:
     def __init__(self, guild):
         self.guild = guild
         self.setup = False
         self.started = False
+        self.automatic = True
         self.show_timer = False
+
+        motives = list(range(1, 6))
+        random.shuffle(motives)
+        self.motives = {
+            character: motive
+            for motive, character in zip(motives, CHARACTERS)
+        }
 
     def char_roles(self):
         return {
