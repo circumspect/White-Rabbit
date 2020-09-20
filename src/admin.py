@@ -19,5 +19,6 @@ class Admin(commands.Cog):
         for text_channel in text_channels:
             await text_channel.purge(limit=None)
 
+
 def setup(bot):
     bot.add_cog(Admin(bot))

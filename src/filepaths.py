@@ -8,6 +8,7 @@ RESOURCE_DIR = IMAGE_DIR / "Player Resources"
 
 CARD_DIR = IMAGE_DIR / "Cards"
 CHARACTER_IMAGE_DIR = CARD_DIR / "Characters"
+MOTIVE_DIR = CARD_DIR / "Motives"
 SUSPECT_IMAGE_DIR = CARD_DIR / "Suspects"
 LOCATION_IMAGE_DIR = CARD_DIR / "Locations"
 CLUE_DIR = CARD_DIR / "Clues"

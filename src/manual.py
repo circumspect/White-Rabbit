@@ -1,12 +1,13 @@
 # Built-in
 import asyncio
 import random
+
 # 3rd-party
 import discord
 from discord.ext import commands
-# Local
-import gamedata
+
 import filepaths
+import gamedata
 
 
 class Manual(commands.Cog):
@@ -28,7 +29,7 @@ class Manual(commands.Cog):
             return
         channel = ctx.text_channels[f"{character}-clues"]
         asyncio.create_task(channel.send(file=discord.File(
-            filepaths.CARD_DIR / "Motives" / f"Motive {ctx.game.motives[character]}.png"
+            filepaths.MOTIVE_DIR / f"Motive {ctx.game.motives[character]}.png"
         )))
 
     def get_char(self, member: discord.Member):
@@ -59,7 +60,8 @@ class Manual(commands.Cog):
         # Give bucket with 90 minute card to Charlie Barnes
         for bucket in clue_buckets:
             if 90 in bucket:
-                bucket_assignments["charlie"] = bucket  # Willy Wonka sends his regards
+                # Willy Wonka sends his regards
+                bucket_assignments["charlie"] = bucket
                 clue_buckets.remove(bucket)
                 break
 

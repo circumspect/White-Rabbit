@@ -1,6 +1,4 @@
-import discord
 import random
-from pathlib import Path
 
 CHARACTERS = {
     "charlie": "Charlie Barnes",

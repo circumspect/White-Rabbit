@@ -2,14 +2,14 @@
 import asyncio
 import random
 import time
-from pathlib import Path
 import typing
+
 # 3rd-party
 import discord
 from discord.ext import commands, tasks
-# Local
-import gamedata
+
 import filepaths
+import gamedata
 import manual
 
 
@@ -60,7 +60,10 @@ class Game(commands.Cog):
             "player-resources",
             filepaths.RESOURCE_DIR / "Alice is Missing - Character Sheet.jpg"
         )
-        send_image("player-resources", filepaths.CARD_DIR / "Misc" / "Introduction.png")
+        send_image(
+            "player-resources",
+            filepaths.CARD_DIR / "Misc" / "Introduction.png"
+        )
         alice = random.choice(list(
             (filepaths.IMAGE_DIR / "Missing Person Posters").glob("*.png")
         ))
@@ -87,11 +90,14 @@ class Game(commands.Cog):
         # Character and motive cards in clues channels
         for first_name, full_name in gamedata.CHARACTERS.items():
             channel = ctx.text_channels[f"{first_name}-clues"]
-            send_image(channel, filepaths.CHARACTER_IMAGE_DIR / f"{full_name}.png")
+            send_image(
+                channel, filepaths.CHARACTER_IMAGE_DIR / f"{full_name}.png"
+            )
             if ctx.game.automatic:
+                motive = ctx.game.motives[first_name]
                 send_image(
                     channel,
-                    filepaths.CARD_DIR / "Motives" / f"Motive {ctx.game.motives[first_name]}.png"
+                    filepaths.MOTIVE_DIR / f"Motive {motive}.png"
                 )
 
         ctx.game.setup = True
@@ -218,7 +224,10 @@ class Game(commands.Cog):
         """Enable/disable automatic mode"""
 
         ctx.game.automatic = not ctx.game.automatic
-        await ctx.send(f"{'En' if ctx.game.automatic else 'Dis'}abling automatic card draw")
+        if ctx.game.automatic:
+            await ctx.send("Enabling automatic card draw")
+        else:
+            await ctx.send("Disabling automatic card draw")
 
     @tasks.loop(seconds=gamedata.TIMER_GAP)
     async def timer(self):
@@ -239,8 +248,12 @@ class Game(commands.Cog):
                     channel.name: channel
                     for channel in game.guild.text_channels
                 }
+
+                def pad(num):
+                    return str(int(num)).zfill(2)
+
                 await text_channels["bot-channel"].send((
-                    f"{str(int(remaining_time // 60)).zfill(2)}:{str(int(remaining_time % 60)).zfill(2)}"
+                    f"{pad(remaining_time // 60)}:{pad(remaining_time % 60)}"
                 ))
 
     @commands.command()
@@ -254,7 +267,9 @@ class Game(commands.Cog):
             await ctx.send("You don't have a character role")
             return
 
-        search_card = random.choice((filepaths.CARD_DIR / "Searching").glob("*.png"))
+        search_card = random.choice(
+            (filepaths.CARD_DIR / "Searching").glob("*.png")
+        )
         asyncio.create_task(ctx.text_channels[f"{character}-clues"].send(
             file=discord.File(search_card)
         ))
@@ -270,9 +285,6 @@ class Game(commands.Cog):
             if not character:
                 await ctx.send("Could not find player!")
         ctx.game.ten_char = character.name.lower()
-        # await ctx.text_channels[f"{character.name.lower()}-clues"].send(
-        #     file=discord.File(random.choice(list((filepaths.CLUE_DIR / "10").glob("10-*.png")))
-        # ))
 
 
 def setup(bot):
