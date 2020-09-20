@@ -76,6 +76,22 @@ class Game(commands.Cog):
                     f"{str(int(remaining_time // 60)).zfill(2)}:{str(int(remaining_time % 60)).zfill(2)}"
                 ))
 
+    async def search(self, ctx):
+        if not ctx.game.started:
+            await ctx.send("The game hasn't started yet")
+        for role in ctx.author.roles:
+            if role.name.lower() in gamedata.CHARACTERS:
+                character = role.name.lower()
+                break
+        else:
+            await ctx.send("You don't have a character role")
+            return
+
+        search_card = random.choice(glob.glob("Images/Cards/Searching/*.png"))
+        asyncio.create_task(ctx.text_channels[f"{character}-clues"].send(
+            file=discord.File(search_card)
+        ))
+
     @commands.command()
     async def setup(self, ctx):
         """Sends out cards and sets up the game"""
