@@ -52,7 +52,7 @@ class Game(commands.Cog):
 
     @commands.command(name="timer")
     async def show_time(self, ctx):
-        """Toggle bot timer"""
+        """Show/hide bot timer"""
 
         ctx.game.show_timer = not ctx.game.show_timer
         if ctx.game.show_timer:
