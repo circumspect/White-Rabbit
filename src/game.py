@@ -61,7 +61,7 @@ class Game(commands.Cog):
         )
         send_image("player-resources", CARD_DIR / "Misc" / "Introduction.png")
         alice = random.choice(list(
-            Path("Images/Missing Person Posters").glob("*.png")
+            (gamedata.IMAGE_DIR / "Missing Person Posters").glob("*.png")
         ))
         send_image("player-resources", alice)
 
@@ -70,16 +70,7 @@ class Game(commands.Cog):
         send_folder("suspect-cards", gamedata.SUSPECT_IMAGE_DIR)
         send_folder("location-cards", gamedata.LOCATION_IMAGE_DIR)
 
-        # Character and motive cards in clues channels
-        for first_name, full_name in gamedata.CHARACTERS.items():
-            channel = ctx.text_channels[f"{first_name}-clues"]
-            send_image(channel, gamedata.CHARACTER_IMAGE_DIR / f"{full_name}.png")
-            if ctx.game.automatic:
-                send_image(
-                    channel,
-                    gamedata.CARD_DIR / "Motives" / f"Motive {ctx.game.motives[first_name]}.png"
-                )
-
+        # Instructions for Charlie Barnes
         channel = ctx.text_channels["charlie-clues"]
         prompts = "\n".join([
             "Read introduction", "Introduce Alice from poster",
@@ -91,6 +82,16 @@ class Game(commands.Cog):
             "Run !start", "90 min card",
         ])
         asyncio.create_task(channel.send(f"```{prompts}```"))
+
+        # Character and motive cards in clues channels
+        for first_name, full_name in gamedata.CHARACTERS.items():
+            channel = ctx.text_channels[f"{first_name}-clues"]
+            send_image(channel, gamedata.CHARACTER_IMAGE_DIR / f"{full_name}.png")
+            if ctx.game.automatic:
+                send_image(
+                    channel,
+                    gamedata.CARD_DIR / "Motives" / f"Motive {ctx.game.motives[first_name]}.png"
+                )
 
         ctx.game.setup = True
 
@@ -189,7 +190,7 @@ class Game(commands.Cog):
         # 90 minute card for Charlie Barnes
         channel = ctx.text_channels["charlie-clues"]
         asyncio.create_task(channel.send(file=discord.File(
-            "Images/Cards/Clues/90/90-1.png"
+            gamedata.CLUE_DIR / "90/90-1.png"
         )))
         first_message = "Hey! Sorry for the big group text, but I just got "\
                         "into town for winter break at my dad's and haven't "\

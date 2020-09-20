@@ -10,10 +10,6 @@ class Admin(commands.Cog):
     async def cog_check(self, ctx):
         return ctx.author.guild_permissions.administrator
 
-    @commands.Cog.listener()
-    async def on_ready(self):
-        print("Bot has logged in")
-
     @ commands.command()
     async def wipe(self, ctx, *text_channels: discord.TextChannel):
         """Wipes all messages on the server"""
