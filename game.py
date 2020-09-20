@@ -11,14 +11,6 @@ from discord.ext import commands, tasks
 import gamedata
 import manual
 
-CARD_DIR = Path("Images/Cards")
-RESOURCE_DIR = Path("Images/Player Resources")
-CHARACTER_IMAGE_DIR = CARD_DIR / "Characters"
-SUSPECT_IMAGE_DIR = CARD_DIR / "Suspects"
-LOCATION_IMAGE_DIR = CARD_DIR / "Locations"
-CLUE_DIR = CARD_DIR / "Clues"
-
-
 class Game(commands.Cog):
     def __init__(self, bot):
         self.bot = bot
@@ -60,31 +52,31 @@ class Game(commands.Cog):
         # Introduction images
         send_image(
             "player-resources",
-            RESOURCE_DIR / "Alice is Missing - Guide.jpg"
+            gamedata.RESOURCE_DIR / "Alice is Missing - Guide.jpg"
         )
         send_image(
             "player-resources",
-            RESOURCE_DIR / "Alice is Missing - Character Sheet.jpg"
+            gamedata.RESOURCE_DIR / "Alice is Missing - Character Sheet.jpg"
         )
-        send_image("player-resources", CARD_DIR / "Misc" / "Introduction.png")
+        send_image("player-resources", gamedata.CARD_DIR / "Misc" / "Introduction.png")
         alice = random.choice(list(
             Path("Images/Missing Person Posters").glob("*.png")
         ))
         send_image("player-resources", alice)
 
         # Send characters, suspects, and locations to appropriate channels
-        send_folder("character-cards", CHARACTER_IMAGE_DIR)
-        send_folder("suspect-cards", SUSPECT_IMAGE_DIR)
-        send_folder("location-cards", LOCATION_IMAGE_DIR)
+        send_folder("character-cards", gamedata.CHARACTER_IMAGE_DIR)
+        send_folder("suspect-cards", gamedata.SUSPECT_IMAGE_DIR)
+        send_folder("location-cards", gamedata.LOCATION_IMAGE_DIR)
 
         # Character and motive cards in clues channels
         for first_name, full_name in gamedata.CHARACTERS.items():
             channel = ctx.text_channels[f"{first_name}-clues"]
-            send_image(channel, CHARACTER_IMAGE_DIR / f"{full_name}.png")
+            send_image(channel, gamedata.CHARACTER_IMAGE_DIR / f"{full_name}.png")
             if ctx.game.automatic:
                 send_image(
                     channel,
-                    CARD_DIR / "Motives" / f"Motive {ctx.game.motives[first_name]}.png"
+                    gamedata.CARD_DIR / "Motives" / f"Motive {ctx.game.motives[first_name]}.png"
                 )
 
         channel = ctx.text_channels["charlie-clues"]
@@ -183,7 +175,7 @@ class Game(commands.Cog):
             await ctx.send("You don't have a character role")
             return
 
-        search_card = random.choice((CARD_DIR / "Searching").glob("*.png"))
+        search_card = random.choice((gamedata.CARD_DIR / "Searching").glob("*.png"))
         asyncio.create_task(ctx.text_channels[f"{character}-clues"].send(
             file=discord.File(search_card)
         ))
@@ -200,7 +192,7 @@ class Game(commands.Cog):
                 await ctx.send("Could not find player!")
         ctx.game.ten_char = character.name.lower()
         # await ctx.text_channels[f"{character.name.lower()}-clues"].send(
-        #     file=discord.File(random.choice(list((CLUE_DIR / "10").glob("10-*.png")))
+        #     file=discord.File(random.choice(list((gamedata.CLUE_DIR / "10").glob("10-*.png")))
         # ))
 
 
