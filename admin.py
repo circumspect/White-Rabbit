@@ -1,14 +1,9 @@
-# Built-in
-import asyncio
-import os
-import random
-import time
-import glob
 # 3rd-party
 import discord
 from discord.ext import commands, tasks
 # Local
 import gamedata
+
 
 class Admin(commands.Cog):
     def __init__(self, bot):

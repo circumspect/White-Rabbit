@@ -10,6 +10,7 @@ from discord.ext import commands, tasks
 # Local
 import gamedata
 
+
 class Game(commands.Cog):
     def __init__(self, bot):
         self.games = {}
@@ -20,11 +21,11 @@ class Game(commands.Cog):
             channel.name: channel
             for channel in ctx.guild.text_channels
         }
-    
+
     @commands.Cog.listener()
     async def on_ready(self):
         self.timer.start()
-    
+
     @commands.command()
     async def start(self, ctx):
         """Begins the game"""
