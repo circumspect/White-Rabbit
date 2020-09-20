@@ -2,21 +2,13 @@
 import discord
 from discord.ext import commands
 
+
 class Admin(commands.Cog):
     def __init__(self, bot):
         self.bot = bot
 
     async def cog_check(self, ctx):
         return ctx.author.guild_permissions.administrator
-
-    async def cog_command_error(self, ctx, error):
-        if isinstance(error, discord.ext.commands.UserInputError):
-            await ctx.send("Invalid input")
-        elif isinstance(error, discord.ext.commands.CheckFailure):
-            await ctx.send("You can't do that")
-        else:
-            await ctx.send("There was an error")
-            print(error)
 
     @ commands.command()
     async def wipe(self, ctx, *text_channels: discord.TextChannel):
