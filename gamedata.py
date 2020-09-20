@@ -1,3 +1,4 @@
+from pathlib import Path
 # 3rd-party
 import discord
 
@@ -9,10 +10,12 @@ CHARACTERS = {
     "julia": "Julia North",
 }
 
-# Image paths
-CHARACTER_IMAGE_DIR = "Images/Cards/Characters"
-SUSPECT_IMAGE_DIR = "Images/Cards/Suspects"
-LOCATION_IMAGE_DIR = "Images/Cards/Locations"
+# Image
+CARD_DIR = Path("Images/Cards")
+RESOURCE_DIR = Path("Images/Player Resources")
+CHARACTER_IMAGE_DIR = CARD_DIR / "Characters"
+SUSPECT_IMAGE_DIR = CARD_DIR / "Suspects"
+LOCATION_IMAGE_DIR = CARD_DIR / "Locations"
 
 GAME_LENGTH = 90 * 60
 # How often the bot should check the timer
