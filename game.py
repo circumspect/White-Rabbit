@@ -29,6 +29,17 @@ class Game(commands.Cog):
             for channel in ctx.guild.text_channels
         }
 
+    async def cog_command_error(self, ctx, error):
+        if isinstance(error, discord.ext.commands.UserInputError):
+            await ctx.send("Invalid input")
+        else:
+            await ctx.send("There was an error")
+        print(error)
+
+    @commands.command()
+    async def error(self, ctx, channel: discord.TextChannel):
+        raise NotImplementedError("SDFSFFDSFSDASSDGDGSFVCBKSJBD")
+
     @commands.Cog.listener()
     async def on_ready(self):
         self.timer.start()

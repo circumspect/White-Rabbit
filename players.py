@@ -11,10 +11,6 @@ class Players(commands.Cog):
     def __init__(self, bot):
         self.bot = bot
 
-    @commands.Cog.listener()
-    async def on_message(self, message):
-        pass
-
     # Commands for players to claim character roles
     @commands.command()
     async def claim(self, ctx, role: discord.Role):
@@ -47,7 +43,10 @@ class Players(commands.Cog):
         for role in ctx.author.roles:
             if role.name.lower() in gamedata.CHARACTERS:
                 await ctx.author.remove_roles(role)
-                asyncio.create_task(ctx.author.edit(nick=None))
+                try:
+                    asyncio.create_task(ctx.author.edit(nick=None))
+                except discord.errors.Forbidden:
+                    ctx.send("could not change nickname")
                 asyncio.create_task(ctx.send(f"Removed role {role.name}"))
                 return
         await ctx.send("You don't have any character roles")
