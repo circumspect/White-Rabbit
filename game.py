@@ -76,11 +76,11 @@ class Game(commands.Cog):
 
         channel = ctx.text_channels["charlie-clues"]
         prompts = "\n".join([
-            "Read introduction", "Introduce alice from poster",
+            "Read introduction", "Introduce Alice from poster",
             "Introduce/pick characters", "Explain character cards",
-            "Explain drive cards", "Character introductions (relationships)",
+            "Explain motive cards", "Character introductions (relationships)",
             "Voicemails", "Suspects and locations", "Explain clue cards",
-            "Explain searching", "game guide",
+            "Explain searching", "Game guide",
             "setup playlist https://www.youtube.com/watch?v=ysOOFIOAy7A",
             "Run !start", "90 min card",
         ])
