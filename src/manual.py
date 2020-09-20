@@ -9,6 +9,13 @@ import filepaths
 import gamedata
 
 class Manual(commands.Cog):
+    """
+    A set of commands for running the game in manual mode
+    
+    If in automatic mode, the bot will call these at the appropriate times
+    without user input
+    """
+
     def __init__(self, bot):
         self.bot = bot
 
@@ -19,7 +26,7 @@ class Manual(commands.Cog):
 
     @commands.command()
     async def draw_motive(self, ctx):
-        """Draw a motive card - manual mode only"""
+        """Draw a motive card"""
 
         if not ctx.character:
             await ctx.send("You don't have a character role!")
@@ -28,10 +35,45 @@ class Manual(commands.Cog):
         asyncio.create_task(channel.send(file=discord.File(
             filepaths.MOTIVE_DIR / f"Motive {ctx.game.motives[ctx.character]}.png"
         )))
+    
+    @commands.command()
+    async def clue(self, ctx, time: int):
+        """Draws a clue card given a time"""
+        
+        # Check that clue exists at specified time
+        if time not in gamedata.CLUE_TIMES:
+            asyncio.create_task(ctx.send("No clue card found for that time!"))
+            return
+        
+        # Check that clues have been assigned
+        if not ctx.game.clue_buckets:
+            asyncio.create_task(ctx.send("Clues have not been assigned!"))
+            return
+        
+        # Check that the person calling the command has the clue
+        if time not in ctx.game.clue_buckets[ctx.character]:
+            asyncio.create_task(ctx.send("That clue doesn't belong to you!"))
+            return
+        
+        # Send random clue
+        channel = ctx.text_channels[f"{ctx.character}-clues"]
+        asyncio.create_task(channel.send("CLUE GOES HERE"))
+
+    @ commands.command()
+    async def shuffle_clues(self, ctx):
+        """(Re)shuffles the clue card piles"""
+
+        ctx.game.picked_clues = {}
+        for time in gamedata.CLUE_TIMES:
+            ctx.game.picked_clues[time] = random.randint(1, 3)
+        
+        # Console logging
+        print("Reshuffled clue piles!")
+        print(ctx.game.picked_clues)
 
 
     @commands.command()
-    async def shuffle_clues(self, ctx):
+    async def assign_clues(self, ctx):
         """Randomizes and assigns clue times"""
         player_count = len(ctx.game.char_roles())
         # Stop if fewer than 3 player roles assigned
@@ -47,14 +89,14 @@ class Manual(commands.Cog):
 
         random.shuffle(clue_buckets)
 
-        # Assign buckets
-        bucket_assignments = {}
+        # Empty buckets
+        ctx.game.clue_assignments = {}
 
         # Give bucket with 90 minute card to Charlie Barnes
         for bucket in clue_buckets:
             if 90 in bucket:
                 # Willy Wonka sends his regards
-                bucket_assignments["charlie"] = bucket
+                ctx.game.clue_assignments["charlie"] = bucket
                 clue_buckets.remove(bucket)
                 break
 
@@ -62,18 +104,18 @@ class Manual(commands.Cog):
         names = [name.lower() for name in ctx.game.char_roles()]
         names.remove("charlie")  # already assigned
         for name in names:
-            bucket_assignments[name] = clue_buckets.pop().sort(reverse=True)
+            ctx.game.clue_assignments[name] = clue_buckets.pop().sort(reverse=True)
 
         # Print in a code block
         message = "\n".join([
             f"{player.title()}: {', '.join(str(x) for x in bucket)}"
-            for player, bucket in bucket_assignments.items()
+            for player, bucket in ctx.game.clue_assignments.items()
         ])
         asyncio.create_task(ctx.send(f"```{message}```"))
 
         # Console logging
         print("Randomly assigned clue cards!")
-        print(bucket_assignments)
+        print(ctx.game.clue_assignments)
 
     def _randomize_clues(self, player_count: int):
         """
