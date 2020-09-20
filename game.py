@@ -123,7 +123,6 @@ class Game(commands.Cog):
             acceptable = self.test_clue_buckets(clue_buckets)
         
         # Give bucket with 90 minute card to Charlie Barnes
-        print(clue_buckets)
         for i in range(len(clue_buckets)):
             for time in clue_buckets[i]:
                 if time == 90:
