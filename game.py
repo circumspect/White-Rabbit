@@ -82,8 +82,7 @@ class Game(commands.Cog):
             if ctx.game.automatic:
                 send_image(
                     channel,
-                    CARD_DIR / "Motives" / 
-                    f"Motive {ctx.game.motives[first_name]}.png"
+                    CARD_DIR / "Motives" / f"Motive {ctx.game.motives[first_name]}.png"
                 )
 
         # 90 minute card for Charlie Barnes
@@ -166,7 +165,6 @@ class Game(commands.Cog):
                 clue_buckets[i].append(shuffled_clues.pop())
 
         return clue_buckets
-
 
     def test_clue_buckets(self, clue_buckets):
         """
@@ -251,8 +249,9 @@ class Game(commands.Cog):
             if game.start_time + gamedata.GAME_LENGTH < time.time():
                 continue
 
-            remaining_time = (game.start_time
-                                + gamedata.GAME_LENGTH - time.time())
+            remaining_time = (
+                game.start_time + gamedata.GAME_LENGTH - time.time()
+            )
 
             if game.show_timer:
                 text_channels = {
