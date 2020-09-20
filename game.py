@@ -100,7 +100,7 @@ class Game(commands.Cog):
     async def shuffle_clues(self, ctx):
         """Randomizes and assigns clue times"""
 
-        player_count = len(ctx.game.char_roles)
+        player_count = len(ctx.game.char_roles())
         acceptable = False
         while not acceptable:
             clue_buckets = self.randomize_clues(player_count)
