@@ -6,6 +6,7 @@ from discord.ext import commands
 # Local
 import gamedata
 
+
 class Players(commands.Cog):
     def __init__(self, bot):
         self.bot = bot
@@ -34,9 +35,8 @@ class Players(commands.Cog):
     @commands.command()
     async def unclaim(self, ctx):
         """Remove all assigned roles"""
-        
         # Keep @everyone
-        thisdict.pop(ctx.author.roles[-1].name)
+        ctx.game.char_roles.pop(ctx.author.roles[-1].name)
         asyncio.create_task(ctx.author.edit(roles=[ctx.author.roles[0]]))
         asyncio.create_task(ctx.author.edit(nick=None))
         asyncio.create_task(ctx.send("Cleared your roles!"))
