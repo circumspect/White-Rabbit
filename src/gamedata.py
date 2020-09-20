@@ -10,14 +10,6 @@ CHARACTERS = {
     "julia": "Julia North",
 }
 
-IMAGE_DIR = Path("Images")
-CARD_DIR = IMAGE_DIR / "Cards"
-RESOURCE_DIR = IMAGE_DIR / "Player Resources"
-CHARACTER_IMAGE_DIR = CARD_DIR / "Characters"
-SUSPECT_IMAGE_DIR = CARD_DIR / "Suspects"
-LOCATION_IMAGE_DIR = CARD_DIR / "Locations"
-CLUE_DIR = CARD_DIR / "Clues"
-
 GAME_LENGTH = 90 * 60
 # How often the bot should check the timer
 TIMER_GAP = 10

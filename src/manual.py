@@ -6,6 +6,7 @@ import discord
 from discord.ext import commands
 # Local
 import gamedata
+import filepaths
 
 
 class Manual(commands.Cog):
@@ -27,7 +28,7 @@ class Manual(commands.Cog):
             return
         channel = ctx.text_channels[f"{character}-clues"]
         asyncio.create_task(channel.send(file=discord.File(
-            gamedata.CARD_DIR / "Motives" / f"Motive {ctx.game.motives[character]}.png"
+            filepaths.CARD_DIR / "Motives" / f"Motive {ctx.game.motives[character]}.png"
         )))
 
     def get_char(self, member: discord.Member):

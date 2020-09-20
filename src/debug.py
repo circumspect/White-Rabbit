@@ -1,13 +1,13 @@
 # 3rd-party
 import discord
 from discord.ext import commands
-
+import filepaths
 
 class Debug(commands.Cog):
     def __init__(self, bot):
         self.bot = bot
         self.dev_ids = []
-        with open("dev_ids.txt") as f:
+        with open(filepaths.WHITE_RABBIT_DIR / "dev_ids.txt") as f:
             for line in f:
                 self.dev_ids.append(int(line.strip()))
 
