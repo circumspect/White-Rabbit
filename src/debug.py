@@ -4,13 +4,12 @@ from discord.ext import commands
 # Local
 import filepaths
 
+
 class Debug(commands.Cog):
     def __init__(self, bot):
         self.bot = bot
-        self.dev_ids = []
         with open(filepaths.WHITE_RABBIT_DIR / "dev_ids.txt") as f:
-            for line in f:
-                self.dev_ids.append(int(line.strip()))
+            self.dev_ids = [int(line.strip()) for line in f.readlines()]
 
     async def cog_check(self, ctx):
         return ctx.author.id in self.dev_ids
