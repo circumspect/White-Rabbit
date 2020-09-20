@@ -10,8 +10,9 @@ CHARACTERS = {
     "julia": "Julia North",
 }
 
-CARD_DIR = Path("Images/Cards")
-RESOURCE_DIR = Path("Images/Player Resources")
+IMAGE_DIR = Path("Images")
+CARD_DIR = IMAGE_DIR / "Cards"
+RESOURCE_DIR = IMAGE_DIR / "Player Resources"
 CHARACTER_IMAGE_DIR = CARD_DIR / "Characters"
 SUSPECT_IMAGE_DIR = CARD_DIR / "Suspects"
 LOCATION_IMAGE_DIR = CARD_DIR / "Locations"

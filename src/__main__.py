@@ -19,7 +19,7 @@ async def before_invoke(ctx):
         for channel in ctx.guild.text_channels
     }
 
-for extension in ["admin", "game", "players"]:
+for extension in ["admin", "debug", "game", "players"]:
     bot.load_extension(extension)
 
 with open("token.txt") as token_file:
