@@ -1,10 +1,10 @@
 import discord
+import filepaths
 import gamedata
 from discord.ext import commands
 
 bot = commands.Bot(command_prefix="!")
 bot.games = {}
-
 
 @bot.event
 async def on_ready():
@@ -22,6 +22,6 @@ async def before_invoke(ctx):
 for extension in ["admin", "debug", "game", "players"]:
     bot.load_extension(extension)
 
-with open("token.txt") as token_file:
+with open(filepaths.WHITE_RABBIT_DIR / "token.txt") as token_file:
     token = token_file.read()
 bot.run(token)
