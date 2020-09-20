@@ -27,9 +27,12 @@ async def before_invoke(ctx):
             ctx.character = role.name.lower()
 
 # Load all extensions
-EXTENSIONS = ["admin", "debug", "game", "players"]
+EXTENSIONS = ["admin", "debug", "game", "manual", "players"]
 for extension in EXTENSIONS:
     bot.load_extension(extension)
+
+print("Cogs loaded:")
+print(bot.cogs)
 
 # Import bot token
 with open(filepaths.WHITE_RABBIT_DIR / "token.txt") as token_file:

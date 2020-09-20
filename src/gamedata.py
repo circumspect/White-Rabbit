@@ -34,6 +34,9 @@ class Data:
             for motive, character in zip(motives, CHARACTERS)
         }
 
+        # Create empty clue buckets dict
+        self.clue_assignments = {}
+
     def char_roles(self):
         unsorted = {
             role.name: role
@@ -42,3 +45,4 @@ class Data:
         }
 
         return dict(sorted(unsorted.items(), key=lambda item: item[0]))
+
