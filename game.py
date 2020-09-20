@@ -58,13 +58,18 @@ class Game(commands.Cog):
         await ctx.send("Starting setup")
 
         # Introduction images
-        send_image("player-resources", RESOURCE_DIR / 
-                    "Alice is Missing - Guide.jpg")
-        send_image("player-resources", RESOURCE_DIR / 
-                    "Alice is Missing - Character Sheet.jpg")
+        send_image(
+            "player-resources",
+            RESOURCE_DIR / "Alice is Missing - Guide.jpg"
+        )
+        send_image(
+            "player-resources",
+            RESOURCE_DIR / "Alice is Missing - Character Sheet.jpg"
+        )
         send_image("player-resources", CARD_DIR / "Misc" / "Introduction.png")
-        alice = random.choice(list(Path(
-                            "Images/Missing Person Posters").glob("*.png")))
+        alice = random.choice(list(
+            Path("Images/Missing Person Posters").glob("*.png")
+        ))
         send_image("player-resources", alice)
 
         # Send characters, suspects, and locations to appropriate channels
@@ -170,7 +175,7 @@ class Game(commands.Cog):
     @commands.command()
     async def search(self, ctx):
         """Draw a searching card"""
-        
+
         if not ctx.game.started:
             await ctx.send("The game hasn't started yet")
         character = self.get_char(ctx.author)
@@ -184,10 +189,11 @@ class Game(commands.Cog):
         ))
 
     @commands.command(name="10")
-    async def ten_min_card(self, ctx, 
-                    character: typing.Union[discord.Member, discord.Role]):
+    async def ten_min_card(
+        self, ctx, character: typing.Union[discord.Member, discord.Role]
+    ):
         """Assign the 10 minute card to another player"""
-        
+
         if isinstance(character, discord.Member):
             character = self.get_char(character)
             if not character:
