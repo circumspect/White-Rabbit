@@ -29,10 +29,6 @@ class Game(commands.Cog):
             await ctx.send("There was an error")
         print(error)
 
-    @commands.command()
-    async def error(self, ctx, channel: discord.TextChannel):
-        raise NotImplementedError("SDFSFFDSFSDASSDGDGSFVCBKSJBD")
-
     @commands.Cog.listener()
     async def on_ready(self):
         self.timer.start()
@@ -85,15 +81,7 @@ class Game(commands.Cog):
                     CARD_DIR / "Motives" / f"Motive {ctx.game.motives[first_name]}.png"
                 )
 
-        # 90 minute card for Charlie Barnes
         channel = ctx.text_channels["charlie-clues"]
-        asyncio.create_task(channel.send(file=discord.File(
-            "Images/Cards/Clues/90/90-1.png"
-        )))
-        first_message = "Hey! Sorry for the big group text, but I just got "\
-                        "into town for winter break at my dad's and haven't "\
-                        "been able to get ahold of Alice. Just wondering if "\
-                        "any of you have spoken to her?"
         prompts = "\n".join([
             "Read introduction", "Introduce alice from poster",
             "Introduce/pick characters", "Explain character cards",
@@ -104,7 +92,6 @@ class Game(commands.Cog):
             "Run !start", "90 min card",
         ])
         asyncio.create_task(channel.send(f"```{prompts}```"))
-        asyncio.create_task(channel.send(first_message))
 
         ctx.game.setup = True
 
@@ -199,6 +186,17 @@ class Game(commands.Cog):
         if len(ctx.game.char_roles()) < 3:
             await ctx.send("Not enough players!")
             return
+
+        # 90 minute card for Charlie Barnes
+        channel = ctx.text_channels["charlie-clues"]
+        asyncio.create_task(channel.send(file=discord.File(
+            "Images/Cards/Clues/90/90-1.png"
+        )))
+        first_message = "Hey! Sorry for the big group text, but I just got "\
+                        "into town for winter break at my dad's and haven't "\
+                        "been able to get ahold of Alice. Just wondering if "\
+                        "any of you have spoken to her?"
+        asyncio.create_task(channel.send(first_message))
 
         ctx.game.start_time = time.time()
         ctx.game.started = True
