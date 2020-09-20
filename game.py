@@ -79,8 +79,7 @@ class Game(commands.Cog):
             if ctx.game.automatic:
                 send_image(
                     channel,
-                    CARD_DIR / "Motives" / 
-                    f"Motive {ctx.game.motives[first_name]}.png"
+                    CARD_DIR / "Motives" / f"Motive {ctx.game.motives[first_name]}.png"
                 )
 
         channel = ctx.text_channels["charlie-clues"]
@@ -155,8 +154,9 @@ class Game(commands.Cog):
             if game.start_time + gamedata.GAME_LENGTH < time.time():
                 continue
 
-            remaining_time = (game.start_time
-                                + gamedata.GAME_LENGTH - time.time())
+            remaining_time = (
+                game.start_time + gamedata.GAME_LENGTH - time.time()
+            )
 
             if game.show_timer:
                 text_channels = {
