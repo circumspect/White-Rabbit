@@ -16,13 +16,6 @@ class Game(commands.Cog):
     def __init__(self, bot):
         self.bot = bot
 
-    async def cog_command_error(self, ctx, error):
-        if isinstance(error, discord.ext.commands.UserInputError):
-            await ctx.send("Invalid input")
-        else:
-            await ctx.send("There was an error")
-        print(error)
-
     @commands.Cog.listener()
     async def on_ready(self):
         self.timer.start()

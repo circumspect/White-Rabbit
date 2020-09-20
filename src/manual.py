@@ -8,6 +8,7 @@ from discord.ext import commands
 import filepaths
 import gamedata
 
+
 class Manual(commands.Cog):
     """
     A set of commands for running the game in manual mode
@@ -70,7 +71,6 @@ class Manual(commands.Cog):
         # Console logging
         print("Reshuffled clue piles!")
         print(ctx.game.picked_clues)
-
 
     @commands.command()
     async def assign_clues(self, ctx):
