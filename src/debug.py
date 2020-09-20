@@ -16,6 +16,15 @@ class Debug(commands.Cog):
     async def cog_check(self, ctx):
         return ctx.author.id in self.dev_ids
 
+    async def cog_command_error(self, ctx, error):
+        if isinstance(error, discord.ext.commands.UserInputError):
+            await ctx.send("Invalid input")
+        elif isinstance(error, discord.ext.commands.CheckFailure):
+            await ctx.send("You can't do that")
+        else:
+            await ctx.send("There was an error")
+            print(error)
+
     @commands.Cog.listener()
     async def on_ready(self):
         print("Bot has logged in")
