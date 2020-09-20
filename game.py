@@ -99,8 +99,43 @@ class Game(commands.Cog):
     @commands.command()
     async def shuffle_clues(self, ctx):
         """Randomizes and assigns clue times"""
-        for character in gamedata.CHARACTERS:
-            pass
+
+        player_count = len(ctx.game.char_roles)
+        acceptable = False
+        while not acceptable:
+            clue_buckets = self.randomize_clues(player_count)
+            acceptable = self.test_clue_buckets(clue_buckets)
+        
+    
+    def randomize_clues(self, player_count: int):
+        shuffled_clues = list(gamedata.CLUE_TIMES)
+        random.shuffle(shuffled_clues)
+        clue_buckets = []
+        for i in range(player_count):
+            clue_buckets.append([])
+        for i in range(len(gamedata.BUCKET_SIZES[player_count])):
+            for j in range(gamedata.BUCKET_SIZES[player_count][i]):
+                clue_buckets[i].append(shuffled_clues.pop())
+        
+        return clue_buckets
+
+
+    def test_clue_buckets(self, clue_buckets):
+        """
+        Checks to see if any clue bucket contains two times 
+        within 10 minutes of each other
+        """
+
+        for bucket in range(len(clue_buckets)):
+            print(clue_buckets[bucket])
+            for i in range(len(clue_buckets[bucket])):
+                start = i+1
+                end = len(clue_buckets[bucket])
+                for j in range(start, end):
+                    if abs(clue_buckets[bucket][i]-clue_buckets[bucket][j]) <= 10:
+                        return False
+        
+        return True
 
     @commands.command()
     async def start(self, ctx):
