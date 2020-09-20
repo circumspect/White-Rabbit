@@ -30,6 +30,7 @@ class Game(commands.Cog):
     @commands.command()
     async def setup(self, ctx):
         """Sends out cards and sets up the game"""
+
         def send_image(channel, filepath):
             if isinstance(channel, str):
                 channel = ctx.text_channels[channel]

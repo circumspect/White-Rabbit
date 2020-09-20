@@ -15,6 +15,7 @@ class Players(commands.Cog):
     @commands.command()
     async def claim(self, ctx, role: discord.Role):
         """Claim a character role"""
+
         # check role can be claimed
         if role in ctx.author.roles:
             await ctx.send("You already have that role")
@@ -39,6 +40,7 @@ class Players(commands.Cog):
     @commands.command()
     async def unclaim(self, ctx):
         """Remove character roles"""
+
         # Keep @everyone
         for role in ctx.author.roles:
             if role.name.lower() in gamedata.CHARACTERS:
@@ -53,7 +55,9 @@ class Players(commands.Cog):
 
     @commands.command()
     async def roles(self, ctx):
-        await ctx.send(f"You have {', '.join(role.name for role in ctx.author.roles)}")
+        """Displays your roles"""
+
+        await ctx.send(f"Your roles: {', '.join(role.name for role in ctx.author.roles[1:len(ctx.author.roles)])}")
 
 
 def setup(bot):
