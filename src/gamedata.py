@@ -26,6 +26,7 @@ class Data:
         self.automatic = False
         self.show_timer = False
 
+        # Shuffle and assign motive cards
         motives = list(range(1, 6))
         random.shuffle(motives)
         self.motives = {

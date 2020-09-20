@@ -16,7 +16,7 @@ class Players(commands.Cog):
     async def claim(self, ctx, role: discord.Role):
         """Claim a character role"""
 
-        # check role can be claimed
+        # Check if role can be claimed
         if role in ctx.author.roles:
             await ctx.send("You already have that role")
             return
@@ -27,12 +27,13 @@ class Players(commands.Cog):
             asyncio.create_task(ctx.send(f"That role is taken by {role.members[0].name}"))
             return
 
-        # cannot have multiple characters
+        # Check if player already has a character role
         for member_role in ctx.author.roles:
             if member_role.name.lower() in gamedata.CHARACTERS:
                 asyncio.create_task(ctx.send(f"You already have {member_role.name}"))
                 return
 
+        # Give role and update player's nickname
         asyncio.create_task(ctx.author.add_roles(role))
         asyncio.create_task(ctx.author.edit(nick=gamedata.CHARACTERS[role.name.lower()]))
         asyncio.create_task(ctx.send(f"Gave you {role.name}!"))
