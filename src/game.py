@@ -287,6 +287,5 @@ class Game(commands.Cog):
             await channel.edit(sync_permissions=True)
         await ctx.send("All channels shown")
 
-
 def setup(bot):
     bot.add_cog(Game(bot))

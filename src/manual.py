@@ -21,9 +21,12 @@ class Manual(commands.Cog):
         self.bot = bot
 
     async def cog_check(self, ctx):
+        ctx.game = self.bot.games.setdefault(ctx.guild.id, gamedata.Data(ctx.guild))
+        # Console logging
         if ctx.game.automatic:
-            await ctx.send("Not in manual mode!")
-        return ctx.game.automatic
+            print(str(ctx.author) + " tried to run " + str(ctx.command.name) + " while in automatic mode!")
+        
+        return not ctx.game.automatic
 
     @commands.command()
     async def draw_motive(self, ctx):
@@ -47,12 +50,12 @@ class Manual(commands.Cog):
             return
         
         # Check that clues have been assigned
-        if not ctx.game.clue_buckets:
+        if not ctx.game.clue_assignments:
             asyncio.create_task(ctx.send("Clues have not been assigned!"))
             return
         
         # Check that the person calling the command has the clue
-        if time not in ctx.game.clue_buckets[ctx.character]:
+        if time not in ctx.game.clue_assignments[ctx.character]:
             asyncio.create_task(ctx.send("That clue doesn't belong to you!"))
             return
         
@@ -104,7 +107,7 @@ class Manual(commands.Cog):
         names = [name.lower() for name in ctx.game.char_roles()]
         names.remove("charlie")  # already assigned
         for name in names:
-            ctx.game.clue_assignments[name] = clue_buckets.pop().sort(reverse=True)
+            ctx.game.clue_assignments[name] = sorted(clue_buckets.pop(), reverse=True)
 
         # Print in a code block
         message = "\n".join([
@@ -116,6 +119,7 @@ class Manual(commands.Cog):
         # Console logging
         print("Randomly assigned clue cards!")
         print(ctx.game.clue_assignments)
+        print()
 
     def _randomize_clues(self, player_count: int):
         """
