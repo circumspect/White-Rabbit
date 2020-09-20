@@ -34,8 +34,10 @@ class Data:
         }
 
     def char_roles(self):
-        return {
+        unsorted = {
             role.name: role
             for role in self.guild.roles
             if role.name.lower() in CHARACTERS and role.members
         }
+
+        return dict(sorted(unsorted.items(), key=lambda item: item[0])) 

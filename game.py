@@ -122,7 +122,26 @@ class Game(commands.Cog):
             clue_buckets = self.randomize_clues(player_count)
             acceptable = self.test_clue_buckets(clue_buckets)
         
+        # Give bucket with 90 minute card to Charlie Barnes
         print(clue_buckets)
+        for i in range(len(clue_buckets)):
+            for time in clue_buckets[i]:
+                if time == 90:
+                    charlie_bucket = i # Willy Wonka sends his regards
+
+        bucket_assignments = {}
+        bucket_assignments["charlie"] = clue_buckets.pop(charlie_bucket)
+        
+        # Assign the rest of the buckets randomly
+        names = list(ctx.game.char_roles().keys())
+        names = [item.lower() for item in names]
+        names.pop(0) # Need to remove charlie from list
+        random.shuffle(clue_buckets)
+        for name in names:
+            bucket_assignments[name] = clue_buckets.pop()
+
+        print("Randomly assigned clue cards!")
+        print(bucket_assignments)
     
     def randomize_clues(self, player_count: int):
         shuffled_clues = list(gamedata.CLUE_TIMES)
