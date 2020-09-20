@@ -11,6 +11,7 @@ from discord.ext import commands, tasks
 import gamedata
 import manual
 
+
 class Game(commands.Cog):
     def __init__(self, bot):
         self.bot = bot
