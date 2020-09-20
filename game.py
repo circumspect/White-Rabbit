@@ -27,73 +27,6 @@ class Game(commands.Cog):
         self.timer.start()
 
     @commands.command()
-    async def start(self, ctx):
-        """Begins the game"""
-
-        if not ctx.game.setup:
-            await ctx.send("Can't start before setting up!")
-            return
-
-        if ctx.game.started:
-            await ctx.send("Game has already begun!")
-            return
-
-        if len(ctx.game.char_roles) < 3:
-            await ctx.send("Not enough players")
-            return
-
-        ctx.game.start_time = time.time()
-        ctx.game.started = True
-        await ctx.send("Starting the game!")
-
-    @commands.command(name="timer")
-    async def show_time(self, ctx):
-        """Show/hide bot timer"""
-
-        ctx.game.show_timer = not ctx.game.show_timer
-        if ctx.game.show_timer:
-            await ctx.send("Showing bot timer!")
-        else:
-            await ctx.send("Hiding bot timer!")
-
-    @tasks.loop(seconds=gamedata.TIMER_GAP)
-    async def timer(self):
-        for game in self.games.values():
-            # Skip if game has not started
-            if not game.started:
-                continue
-            # Skip if game has ended
-            if game.start_time + gamedata.GAME_LENGTH < time.time():
-                continue
-
-            remaining_time = game.start_time + gamedata.GAME_LENGTH - time.time()
-
-            if game.show_timer:
-                text_channels = {
-                    channel.name: channel
-                    for channel in game.guild.text_channels
-                }
-                await text_channels["bot-channel"].send((
-                    f"{str(int(remaining_time // 60)).zfill(2)}:{str(int(remaining_time % 60)).zfill(2)}"
-                ))
-
-    async def search(self, ctx):
-        if not ctx.game.started:
-            await ctx.send("The game hasn't started yet")
-        for role in ctx.author.roles:
-            if role.name.lower() in gamedata.CHARACTERS:
-                character = role.name.lower()
-                break
-        else:
-            await ctx.send("You don't have a character role")
-            return
-
-        search_card = random.choice(glob.glob("Images/Cards/Searching/*.png"))
-        asyncio.create_task(ctx.text_channels[f"{character}-clues"].send(
-            file=discord.File(search_card)
-        ))
-
-    @commands.command()
     async def setup(self, ctx):
         """Sends out cards and sets up the game"""
         def send_image(channel, filepath):
@@ -151,6 +84,74 @@ class Game(commands.Cog):
         """Randomizes and assigns clue times"""
         for character in gamedata.CHARACTERS:
             pass
+
+    @commands.command()
+    async def start(self, ctx):
+        """Begins the game"""
+
+        if not ctx.game.setup:
+            await ctx.send("Can't start before setting up!")
+            return
+
+        if ctx.game.started:
+            await ctx.send("Game has already begun!")
+            return
+
+        if len(ctx.game.char_roles) < 3:
+            await ctx.send("Not enough players")
+            return
+
+        ctx.game.start_time = time.time()
+        ctx.game.started = True
+        await ctx.send("Starting the game!")
+
+    @commands.command(name="timer")
+    async def show_time(self, ctx):
+        """Show/hide bot timer"""
+
+        ctx.game.show_timer = not ctx.game.show_timer
+        if ctx.game.show_timer:
+            await ctx.send("Showing bot timer!")
+        else:
+            await ctx.send("Hiding bot timer!")
+
+    @tasks.loop(seconds=gamedata.TIMER_GAP)
+    async def timer(self):
+        for game in self.games.values():
+            # Skip if game has not started
+            if not game.started:
+                continue
+            # Skip if game has ended
+            if game.start_time + gamedata.GAME_LENGTH < time.time():
+                continue
+
+            remaining_time = game.start_time + gamedata.GAME_LENGTH - time.time()
+
+            if game.show_timer:
+                text_channels = {
+                    channel.name: channel
+                    for channel in game.guild.text_channels
+                }
+                await text_channels["bot-channel"].send((
+                    f"{str(int(remaining_time // 60)).zfill(2)}:{str(int(remaining_time % 60)).zfill(2)}"
+                ))
+
+    @commands.command()
+    async def search(self, ctx):
+        if not ctx.game.started:
+            await ctx.send("The game hasn't started yet")
+        for role in ctx.author.roles:
+            if role.name.lower() in gamedata.CHARACTERS:
+                character = role.name.lower()
+                break
+        else:
+            await ctx.send("You don't have a character role")
+            return
+
+        search_card = random.choice(glob.glob("Images/Cards/Searching/*.png"))
+        asyncio.create_task(ctx.text_channels[f"{character}-clues"].send(
+            file=discord.File(search_card)
+        ))
 
 
 def setup(bot):
