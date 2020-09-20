@@ -1,3 +1,4 @@
+# Built-in
 import random
 
 CHARACTERS = {
