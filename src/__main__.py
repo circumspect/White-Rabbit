@@ -34,13 +34,18 @@ async def before_invoke(ctx):
 
 @bot.event
 async def on_command_error(ctx, error):
+    ctx.text_channels = {
+        channel.name: channel
+        for channel in ctx.guild.text_channels
+    }
+    bot_channel = ctx.text_channels["bot-channel"]
     if isinstance(error, discord.ext.commands.errors.UserInputError):
         await ctx.send("Invalid input")
     elif isinstance(error, discord.ext.commands.errors.CommandNotFound):
         await ctx.send("that is not a command")
     elif isinstance(error, discord.ext.commands.errors.CheckFailure):
         if ctx.channel.name != "bot-channel":
-            await ctx.send("You can only use commands in #bot-channel")
+            await ctx.send(f"You can only use commands in {bot_channel.mention}")
             return
         await ctx.send("You can't do that")
     else:
