@@ -20,14 +20,7 @@ CLUE_DIR = CARD_DIR / "Clues"
 
 class Game(commands.Cog):
     def __init__(self, bot):
-        self.games = {}
-
-    async def cog_before_invoke(self, ctx):
-        ctx.game = self.games.setdefault(ctx.guild.id, gamedata.Data(ctx.guild))
-        ctx.text_channels = {
-            channel.name: channel
-            for channel in ctx.guild.text_channels
-        }
+        self.bot = bot
 
     async def cog_command_error(self, ctx, error):
         if isinstance(error, discord.ext.commands.UserInputError):
@@ -126,7 +119,7 @@ class Game(commands.Cog):
         while not acceptable:
             clue_buckets = self.randomize_clues(player_count)
             acceptable = self.test_clue_buckets(clue_buckets)
-        
+
         # Give bucket with 90 minute card to Charlie Barnes
         for i in range(len(clue_buckets)):
             for time in clue_buckets[i]:
@@ -242,7 +235,7 @@ class Game(commands.Cog):
 
     @tasks.loop(seconds=gamedata.TIMER_GAP)
     async def timer(self):
-        for game in self.games.values():
+        for game in self.bot.games.values():
             # Skip if game has not started
             if not game.started:
                 continue
