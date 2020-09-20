@@ -219,7 +219,8 @@ class Game(commands.Cog):
 
     @commands.command()
     async def automatic(self, ctx):
-        """Show/hide bot timer"""
+        """Enable/disable automatic mode"""
+
         ctx.game.automatic = not ctx.game.automatic
         await ctx.send(f"{'En' if ctx.game.automatic else 'Dis'}abling automatic card draw")
 
