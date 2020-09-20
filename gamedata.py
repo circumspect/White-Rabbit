@@ -23,7 +23,7 @@ class Data:
         self.guild = guild
         self.setup = False
         self.started = False
-        self.automatic = True
+        self.automatic = False
         self.show_timer = False
 
         motives = list(range(1, 6))
