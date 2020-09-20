@@ -75,6 +75,16 @@ class Game(commands.Cog):
                         "into town for winter break at my dad's and haven't "\
                         "been able to get ahold of Alice. Just wondering if "\
                         "any of you have spoken to her?"
+        prompts = "\n".join([
+            "Read introduction", "Introduce alice from poster",
+            "Introduce/pick characters", "Explain character cards",
+            "Explain drive cards", "Character introductions (relationships)",
+            "Voicemails", "Suspects and locations", "Explain clue cards",
+            "Explain searching", "game guide",
+            "setup playlist https://www.youtube.com/watch?v=ysOOFIOAy7A",
+            "Run !start", "90 min card",
+        ])
+        asyncio.create_task(channel.send(f"```{prompts}```"))
         asyncio.create_task(channel.send(first_message))
 
         ctx.game.setup = True
