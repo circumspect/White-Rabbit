@@ -19,27 +19,42 @@ class Players(commands.Cog):
     @commands.command()
     async def claim(self, ctx, role: discord.Role):
         """Claim a character role"""
-
-        if role.name.lower() not in gamedata.CHARACTERS:
+        # check role can be claimed
+        if role in ctx.author.roles:
+            await ctx.send("You already have that role")
+            return
+        elif role.name.lower() not in gamedata.CHARACTERS:
             asyncio.create_task(ctx.send("You cannot claim that role"))
-        elif len(ctx.author.roles) > 1:
-            asyncio.create_task(ctx.send(f"You already have {ctx.author.roles[-1].name}"))
+            return
         elif role.members:
-            asyncio.create_task(ctx.send("That role is taken"))
-        else:
-            ctx.game.char_roles[role.name] = role
-            asyncio.create_task(ctx.author.add_roles(role))
-            asyncio.create_task(ctx.author.edit(nick=gamedata.CHARACTERS[role.name.lower()]))
-            asyncio.create_task(ctx.send(f"Gave you {role.name}!"))
+            asyncio.create_task(ctx.send(f"That role is taken by {role.members[0].name}"))
+            return
+
+        # cannot have multiple characters
+        for member_role in ctx.author.roles:
+            if member_role.name.lower() in gamedata.CHARACTERS:
+                asyncio.create_task(ctx.send(f"You already have {member_role.name}"))
+                return
+
+        asyncio.create_task(ctx.author.add_roles(role))
+        asyncio.create_task(ctx.author.edit(nick=gamedata.CHARACTERS[role.name.lower()]))
+        asyncio.create_task(ctx.send(f"Gave you {role.name}!"))
 
     @commands.command()
     async def unclaim(self, ctx):
-        """Remove all assigned roles"""
+        """Remove character roles"""
         # Keep @everyone
-        ctx.game.char_roles.pop(ctx.author.roles[-1].name)
-        asyncio.create_task(ctx.author.edit(roles=[ctx.author.roles[0]]))
-        asyncio.create_task(ctx.author.edit(nick=None))
-        asyncio.create_task(ctx.send("Cleared your roles!"))
+        for role in ctx.author.roles:
+            if role.name.lower() in gamedata.CHARACTERS:
+                await ctx.author.remove_roles(role)
+                asyncio.create_task(ctx.author.edit(nick=None))
+                asyncio.create_task(ctx.send(f"Removed role {role.name}"))
+                return
+        await ctx.send("You don't have any character roles")
+
+    @commands.command()
+    async def roles(self, ctx):
+        await ctx.send(f"You have {', '.join(role.name for role in ctx.author.roles)}")
 
 
 def setup(bot):

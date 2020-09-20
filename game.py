@@ -114,7 +114,7 @@ class Game(commands.Cog):
             await ctx.send("Game has already begun!")
             return
 
-        if len(ctx.game.char_roles) < 3:
+        if len(ctx.game.char_roles()) < 3:
             await ctx.send("Not enough players")
             return
 
@@ -174,7 +174,7 @@ class Game(commands.Cog):
     async def ten_min_card(self, ctx, character: typing.Union[discord.Member, discord.Role]):
         if isinstance(character, discord.Member):
             for role in character.roles:
-                if role.name in ctx.game.char_roles:
+                if role.name in ctx.game.char_roles():
                     character = role
                     break
             else:
