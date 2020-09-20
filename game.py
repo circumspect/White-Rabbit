@@ -150,5 +150,12 @@ class Game(commands.Cog):
 
         ctx.game.setup = True
 
+    @commands.command()
+    async def shuffle_clues(self, ctx):
+        """Randomizes and assigns clue times"""
+        for character in gamedata.CHARACTERS:
+            pass
+
+
 def setup(bot):
     bot.add_cog(Game(bot))
