@@ -50,6 +50,9 @@ class Game(commands.Cog):
         if ctx.game.started:
             await ctx.send("Game has already begun!")
             return
+        elif ctx.game.setup:
+            await ctx.send("Already setup")
+            return
 
         await ctx.send("Starting setup")
 
@@ -66,12 +69,14 @@ class Game(commands.Cog):
         send_folder("location-cards", LOCATION_IMAGE_DIR)
 
         # Character and motive cards in clues channels
-        motives = list(range(1, 6))
-        random.shuffle(motives)
-        for character, motive in zip(gamedata.CHARACTERS.values(), motives):
-            channel = ctx.text_channels[f"{character.lower().split()[0]}-clues"]
-            send_image(channel, CHARACTER_IMAGE_DIR / f"{character}.png")
-            send_image(channel, CARD_DIR / "Motives" / f"Motive {motive}.png")
+        for first_name, full_name in gamedata.CHARACTERS.items():
+            channel = ctx.text_channels[f"{first_name}-clues"]
+            send_image(channel, CHARACTER_IMAGE_DIR / f"{full_name}.png")
+            if ctx.game.automatic:
+                send_image(
+                    channel,
+                    CARD_DIR / "Motives" / f"Motive {ctx.game.motives[first_name]}.png"
+                )
 
         # 90 minute card for Charlie Barnes
         channel = ctx.text_channels["charlie-clues"]
@@ -186,6 +191,28 @@ class Game(commands.Cog):
         else:
             await ctx.send("Hiding bot timer!")
 
+    @commands.command()
+    async def automatic(self, ctx):
+        """Show/hide bot timer"""
+        ctx.game.automatic = not ctx.game.automatic
+        await ctx.send(f"{'En' if ctx.game.automatic else 'Dis'}abling automatic card draw")
+
+    @commands.command()
+    async def draw_motive(self, ctx):
+        character = self.get_char(ctx.author)
+        if not character:
+            await ctx.send("You don't have a character role")
+            return
+        channel = ctx.text_channels[f"{character}-clues"]
+        asyncio.create_task(channel.send(file=discord.File(
+            CARD_DIR / "Motives" / f"Motive {ctx.game.motives[character]}.png"
+        )))
+
+    def get_char(self, member: discord.Member):
+        for role in member.roles:
+            if role.name.lower() in gamedata.CHARACTERS:
+                return role.name.lower()
+
     @tasks.loop(seconds=gamedata.TIMER_GAP)
     async def timer(self):
         for game in self.games.values():
@@ -211,11 +238,8 @@ class Game(commands.Cog):
     async def search(self, ctx):
         if not ctx.game.started:
             await ctx.send("The game hasn't started yet")
-        for role in ctx.author.roles:
-            if role.name.lower() in gamedata.CHARACTERS:
-                character = role.name.lower()
-                break
-        else:
+        character = self.get_char(ctx.author)
+        if not character:
             await ctx.send("You don't have a character role")
             return
 
@@ -227,11 +251,8 @@ class Game(commands.Cog):
     @commands.command(name="10")
     async def ten_min_card(self, ctx, character: typing.Union[discord.Member, discord.Role]):
         if isinstance(character, discord.Member):
-            for role in character.roles:
-                if role.name in ctx.game.char_roles():
-                    character = role
-                    break
-            else:
+            character = self.get_char(character)
+            if not character:
                 await ctx.send("Could not find character")
         ctx.game.ten_char = character.name.lower()
         # await ctx.text_channels[f"{character.name.lower()}-clues"].send(
