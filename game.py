@@ -1,9 +1,8 @@
 # Built-in
 import asyncio
-import os
 import random
 import time
-import glob
+from pathlib import Path
 # 3rd-party
 import discord
 from discord.ext import commands, tasks
@@ -37,8 +36,8 @@ class Game(commands.Cog):
             ))
 
         def send_folder(channel, path):
-            for image in sorted(os.scandir(path), key=lambda x: x.name):
-                send_image(channel, os.path.join(path, image.name))
+            for image in sorted(path.glob("*")):
+                send_image(channel, image)
 
         if ctx.game.started:
             await ctx.send("Game has already begun!")
@@ -47,10 +46,10 @@ class Game(commands.Cog):
         await ctx.send("Starting setup")
 
         # Introduction images
-        send_image("player-resources", "Images/Player Resources/Alice is Missing - Guide.jpg")
-        send_image("player-resources", "Images/Player Resources/Alice is Missing - Character Sheet.jpg")
-        send_image("player-resources", "Images/Cards/Misc/Introduction.png")
-        alice = random.choice(glob.glob("Images/Missing Person Posters/*.png"))
+        send_image("player-resources", gamedata.RESOURCE_DIR / "Alice is Missing - Guide.jpg")
+        send_image("player-resources", gamedata.RESOURCE_DIR / "Alice is Missing - Character Sheet.jpg")
+        send_image("player-resources", gamedata.CARD_DIR / "Misc" / "Introduction.png")
+        alice = random.choice(list(Path("Images/Missing Person Posters").glob("*.png")))
         send_image("player-resources", alice)
 
         # Send characters, suspects, and locations to appropriate channels
@@ -63,8 +62,8 @@ class Game(commands.Cog):
         random.shuffle(motives)
         for character, motive in zip(gamedata.CHARACTERS.values(), motives):
             channel = ctx.text_channels[f"{character.lower().split()[0]}-clues"]
-            send_image(channel, f"Images/Cards/Characters/{character}.png")
-            send_image(channel, f"Images/Cards/Motives/Motive {motive}.png")
+            send_image(channel, gamedata.CHARACTER_IMAGE_DIR / f"{character}.png")
+            send_image(channel, gamedata.CARD_DIR / "Motives" / f"Motive {motive}.png")
 
         # 90 minute card for Charlie Barnes
         channel = ctx.text_channels["charlie-clues"]
@@ -158,7 +157,7 @@ class Game(commands.Cog):
             await ctx.send("You don't have a character role")
             return
 
-        search_card = random.choice(glob.glob("Images/Cards/Searching/*.png"))
+        search_card = random.choice((gamedata.CARD_DIR / "Searching").glob("*.png"))
         asyncio.create_task(ctx.text_channels[f"{character}-clues"].send(
             file=discord.File(search_card)
         ))
