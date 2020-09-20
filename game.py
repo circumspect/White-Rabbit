@@ -111,6 +111,7 @@ class Game(commands.Cog):
             clue_buckets = self.randomize_clues(player_count)
             acceptable = self.test_clue_buckets(clue_buckets)
         
+        print(clue_buckets)
     
     def randomize_clues(self, player_count: int):
         shuffled_clues = list(gamedata.CLUE_TIMES)
@@ -132,7 +133,6 @@ class Game(commands.Cog):
         """
 
         for bucket in range(len(clue_buckets)):
-            print(clue_buckets[bucket])
             for i in range(len(clue_buckets[bucket])):
                 start = i+1
                 end = len(clue_buckets[bucket])
