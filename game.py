@@ -37,6 +37,15 @@ class Game(commands.Cog):
             await ctx.send("Game has already begun!")
             return
 
+        character_roles = {
+            role.name.lower(): role
+            for role in ctx.guild.roles
+            if role.name.lower() in gamedata.CHARACTERS and role.members
+        }
+
+        if len(character_roles) < 3:
+            await ctx.send("Not enough players")
+
         ctx.game.start_time = time.time()
         ctx.game.started = True
         await ctx.send("Starting the game!")
