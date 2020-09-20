@@ -1,3 +1,6 @@
+# 3rd-party
+import discord
+
 CHARACTERS = {
     "charlie": "Charlie Barnes",
     "dakota": "Dakota Travis",
