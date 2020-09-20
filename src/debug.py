@@ -1,9 +1,8 @@
 # 3rd-party
 import discord
 from discord.ext import commands
-
+# Local
 import filepaths
-
 
 class Debug(commands.Cog):
     def __init__(self, bot):
