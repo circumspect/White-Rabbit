@@ -187,15 +187,14 @@ class Game(commands.Cog):
 
         if not ctx.game.started:
             await ctx.send("The game hasn't started yet")
-        character = self.get_char(ctx.author)
-        if not character:
+        if not ctx.character:
             await ctx.send("You don't have a character role")
             return
 
         search_card = random.choice(
             (filepaths.CARD_DIR / "Searching").glob("*.png")
         )
-        asyncio.create_task(ctx.text_channels[f"{character}-clues"].send(
+        asyncio.create_task(ctx.text_channels[f"{ctx.character}-clues"].send(
             file=discord.File(search_card)
         ))
 
@@ -206,10 +205,12 @@ class Game(commands.Cog):
         """Assign the 10 minute card to another player"""
 
         if isinstance(character, discord.Member):
-            character = self.get_char(character)
-            if not character:
+            if not ctx.character:
                 await ctx.send("Could not find player!")
-        ctx.game.ten_char = character.name.lower()
+                return
+            ctx.game.ten_char = ctx.character
+        else:
+            ctx.game.ten_char = ctx.character.name.lower()
 
 
 def setup(bot):
