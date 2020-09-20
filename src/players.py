@@ -1,8 +1,10 @@
 # Built-in
 import asyncio
+
 # 3rd-party
 import discord
 from discord.ext import commands
+
 # Local
 import gamedata
 
@@ -23,17 +25,23 @@ class Players(commands.Cog):
             asyncio.create_task(ctx.send("You cannot claim that role"))
             return
         elif role.members:
-            asyncio.create_task(ctx.send(f"That role is taken by {role.members[0].name}"))
+            asyncio.create_task(ctx.send(
+                f"That role is taken by {role.members[0].name}"
+            ))
             return
 
         # cannot have multiple characters
         for member_role in ctx.author.roles:
             if member_role.name.lower() in gamedata.CHARACTERS:
-                asyncio.create_task(ctx.send(f"You already have {member_role.name}"))
+                asyncio.create_task(ctx.send(
+                    f"You already have {member_role.name}"
+                ))
                 return
 
         asyncio.create_task(ctx.author.add_roles(role))
-        asyncio.create_task(ctx.author.edit(nick=gamedata.CHARACTERS[role.name.lower()]))
+        asyncio.create_task(ctx.author.edit(
+            nick=gamedata.CHARACTERS[role.name.lower()]
+        ))
         asyncio.create_task(ctx.send(f"Gave you {role.name}!"))
 
     @commands.command()
@@ -53,7 +61,10 @@ class Players(commands.Cog):
 
     @commands.command()
     async def roles(self, ctx):
-        await ctx.send(f"You have {', '.join(role.name for role in ctx.author.roles)}")
+        """Get list of roles"""
+        await ctx.send(
+            f"You have {', '.join(role.name for role in ctx.author.roles)}"
+        )
 
 
 def setup(bot):

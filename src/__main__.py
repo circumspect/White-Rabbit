@@ -1,10 +1,12 @@
 import discord
+from discord.ext import commands
+
 import filepaths
 import gamedata
-from discord.ext import commands
 
 bot = commands.Bot(command_prefix="!")
 bot.games = {}
+
 
 @bot.event
 async def on_ready():
