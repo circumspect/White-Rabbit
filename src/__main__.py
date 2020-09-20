@@ -42,7 +42,7 @@ async def on_command_error(ctx, error):
     if isinstance(error, discord.ext.commands.errors.UserInputError):
         await ctx.send("Invalid input")
     elif isinstance(error, discord.ext.commands.errors.CommandNotFound):
-        await ctx.send("that is not a command")
+        await ctx.send("Command not found!")
     elif isinstance(error, discord.ext.commands.errors.CheckFailure):
         if ctx.channel.name != "bot-channel":
             await ctx.send(f"You can only use commands in {bot_channel.mention}")
@@ -58,8 +58,7 @@ EXTENSIONS = ["admin", "debug", "game", "manual", "players"]
 for extension in EXTENSIONS:
     bot.load_extension(extension)
 
-print("Cogs loaded:")
-print(bot.cogs)
+print(f"Cogs loaded: {', '.join(bot.cogs.keys())}")
 
 # Import bot token
 with open(filepaths.WHITE_RABBIT_DIR / "token.txt") as token_file:
