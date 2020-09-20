@@ -9,12 +9,13 @@ CHARACTERS = {
     "julia": "Julia North",
 }
 
-# Image paths
-CHARACTER_IMAGE_DIR = "Images/Cards/Characters"
-SUSPECT_IMAGE_DIR = "Images/Cards/Suspects"
-LOCATION_IMAGE_DIR = "Images/Cards/Locations"
+CARD_DIR = Path("Images/Cards")
+RESOURCE_DIR = Path("Images/Player Resources")
+CHARACTER_IMAGE_DIR = CARD_DIR / "Characters"
+SUSPECT_IMAGE_DIR = CARD_DIR / "Suspects"
+LOCATION_IMAGE_DIR = CARD_DIR / "Locations"
+CLUE_DIR = CARD_DIR / "Clues"
 
-# Game length in seconds (90 minutes)
 GAME_LENGTH = 90 * 60
 # How often the bot should check the timer
 TIMER_GAP = 10
@@ -46,4 +47,4 @@ class Data:
             if role.name.lower() in CHARACTERS and role.members
         }
 
-        return dict(sorted(unsorted.items(), key=lambda item: item[0])) 
+        return dict(sorted(unsorted.items(), key=lambda item: item[0]))
