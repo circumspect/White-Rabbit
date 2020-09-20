@@ -288,6 +288,12 @@ class Game(commands.Cog):
         else:
             ctx.game.ten_char = ctx.character.name.lower()
 
+    @commands.command()
+    async def show_all(self, ctx):
+        for channel in ctx.guild.text_channels:
+            await channel.edit(sync_permissions=True)
+        await ctx.send("All channels shown")
+
 
 def setup(bot):
     bot.add_cog(Game(bot))
