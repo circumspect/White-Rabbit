@@ -1,4 +1,3 @@
-# 3rd-party
 import discord
 
 CHARACTERS = {
@@ -9,12 +8,6 @@ CHARACTERS = {
     "julia": "Julia North",
 }
 
-# Image paths
-CHARACTER_IMAGE_DIR = "Images/Cards/Characters"
-SUSPECT_IMAGE_DIR = "Images/Cards/Suspects"
-LOCATION_IMAGE_DIR = "Images/Cards/Locations"
-
-# Game length in seconds (90 minutes)
 GAME_LENGTH = 90 * 60
 # How often the bot should check the timer
 TIMER_GAP = 10

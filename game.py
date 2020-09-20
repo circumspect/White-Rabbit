@@ -1,14 +1,21 @@
 # Built-in
 import asyncio
-import os
 import random
 import time
-import glob
+from pathlib import Path
+import typing
 # 3rd-party
 import discord
 from discord.ext import commands, tasks
 # Local
 import gamedata
+
+CARD_DIR = Path("Images/Cards")
+RESOURCE_DIR = Path("Images/Player Resources")
+CHARACTER_IMAGE_DIR = CARD_DIR / "Characters"
+SUSPECT_IMAGE_DIR = CARD_DIR / "Suspects"
+LOCATION_IMAGE_DIR = CARD_DIR / "Locations"
+CLUE_DIR = CARD_DIR / "Clues"
 
 
 class Game(commands.Cog):
@@ -37,8 +44,8 @@ class Game(commands.Cog):
             ))
 
         def send_folder(channel, path):
-            for image in sorted(os.scandir(path), key=lambda x: x.name):
-                send_image(channel, os.path.join(path, image.name))
+            for image in sorted(path.glob("*")):
+                send_image(channel, image)
 
         if ctx.game.started:
             await ctx.send("Game has already begun!")
@@ -47,24 +54,24 @@ class Game(commands.Cog):
         await ctx.send("Starting setup")
 
         # Introduction images
-        send_image("player-resources", "Images/Player Resources/Alice is Missing - Guide.jpg")
-        send_image("player-resources", "Images/Player Resources/Alice is Missing - Character Sheet.jpg")
-        send_image("player-resources", "Images/Cards/Misc/Introduction.png")
-        alice = random.choice(glob.glob("Images/Missing Person Posters/*.png"))
+        send_image("player-resources", RESOURCE_DIR / "Alice is Missing - Guide.jpg")
+        send_image("player-resources", RESOURCE_DIR / "Alice is Missing - Character Sheet.jpg")
+        send_image("player-resources", CARD_DIR / "Misc" / "Introduction.png")
+        alice = random.choice(list(Path("Images/Missing Person Posters").glob("*.png")))
         send_image("player-resources", alice)
 
         # Send characters, suspects, and locations to appropriate channels
-        send_folder("character-cards", gamedata.CHARACTER_IMAGE_DIR)
-        send_folder("suspect-cards", gamedata.SUSPECT_IMAGE_DIR)
-        send_folder("location-cards", gamedata.LOCATION_IMAGE_DIR)
+        send_folder("character-cards", CHARACTER_IMAGE_DIR)
+        send_folder("suspect-cards", SUSPECT_IMAGE_DIR)
+        send_folder("location-cards", LOCATION_IMAGE_DIR)
 
         # Character and motive cards in clues channels
         motives = list(range(1, 6))
         random.shuffle(motives)
         for character, motive in zip(gamedata.CHARACTERS.values(), motives):
             channel = ctx.text_channels[f"{character.lower().split()[0]}-clues"]
-            send_image(channel, f"Images/Cards/Characters/{character}.png")
-            send_image(channel, f"Images/Cards/Motives/Motive {motive}.png")
+            send_image(channel, CHARACTER_IMAGE_DIR / f"{character}.png")
+            send_image(channel, CARD_DIR / "Motives" / f"Motive {motive}.png")
 
         # 90 minute card for Charlie Barnes
         channel = ctx.text_channels["charlie-clues"]
@@ -75,6 +82,16 @@ class Game(commands.Cog):
                         "into town for winter break at my dad's and haven't "\
                         "been able to get ahold of Alice. Just wondering if "\
                         "any of you have spoken to her?"
+        prompts = "\n".join([
+            "Read introduction", "Introduce alice from poster",
+            "Introduce/pick characters", "Explain character cards",
+            "Explain drive cards", "Character introductions (relationships)",
+            "Voicemails", "Suspects and locations", "Explain clue cards",
+            "Explain searching", "game guide",
+            "setup playlist https://www.youtube.com/watch?v=ysOOFIOAy7A",
+            "Run !start", "90 min card",
+        ])
+        asyncio.create_task(channel.send(f"```{prompts}```"))
         asyncio.create_task(channel.send(first_message))
 
         ctx.game.setup = True
@@ -183,10 +200,24 @@ class Game(commands.Cog):
             await ctx.send("You don't have a character role")
             return
 
-        search_card = random.choice(glob.glob("Images/Cards/Searching/*.png"))
+        search_card = random.choice((CARD_DIR / "Searching").glob("*.png"))
         asyncio.create_task(ctx.text_channels[f"{character}-clues"].send(
             file=discord.File(search_card)
         ))
+
+    @commands.command(name="10")
+    async def ten_min_card(self, ctx, character: typing.Union[discord.Member, discord.Role]):
+        if isinstance(character, discord.Member):
+            for role in character.roles:
+                if role.name in ctx.game.char_roles:
+                    character = role
+                    break
+            else:
+                await ctx.send("Could not find character")
+        ctx.game.ten_char = character.name.lower()
+        # await ctx.text_channels[f"{character.name.lower()}-clues"].send(
+        #     file=discord.File(random.choice(list((CLUE_DIR / "10").glob("10-*.png")))
+        # ))
 
 
 def setup(bot):
