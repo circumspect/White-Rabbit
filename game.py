@@ -3,6 +3,7 @@ import asyncio
 import random
 import time
 from pathlib import Path
+import typing
 # 3rd-party
 import discord
 from discord.ext import commands, tasks
@@ -161,6 +162,20 @@ class Game(commands.Cog):
         asyncio.create_task(ctx.text_channels[f"{character}-clues"].send(
             file=discord.File(search_card)
         ))
+
+    @commands.command(name="10")
+    async def ten_min_card(self, ctx, character: typing.Union[discord.Member, discord.Role]):
+        if isinstance(character, discord.Member):
+            for role in character.roles:
+                if role.name in ctx.game.char_roles:
+                    character = role
+                    break
+            else:
+                await ctx.send("Could not find character")
+        ctx.game.ten_char = character.name.lower()
+        # await ctx.text_channels[f"{character.name.lower()}-clues"].send(
+        #     file=discord.File(random.choice(list((gamedata.CLUE_DIR / "10").glob("10-*.png")))
+        # ))
 
 
 def setup(bot):
