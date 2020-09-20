@@ -182,7 +182,8 @@ class Game(commands.Cog):
                 start = i+1
                 end = len(clue_buckets[bucket])
                 for j in range(start, end):
-                    if abs(clue_buckets[bucket][i]-clue_buckets[bucket][j]) <= 10:
+                    diff = abs(clue_buckets[bucket][i]-clue_buckets[bucket][j])
+                    if diff <= 10:
                         return False
         
         return True
@@ -226,6 +227,8 @@ class Game(commands.Cog):
 
     @commands.command()
     async def draw_motive(self, ctx):
+        """Draw a motive card - manual mode only"""
+
         character = self.get_char(ctx.author)
         if not character:
             await ctx.send("You don't have a character role")
@@ -263,6 +266,8 @@ class Game(commands.Cog):
 
     @commands.command()
     async def search(self, ctx):
+        """Draw a searching card"""
+        
         if not ctx.game.started:
             await ctx.send("The game hasn't started yet")
         character = self.get_char(ctx.author)
@@ -277,10 +282,12 @@ class Game(commands.Cog):
 
     @commands.command(name="10")
     async def ten_min_card(self, ctx, character: typing.Union[discord.Member, discord.Role]):
+        """Assign the 10 minute card to another player"""
+        
         if isinstance(character, discord.Member):
             character = self.get_char(character)
             if not character:
-                await ctx.send("Could not find character")
+                await ctx.send("Could not find player!")
         ctx.game.ten_char = character.name.lower()
         # await ctx.text_channels[f"{character.name.lower()}-clues"].send(
         #     file=discord.File(random.choice(list((CLUE_DIR / "10").glob("10-*.png")))
