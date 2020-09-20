@@ -8,6 +8,7 @@ from discord.ext import commands
 import filepaths
 import gamedata
 
+
 class Manual(commands.Cog):
     def __init__(self, bot):
         self.bot = bot
@@ -28,7 +29,6 @@ class Manual(commands.Cog):
         asyncio.create_task(channel.send(file=discord.File(
             filepaths.MOTIVE_DIR / f"Motive {ctx.game.motives[ctx.character]}.png"
         )))
-
 
     @commands.command()
     async def shuffle_clues(self, ctx):

@@ -14,6 +14,11 @@ async def on_ready():
     await bot.change_presence(activity=discord.Game("Alice is Missing"))
 
 
+@bot.check
+def check_channel(ctx):
+    return ctx.channel.name == "bot-channel"
+
+
 @bot.before_invoke
 async def before_invoke(ctx):
     ctx.game = bot.games.setdefault(ctx.guild.id, gamedata.Data(ctx.guild))
@@ -25,6 +30,23 @@ async def before_invoke(ctx):
     for role in ctx.author.roles:
         if role.name.lower() in gamedata.CHARACTERS:
             ctx.character = role.name.lower()
+
+
+@bot.event
+async def on_command_error(ctx, error):
+    if isinstance(error, discord.ext.commands.errors.UserInputError):
+        await ctx.send("Invalid input")
+    elif isinstance(error, discord.ext.commands.errors.CommandNotFound):
+        await ctx.send("that is not a command")
+    elif isinstance(error, discord.ext.commands.errors.CheckFailure):
+        if ctx.channel.name != "bot-channel":
+            await ctx.send("You can only use commands in #bot-channel")
+            return
+        await ctx.send("You can't do that")
+    else:
+        await ctx.send("There was an error")
+        raise error
+
 
 # Load all extensions
 EXTENSIONS = ["admin", "debug", "game", "players"]
