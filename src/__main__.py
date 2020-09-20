@@ -1,6 +1,7 @@
+# 3rd-party
 import discord
 from discord.ext import commands
-
+# Local
 import filepaths
 import gamedata
 
@@ -21,9 +22,12 @@ async def before_invoke(ctx):
         for channel in ctx.guild.text_channels
     }
 
-for extension in ["admin", "debug", "game", "players"]:
+# Load all extensions
+EXTENSIONS = ["admin", "debug", "game", "players"]
+for extension in EXTENSIONS:
     bot.load_extension(extension)
 
+# Import bot token
 with open(filepaths.WHITE_RABBIT_DIR / "token.txt") as token_file:
     token = token_file.read()
 bot.run(token)

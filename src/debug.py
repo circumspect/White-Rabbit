@@ -23,6 +23,7 @@ class Debug(commands.Cog):
     async def load(self, ctx, extension_name: str = "all"):
         """(Re)loads an extension"""
 
+        # Reload all
         if extension_name == "all":
             loaded_extensions = list(self.bot.extensions.keys())
             for extension in loaded_extensions:
