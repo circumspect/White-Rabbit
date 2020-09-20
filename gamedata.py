@@ -21,3 +21,4 @@ class Data:
         self.setup = False
         self.started = False
         self.show_timer = False
+        self.char_roles = {}
