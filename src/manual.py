@@ -21,19 +21,14 @@ class Manual(commands.Cog):
     async def draw_motive(self, ctx):
         """Draw a motive card - manual mode only"""
 
-        character = self.get_char(ctx.author)
-        if not character:
+        if not ctx.character:
             await ctx.send("You don't have a character role!")
             return
-        channel = ctx.text_channels[f"{character}-clues"]
+        channel = ctx.text_channels[f"{ctx.character}-clues"]
         asyncio.create_task(channel.send(file=discord.File(
-            filepaths.MOTIVE_DIR / f"Motive {ctx.game.motives[character]}.png"
+            filepaths.MOTIVE_DIR / f"Motive {ctx.game.motives[ctx.character]}.png"
         )))
 
-    def get_char(self, member: discord.Member):
-        for role in member.roles:
-            if role.name.lower() in gamedata.CHARACTERS:
-                return role.name.lower()
 
     @commands.command()
     async def shuffle_clues(self, ctx):

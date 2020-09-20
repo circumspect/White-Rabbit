@@ -20,6 +20,10 @@ async def before_invoke(ctx):
         channel.name: channel
         for channel in ctx.guild.text_channels
     }
+    ctx.character = None
+    for role in ctx.author.roles:
+        if role.name.lower() in gamedata.CHARACTERS:
+            ctx.character = role.name.lower()
 
 for extension in ["admin", "debug", "game", "players"]:
     bot.load_extension(extension)
