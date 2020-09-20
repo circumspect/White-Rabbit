@@ -62,7 +62,7 @@ class Game(commands.Cog):
             await ctx.send("Game has already begun!")
             return
         elif ctx.game.setup:
-            await ctx.send("Already setup")
+            await ctx.send("Setup already run!")
             return
 
         await ctx.send("Starting setup")
@@ -116,6 +116,11 @@ class Game(commands.Cog):
     async def shuffle_clues(self, ctx):
         """Randomizes and assigns clue times"""
 
+        # Stop if fewer than 3 player roles assigned
+        if len(ctx.game.char_roles()) < 3:
+            await ctx.send("Not enough players!")
+            return
+
         player_count = len(ctx.game.char_roles())
         acceptable = False
         while not acceptable:
@@ -123,7 +128,6 @@ class Game(commands.Cog):
             acceptable = self.test_clue_buckets(clue_buckets)
         
         # Give bucket with 90 minute card to Charlie Barnes
-        print(clue_buckets)
         for i in range(len(clue_buckets)):
             for time in clue_buckets[i]:
                 if time == 90:
@@ -139,7 +143,18 @@ class Game(commands.Cog):
         random.shuffle(clue_buckets)
         for name in names:
             bucket_assignments[name] = clue_buckets.pop()
+        
+        # Print in a code block
+        message = "```"
+        for player in bucket_assignments:
+            bucket_assignments[player].sort(reverse=True)
+            clues = player.title() + ": " + ", ".join(str(bucket_assignments[player][x]) for x in range(len(bucket_assignments[player]))) + "\n"
+            message += clues
+        
+        message += "```"
+        asyncio.create_task(ctx.send(message))
 
+        # Console logging
         print("Randomly assigned clue cards!")
         print(bucket_assignments)
     
@@ -185,7 +200,7 @@ class Game(commands.Cog):
             return
 
         if len(ctx.game.char_roles()) < 3:
-            await ctx.send("Not enough players")
+            await ctx.send("Not enough players!")
             return
 
         ctx.game.start_time = time.time()
@@ -204,7 +219,8 @@ class Game(commands.Cog):
 
     @commands.command()
     async def automatic(self, ctx):
-        """Show/hide bot timer"""
+        """Enable/disable automatic mode"""
+
         ctx.game.automatic = not ctx.game.automatic
         await ctx.send(f"{'En' if ctx.game.automatic else 'Dis'}abling automatic card draw")
 
