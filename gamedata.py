@@ -22,8 +22,10 @@ class Data:
         self.setup = False
         self.started = False
         self.show_timer = False
-        self.char_roles = {
+
+    def char_roles(self):
+        return {
             role.name: role
-            for role in guild.roles
+            for role in self.guild.roles
             if role.name.lower() in CHARACTERS and role.members
         }
