@@ -150,9 +150,9 @@ class Game(commands.Cog):
         for i in range(player_count):
             clue_buckets.append([])
         for i in range(len(gamedata.BUCKET_SIZES[player_count])):
-            for j in range(gamedata.BUCKET_SIZES[player_count][i]):
+            for _ in range(gamedata.BUCKET_SIZES[player_count][i]):
                 clue_buckets[i].append(shuffled_clues.pop())
-        
+
         return clue_buckets
 
 
