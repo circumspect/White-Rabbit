@@ -20,7 +20,7 @@ class Players(commands.Cog):
         if role in ctx.author.roles:
             await ctx.send("You already have that role")
             return
-        elif role.name.lower() not in gamedata.CHARACTERS:
+        elif role.name.lower() not in [*gamedata.CHARACTERS, "spectator"]:
             asyncio.create_task(ctx.send("You cannot claim that role"))
             return
         elif role.members:
@@ -35,7 +35,8 @@ class Players(commands.Cog):
 
         # Give role and update player's nickname
         asyncio.create_task(ctx.author.add_roles(role))
-        asyncio.create_task(ctx.author.edit(nick=gamedata.CHARACTERS[role.name.lower()]))
+        if role.name.lower() in gamedata.CHARACTERS:
+            asyncio.create_task(ctx.author.edit(nick=gamedata.CHARACTERS[role.name.lower()]))
         asyncio.create_task(ctx.send(f"Gave you {role.name}!"))
 
     @commands.command()
