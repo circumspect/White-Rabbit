@@ -93,6 +93,9 @@ class Game(commands.Cog):
                     filepaths.MOTIVE_DIR / f"Motive {motive}.png"
                 )
 
+        if ctx.game.automatic:
+            await self.manual.shuffle_clues(ctx)
+
         ctx.game.setup = True
 
     @commands.command()
