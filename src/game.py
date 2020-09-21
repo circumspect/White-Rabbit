@@ -168,6 +168,8 @@ class Game(commands.Cog):
 
     @tasks.loop(seconds=gamedata.TIMER_GAP)
     async def timer(self):
+        """Timer loop for the bot"""
+
         for game in self.bot.games.values():
             # Skip server if game has not started
             if not game.started:
@@ -200,6 +202,7 @@ class Game(commands.Cog):
 
         if not ctx.game.started:
             await ctx.send("The game hasn't started yet")
+            return
         if not ctx.character:
             await ctx.send("You don't have a character role")
             return

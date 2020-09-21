@@ -42,7 +42,11 @@ class Manual(commands.Cog):
     
     @commands.command()
     async def clue(self, ctx, time: int):
-        """Draws a clue card given a time"""
+        """
+        Draws a clue card given a time
+        
+        Ex: !clue 40
+        """
         
         # Check that clue exists at specified time
         if time not in gamedata.CLUE_TIMES:
