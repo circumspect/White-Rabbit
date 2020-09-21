@@ -245,10 +245,10 @@ class Game(commands.Cog):
     @tasks.loop(seconds=gamedata.TIMER_GAP)
     async def timer(self):
         for game in self.bot.games.values():
-            # Skip if game has not started
+            # Skip server if game has not started
             if not game.started:
                 continue
-            # Skip if game has ended
+            # Skip server if game has ended
             if game.start_time + gamedata.GAME_LENGTH < time.time():
                 continue
 
@@ -256,6 +256,7 @@ class Game(commands.Cog):
                 game.start_time + gamedata.GAME_LENGTH - time.time()
             )
 
+            # Print timer message if enabled in a server
             if game.show_timer:
                 text_channels = {
                     channel.name: channel

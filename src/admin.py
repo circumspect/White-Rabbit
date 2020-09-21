@@ -18,6 +18,7 @@ class Admin(commands.Cog):
         for text_channel in text_channels:
             await text_channel.purge(limit=None)
         
+        # Console logging
         print("Wiped messages!")
 
 def setup(bot):
