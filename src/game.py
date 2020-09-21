@@ -21,6 +21,16 @@ class Game(commands.Cog):
         self.timer.start()
 
     @commands.command()
+    async def automatic(self, ctx):
+        """Enable/disable automatic mode - disables manual commands"""
+
+        ctx.game.automatic = not ctx.game.automatic
+        if ctx.game.automatic:
+            await ctx.send("Enabling automatic card draw")
+        else:
+            await ctx.send("Disabling automatic card draw")
+
+    @commands.command()
     async def setup(self, ctx):
         """Sends out cards and sets up the game"""
 
@@ -139,16 +149,6 @@ class Game(commands.Cog):
             await ctx.send("Showing bot timer!")
         else:
             await ctx.send("Hiding bot timer!")
-
-    @commands.command()
-    async def automatic(self, ctx):
-        """Enable/disable automatic mode"""
-
-        ctx.game.automatic = not ctx.game.automatic
-        if ctx.game.automatic:
-            await ctx.send("Enabling automatic card draw")
-        else:
-            await ctx.send("Disabling automatic card draw")
 
     @tasks.loop(seconds=gamedata.TIMER_GAP)
     async def timer(self):
