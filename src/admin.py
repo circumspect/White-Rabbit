@@ -17,6 +17,8 @@ class Admin(commands.Cog):
             text_channels = ctx.guild.text_channels
         for text_channel in text_channels:
             await text_channel.purge(limit=None)
+        
+        print("Wiped messages!")
 
 def setup(bot):
     bot.add_cog(Admin(bot))
