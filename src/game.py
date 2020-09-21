@@ -19,15 +19,15 @@ class Game(commands.Cog):
     @commands.Cog.listener()
     async def on_ready(self):
         self.timer.start()
-    
+
     @commands.command()
     async def auto(self, ctx, mode: str = ""):
         """
         Prints or toggles current mode (manual/automatic)
-        
+
         Automatic mode will disable manual card draw commands
         """
-        
+
         # Print current mode
         if not mode:
             message = "```\nCurrent mode: "
@@ -239,6 +239,7 @@ class Game(commands.Cog):
         for channel in ctx.guild.text_channels:
             await channel.edit(sync_permissions=True)
         await ctx.send("All channels shown")
+
 
 def setup(bot):
     bot.add_cog(Game(bot))
