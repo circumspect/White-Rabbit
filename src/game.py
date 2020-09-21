@@ -213,7 +213,7 @@ class Game(commands.Cog):
             await ctx.send("Game has already begun!")
             return
 
-        if "charlie" not in ctx.game.char_roles():
+        if "Charlie" not in ctx.game.char_roles():
             await ctx.send("You must have a Charlie")
             return
 
@@ -234,6 +234,15 @@ class Game(commands.Cog):
 
         ctx.game.start_time = time.time()
         ctx.game.started = True
+
+        if ctx.guild.voice_client is None:
+            await ctx.guild.voice_channels[0].connect()
+        ctx.guild.voice_client.play(
+            discord.PCMVolumeTransformer(discord.FFmpegPCMAudio(
+                filepaths.WHITE_RABBIT_DIR / "Alice is Missing Playlist.mp3"
+            )
+        ))
+
         await ctx.send("Starting the game!")
 
     @commands.command(name="timer")

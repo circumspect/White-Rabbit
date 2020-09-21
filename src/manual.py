@@ -101,7 +101,7 @@ class Manual(commands.Cog):
         if player_count < 3:
             await ctx.send("Not enough players!")
             return
-        elif "charlie" not in ctx.game.char_roles():
+        elif "Charlie" not in ctx.game.char_roles():
             await ctx.send("You must have a Charlie")
             return
 
