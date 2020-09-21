@@ -25,6 +25,7 @@ class Data:
         self.started = False
         self.automatic = False
         self.show_timer = False
+        self.stream_music = False
 
         # Shuffle and assign motive cards
         motives = list(range(1, 6))
