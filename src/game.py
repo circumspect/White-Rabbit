@@ -168,13 +168,14 @@ class Game(commands.Cog):
         ctx.game.start_time = time.time()
         ctx.game.started = True
 
-        if ctx.guild.voice_client is None:
-            await ctx.guild.voice_channels[0].connect()
-        ctx.guild.voice_client.play(
-            discord.PCMVolumeTransformer(discord.FFmpegPCMAudio(
-                filepaths.WHITE_RABBIT_DIR / "Alice is Missing Playlist.mp3"
-            )
-        ))
+        if ctx.game.stream_music:
+            if ctx.guild.voice_client is None:
+                await ctx.guild.voice_channels[0].connect()
+            ctx.guild.voice_client.play(
+                discord.PCMVolumeTransformer(discord.FFmpegPCMAudio(
+                    filepaths.TIMER_AUDIO
+                )
+            ))
 
         await ctx.send("Starting the game!")
 
@@ -187,6 +188,16 @@ class Game(commands.Cog):
             await ctx.send("Showing bot timer!")
         else:
             await ctx.send("Hiding bot timer!")
+    
+    @commands.command()
+    async def music(self, ctx):
+        """Enable/disable music stream when game starts"""
+
+        ctx.game.stream_music = not ctx.game.stream_music
+        if ctx.game.stream_music:
+            await ctx.send("Music stream enabled!")
+        else:
+            await ctx.send("Music stream disabled!")
 
     @tasks.loop(seconds=gamedata.TIMER_GAP)
     async def timer(self):
