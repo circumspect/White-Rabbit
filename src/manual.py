@@ -83,8 +83,9 @@ class Manual(commands.Cog):
         ctx.game.picked_clues[90] = 1
         
         # Console logging
-        print("Reshuffled clue piles!")
+        print("Shuffled clue piles!")
         print(ctx.game.picked_clues)
+        print()
 
     @commands.command()
     async def assign_clues(self, ctx):
