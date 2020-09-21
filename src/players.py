@@ -14,7 +14,7 @@ class Players(commands.Cog):
     # Commands for players to claim character roles
     @commands.command()
     async def claim(self, ctx, role: discord.Role):
-        """Claim a character role"""
+        """Claim a character/spectator role"""
 
         # Check if role can be claimed
         if role in ctx.author.roles:
