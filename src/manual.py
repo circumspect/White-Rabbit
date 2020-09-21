@@ -24,8 +24,8 @@ class Manual(commands.Cog):
         ctx.game = self.bot.games.setdefault(ctx.guild.id, gamedata.Data(ctx.guild))
         # Console logging
         if ctx.game.automatic:
-            print(str(ctx.author) + " tried to run " + str(ctx.command.name) + " while in automatic mode!")
-        
+            print(f"{ctx.author.name} tried to run {ctx.command.name} in automatic mode!")
+
         return not ctx.game.automatic
 
     @commands.command()
@@ -72,9 +72,8 @@ class Manual(commands.Cog):
         channel = ctx.text_channels[f"{ctx.character}-clues"]
         choice = ctx.game.picked_clues[time]
         asyncio.create_task(channel.send(file=discord.File(
-            filepaths.CLUE_DIR / str(time) / (str(time) + "-" 
-            + str(choice) + ".png"
-        ))))
+            filepaths.CLUE_DIR / str(time) / f"{time}-{choice}.png"
+        )))
 
     @ commands.command()
     async def shuffle_clues(self, ctx):
