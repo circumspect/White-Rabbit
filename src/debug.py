@@ -16,7 +16,8 @@ class Debug(commands.Cog):
 
     @commands.Cog.listener()
     async def on_ready(self):
-        print("Bot has logged in")
+        # Console logging
+        print("Bot has logged in!")
 
     @ commands.command()
     async def load(self, ctx, extension_name: str = "all"):
