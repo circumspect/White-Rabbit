@@ -59,9 +59,14 @@ class Manual(commands.Cog):
             asyncio.create_task(ctx.send("That clue doesn't belong to you!"))
             return
         
-        # Send random clue
+        # Send the clue
+        await self.send_clue(ctx, time)
+
+    async def send_clue(self, ctx, time: int):
+        # Send random clue for time
         channel = ctx.text_channels[f"{ctx.character}-clues"]
-        asyncio.create_task(channel.send("CLUE GOES HERE"))
+        choice = random.randint(1, 3)
+        asyncio.create_task(channel.send(file=discord.File(filepaths.CLUE_DIR / str(time) / (str(time) + "-" + str(choice) + ".png"))))
 
     @ commands.command()
     async def shuffle_clues(self, ctx):
