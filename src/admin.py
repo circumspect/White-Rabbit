@@ -18,6 +18,9 @@ class Admin(commands.Cog):
     async def wipe(self, ctx, *text_channels: discord.TextChannel):
         """Wipes all messages on the server"""
 
+        # Console logging
+        print(f'Wiping messages from server: "{ctx.guild.name}" with ID: "{ctx.guild.id}"')
+
         if not text_channels:
             text_channels = ctx.guild.text_channels
         for text_channel in text_channels:
