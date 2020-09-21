@@ -18,6 +18,10 @@ async def on_ready():
 def check_channel(ctx):
     return ctx.channel.name == "bot-channel"
 
+@bot.check
+def not_spectator(ctx):
+    return "spectator" not in [role.name.lower() for role in ctx.author.roles]
+
 
 @bot.before_invoke
 async def before_invoke(ctx):
