@@ -12,7 +12,7 @@ import gamedata
 class Manual(commands.Cog):
     """
     A set of commands for running the game in manual mode
-    
+
     If in automatic mode, the bot will call these at the appropriate times
     without user input
     """
@@ -39,25 +39,25 @@ class Manual(commands.Cog):
         asyncio.create_task(channel.send(file=discord.File(
             filepaths.MOTIVE_DIR / f"Motive {ctx.game.motives[ctx.character]}.png"
         )))
-    
+
     @commands.command()
     async def clue(self, ctx, time: int):
         """
         Draws a clue card given a time
-        
+
         Ex: !clue 40
         """
-        
+
         # Check that clue exists at specified time
         if time not in gamedata.CLUE_TIMES:
             asyncio.create_task(ctx.send("No clue card found for that time!"))
             return
-        
+
         # Check that clues have been assigned
         if not ctx.game.clue_assignments:
             asyncio.create_task(ctx.send("Clues have not been assigned!"))
             return
-        
+
         # Check if clues have been shuffled:
         if not ctx.game.picked_clues:
             asyncio.create_task(ctx.send("Clues have not been shuffled!"))
@@ -67,7 +67,7 @@ class Manual(commands.Cog):
         if time not in ctx.game.clue_assignments[ctx.character]:
             asyncio.create_task(ctx.send("That clue doesn't belong to you!"))
             return
-        
+
         # Send the clue
         await self.send_clue(ctx, time)
 
@@ -87,7 +87,7 @@ class Manual(commands.Cog):
             ctx.game.picked_clues[time] = random.randint(1, 3)
         # Only one card for the 90 minute clue
         ctx.game.picked_clues[90] = 1
-        
+
         # Console logging
         print("Shuffled clue piles!")
         print(ctx.game.picked_clues)
