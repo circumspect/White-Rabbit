@@ -20,7 +20,7 @@ class Debug(commands.Cog):
 
     @ commands.command()
     async def load(self, ctx, extension_name: str = "all"):
-        """(Re)loads an extension"""
+        """(Re)loads a plugin"""
 
         # Reload all
         if extension_name == "all":
@@ -42,7 +42,7 @@ class Debug(commands.Cog):
 
     @ commands.command()
     async def unload(self, ctx, extension_name: str):
-        """Unloads an extension."""
+        """Unloads a plugin."""
 
         self.bot.unload_extension(extension_name)
         await ctx.send(f"Unloaded {extension_name}")

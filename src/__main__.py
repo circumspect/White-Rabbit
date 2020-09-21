@@ -54,9 +54,9 @@ async def on_command_error(ctx, error):
 
 
 # Load all extensions
-EXTENSIONS = ["admin", "debug", "game", "manual", "players"]
-for extension in EXTENSIONS:
-    bot.load_extension(extension)
+PLUGINS = ["admin", "debug", "game", "manual", "players"]
+for plugin in PLUGINS:
+    bot.load_extension(plugin)
 
 print(f"Cogs loaded: {', '.join(bot.cogs.keys())}")
 

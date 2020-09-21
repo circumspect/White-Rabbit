@@ -19,16 +19,32 @@ class Game(commands.Cog):
     @commands.Cog.listener()
     async def on_ready(self):
         self.timer.start()
-
+    
     @commands.command()
-    async def automatic(self, ctx):
-        """Enable/disable automatic mode - disables manual commands"""
-
-        ctx.game.automatic = not ctx.game.automatic
-        if ctx.game.automatic:
-            await ctx.send("Enabling automatic card draw")
+    async def auto(self, ctx, mode: str = ""):
+        """
+        Prints or toggles current mode (manual/automatic)
+        
+        Automatic mode will disable manual card draw commands
+        """
+        
+        # Print current mode
+        if not mode:
+            message = "```\nCurrent mode: "
+            if ctx.game.automatic:
+                message += "automatic"
+            else:
+                message += "manual"
+            message += "\n```"
+            await ctx.send(message)
+        elif mode == "on":
+            ctx.game.automatic = True
+            await ctx.send("Automatic card draw enabled!")
+        elif mode == "off":
+            ctx.game.automatic = True
+            await ctx.send("Automatic card draw disabled!")
         else:
-            await ctx.send("Disabling automatic card draw")
+            await ctx.send("Input error, try !auto on or !auto off")
 
     @commands.command()
     async def setup(self, ctx):
@@ -210,6 +226,8 @@ class Game(commands.Cog):
 
     @commands.command()
     async def show_all(self, ctx):
+        """Allows all members to read every channel and disables sending"""
+
         for channel in ctx.guild.text_channels:
             await channel.edit(sync_permissions=True)
         await ctx.send("All channels shown")
