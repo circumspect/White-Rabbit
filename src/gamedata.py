@@ -34,8 +34,9 @@ class Data:
             for motive, character in zip(motives, CHARACTERS)
         }
 
-        # Create empty clue buckets dict
+        # Create empty clue dicts
         self.clue_assignments = {}
+        self.picked_clues = {}
 
     def char_roles(self):
         unsorted = {

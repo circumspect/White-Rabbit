@@ -54,6 +54,11 @@ class Manual(commands.Cog):
             asyncio.create_task(ctx.send("Clues have not been assigned!"))
             return
         
+        # Check if clues have been shuffled:
+        if not ctx.game.picked_clues:
+            asyncio.create_task(ctx.send("Clues have not been shuffled!"))
+            return
+
         # Check that the person calling the command has the clue
         if time not in ctx.game.clue_assignments[ctx.character]:
             asyncio.create_task(ctx.send("That clue doesn't belong to you!"))
@@ -65,16 +70,17 @@ class Manual(commands.Cog):
     async def send_clue(self, ctx, time: int):
         # Send random clue for time
         channel = ctx.text_channels[f"{ctx.character}-clues"]
-        choice = random.randint(1, 3)
+        choice = ctx.game.picked_clues[time]
         asyncio.create_task(channel.send(file=discord.File(filepaths.CLUE_DIR / str(time) / (str(time) + "-" + str(choice) + ".png"))))
 
     @ commands.command()
     async def shuffle_clues(self, ctx):
         """(Re)shuffles the clue card piles"""
 
-        ctx.game.picked_clues = {}
         for time in gamedata.CLUE_TIMES:
             ctx.game.picked_clues[time] = random.randint(1, 3)
+        # Only one card for the 90 minute clue
+        ctx.game.picked_clues[90] = 1
         
         # Console logging
         print("Reshuffled clue piles!")
