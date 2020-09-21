@@ -213,6 +213,10 @@ class Game(commands.Cog):
             await ctx.send("Game has already begun!")
             return
 
+        if "charlie" not in ctx.game.char_roles():
+            await ctx.send("You must have a Charlie")
+            return
+
         if len(ctx.game.char_roles()) < 3:
             await ctx.send("Not enough players!")
             return
