@@ -19,7 +19,8 @@ class Admin(commands.Cog):
             await text_channel.purge(limit=None)
         
         # Console logging
-        print("Wiped messages!")
+        print("Wiped messages from server: \"" + ctx.guild.name  
+                + "\" with ID: \"" + str(ctx.guild.id) + "\"")
 
 def setup(bot):
     bot.add_cog(Admin(bot))
