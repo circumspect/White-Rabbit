@@ -23,7 +23,7 @@ class Players(commands.Cog):
         elif role.name.lower() not in [*gamedata.CHARACTERS, "spectator"]:
             asyncio.create_task(ctx.send("You cannot claim that role"))
             return
-        elif role.members:
+        elif role.members and role.name.lower() in gamedata.CHARACTERS:
             asyncio.create_task(ctx.send(f"That role is taken by {role.members[0].name}"))
             return
 
