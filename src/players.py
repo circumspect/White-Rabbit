@@ -35,9 +35,12 @@ class Players(commands.Cog):
 
         # Give role and update player's nickname
         asyncio.create_task(ctx.author.add_roles(role))
-        if role.name.lower() in gamedata.CHARACTERS:
-            asyncio.create_task(ctx.author.edit(nick=gamedata.CHARACTERS[role.name.lower()]))
         asyncio.create_task(ctx.send(f"Gave you {role.name}!"))
+        if ctx.author.is_owner():
+            # Can't update nickname for server owner
+            asyncio.create_task(ctx.send("Couldn't update nickname because you are server owner!"))
+        elif role.name.lower() in gamedata.CHARACTERS:
+            asyncio.create_task(ctx.author.edit(nick=gamedata.CHARACTERS[role.name.lower()]))
 
     @commands.command()
     async def unclaim(self, ctx):

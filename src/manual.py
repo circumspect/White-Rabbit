@@ -32,9 +32,12 @@ class Manual(commands.Cog):
     async def draw_motive(self, ctx):
         """Draw a motive card"""
 
+        # Make sure player has a character role
         if not ctx.character:
             await ctx.send("You don't have a character role!")
             return
+        
+        asyncio.create_task(ctx.send("Sending your motive card!"))
         channel = ctx.text_channels[f"{ctx.character}-clues"]
         asyncio.create_task(channel.send(file=discord.File(
             filepaths.MOTIVE_DIR / f"Motive {ctx.game.motives[ctx.character]}.png"
@@ -91,7 +94,6 @@ class Manual(commands.Cog):
         # Console logging
         print("Shuffled clue piles!")
         print(ctx.game.picked_clues)
-        print()
 
     @commands.command()
     async def assign_clues(self, ctx):
@@ -102,7 +104,7 @@ class Manual(commands.Cog):
             await ctx.send("Not enough players!")
             return
         elif "Charlie" not in ctx.game.char_roles():
-            await ctx.send("You must have a Charlie")
+            await ctx.send("Can't find Charlie!")
             return
 
         # Generate clues
@@ -131,16 +133,17 @@ class Manual(commands.Cog):
             ctx.game.clue_assignments[name] = sorted(clue_buckets.pop(), reverse=True)
 
         # Print in a code block
-        message = "\n".join([
+        message = "Clue times:\n"
+        message += "\n".join([
             f"{player.title()}: {', '.join(str(x) for x in bucket)}"
             for player, bucket in ctx.game.clue_assignments.items()
         ])
-        asyncio.create_task(ctx.send(f"```{message}```"))
+        channel = ctx.text_channels["player-resources"]
+        asyncio.create_task(channel.send(f"```{message}```"))
 
         # Console logging
         print("Randomly assigned clue cards!")
         print(ctx.game.clue_assignments)
-        print()
 
     def _randomize_clues(self, player_count: int):
         """

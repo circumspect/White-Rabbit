@@ -23,13 +23,13 @@ class Game(commands.Cog):
     @commands.command()
     async def auto(self, ctx, mode: str = ""):
         """
-        Prints or toggles current mode (manual/automatic)
+        Prints or current mode or turn automatic on/off
 
         Automatic mode will disable manual card draw commands
         """
 
-        # Print current mode
         if not mode:
+            # Print current mode
             message = "```\nCurrent mode: "
             if ctx.game.automatic:
                 message += "automatic"
@@ -46,20 +46,24 @@ class Game(commands.Cog):
         else:
             await ctx.send("Input error, try !auto on or !auto off")
 
+    def send_image(self, ctx, channel, filepath):
+        """Sends an image to a specified channel"""
+
+        if isinstance(channel, str):
+            channel = ctx.text_channels[channel]
+        asyncio.create_task(channel.send(
+            file=discord.File(filepath)
+        ))
+
+    def send_folder(self, ctx, channel, path):
+        """Sends all images in a folder in alphabetical order"""
+        
+        for image in sorted(path.glob("*")):
+            self.send_image(ctx, channel, image)
+
     @commands.command()
     async def setup(self, ctx):
         """Sends out cards and sets up the game"""
-
-        def send_image(channel, filepath):
-            if isinstance(channel, str):
-                channel = ctx.text_channels[channel]
-            asyncio.create_task(channel.send(
-                file=discord.File(filepath)
-            ))
-
-        def send_folder(channel, path):
-            for image in sorted(path.glob("*")):
-                send_image(channel, image)
 
         if ctx.game.started:
             await ctx.send("Game has already begun!")
@@ -71,27 +75,30 @@ class Game(commands.Cog):
         await ctx.send("Starting setup")
 
         # Introduction images
-        send_image(
+        self.send_image(
+            ctx,
             "player-resources",
             filepaths.RESOURCE_DIR / "Alice is Missing - Guide.jpg"
         )
-        send_image(
+        self.send_image(
+            ctx,
             "player-resources",
             filepaths.RESOURCE_DIR / "Alice is Missing - Character Sheet.jpg"
         )
-        send_image(
+        self.send_image(
+            ctx,
             "player-resources",
             filepaths.CARD_DIR / "Misc" / "Introduction.png"
         )
         alice = random.choice(list(
             (filepaths.IMAGE_DIR / "Missing Person Posters").glob("*.png")
         ))
-        send_image("player-resources", alice)
+        self.send_image(ctx, "player-resources", alice)
 
         # Send characters, suspects, and locations to appropriate channels
-        send_folder("character-cards", filepaths.CHARACTER_IMAGE_DIR)
-        send_folder("suspect-cards", filepaths.SUSPECT_IMAGE_DIR)
-        send_folder("location-cards", filepaths.LOCATION_IMAGE_DIR)
+        self.send_folder(ctx, "character-cards", filepaths.CHARACTER_IMAGE_DIR)
+        self.send_folder(ctx, "suspect-cards", filepaths.SUSPECT_IMAGE_DIR)
+        self.send_folder(ctx, "location-cards", filepaths.LOCATION_IMAGE_DIR)
 
         # Instructions for Charlie Barnes
         channel = ctx.text_channels["charlie-clues"]
@@ -101,7 +108,7 @@ class Game(commands.Cog):
             "Explain motive cards", "Character introductions (relationships)",
             "Voicemails", "Suspects and locations", "Explain clue cards",
             "Explain searching", "Game guide",
-            "setup playlist https://www.youtube.com/watch?v=ysOOFIOAy7A",
+            "Stream timer https://www.youtube.com/watch?v=ysOOFIOAy7A",
             "Run !start", "90 min card",
         ])
         asyncio.create_task(channel.send(f"```{prompts}```"))
@@ -109,18 +116,20 @@ class Game(commands.Cog):
         # Character and motive cards in clues channels
         for first_name, full_name in gamedata.CHARACTERS.items():
             channel = ctx.text_channels[f"{first_name}-clues"]
-            send_image(
-                channel, filepaths.CHARACTER_IMAGE_DIR / f"{full_name}.png"
+            self.send_image(
+                ctx,
+                channel,
+                filepaths.CHARACTER_IMAGE_DIR / f"{full_name}.png"
             )
             if ctx.game.automatic:
                 motive = ctx.game.motives[first_name]
-                send_image(
+                self.send_image(
+                    ctx,
                     channel,
                     filepaths.MOTIVE_DIR / f"Motive {motive}.png"
                 )
 
-        if ctx.game.automatic:
-            await self.manual.shuffle_clues(ctx)
+        await self.bot.cogs["Manual"].shuffle_clues(ctx)
 
         ctx.game.setup = True
 
@@ -138,14 +147,14 @@ class Game(commands.Cog):
             return
 
         if "Charlie" not in ctx.game.char_roles():
-            await ctx.send("You must have a Charlie")
+            await ctx.send("Can't play without Charlie!")
             return
 
         if len(ctx.game.char_roles()) < 3:
             await ctx.send("Not enough players!")
             return
 
-        # 90 minute card for Charlie Barnes
+        # 90 minute card/message for Charlie Barnes
         channel = ctx.text_channels["charlie-clues"]
         asyncio.create_task(channel.send(file=discord.File(
             filepaths.CLUE_DIR / "90/90-1.png"
@@ -214,10 +223,10 @@ class Game(commands.Cog):
         """Draw a searching card"""
 
         if not ctx.game.started:
-            await ctx.send("The game hasn't started yet")
+            await ctx.send("Game hasn't started yet!")
             return
         if not ctx.character:
-            await ctx.send("You don't have a character role")
+            await ctx.send("You don't have a character role!")
             return
 
         search_card = random.choice(
