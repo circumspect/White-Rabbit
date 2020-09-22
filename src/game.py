@@ -9,7 +9,6 @@ from discord.ext import commands, tasks
 # Local
 import utils
 import gamedata
-import manual
 
 
 class Game(commands.Cog):
@@ -164,8 +163,8 @@ class Game(commands.Cog):
             ctx.guild.voice_client.play(
                 discord.PCMVolumeTransformer(discord.FFmpegPCMAudio(
                     utils.TIMER_AUDIO
-                )
-            ))
+                ))
+            )
 
         await ctx.send("Starting the game!")
 
@@ -178,7 +177,7 @@ class Game(commands.Cog):
             await ctx.send("Showing bot timer!")
         else:
             await ctx.send("Hiding bot timer!")
-    
+
     @commands.command()
     async def music(self, ctx):
         """Enable/disable music stream when game starts"""
@@ -218,7 +217,7 @@ class Game(commands.Cog):
                 await text_channels["bot-channel"].send((
                     f"{pad(remaining_time // 60)}:{pad(remaining_time % 60)}"
                 ))
-            
+
             # Send clues if in automatic mode
             minutes_left = int(remaining_time/60)
             if minutes_left in gamedata.CLUE_TIMES and minutes_left <= game.last_clue:

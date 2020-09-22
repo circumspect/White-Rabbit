@@ -7,7 +7,7 @@ from discord.ext import commands
 # Local
 import utils
 import gamedata
-import utils
+
 
 class Manual(commands.Cog):
     """
@@ -36,7 +36,7 @@ class Manual(commands.Cog):
         if not ctx.character:
             await ctx.send("You don't have a character role!")
             return
-        
+
         asyncio.create_task(ctx.send("Sending your motive card!"))
         channel = ctx.text_channels[f"{ctx.character}-clues"]
         asyncio.create_task(channel.send(file=discord.File(
@@ -80,6 +80,8 @@ class Manual(commands.Cog):
             if time in game.clue_assignments[name]:
                 character = name
                 break
+        else:
+            raise ValueError("Missing clue")
 
         channel = utils.get_text_channels(game.guild)[f"{character}-clues"]
         choice = game.picked_clues[time]
@@ -96,7 +98,7 @@ class Manual(commands.Cog):
         # Check if is tuple and pull the correct type from it
         if isinstance(clue_type, tuple):
             clue_type = clue_type[game.picked_clues[time]-1]
-        
+
         if clue_type == "suspect":
             index = random.randint(0, len(game.suspect_pile)-1)
             game.suspects_drawn[time] = (game.suspect_pile.pop(index))
