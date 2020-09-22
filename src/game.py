@@ -25,6 +25,10 @@ class Game(commands.Cog):
         """
         Prints or current mode or turn automatic on/off
 
+        Syntax:
+        !auto will display the current mode
+        !auto on will switch to automatic mode
+        !auto off will switch to manual mode
         Automatic mode will disable manual card draw commands
         """
 
