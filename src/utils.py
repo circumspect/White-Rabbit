@@ -1,5 +1,8 @@
 # Built-in
 from pathlib import Path
+import asyncio
+
+import discord
 # Local
 import gamedata
 
@@ -39,3 +42,22 @@ def get_text_channels(guild):
         channel.name: channel
         for channel in guild.text_channels
     }
+
+
+def send_image(channel, filepath, ctx=None):
+    """Sends an image to a specified channel"""
+
+    if isinstance(channel, str):
+        if not ctx:
+            raise ValueError
+        channel = ctx.text_channels[channel]
+    asyncio.create_task(channel.send(
+        file=discord.File(filepath)
+    ))
+
+
+def send_folder(channel, path, ctx=None):
+    """Sends all images in a folder in alphabetical order"""
+
+    for image in sorted(path.glob("*")):
+        send_image(channel, image, ctx)

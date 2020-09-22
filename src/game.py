@@ -50,23 +50,6 @@ class Game(commands.Cog):
         else:
             await ctx.send("Input error, try !auto on or !auto off")
 
-    def send_image(self, channel, filepath, ctx=None):
-        """Sends an image to a specified channel"""
-
-        if isinstance(channel, str):
-            if not ctx:
-                raise ValueError
-            channel = ctx.text_channels[channel]
-        asyncio.create_task(channel.send(
-            file=discord.File(filepath)
-        ))
-
-    def send_folder(self, channel, path, ctx=None):
-        """Sends all images in a folder in alphabetical order"""
-        
-        for image in sorted(path.glob("*")):
-            self.send_image(channel, image, ctx)
-
     @commands.command()
     async def setup(self, ctx):
         """Sends out cards and sets up the game"""
@@ -81,17 +64,17 @@ class Game(commands.Cog):
         await ctx.send("Starting setup")
 
         # Introduction images
-        self.send_image(
+        utils.send_image(
             "player-resources",
             utils.MASTER_PATHS["guide"],
             ctx
         )
-        self.send_image(
+        utils.send_image(
             "player-resources",
             utils.MASTER_PATHS["character_sheet"],
             ctx
         )
-        self.send_image(
+        utils.send_image(
             "player-resources",
             utils.MASTER_PATHS["intro"],
             ctx
@@ -99,12 +82,12 @@ class Game(commands.Cog):
         alice = random.choice(list(
             (utils.POSTER_DIR).glob("*.png")
         ))
-        self.send_image("player-resources", alice, ctx)
+        utils.send_image("player-resources", alice, ctx)
 
         # Send characters, suspects, and locations to appropriate channels
-        self.send_folder("character-cards", utils.CHARACTER_IMAGE_DIR, ctx)
-        self.send_folder("suspect-cards", utils.SUSPECT_IMAGE_DIR, ctx)
-        self.send_folder("location-cards", utils.LOCATION_IMAGE_DIR, ctx)
+        utils.send_folder("character-cards", utils.CHARACTER_IMAGE_DIR, ctx)
+        utils.send_folder("suspect-cards", utils.SUSPECT_IMAGE_DIR, ctx)
+        utils.send_folder("location-cards", utils.LOCATION_IMAGE_DIR, ctx)
 
         # Instructions for Charlie Barnes
         channel = ctx.text_channels["charlie-clues"]
@@ -122,14 +105,14 @@ class Game(commands.Cog):
         # Character and motive cards in clues channels
         for name in gamedata.CHARACTERS:
             channel = ctx.text_channels[f"{name}-clues"]
-            self.send_image(
+            utils.send_image(
                 channel,
                 utils.MASTER_PATHS[name],
                 ctx
             )
             if ctx.game.automatic:
                 motive = ctx.game.motives[name]
-                self.send_image(
+                utils.send_image(
                     channel,
                     utils.MOTIVE_DIR / f"Motive {motive}.png",
                     ctx
