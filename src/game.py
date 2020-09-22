@@ -248,14 +248,13 @@ class Game(commands.Cog):
         ctx.game.start_time = time.time()
         ctx.game.started = True
 
-        if ctx.game.stream_music:
-            if ctx.guild.voice_client is None:
-                await ctx.guild.voice_channels[0].connect()
-            ctx.guild.voice_client.play(
-                discord.PCMVolumeTransformer(discord.FFmpegPCMAudio(
-                    filepaths.TIMER_AUDIO
-                )
+        if ctx.guild.voice_client is None:
+            await ctx.guild.voice_channels[0].connect()
+        ctx.guild.voice_client.play(
+            discord.PCMVolumeTransformer(discord.FFmpegPCMAudio(
+                filepaths.WHITE_RABBIT_DIR / "Alice is Missing Playlist.mp3"
             ))
+        )
 
         await ctx.send("Starting the game!")
 
