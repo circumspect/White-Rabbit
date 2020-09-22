@@ -48,7 +48,7 @@ class Debug(commands.Cog):
         self.bot.unload_extension(extension_name)
         await ctx.send(f"Unloaded {extension_name}")
 
-    @ commands.command(aliases=["stop"])
+    @ commands.command(aliases=["stop", "shutdown"])
     async def quit(self, ctx):
         """Quits the bot"""
 
