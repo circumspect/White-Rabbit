@@ -30,7 +30,7 @@ class Manual(commands.Cog):
 
     @commands.command()
     async def send_motives(self, ctx):
-        """Draw a motive card"""
+        """Distributes motive cards"""
 
         for name in gamedata.CHARACTERS:
             channel = ctx.text_channels[f"{name}-clues"]
