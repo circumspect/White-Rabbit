@@ -20,8 +20,18 @@ class Debug(commands.Cog):
         print("Bot has logged in!")
 
     @ commands.command()
+    async def plugins(self, ctx):
+        message = "```\n"
+        message += "Plugins loaded:\n"
+        message += '\n'.join(self.bot.cogs.keys())
+        message += "\n```"
+        await ctx.send(message)
+
+    @ commands.command()
     async def load(self, ctx, extension_name: str = "all"):
         """(Re)loads a plugin"""
+
+        extension_name = extension_name.lower()
 
         # Reload all
         if extension_name == "all":
@@ -39,7 +49,7 @@ class Debug(commands.Cog):
                 self.bot.load_extension(extension_name)
             await ctx.send(f"Loaded {extension_name}")
         except discord.ext.commands.errors.ExtensionNotFound:
-            await ctx.send(f"Couldn't find {extension_name}")
+            await ctx.send(f"Couldn't find plugin: \"{extension_name}\"")
 
     @ commands.command()
     async def unload(self, ctx, extension_name: str):

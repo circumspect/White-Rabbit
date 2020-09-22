@@ -36,7 +36,7 @@ class Players(commands.Cog):
         # Give role and update player's nickname
         asyncio.create_task(ctx.author.add_roles(role))
         asyncio.create_task(ctx.send(f"Gave you {role.name}!"))
-        if ctx.author.is_owner():
+        if ctx.author == ctx.guild.owner:
             # Can't update nickname for server owner
             asyncio.create_task(ctx.send("Couldn't update nickname because you are server owner!"))
         elif role.name.lower() in gamedata.CHARACTERS:
@@ -50,15 +50,12 @@ class Players(commands.Cog):
         for role in ctx.author.roles:
             if role.name.lower() in gamedata.CHARACTERS:
                 await ctx.author.remove_roles(role)
-                try:
-                    asyncio.create_task(ctx.author.edit(nick=None))
-                except discord.errors.Forbidden:
-                    if ctx.author.is_owner():
+                asyncio.create_task(ctx.send(f"Removed role {role.name}"))
+                if ctx.author == ctx.guild.owner:
                         # Can't update nickname for server owner
                         asyncio.create_task(ctx.send("Couldn't update nickname because you are server owner!"))
-                    else:
-                        ctx.send("Couldn't change your nickname, check bot permissions!")
-                asyncio.create_task(ctx.send(f"Removed role {role.name}"))
+                else:
+                    asyncio.create_task(ctx.author.edit(nick=None))
                 return
         await ctx.send("You don't have any character roles!")
 

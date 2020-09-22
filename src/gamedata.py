@@ -45,6 +45,7 @@ CLUE_TYPES = {
 class Data:
     def __init__(self, guild):
         self.guild = guild
+        self.init = False
         self.setup = False
         self.started = False
         self.automatic = True
