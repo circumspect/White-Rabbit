@@ -2,13 +2,13 @@
 import discord
 from discord.ext import commands
 # Local
-import filepaths
+import utils
 
 
 class Debug(commands.Cog):
     def __init__(self, bot):
         self.bot = bot
-        with open(filepaths.WHITE_RABBIT_DIR / "dev_ids.txt") as f:
+        with open(utils.WHITE_RABBIT_DIR / "dev_ids.txt") as f:
             self.dev_ids = [int(line.strip()) for line in f.readlines()]
 
     async def cog_check(self, ctx):

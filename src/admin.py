@@ -7,7 +7,7 @@ from discord.ext import commands
 from reportlab.pdfgen import canvas
 from reportlab.lib import pagesizes
 # Local
-import filepaths
+import utils
 import gamedata
 
 class Admin(commands.Cog):
@@ -44,7 +44,7 @@ class Admin(commands.Cog):
 
         await ctx.send("Downloading...")
         # make folder for messages
-        message_dir = filepaths.WHITE_RABBIT_DIR / ctx.guild.name
+        message_dir = utils.WHITE_RABBIT_DIR / ctx.guild.name
         message_dir.mkdir(parents=True, exist_ok=True)
 
         # Download messages
@@ -62,7 +62,7 @@ class Admin(commands.Cog):
                 message_file.write("\n".join(messages))
 
         # Send zip
-        zip_file = filepaths.WHITE_RABBIT_DIR / f"{ctx.guild.name} Messages.zip"
+        zip_file = utils.WHITE_RABBIT_DIR / f"{ctx.guild.name} Messages.zip"
         shutil.make_archive(
             zip_file.with_suffix(""),
             "zip", message_dir,
@@ -82,12 +82,12 @@ class Admin(commands.Cog):
             return x if left else pagesize[0] - x, pagesize[1] - y if top else y
 
         def draw_image(filepath, coordinates, shrink=4):
-            temp_png = filepaths.WHITE_RABBIT_DIR / f"temp {filepath.stem}.png"
+            temp_png = utils.WHITE_RABBIT_DIR / f"temp {filepath.stem}.png"
             Image.open(filepath).reduce(shrink).save(temp_png)
             c.drawImage(temp_png, *coordinates)
             temp_png.unlink()
 
-        c = canvas.Canvas(str(filepaths.WHITE_RABBIT_DIR / "test.pdf"), pagesize=pagesizes.letter)
+        c = canvas.Canvas(str(utils.WHITE_RABBIT_DIR / "test.pdf"), pagesize=pagesizes.letter)
         for character in gamedata.CHARACTERS:
             # character name
             c.setFont(FONT, 40)
@@ -95,9 +95,9 @@ class Admin(commands.Cog):
             c.drawString(*from_corner(50, 100), gamedata.CHARACTERS[character].split()[1])
 
             # character and motive card
-            draw_image(filepaths.MASTER_PATHS[character], from_corner(200, 300))
+            draw_image(utils.MASTER_PATHS[character], from_corner(200, 300))
             draw_image(
-                filepaths.MOTIVE_DIR / f"Motive {ctx.game.motives[character]}.png",
+                utils.MOTIVE_DIR / f"Motive {ctx.game.motives[character]}.png",
                 from_corner(400, 300)
             )
 

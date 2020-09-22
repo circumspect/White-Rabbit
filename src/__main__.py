@@ -2,7 +2,7 @@
 import discord
 from discord.ext import commands
 # Local
-import filepaths
+import utils
 import gamedata
 
 bot = commands.Bot(command_prefix="!")
@@ -66,6 +66,6 @@ for plugin in PLUGINS:
 print(f"Cogs loaded: {', '.join(bot.cogs.keys())}")
 
 # Import bot token
-with open(filepaths.WHITE_RABBIT_DIR / "token.txt") as token_file:
+with open(utils.WHITE_RABBIT_DIR / "token.txt") as token_file:
     token = token_file.read()
 bot.run(token)
