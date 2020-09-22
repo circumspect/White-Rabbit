@@ -124,7 +124,7 @@ class Manual(commands.Cog):
         for bucket in clue_buckets:
             if 90 in bucket:
                 # Willy Wonka sends his regards
-                ctx.game.clue_assignments["charlie"] = bucket
+                ctx.game.clue_assignments["charlie"] = sorted(bucket, reverse=True)
                 clue_buckets.remove(bucket)
                 break
 
