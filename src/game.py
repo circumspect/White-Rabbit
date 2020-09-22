@@ -321,7 +321,7 @@ class Game(commands.Cog):
             return
 
         search_card = random.choice(
-            (filepaths.CARD_DIR / "Searching").glob("*.png")
+            list((filepaths.CARD_DIR / "Searching").glob("*.png"))
         )
         asyncio.create_task(ctx.text_channels[f"{ctx.character}-clues"].send(
             file=discord.File(search_card)
