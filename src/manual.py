@@ -5,8 +5,8 @@ import random
 import discord
 from discord.ext import commands
 # Local
-import utils
 import gamedata
+import utils
 
 
 class Manual(commands.Cog):
@@ -29,19 +29,17 @@ class Manual(commands.Cog):
         return not ctx.game.automatic
 
     @commands.command()
-    async def draw_motive(self, ctx):
+    async def send_motives(self, ctx):
         """Draw a motive card"""
 
-        # Make sure player has a character role
-        if not ctx.character:
-            await ctx.send("You don't have a character role!")
-            return
-
-        asyncio.create_task(ctx.send("Sending your motive card!"))
-        channel = ctx.text_channels[f"{ctx.character}-clues"]
-        asyncio.create_task(channel.send(file=discord.File(
-            utils.MOTIVE_DIR / f"Motive {ctx.game.motives[ctx.character]}.png"
-        )))
+        for name in gamedata.CHARACTERS:
+            channel = ctx.text_channels[f"{name}-clues"]
+            motive = ctx.game.motives[name]
+            utils.send_image(
+                channel,
+                utils.MOTIVE_DIR / f"Motive {motive}.png",
+                ctx
+            )
 
     @commands.command()
     async def clue(self, ctx, time: int):

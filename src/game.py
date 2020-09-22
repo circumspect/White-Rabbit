@@ -109,14 +109,10 @@ class Game(commands.Cog):
                 utils.MASTER_PATHS[name],
                 ctx
             )
-            if ctx.game.automatic:
-                motive = ctx.game.motives[name]
-                utils.send_image(
-                    channel,
-                    utils.MOTIVE_DIR / f"Motive {motive}.png",
-                    ctx
-                )
 
+        if ctx.game.automatic:
+            asyncio.create_task(self.bot.cogs["Manual"].send_motives(ctx))
+        
         await self.bot.cogs["Manual"].shuffle_clues(ctx)
         await self.bot.cogs["Manual"].assign_clues(ctx)
 
