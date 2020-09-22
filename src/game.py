@@ -50,20 +50,22 @@ class Game(commands.Cog):
         else:
             await ctx.send("Input error, try !auto on or !auto off")
 
-    def send_image(self, ctx, channel, filepath):
+    def send_image(self, channel, filepath, ctx=None):
         """Sends an image to a specified channel"""
 
         if isinstance(channel, str):
+            if not ctx:
+                raise ValueError
             channel = ctx.text_channels[channel]
         asyncio.create_task(channel.send(
             file=discord.File(filepath)
         ))
 
-    def send_folder(self, ctx, channel, path):
+    def send_folder(self, channel, path, ctx=None):
         """Sends all images in a folder in alphabetical order"""
         
         for image in sorted(path.glob("*")):
-            self.send_image(ctx, channel, image)
+            self.send_image(channel, image, ctx)
 
     @commands.command()
     async def setup(self, ctx):
@@ -80,29 +82,29 @@ class Game(commands.Cog):
 
         # Introduction images
         self.send_image(
-            ctx,
             "player-resources",
-            filepaths.MASTER_PATHS["guide"]
+            filepaths.MASTER_PATHS["guide"],
+            ctx
         )
         self.send_image(
-            ctx,
             "player-resources",
-            filepaths.MASTER_PATHS["character_sheet"]
+            filepaths.MASTER_PATHS["character_sheet"],
+            ctx
         )
         self.send_image(
-            ctx,
             "player-resources",
-            filepaths.MASTER_PATHS["intro"]
+            filepaths.MASTER_PATHS["intro"],
+            ctx
         )
         alice = random.choice(list(
             (filepaths.POSTER_DIR).glob("*.png")
         ))
-        self.send_image(ctx, "player-resources", alice)
+        self.send_image("player-resources", alice, ctx)
 
         # Send characters, suspects, and locations to appropriate channels
-        self.send_folder(ctx, "character-cards", filepaths.CHARACTER_IMAGE_DIR)
-        self.send_folder(ctx, "suspect-cards", filepaths.SUSPECT_IMAGE_DIR)
-        self.send_folder(ctx, "location-cards", filepaths.LOCATION_IMAGE_DIR)
+        self.send_folder("character-cards", filepaths.CHARACTER_IMAGE_DIR, ctx)
+        self.send_folder("suspect-cards", filepaths.SUSPECT_IMAGE_DIR, ctx)
+        self.send_folder("location-cards", filepaths.LOCATION_IMAGE_DIR, ctx)
 
         # Instructions for Charlie Barnes
         channel = ctx.text_channels["charlie-clues"]
@@ -121,16 +123,16 @@ class Game(commands.Cog):
         for name in gamedata.CHARACTERS:
             channel = ctx.text_channels[f"{name}-clues"]
             self.send_image(
-                ctx,
                 channel,
-                filepaths.MASTER_PATHS[name]
+                filepaths.MASTER_PATHS[name],
+                ctx
             )
             if ctx.game.automatic:
                 motive = ctx.game.motives[name]
                 self.send_image(
-                    ctx,
                     channel,
-                    filepaths.MOTIVE_DIR / f"Motive {motive}.png"
+                    filepaths.MOTIVE_DIR / f"Motive {motive}.png",
+                    ctx
                 )
 
         await self.bot.cogs["Manual"].shuffle_clues(ctx)
@@ -233,6 +235,12 @@ class Game(commands.Cog):
                 await text_channels["bot-channel"].send((
                     f"{pad(remaining_time // 60)}:{pad(remaining_time % 60)}"
                 ))
+            
+            # Send clues if in automatic mode
+            minutes_left = int(remaining_time/60)
+            if minutes_left in gamedata.CLUE_TIMES and minutes_left <= game.last_clue:
+                game.last_clue = minutes_left
+                await self.bot.cogs["Manual"].send_clue(game, minutes_left)
 
     @commands.command()
     async def search(self, ctx):

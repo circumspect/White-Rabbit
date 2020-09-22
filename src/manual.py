@@ -7,7 +7,7 @@ from discord.ext import commands
 # Local
 import filepaths
 import gamedata
-
+import utils
 
 class Manual(commands.Cog):
     """
@@ -72,40 +72,45 @@ class Manual(commands.Cog):
             return
 
         # Send the clue
-        self.send_clue(ctx, time)
+        self.send_clue(ctx.game, time)
 
-    def send_clue(self, ctx, time: int):
+    def send_clue(self, game, time: int):
         # Send clue based on picked_clues value
-        channel = ctx.text_channels[f"{ctx.character}-clues"]
-        choice = ctx.game.picked_clues[time]
-        path = filepaths.CLUE_DIR / str(time) / f"{time}-{choice}.png"
-        self.bot.cogs["Game"].send_image(ctx, channel, path)
-        suspect = self.draw_suspect(ctx, time)
-        path = filepaths.MASTER_PATHS[suspect]
-        self.bot.cogs["Game"].send_image(ctx, channel, path)
+        for name in game.clue_assignments:
+            if time in game.clue_assignments[name]:
+                character = name
+                break
 
-    def draw_suspect(self, ctx, time: int):
+        channel = utils.get_text_channels(game.guild)[f"{character}-clues"]
+        choice = game.picked_clues[time]
+        path = filepaths.CLUE_DIR / str(time) / f"{time}-{choice}.png"
+        self.bot.cogs["Game"].send_image(channel, path)
+        suspect = self.draw_suspect(game, time)
+        path = filepaths.MASTER_PATHS[suspect]
+        self.bot.cogs["Game"].send_image(channel, path)
+
+    def draw_suspect(self, game, time: int):
         clue_type = gamedata.CLUE_TYPES[time]
 
         # Check if is tuple and pull the correct type from it
         if type(clue_type) is tuple:
-            clue_type = clue_type[ctx.game.picked_clues[time]-1]
+            clue_type = clue_type[game.picked_clues[time]-1]
         
         if clue_type == "suspect":
-            index = random.randint(0, len(ctx.game.suspect_pile)-1)
-            ctx.game.suspects_drawn[time] = (ctx.game.suspect_pile.pop(index))
-            return ctx.game.suspects_drawn[time]
+            index = random.randint(0, len(game.suspect_pile)-1)
+            game.suspects_drawn[time] = (game.suspect_pile.pop(index))
+            return game.suspects_drawn[time]
         elif clue_type == "location":
-            index = random.randint(0, len(ctx.game.location_pile)-1)
-            ctx.game.suspects_drawn[time] = (ctx.game.suspect_pile.pop(index))
-            return ctx.game.suspects_drawn[time]
+            index = random.randint(0, len(game.location_pile)-1)
+            game.suspects_drawn[time] = (game.suspect_pile.pop(index))
+            return game.suspects_drawn[time]
         elif clue_type == "suspect-drawn":
-            culprit = random.choice(ctx.game.suspects_drawn.values())
-            ctx.game.suspects_drawn[time] = culprit
+            culprit = random.choice(game.suspects_drawn.values())
+            game.suspects_drawn[time] = culprit
             return culprit
         elif clue_type == "location-drawn":
-            final_location = random.choice(ctx.game.locations_drawn.values())
-            ctx.game.locations_drawn[time] = final_location
+            final_location = random.choice(game.locations_drawn.values())
+            game.locations_drawn[time] = final_location
             return final_location
         else:
             print("Error: Unexpected clue type!")
