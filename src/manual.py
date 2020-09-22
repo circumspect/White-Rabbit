@@ -85,6 +85,7 @@ class Manual(commands.Cog):
         choice = game.picked_clues[time]
         path = utils.CLUE_DIR / str(time) / f"{time}-{choice}.png"
         utils.send_image(channel, path)
+
         suspect = self.draw_suspect(game, time)
         path = utils.MASTER_PATHS[suspect]
         utils.send_image(channel, path)
@@ -93,7 +94,7 @@ class Manual(commands.Cog):
         clue_type = gamedata.CLUE_TYPES[time]
 
         # Check if is tuple and pull the correct type from it
-        if type(clue_type) is tuple:
+        if isinstance(clue_type, tuple):
             clue_type = clue_type[game.picked_clues[time]-1]
         
         if clue_type == "suspect":
@@ -113,8 +114,7 @@ class Manual(commands.Cog):
             game.locations_drawn[time] = final_location
             return final_location
         else:
-            print("Error: Unexpected clue type!")
-            return ""
+            raise ValueError("Unexpected clue type!")
 
     @commands.command()
     async def shuffle_clues(self, ctx):
