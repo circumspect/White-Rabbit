@@ -90,11 +90,12 @@ class Manual(commands.Cog):
         path = utils.MASTER_PATHS[suspect]
         utils.send_image(channel, path)
         
-        # Update next_clue
-        for i in range(len(gamedata.CLUE_TIMES)):
-            if gamedata.CLUE_TIMES[i] == game.next_clue:
-                game.next_clue = gamedata.CLUE_TIMES[i+1]
-                break
+        # Update next_clue unless at end
+        if game.next_clue != 20:
+            for i in range(len(gamedata.CLUE_TIMES)):
+                if gamedata.CLUE_TIMES[i] == game.next_clue:
+                    game.next_clue = gamedata.CLUE_TIMES[i+1]
+                    break
 
     def draw_suspect(self, game, time: int):
         clue_type = gamedata.CLUE_TYPES[time]
