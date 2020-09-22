@@ -26,15 +26,15 @@ MASTER_PATHS = {
     "guide": (RESOURCE_DIR / "Alice is Missing - Guide.jpg"),
     "character_sheet": (RESOURCE_DIR / "Alice is Missing - Character Sheet.jpg"),
     "intro": (CARD_DIR / "Misc" / "Introduction.png"),
-    }
+}
 
 IMAGE_EXT = ".png"
-for character in (gamedata.CHARACTERS):
-    MASTER_PATHS[character] = CHARACTER_IMAGE_DIR / (gamedata.CHARACTERS[character] + IMAGE_EXT)
-for suspect in (gamedata.SUSPECTS):
-    MASTER_PATHS[suspect] = SUSPECT_IMAGE_DIR / (gamedata.SUSPECTS[suspect] + IMAGE_EXT)
-for location in (gamedata.LOCATIONS):
-    MASTER_PATHS[location] = LOCATION_IMAGE_DIR / (gamedata.LOCATIONS[location] + IMAGE_EXT)
+for character in gamedata.CHARACTERS:
+    MASTER_PATHS[character] = (CHARACTER_IMAGE_DIR / gamedata.CHARACTERS[character]).with_suffix(IMAGE_EXT)
+for suspect in gamedata.SUSPECTS:
+    MASTER_PATHS[suspect] = (SUSPECT_IMAGE_DIR / gamedata.SUSPECTS[suspect]).with_suffix(IMAGE_EXT)
+for location in gamedata.LOCATIONS:
+    MASTER_PATHS[location] = (LOCATION_IMAGE_DIR / gamedata.LOCATIONS[location]).with_suffix(IMAGE_EXT)
 
 
 def get_text_channels(guild):
