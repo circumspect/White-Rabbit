@@ -70,6 +70,7 @@ class Data:
 
         self.suspects_drawn = {}
         self.locations_drawn = {}
+        self.last_clue = 90
 
     def char_roles(self):
         unsorted = {
