@@ -16,10 +16,13 @@ class Admin(commands.Cog):
 
     @commands.command()
     async def reset(self, ctx, *text_channels: discord.TextChannel):
-        """Wipes all messages on the server"""
+        """Resets server and game data"""
+
+        # Confirm command to user
+        await ctx.send("Resetting the server!")
 
         # Console logging
-        print(f'Wiping messages from server: "{ctx.guild.name}" with ID: "{ctx.guild.id}"')
+        print(f'Resetting server: "{ctx.guild.name}" with ID: "{ctx.guild.id}"')
 
         if not text_channels:
             text_channels = ctx.guild.text_channels

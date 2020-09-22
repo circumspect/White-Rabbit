@@ -54,7 +54,7 @@ async def on_command_error(ctx, error):
             return
         await ctx.send("You can't do that")
     else:
-        await ctx.send("Other error: check console")
+        await ctx.send("Unknown error: check console!")
         raise error
 
 
