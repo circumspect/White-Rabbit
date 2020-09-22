@@ -47,7 +47,7 @@ class Admin(commands.Cog):
         # Download messages
         for channel in ctx.guild.text_channels:
             messages = [
-                f"{message.created_at.strftime('%m/%d/%y %H:%M')} {message.author.display_name}: {message.clean_content}"
+                f"{message.created_at.strftime('%Y-%m-%d %H:%M')} {message.author.display_name}: {message.clean_content}"
                 async for message in channel.history(limit=None, oldest_first=True)
             ]
             with open(message_dir / f"{channel.name}.txt", mode="w") as message_file:
