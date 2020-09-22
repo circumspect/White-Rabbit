@@ -53,7 +53,11 @@ class Players(commands.Cog):
                 try:
                     asyncio.create_task(ctx.author.edit(nick=None))
                 except discord.errors.Forbidden:
-                    ctx.send("Couldn't change your nickname, are you the owner?")
+                    if ctx.author.is_owner():
+                        # Can't update nickname for server owner
+                        asyncio.create_task(ctx.send("Couldn't update nickname because you are server owner!"))
+                    else:
+                        ctx.send("Couldn't change your nickname, check bot permissions!")
                 asyncio.create_task(ctx.send(f"Removed role {role.name}"))
                 return
         await ctx.send("You don't have any character roles!")
