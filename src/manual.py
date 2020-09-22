@@ -84,10 +84,10 @@ class Manual(commands.Cog):
         channel = utils.get_text_channels(game.guild)[f"{character}-clues"]
         choice = game.picked_clues[time]
         path = utils.CLUE_DIR / str(time) / f"{time}-{choice}.png"
-        self.bot.cogs["Game"].send_image(channel, path)
+        utils.send_image(channel, path)
         suspect = self.draw_suspect(game, time)
         path = utils.MASTER_PATHS[suspect]
-        self.bot.cogs["Game"].send_image(channel, path)
+        utils.send_image(channel, path)
 
     def draw_suspect(self, game, time: int):
         clue_type = gamedata.CLUE_TYPES[time]
