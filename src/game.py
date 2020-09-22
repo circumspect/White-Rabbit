@@ -134,6 +134,7 @@ class Game(commands.Cog):
                 )
 
         await self.bot.cogs["Manual"].shuffle_clues(ctx)
+        await self.bot.cogs["Manual"].assign_clues(ctx)
 
         ctx.game.setup = True
 

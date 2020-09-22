@@ -41,7 +41,7 @@ class Data:
         self.guild = guild
         self.setup = False
         self.started = False
-        self.automatic = False
+        self.automatic = True
         self.show_timer = False
         self.stream_music = False
 
@@ -58,18 +58,18 @@ class Data:
         self.picked_clues = {}
 
         # Suspects and locations
-        suspect_pile = []
+        self.suspect_pile = []
         for suspect in SUSPECTS.keys():
-            suspect_pile.append(suspect)
-            suspect_pile.append(suspect)
+            self.suspect_pile.append(suspect)
+            self.suspect_pile.append(suspect)
 
-        location_pile = []
+        self.location_pile = []
         for location in LOCATIONS.keys():
-            location_pile.append(location)
-            location_pile.append(location)
+            self.location_pile.append(location)
+            self.location_pile.append(location)
 
-        drawn_suspects = []
-        drawn_locations = []
+        self.suspects_drawn = {}
+        self.locations_drawn = {}
 
     def char_roles(self):
         unsorted = {
