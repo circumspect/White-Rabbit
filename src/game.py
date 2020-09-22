@@ -50,8 +50,8 @@ class Game(commands.Cog):
         else:
             await ctx.send("Input error, try !auto on or !auto off")
 
-    @commands.command()
-    async def init(self, ctx):
+    @commands.command(aliases=["init"])
+    async def initialize(self, ctx):
         """Initial setup before character selection"""
 
         if ctx.game.started:
@@ -250,7 +250,7 @@ class Game(commands.Cog):
                     self.bot.cogs["Manual"].send_clue(game, minutes_left)
             # Otherwise, wait, then remind the player
             else:
-                if minutes_left + game.REMINDER_BUFFER in gamedata.CLUE_TIMES and minutes_left <= game.next_clue:
+                if minutes_left + gamedata.REMINDER_BUFFER in gamedata.CLUE_TIMES and minutes_left <= game.next_clue:
                     for name in game.clue_assignments:
                         if time in game.clue_assignments[name]:
                             character = name
