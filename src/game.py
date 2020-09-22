@@ -46,7 +46,7 @@ class Game(commands.Cog):
         else:
             await ctx.send("Input error, try !auto on or !auto off")
 
-    async def send_image(self, ctx, channel, filepath):
+    def send_image(self, ctx, channel, filepath):
         """Sends an image to a specified channel"""
 
         if isinstance(channel, str):
@@ -55,7 +55,7 @@ class Game(commands.Cog):
             file=discord.File(filepath)
         ))
 
-    async def send_folder(self, ctx, channel, path):
+    def send_folder(self, ctx, channel, path):
         """Sends all images in a folder in alphabetical order"""
         
         for image in sorted(path.glob("*")):

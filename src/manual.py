@@ -72,17 +72,14 @@ class Manual(commands.Cog):
             return
 
         # Send the clue
-        await self.send_clue(ctx, time)
+        self.send_clue(ctx, time)
 
-    async def send_clue(self, ctx, time: int):
+    def send_clue(self, ctx, time: int):
         # Send clue based on picked_clues value
         channel = ctx.text_channels[f"{ctx.character}-clues"]
         choice = ctx.game.picked_clues[time]
         path = filepaths.CLUE_DIR / str(time) / f"{time}-{choice}.png"
-        print(channel)
-        print(choice)
-        print(path)
-        await self.bot.cogs["Game"].send_image(ctx, channel, path)
+        self.bot.cogs["Game"].send_image(ctx, channel, path)
 
     @ commands.command()
     async def shuffle_clues(self, ctx):
