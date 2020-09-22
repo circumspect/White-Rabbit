@@ -6,6 +6,7 @@ WHITE_RABBIT_DIR = Path(__file__).parent.parent
 
 IMAGE_DIR = WHITE_RABBIT_DIR / "Images"
 RESOURCE_DIR = IMAGE_DIR / "Player Resources"
+TIMER_AUDIO = WHITE_RABBIT_DIR / "Alice is Missing Playlist.mp3"
 
 CARD_DIR = IMAGE_DIR / "Cards"
 CHARACTER_IMAGE_DIR = CARD_DIR / "Characters"
