@@ -80,11 +80,38 @@ class Manual(commands.Cog):
         choice = ctx.game.picked_clues[time]
         path = filepaths.CLUE_DIR / str(time) / f"{time}-{choice}.png"
         self.bot.cogs["Game"].send_image(ctx, channel, path)
+        suspect = self.draw_suspect(ctx, time)
+        path = filepaths.MASTER_PATHS[suspect]
+        self.bot.cogs["Game"].send_image(ctx, channel, path)
 
-    def draw(self, ctx, time):
-        pass
+    def draw_suspect(self, ctx, time: int):
+        clue_type = gamedata.CLUE_TYPES[time]
 
-    @ commands.command()
+        # Check if is tuple and pull the correct type from it
+        if type(clue_type) is tuple:
+            clue_type = clue_type[ctx.game.picked_clues[time]-1]
+        
+        if clue_type == "suspect":
+            index = random.randint(0, len(ctx.game.suspect_pile)-1)
+            ctx.game.suspects_drawn[time] = (ctx.game.suspect_pile.pop(index))
+            return ctx.game.suspects_drawn[time]
+        elif clue_type == "location":
+            index = random.randint(0, len(ctx.game.location_pile)-1)
+            ctx.game.suspects_drawn[time] = (ctx.game.suspect_pile.pop(index))
+            return ctx.game.suspects_drawn[time]
+        elif clue_type == "suspect-drawn":
+            culprit = random.choice(ctx.game.suspects_drawn.values())
+            ctx.game.suspects_drawn[time] = culprit
+            return culprit
+        elif clue_type == "location-drawn":
+            final_location = random.choice(ctx.game.locations_drawn.values())
+            ctx.game.locations_drawn[time] = final_location
+            return final_location
+        else:
+            print("Error: Unexpected clue type!")
+            return ""
+
+    @commands.command()
     async def shuffle_clues(self, ctx):
         """(Re)shuffles the clue card piles"""
 
