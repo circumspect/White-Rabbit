@@ -235,8 +235,11 @@ class Game(commands.Cog):
                 def pad(num):
                     return str(int(num)).zfill(2)
 
+                minutes = math.floor(remaining_time / 60)
+                seconds = math.floor((remaining_time % 60)/gamedata.TIMER_GAP) * gamedata.TIMER_GAP
+
                 await text_channels["bot-channel"].send((
-                    f"{pad(remaining_time // 60)}:{pad(remaining_time % 60)}"
+                    f"{pad(minutes)}:{pad(seconds)}"
                 ))
 
             # Send clues if in automatic mode
