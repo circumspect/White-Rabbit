@@ -164,8 +164,8 @@ class Game(commands.Cog):
         ctx.guild.voice_client.play(
             discord.PCMVolumeTransformer(discord.FFmpegPCMAudio(
                 filepaths.WHITE_RABBIT_DIR / "Alice is Missing Playlist.mp3"
-            )
-        ))
+            ))
+        )
 
         await ctx.send("Starting the game!")
 
