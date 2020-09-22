@@ -45,7 +45,7 @@ async def on_command_error(ctx, error):
     }
     bot_channel = ctx.text_channels["bot-channel"]
     if isinstance(error, discord.ext.commands.errors.UserInputError):
-        await ctx.send("Invalid input")
+        await ctx.send("Can't understand input!")
     elif isinstance(error, discord.ext.commands.errors.CommandNotFound):
         await ctx.send("Command not found!")
     elif isinstance(error, discord.ext.commands.errors.CheckFailure):
@@ -54,7 +54,7 @@ async def on_command_error(ctx, error):
             return
         await ctx.send("You can't do that")
     else:
-        await ctx.send("There was an error")
+        await ctx.send("Other error: check console")
         raise error
 
 

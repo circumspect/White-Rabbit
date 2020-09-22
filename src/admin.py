@@ -1,11 +1,11 @@
+# Built-in
 import shutil
-
 # 3rd-party
 import discord
 from discord.ext import commands
-
+# Local
 import filepaths
-
+import gamedata
 
 class Admin(commands.Cog):
     def __init__(self, bot):
@@ -15,7 +15,7 @@ class Admin(commands.Cog):
         return ctx.author.guild_permissions.administrator
 
     @commands.command()
-    async def wipe(self, ctx, *text_channels: discord.TextChannel):
+    async def reset(self, ctx, *text_channels: discord.TextChannel):
         """Wipes all messages on the server"""
 
         # Console logging
@@ -28,6 +28,9 @@ class Admin(commands.Cog):
 
         # Console logging
         print(f'Wiped messages from server: "{ctx.guild.name}" with ID: "{ctx.guild.id}"')
+
+        # Reset game data
+        ctx.game.__init__(ctx.game.guild)
 
     @commands.command()
     async def download(self, ctx):
