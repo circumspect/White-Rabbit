@@ -78,9 +78,11 @@ class Manual(commands.Cog):
         # Send clue based on picked_clues value
         channel = ctx.text_channels[f"{ctx.character}-clues"]
         choice = ctx.game.picked_clues[time]
-        asyncio.create_task(channel.send(file=discord.File(
-            filepaths.CLUE_DIR / str(time) / f"{time}-{choice}.png"
-        )))
+        path = filepaths.CLUE_DIR / str(time) / f"{time}-{choice}.png"
+        print(channel)
+        print(choice)
+        print(path)
+        await self.bot.cogs["Game"].send_image(ctx, channel, path)
 
     @ commands.command()
     async def shuffle_clues(self, ctx):
