@@ -73,21 +73,43 @@ class Manual(commands.Cog):
         self.send_clue(ctx.game, time)
 
     def send_clue(self, game, time: int):
-        # Send clue based on picked_clues value
+        # Sends clue based on picked_clues value
+        
+        # Find character who the clue has been assigned to
         for name in game.clue_assignments:
             if time in game.clue_assignments[name]:
                 character = name
                 break
         else:
             raise ValueError("Missing clue")
-
+        
+        # Send clue card
         channel = utils.get_text_channels(game.guild)[f"{character}-clues"]
         choice = game.picked_clues[time]
         path = utils.CLUE_DIR / str(time) / f"{time}-{choice}.png"
         utils.send_image(channel, path)
 
+        # Send suspect/location card to player's clues channel
         suspect = self.draw_suspect(game, time)
         path = utils.MASTER_PATHS[suspect]
+        utils.send_image(channel, path)
+
+        # Send suspect/location card to respective drawn cards channel
+        if suspect in gamedata.SUSPECTS:
+            channel = "suspects-drawn"
+        elif suspect in gamedata.LOCATIONS:
+            channel = "locations-drawn"
+        else:
+            channel = "bot-channel"
+        channel = utils.get_text_channels(game.guild)[channel]
+        # Confirmed culprit/location
+        if time <= 30:
+            if suspect in gamedata.SUSPECTS:
+                asyncio.create_task(channel.send("CULPRIT:"))
+            elif suspect in gamedata.LOCATIONS:
+                asyncio.create_task(channel.send("ALICE'S LOCATION:"))
+            else:
+                asyncio.create_task(channel.send("Something has gone very very wrong."))
         utils.send_image(channel, path)
         
         # Update next_clue unless at end
@@ -110,14 +132,14 @@ class Manual(commands.Cog):
             return game.suspects_drawn[time]
         elif clue_type == "location":
             index = random.randint(0, len(game.location_pile)-1)
-            game.suspects_drawn[time] = (game.suspect_pile.pop(index))
-            return game.suspects_drawn[time]
+            game.locations_drawn[time] = (game.location_pile.pop(index))
+            return game.locations_drawn[time]
         elif clue_type == "suspect-drawn":
-            culprit = random.choice(game.suspects_drawn.values())
+            culprit = random.choice(list(game.suspects_drawn.values()))
             game.suspects_drawn[time] = culprit
             return culprit
         elif clue_type == "location-drawn":
-            final_location = random.choice(game.locations_drawn.values())
+            final_location = random.choice(list(game.locations_drawn.values()))
             game.locations_drawn[time] = final_location
             return final_location
         else:
