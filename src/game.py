@@ -292,9 +292,20 @@ class Game(commands.Cog):
 
             # Send clues if in automatic mode
             minutes_left = int(remaining_time/60)
-            if minutes_left in gamedata.CLUE_TIMES and minutes_left <= game.last_clue:
-                game.last_clue = minutes_left
-                await self.bot.cogs["Manual"].send_clue(game, minutes_left)
+            if game.automatic:
+                if minutes_left in gamedata.CLUE_TIMES and minutes_left <= game.next_clue:
+                    # Send clue
+                    self.bot.cogs["Manual"].send_clue(game, minutes_left)
+            # Otherwise, wait, then remind the player
+            else:
+                if minutes_left + game.REMINDER_BUFFER in gamedata.CLUE_TIMES and minutes_left <= game.next_clue:
+                    for name in game.clue_assignments:
+                        if time in game.clue_assignments[name]:
+                            character = name
+                            break
+                    
+                    channel = utils.get_text_channels(game.guild)[f"{character}-clues"]
+                    await channel.send("Reminder: You have the " + str(minutes_left) + " minute clue card")
 
     @commands.command()
     async def search(self, ctx):
