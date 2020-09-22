@@ -108,7 +108,7 @@ class Game(commands.Cog):
             "Explain motive cards", "Character introductions (relationships)",
             "Voicemails", "Suspects and locations", "Explain clue cards",
             "Explain searching", "Game guide",
-            "Stream timer https://www.youtube.com/watch?v=ysOOFIOAy7A",
+            "Stream timer (https://www.youtube.com/watch?v=ysOOFIOAy7A)",
             "Run !start", "90 min card",
         ])
         asyncio.create_task(channel.send(f"```{prompts}```"))
