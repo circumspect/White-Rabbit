@@ -79,4 +79,3 @@ class Data:
         }
 
         return dict(sorted(unsorted.items(), key=lambda item: item[0]))
-
