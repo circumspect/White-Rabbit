@@ -50,17 +50,17 @@ class Game(commands.Cog):
             await ctx.send("Input error, try !auto on or !auto off")
 
     @commands.command()
-    async def setup(self, ctx):
-        """Sends out cards and sets up the game"""
+    async def init(self, ctx):
+        """Initial setup before character selection"""
 
         if ctx.game.started:
             await ctx.send("Game has already begun!")
             return
-        elif ctx.game.setup:
-            await ctx.send("Setup already run!")
+        elif ctx.game.init:
+            await ctx.send("Initialization already run!")
             return
 
-        await ctx.send("Starting setup")
+        await ctx.send("Initializing game")
 
         # Introduction images
         utils.send_image(
@@ -109,9 +109,33 @@ class Game(commands.Cog):
                 utils.MASTER_PATHS[name],
                 ctx
             )
-
+        
+        # Send motives if in automatic mode
         if ctx.game.automatic:
             asyncio.create_task(self.bot.cogs["Manual"].send_motives(ctx))
+
+        ctx.game.init = True
+
+    @commands.command()
+    async def setup(self, ctx):
+        """Setup after players have chosen characters"""
+        
+        if not ctx.game.init:
+            await ctx.send("Need to initialize first!")
+            return
+        elif ctx.game.started:
+            await ctx.send("Game has already begun!")
+            return
+
+        player_count = len(ctx.game.char_roles())
+        # Can't set up if there aren't enough players to assign clues
+        if player_count < 3:
+            await ctx.send("Not enough players!")
+            return
+        # Can't set up without Charlie Barnes
+        elif "Charlie" not in ctx.game.char_roles():
+            await ctx.send("Can't find Charlie!")
+            return
         
         await self.bot.cogs["Manual"].shuffle_clues(ctx)
         await self.bot.cogs["Manual"].assign_clues(ctx)
