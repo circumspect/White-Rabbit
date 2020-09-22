@@ -45,7 +45,7 @@ class Game(commands.Cog):
             ctx.game.automatic = True
             await ctx.send("Automatic card draw enabled!")
         elif mode == "off":
-            ctx.game.automatic = True
+            ctx.game.automatic = False
             await ctx.send("Automatic card draw disabled!")
         else:
             await ctx.send("Input error, try !auto on or !auto off")
@@ -82,20 +82,20 @@ class Game(commands.Cog):
         self.send_image(
             ctx,
             "player-resources",
-            filepaths.RESOURCE_DIR / "Alice is Missing - Guide.jpg"
+            filepaths.MASTER_PATHS["guide"]
         )
         self.send_image(
             ctx,
             "player-resources",
-            filepaths.RESOURCE_DIR / "Alice is Missing - Character Sheet.jpg"
+            filepaths.MASTER_PATHS["character_sheet"]
         )
         self.send_image(
             ctx,
             "player-resources",
-            filepaths.CARD_DIR / "Misc" / "Introduction.png"
+            filepaths.MASTER_PATHS["intro"]
         )
         alice = random.choice(list(
-            (filepaths.IMAGE_DIR / "Missing Person Posters").glob("*.png")
+            (filepaths.POSTER_DIR).glob("*.png")
         ))
         self.send_image(ctx, "player-resources", alice)
 
@@ -118,15 +118,15 @@ class Game(commands.Cog):
         asyncio.create_task(channel.send(f"```{prompts}```"))
 
         # Character and motive cards in clues channels
-        for first_name, full_name in gamedata.CHARACTERS.items():
-            channel = ctx.text_channels[f"{first_name}-clues"]
+        for name in gamedata.CHARACTERS:
+            channel = ctx.text_channels[f"{name}-clues"]
             self.send_image(
                 ctx,
                 channel,
-                filepaths.CHARACTER_IMAGE_DIR / f"{full_name}.png"
+                filepaths.MASTER_PATHS[name]
             )
             if ctx.game.automatic:
-                motive = ctx.game.motives[first_name]
+                motive = ctx.game.motives[name]
                 self.send_image(
                     ctx,
                     channel,

@@ -81,9 +81,14 @@ class Manual(commands.Cog):
         path = filepaths.CLUE_DIR / str(time) / f"{time}-{choice}.png"
         self.bot.cogs["Game"].send_image(ctx, channel, path)
 
+    def draw(self, ctx, time):
+        pass
+
     @ commands.command()
     async def shuffle_clues(self, ctx):
         """(Re)shuffles the clue card piles"""
+
+        asyncio.create_task(ctx.send("Shuffling the clues!"))
 
         for time in gamedata.CLUE_TIMES:
             ctx.game.picked_clues[time] = random.randint(1, 3)
@@ -97,6 +102,7 @@ class Manual(commands.Cog):
     @commands.command()
     async def assign_clues(self, ctx):
         """Randomizes and assigns clue times"""
+
         player_count = len(ctx.game.char_roles())
         # Stop if fewer than 3 player roles assigned
         if player_count < 3:
@@ -105,6 +111,8 @@ class Manual(commands.Cog):
         elif "Charlie" not in ctx.game.char_roles():
             await ctx.send("Can't find Charlie!")
             return
+
+        asyncio.create_task(ctx.send("Assigning clue cards!"))
 
         # Generate clues
         while True:

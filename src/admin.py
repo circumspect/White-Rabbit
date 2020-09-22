@@ -14,7 +14,7 @@ class Admin(commands.Cog):
     async def cog_check(self, ctx):
         return ctx.author.guild_permissions.administrator
 
-    @commands.command()
+    @commands.command(aliases=["wipe"])
     async def reset(self, ctx, *text_channels: discord.TextChannel):
         """Resets server and game data"""
 
