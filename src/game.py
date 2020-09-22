@@ -1,5 +1,6 @@
 # Built-in
 import asyncio
+import math
 import random
 import time
 import typing
@@ -264,16 +265,6 @@ class Game(commands.Cog):
 
         await ctx.send("Starting the game!")
 
-    @commands.command(name="timer")
-    async def show_time(self, ctx):
-        """Show/hide bot timer"""
-
-        ctx.game.show_timer = not ctx.game.show_timer
-        if ctx.game.show_timer:
-            await ctx.send("Showing bot timer!")
-        else:
-            await ctx.send("Hiding bot timer!")
-
     @commands.command()
     async def music(self, ctx):
         """Enable/disable music stream when game starts"""
@@ -283,6 +274,16 @@ class Game(commands.Cog):
             await ctx.send("Music stream enabled!")
         else:
             await ctx.send("Music stream disabled!")
+
+    @commands.command(name="timer")
+    async def show_time(self, ctx):
+        """Show/hide bot timer"""
+
+        ctx.game.show_timer = not ctx.game.show_timer
+        if ctx.game.show_timer:
+            await ctx.send("Showing bot timer!")
+        else:
+            await ctx.send("Hiding bot timer!")
 
     @tasks.loop(seconds=gamedata.TIMER_GAP)
     async def timer(self):
@@ -315,7 +316,7 @@ class Game(commands.Cog):
                 ))
 
             # Send clues if in automatic mode
-            minutes_left = int(remaining_time/60)
+            minutes_left = math.ceil(remaining_time/60)
             if game.automatic:
                 if minutes_left in gamedata.CLUE_TIMES and minutes_left <= game.next_clue:
                     # Send clue
