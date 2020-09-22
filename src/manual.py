@@ -5,7 +5,7 @@ import random
 import discord
 from discord.ext import commands
 # Local
-import filepaths
+import utils
 import gamedata
 import utils
 
@@ -40,7 +40,7 @@ class Manual(commands.Cog):
         asyncio.create_task(ctx.send("Sending your motive card!"))
         channel = ctx.text_channels[f"{ctx.character}-clues"]
         asyncio.create_task(channel.send(file=discord.File(
-            filepaths.MOTIVE_DIR / f"Motive {ctx.game.motives[ctx.character]}.png"
+            utils.MOTIVE_DIR / f"Motive {ctx.game.motives[ctx.character]}.png"
         )))
 
     @commands.command()
@@ -83,10 +83,10 @@ class Manual(commands.Cog):
 
         channel = utils.get_text_channels(game.guild)[f"{character}-clues"]
         choice = game.picked_clues[time]
-        path = filepaths.CLUE_DIR / str(time) / f"{time}-{choice}.png"
+        path = utils.CLUE_DIR / str(time) / f"{time}-{choice}.png"
         self.bot.cogs["Game"].send_image(channel, path)
         suspect = self.draw_suspect(game, time)
-        path = filepaths.MASTER_PATHS[suspect]
+        path = utils.MASTER_PATHS[suspect]
         self.bot.cogs["Game"].send_image(channel, path)
 
     def draw_suspect(self, game, time: int):
