@@ -127,7 +127,7 @@ class Manual(commands.Cog):
     async def shuffle_clues(self, ctx):
         """(Re)shuffles the clue card piles"""
 
-        asyncio.create_task(ctx.send("Shuffling the clues!"))
+        asyncio.create_task(ctx.send("Shuffling clues!"))
 
         for time in gamedata.CLUE_TIMES:
             ctx.game.picked_clues[time] = random.randint(1, 3)
