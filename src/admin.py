@@ -3,6 +3,7 @@ import shutil
 # 3rd-party
 import discord
 from discord.ext import commands
+from reportlab.pdfgen import canvas
 # Local
 import filepaths
 import gamedata
@@ -69,6 +70,13 @@ class Admin(commands.Cog):
         # Delete files
         shutil.rmtree(message_dir)
         zip_file.unlink()
+
+    @commands.command()
+    async def pdf(self, ctx):
+        c = canvas.Canvas("test.pdf")
+        c.drawString(100, 100, "Hello World")
+        c.showPage()
+        c.save()
 
 
 def setup(bot):
