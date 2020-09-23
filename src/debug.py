@@ -22,6 +22,16 @@ class Debug(commands.Cog):
         print("Bot has logged in!")
 
     @ commands.command()
+    async def speed(self, ctx, speed: int = 1):
+        """Changes the speed of the game - DEBUG USE ONLY"""
+
+        if speed == 1:
+            asyncio.create_task(ctx.send("Reset the game speed!"))
+        else:
+            asyncio.create_task(ctx.send("Set the game speed!"))
+        ctx.game.game_speed = speed
+
+    @ commands.command()
     async def plugins(self, ctx):
         """Lists all currently loaded plugins"""
 

@@ -171,7 +171,7 @@ class Game(commands.Cog):
             seconds =  time_remaining % 60
             if ctx.game.show_timer:
                 await ctx.send(":".join((pad(minutes), pad(seconds))))
-            await asyncio.sleep(gamedata.TIMER_GAP)
+            await asyncio.sleep(gamedata.TIMER_GAP / ctx.game.game_speed)
 
     async def clue_check(self, ctx):
         """Runs clue check every 5 minutes and calls send_clue()"""
@@ -182,10 +182,16 @@ class Game(commands.Cog):
             if ctx.game.automatic:
                 if minutes_remaining in gamedata.CLUE_TIMES and minutes_remaining <= ctx.game.next_clue:
                     self.bot.cogs["Manual"].send_clue(ctx, minutes_remaining)
-                await asyncio.sleep(check_interval * 60)
+                elif minutes_remaining == 10:
+                    channel = str(ctx.game.ten_char) + "-clues"
+                    ending = random.choice(list(i for i in ctx.game.endings if ctx.game.endings[i]))
+                    clue = utils.CLUE_DIR / "10" / ("10-" + str(ending) + ".png")
+                    utils.send_image(channel, clue, ctx)
+
+                await asyncio.sleep(check_interval * 60 / ctx.game.game_speed)
             else:
                 # Wait for the buffer before sending the reminder
-                await asyncio.sleep(gamedata.REMINDER_BUFFER * 60)
+                await asyncio.sleep(gamedata.REMINDER_BUFFER * 60 / ctx.game.game_speed)
                 
                 # Check if player hasn't drawn the clue yet
                 if minutes_remaining <= ctx.game.next_clue:
@@ -199,7 +205,7 @@ class Game(commands.Cog):
                     await channel.send("Reminder: You have the " + str(minutes_remaining) + " minute clue card")
 
                 # Wait out the rest of the interval
-                await asyncio.sleep((check_interval - gamedata.REMINDER_BUFFER) * 60)
+                await asyncio.sleep((check_interval - gamedata.REMINDER_BUFFER) * 60 / ctx.game.game_speed)
             minutes_remaining -= check_interval
 
     @commands.command()
