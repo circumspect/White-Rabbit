@@ -1,7 +1,7 @@
 # Built-in
-from pathlib import Path
 import asyncio
-
+from pathlib import Path
+# 3rd-party
 import discord
 # Local
 import gamedata
