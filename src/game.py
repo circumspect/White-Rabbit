@@ -16,36 +16,6 @@ class Game(commands.Cog):
     def __init__(self, bot):
         self.bot = bot
 
-    @commands.command()
-    async def auto(self, ctx, mode: str = ""):
-        """
-        Prints or current mode or turn automatic on/off
-
-        Syntax:
-        !auto will display the current mode
-        !auto on will switch to automatic mode
-        !auto off will switch to manual mode
-        Automatic mode will disable manual card draw commands
-        """
-
-        if not mode:
-            # Print current mode
-            message = "```\nCurrent mode: "
-            if ctx.game.automatic:
-                message += "automatic"
-            else:
-                message += "manual"
-            message += "\n```"
-            await ctx.send(message)
-        elif mode == "on":
-            ctx.game.automatic = True
-            await ctx.send("Automatic card draw enabled!")
-        elif mode == "off":
-            ctx.game.automatic = False
-            await ctx.send("Automatic card draw disabled!")
-        else:
-            await ctx.send("Input error, try !auto on or !auto off")
-
     @commands.command(aliases=["init"])
     async def initialize(self, ctx):
         """Initial setup before character selection"""
@@ -227,26 +197,6 @@ class Game(commands.Cog):
                 # Wait out the rest of the interval
                 await asyncio.sleep((check_interval - gamedata.REMINDER_BUFFER) * 60)
             minutes_remaining -= check_interval
-
-    @commands.command()
-    async def music(self, ctx):
-        """Enable/disable music stream when game starts"""
-
-        ctx.game.stream_music = not ctx.game.stream_music
-        if ctx.game.stream_music:
-            await ctx.send("Music stream enabled!")
-        else:
-            await ctx.send("Music stream disabled!")
-
-    @commands.command(name="timer")
-    async def show_timer(self, ctx):
-        """Show/hide bot timer"""
-
-        ctx.game.show_timer = not ctx.game.show_timer
-        if ctx.game.show_timer:
-            await ctx.send("Showing bot timer!")
-        else:
-            await ctx.send("Hiding bot timer!")
 
     @commands.command()
     async def search(self, ctx):

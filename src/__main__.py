@@ -62,7 +62,7 @@ async def on_command_error(ctx, error):
 
 
 # Load all extensions
-PLUGINS = ["admin", "debug", "game", "manual", "players"]
+PLUGINS = ["admin", "debug", "game", "manual", "players", "settings"]
 for plugin in PLUGINS:
     bot.load_extension(plugin)
 
