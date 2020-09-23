@@ -9,7 +9,7 @@ class Settings(commands.Cog):
         self.bot = bot
 
     @commands.command()
-    async def auto(self, ctx, mode: str = ""):
+    async def auto(self, ctx, mode: str=""):
         """
         Prints current mode or turn automatic on/off
 
@@ -49,10 +49,21 @@ class Settings(commands.Cog):
             await ctx.send("Music stream disabled!")
 
     @commands.command(name="timer")
-    async def show_timer(self, ctx):
-        """Show/hide bot timer"""
+    async def show_timer(self, ctx, gap: int=0):
+        """
+        Show/hide bot timer
+        
+        Takes optional argument of how often to 
+        send timer messages (in seconds)
+        """
 
-        ctx.game.show_timer = not ctx.game.show_timer
+        if gap:
+            # If timer spacing between pings exists, enable timer
+            ctx.game.show_timer = True
+            ctx.game.timer_gap = gap
+        else:
+            ctx.game.show_timer = not ctx.game.show_timer
+
         if ctx.game.show_timer:
             await ctx.send("Showing bot timer!")
         else:

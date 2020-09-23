@@ -23,7 +23,8 @@ class Game(commands.Cog):
         if ctx.game.started:
             await ctx.send("Game has already begun!")
             return
-        elif ctx.game.init:
+        elif ctx.game.init and ctx.game.automatic:
+            # Disallow unless manual mode is enabled
             await ctx.send("Initialization already run!")
             return
 
@@ -85,10 +86,11 @@ class Game(commands.Cog):
         ctx.game.init = True
 
     @commands.command()
-    async def setup(self, ctx):
-        """Setup after players have chosen characters"""
+    async def setup_clues(self, ctx):
+        """Shuffle and distribute clues"""
         
-        if not ctx.game.init:
+        if (not ctx.game.init) and ctx.game.automatic:
+            # Disallow if init hasn't been run yet and manual mode is off
             await ctx.send("Need to initialize first!")
             return
         elif ctx.game.started:
@@ -105,7 +107,7 @@ class Game(commands.Cog):
             await ctx.send("Can't find Charlie!")
             return
         
-        asyncio.create_task(ctx.send("Finishing setup!"))
+        asyncio.create_task(ctx.send("Distributing clues!"))
 
         asyncio.create_task(self.bot.cogs["Manual"].shuffle_clues(ctx))
         asyncio.create_task(self.bot.cogs["Manual"].assign_clues(ctx))
@@ -241,13 +243,13 @@ class Game(commands.Cog):
         
         time_remaining = gamedata.GAME_LENGTH
         while time_remaining > 0:
-            time_remaining -= gamedata.TIMER_GAP
+            time_remaining -= ctx.game.timer_gap
 
             minutes = math.floor(time_remaining / 60)
             seconds =  time_remaining % 60
             if ctx.game.show_timer:
                 await ctx.send(":".join((pad(minutes), pad(seconds))))
-            await asyncio.sleep(gamedata.TIMER_GAP / ctx.game.game_speed)
+            await asyncio.sleep(ctx.game.timer_gap / ctx.game.game_speed)
 
     async def clue_check(self, ctx):
         """Runs clue check every 5 minutes and calls send_clue()"""
