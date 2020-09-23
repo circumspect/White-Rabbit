@@ -77,8 +77,9 @@ class Game(commands.Cog):
                 ctx
             )
         
-        # Send motives if in automatic mode
+        # Shuffle and send motives if in automatic mode
         if ctx.game.automatic:
+            await self.bot.cogs["Manual"].shuffle_motives(ctx)
             asyncio.create_task(self.bot.cogs["Manual"].send_motives(ctx))
 
         ctx.game.init = True
@@ -104,8 +105,10 @@ class Game(commands.Cog):
             await ctx.send("Can't find Charlie!")
             return
         
-        await self.bot.cogs["Manual"].shuffle_clues(ctx)
-        await self.bot.cogs["Manual"].assign_clues(ctx)
+        asyncio.create_task(ctx.send("Finishing setup!"))
+
+        asyncio.create_task(self.bot.cogs["Manual"].shuffle_clues(ctx))
+        asyncio.create_task(self.bot.cogs["Manual"].assign_clues(ctx))
 
         ctx.game.setup = True
 
