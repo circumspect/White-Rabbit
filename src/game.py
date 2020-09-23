@@ -257,7 +257,7 @@ class Game(commands.Cog):
         while minutes_remaining > 0:
             if ctx.game.automatic:
                 if minutes_remaining in gamedata.CLUE_TIMES and minutes_remaining <= ctx.game.next_clue:
-                    self.bot.cogs["Manual"].send_clue(ctx.game, minutes_remaining)
+                    self.bot.cogs["Manual"].send_clue(ctx, minutes_remaining)
                 await asyncio.sleep(check_interval * 60)
             else:
                 # Wait for the buffer before sending the reminder

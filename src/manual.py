@@ -88,27 +88,27 @@ class Manual(commands.Cog):
             return
 
         # Send the clue
-        self.send_clue(ctx.game, time)
+        self.send_clue(ctx, time)
 
-    def send_clue(self, game, time: int):
+    def send_clue(self, ctx, time: int):
         # Sends clue based on picked_clues value
         
         # Find character who the clue has been assigned to
-        for name in game.clue_assignments:
-            if time in game.clue_assignments[name]:
+        for name in ctx.game.clue_assignments:
+            if time in ctx.game.clue_assignments[name]:
                 character = name
                 break
         else:
             raise ValueError("Missing clue")
         
         # Send clue card
-        channel = utils.get_text_channels(game.guild)[f"{character}-clues"]
-        choice = game.picked_clues[time]
+        channel = utils.get_text_channels(ctx.game.guild)[f"{character}-clues"]
+        choice = ctx.game.picked_clues[time]
         path = utils.CLUE_DIR / str(time) / f"{time}-{choice}.png"
         utils.send_image(channel, path)
 
         # Send suspect/location card to player's clues channel
-        suspect = self.draw_suspect(game, time)
+        suspect = self.draw_suspect(ctx, time)
         path = utils.MASTER_PATHS[suspect]
         utils.send_image(channel, path)
 
@@ -119,7 +119,7 @@ class Manual(commands.Cog):
             channel = "locations-drawn"
         else:
             channel = "bot-channel"
-        channel = utils.get_text_channels(game.guild)[channel]
+        channel = utils.get_text_channels(ctx.game.guild)[channel]
         # Confirmed culprit/location
         if time <= 30:
             if suspect in gamedata.SUSPECTS:
@@ -131,36 +131,36 @@ class Manual(commands.Cog):
         utils.send_image(channel, path)
         
         # Update next_clue unless at end
-        if game.next_clue != 20:
+        if ctx.game.next_clue != 20:
             for i in range(len(gamedata.CLUE_TIMES)):
-                if gamedata.CLUE_TIMES[i] == game.next_clue:
-                    game.next_clue = gamedata.CLUE_TIMES[i+1]
+                if gamedata.CLUE_TIMES[i] == ctx.game.next_clue:
+                    ctx.game.next_clue = gamedata.CLUE_TIMES[i+1]
                     break
 
-    def draw_suspect(self, game, time: int):
+    def draw_suspect(self, ctx, time: int):
         """Picks a suspect given the clue time"""
 
         clue_type = gamedata.CLUE_TYPES[time]
 
         # Check if is tuple and pull the correct type from it
         if isinstance(clue_type, tuple):
-            clue_type = clue_type[game.picked_clues[time]-1]
+            clue_type = clue_type[ctx.game.picked_clues[time]-1]
 
         if clue_type == "suspect":
-            index = random.randint(0, len(game.suspect_pile)-1)
-            game.suspects_drawn[time] = (game.suspect_pile.pop(index))
-            return game.suspects_drawn[time]
+            index = random.randint(0, len(ctx.game.suspect_pile)-1)
+            ctx.game.suspects_drawn[time] = (ctx.game.suspect_pile.pop(index))
+            return ctx.game.suspects_drawn[time]
         elif clue_type == "location":
-            index = random.randint(0, len(game.location_pile)-1)
-            game.locations_drawn[time] = (game.location_pile.pop(index))
-            return game.locations_drawn[time]
+            index = random.randint(0, len(ctx.game.location_pile)-1)
+            ctx.game.locations_drawn[time] = (ctx.game.location_pile.pop(index))
+            return ctx.game.locations_drawn[time]
         elif clue_type == "suspect-drawn":
-            culprit = random.choice(list(game.suspects_drawn.values()))
-            game.suspects_drawn[time] = culprit
+            culprit = random.choice(list(ctx.game.suspects_drawn.values()))
+            ctx.game.suspects_drawn[time] = culprit
             return culprit
         elif clue_type == "location-drawn":
-            final_location = random.choice(list(game.locations_drawn.values()))
-            game.locations_drawn[time] = final_location
+            final_location = random.choice(list(ctx.game.locations_drawn.values()))
+            ctx.game.locations_drawn[time] = final_location
             return final_location
         else:
             raise ValueError("Unexpected clue type!")
