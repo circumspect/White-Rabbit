@@ -13,7 +13,7 @@ SUSPECTS = {
     "bria": "Bria Brown",
     "cj": "CJ Wallace",
     "david": "David Nelson",
-    "halvert": "Mr. Halvert",
+    "halvert": "Mr Halvert",
     "ryan": "Ryan Groggins",
 }
 
