@@ -51,9 +51,7 @@ def send_image(channel, filepath, ctx=None):
         if not ctx:
             raise ValueError("Cannot send to channel without ctx.text_channels")
         channel = ctx.text_channels[channel]
-    asyncio.create_task(channel.send(
-        file=discord.File(filepath)
-    ))
+    asyncio.create_task(channel.send(file=discord.File(filepath)))
 
 
 def send_folder(channel, path, ctx=None):
