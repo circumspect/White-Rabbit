@@ -27,8 +27,6 @@ LOCATIONS = {
 
 # Game length, in seconds
 GAME_LENGTH = 90 * 60
-# How often the bot should check the timer, in seconds
-TIMER_GAP = 10
 
 # How many minutes after the clue time has passed before reminding the player
 # when running in manual mode
@@ -54,6 +52,9 @@ class Data:
         self.stream_music = False
         self.motives = {}
         self.ten_char = None
+
+        # How often the bot should check the timer, in seconds
+        self.timer_gap = 10
 
         # DO NOT CHANGE
         # Use !speed when bot is running to set value (DEBUG USE ONLY)
