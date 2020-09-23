@@ -57,7 +57,7 @@ class Data:
 
         # DO NOT CHANGE
         # Use !speed when bot is running to set value (DEBUG USE ONLY)
-        game_speed = 1
+        self.game_speed = 1
 
         # Clue vars
         self.clue_assignments = {}
