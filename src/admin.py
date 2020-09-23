@@ -40,7 +40,7 @@ class Admin(commands.Cog):
 
     @commands.command()
     async def download(self, ctx):
-        """Gets all messages from a guild and writes to txt"""
+        """Gets all messages from a guild and writes to a .txt file"""
 
         await ctx.send("Downloading...")
         # make folder for messages
@@ -75,6 +75,8 @@ class Admin(commands.Cog):
 
     @commands.command()
     async def pdf(self, ctx):
+        """Exports the game to a PDF"""
+
         FONT = "Times-Roman"
 
         def from_corner(x, y, top=True, left=True, pagesize=pagesizes.letter):

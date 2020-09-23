@@ -120,6 +120,8 @@ class Manual(commands.Cog):
                     break
 
     def draw_suspect(self, game, time: int):
+        """Picks a suspect given the clue time"""
+
         clue_type = gamedata.CLUE_TYPES[time]
 
         # Check if is tuple and pull the correct type from it
