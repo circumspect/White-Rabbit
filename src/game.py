@@ -8,8 +8,8 @@ import typing
 import discord
 from discord.ext import commands, tasks
 # Local
-import utils
 import gamedata
+import utils
 
 
 class Game(commands.Cog):
