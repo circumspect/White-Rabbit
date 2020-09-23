@@ -53,10 +53,19 @@ class Data:
         self.show_timer = False
         self.stream_music = False
         self.motives = {}
+        self.ten_char = None
 
-        # Create empty clue dicts
+        # DO NOT CHANGE
+        # Use !speed when bot is running to set value (DEBUG USE ONLY)
+        game_speed = 1
+
+        # Clue vars
         self.clue_assignments = {}
         self.picked_clues = {}
+        self.endings = {}
+        for i in range(1, 4):
+            # Enable all endings
+            self.endings[i] = True
 
         # Suspects and locations
         self.suspect_pile = []
