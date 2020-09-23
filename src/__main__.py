@@ -1,3 +1,5 @@
+# Built-in
+import asyncio
 # 3rd-party
 import discord
 from discord.ext import commands
@@ -11,6 +13,7 @@ bot.games = {}
 
 @bot.event
 async def on_ready():
+    # Set custom status
     await bot.change_presence(activity=discord.Game("Alice is Missing"))
 
 
@@ -45,16 +48,16 @@ async def on_command_error(ctx, error):
     }
     bot_channel = ctx.text_channels["bot-channel"]
     if isinstance(error, discord.ext.commands.errors.UserInputError):
-        await ctx.send("Can't understand input!")
+        asyncio.create_task(ctx.send("Can't understand input!"))
     elif isinstance(error, discord.ext.commands.errors.CommandNotFound):
-        await ctx.send("Command not found!")
+        asyncio.create_task(ctx.send("Command not found!"))
     elif isinstance(error, discord.ext.commands.errors.CheckFailure):
         if ctx.channel.name != "bot-channel":
-            await ctx.send(f"You can only use commands in {bot_channel.mention}")
+            asyncio.create_task(ctx.send(f"You can only use commands in {bot_channel.mention}"))
             return
-        await ctx.send("You can't do that")
+        asyncio.create_task(ctx.send("You can't do that"))
     else:
-        await ctx.send("Unknown error: check console!")
+        asyncio.create_task(ctx.send("Unknown error: check console!"))
         raise error
 
 
