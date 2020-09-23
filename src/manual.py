@@ -29,8 +29,26 @@ class Manual(commands.Cog):
         return not ctx.game.automatic
 
     @commands.command()
+    async def shuffle_motives(self, ctx):
+        """Shuffle and assign motive cards"""
+
+        if not ctx.game.automatic:
+            asyncio.create_task(ctx.send("Shuffling motives!"))
+
+        motives = list(range(1, 6))
+        random.shuffle(motives)
+        ctx.game.motives = {
+            character: motive
+            for motive, character in zip(motives, gamedata.CHARACTERS)
+        }
+
+    @commands.command()
     async def send_motives(self, ctx):
         """Distributes motive cards"""
+
+        if not ctx.game.motives:
+            asyncio.create_task(ctx.send("Need to shuffle motives first!"))
+            return
 
         for name in gamedata.CHARACTERS:
             channel = ctx.text_channels[f"{name}-clues"]
@@ -151,7 +169,8 @@ class Manual(commands.Cog):
     async def shuffle_clues(self, ctx):
         """(Re)shuffles the clue card piles"""
 
-        asyncio.create_task(ctx.send("Shuffling clues!"))
+        if not ctx.game.automatic:
+            asyncio.create_task(ctx.send("Shuffling clues!"))
 
         for time in gamedata.CLUE_TIMES:
             ctx.game.picked_clues[time] = random.randint(1, 3)
@@ -175,7 +194,8 @@ class Manual(commands.Cog):
             await ctx.send("Can't find Charlie!")
             return
 
-        asyncio.create_task(ctx.send("Assigning clue cards!"))
+        if not ctx.game.automatic:
+            asyncio.create_task(ctx.send("Assigning clue cards!"))
 
         # Generate clues
         while True:

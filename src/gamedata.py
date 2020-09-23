@@ -52,14 +52,7 @@ class Data:
         self.automatic = True
         self.show_timer = False
         self.stream_music = False
-
-        # Shuffle and assign motive cards
-        motives = list(range(1, 6))
-        random.shuffle(motives)
-        self.motives = {
-            character: motive
-            for motive, character in zip(motives, CHARACTERS)
-        }
+        self.motives = {}
 
         # Create empty clue dicts
         self.clue_assignments = {}
