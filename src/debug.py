@@ -21,6 +21,8 @@ class Debug(commands.Cog):
 
     @ commands.command()
     async def plugins(self, ctx):
+        """Lists all currently loaded plugins"""
+
         message = "```\n"
         message += "Plugins loaded:\n"
         message += '\n'.join(self.bot.cogs.keys())
