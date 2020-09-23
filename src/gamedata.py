@@ -27,6 +27,10 @@ LOCATIONS = {
 
 # Game length, in seconds
 GAME_LENGTH = 90 * 60
+# Max game speed
+MAX_SPEED = 60
+# Minimum seconds between timer messages
+MIN_TIMER_GAP = 10
 
 # How many minutes after the clue time has passed before reminding the player
 # when running in manual mode

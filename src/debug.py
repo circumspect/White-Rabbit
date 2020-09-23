@@ -4,6 +4,7 @@ import asyncio
 import discord
 from discord.ext import commands
 # Local
+import gamedata
 import utils
 
 
@@ -25,11 +26,20 @@ class Debug(commands.Cog):
     async def speed(self, ctx, speed: int = 1):
         """Changes the speed of the game - DEBUG USE ONLY"""
 
-        if speed == 1:
-            asyncio.create_task(ctx.send("Reset the game speed!"))
-        else:
-            asyncio.create_task(ctx.send("Set the game speed!"))
         ctx.game.game_speed = speed
+
+        # Set timer to only ping once every minute to avoid discord api limits
+        ctx.game.timer_gap = 60
+
+        # Cap the top speed
+        if speed > gamedata.MAX_SPEED:
+            asyncio.create_task(ctx.send("Too fast! Max is 60"))
+            return
+        else:
+            if speed == 1:
+                asyncio.create_task(ctx.send("Reset the game speed!"))
+            else:
+                asyncio.create_task(ctx.send("Set the game speed!"))
 
     @ commands.command()
     async def plugins(self, ctx):

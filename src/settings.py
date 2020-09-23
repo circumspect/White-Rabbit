@@ -3,6 +3,8 @@ import asyncio
 # 3rd-party
 import discord
 from discord.ext import commands, tasks
+# Local
+import gamedata
 
 class Settings(commands.Cog):
     def __init__(self, bot):
@@ -11,7 +13,7 @@ class Settings(commands.Cog):
     @commands.command()
     async def auto(self, ctx, mode: str=""):
         """
-        Prints current mode or turn automatic on/off
+        Prints current mode or turn automatic on/off (on by default)
 
         Syntax:
         !auto will display the current mode
@@ -58,6 +60,14 @@ class Settings(commands.Cog):
         """
 
         if gap:
+            if gap < gamedata.MIN_TIMER_GAP:
+                asyncio.create_task(
+                    ctx.send("Can't set timer pings less than "
+                                + str(gamedata.MIN_TIMER_GAP)
+                                + " seconds apart!")
+                )
+                return
+                
             # If timer spacing between pings exists, enable timer
             ctx.game.show_timer = True
             ctx.game.timer_gap = gap
