@@ -236,9 +236,10 @@ class Game(commands.Cog):
     async def timer(self, ctx):
         """Prints out the timer"""
 
-        time_remaining = gamedata.GAME_LENGTH
         def pad(num):
             return str(int(num)).zfill(2)
+        
+        time_remaining = gamedata.GAME_LENGTH
         while time_remaining > 0:
             time_remaining -= gamedata.TIMER_GAP
 
