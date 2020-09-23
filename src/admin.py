@@ -1,4 +1,5 @@
 # Built-in
+import asyncio
 import shutil
 from PIL import Image
 # 3rd-party
@@ -30,7 +31,7 @@ class Admin(commands.Cog):
         if not text_channels:
             text_channels = ctx.guild.text_channels
         for text_channel in text_channels:
-            await text_channel.purge(limit=None)
+            asyncio.create_task(text_channel.purge(limit=None))
 
         # Console logging
         print(f'Wiped messages from server: "{ctx.guild.name}" with ID: "{ctx.guild.id}"')
