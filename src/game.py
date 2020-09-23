@@ -245,8 +245,6 @@ class Game(commands.Cog):
                         "any of you have spoken to her?"
         await channel.send(first_message)
 
-        ctx.game.started = True
-
         if ctx.game.stream_music:
             if ctx.guild.voice_client is None:
                 await ctx.guild.voice_channels[0].connect()
@@ -256,11 +254,15 @@ class Game(commands.Cog):
                 ))
             )
 
-        await ctx.send("Starting the game!")
+        ctx.game.started = True
+        asyncio.create_task(ctx.send("Starting the game!"))
+
+        # Start timer and clue_check tasks simultaneously
         await (asyncio.gather(self.timer(ctx), self.clue_check(ctx)))
     
     async def timer(self, ctx):
         """Prints out the timer"""
+
         time_remaining = gamedata.GAME_LENGTH
         def pad(num):
             return str(int(num)).zfill(2)
