@@ -16,10 +16,6 @@ class Game(commands.Cog):
     def __init__(self, bot):
         self.bot = bot
 
-    @commands.Cog.listener()
-    async def on_ready(self):
-        self.timer.start()
-
     @commands.command()
     async def auto(self, ctx, mode: str = ""):
         """
@@ -242,16 +238,13 @@ class Game(commands.Cog):
 
         # 90 minute card/message for Charlie Barnes
         channel = ctx.text_channels["charlie-clues"]
-        asyncio.create_task(channel.send(file=discord.File(
-            utils.CLUE_DIR / "90/90-1.png"
-        )))
+        await channel.send(file=discord.File(utils.CLUE_DIR / "90/90-1.png"))
         first_message = "Hey! Sorry for the big group text, but I just got "\
                         "into town for winter break at my dad's and haven't "\
                         "been able to get ahold of Alice. Just wondering if "\
                         "any of you have spoken to her?"
-        asyncio.create_task(channel.send(first_message))
+        await channel.send(first_message)
 
-        ctx.game.start_time = time.time()
         ctx.game.started = True
 
         if ctx.game.stream_music:
@@ -264,6 +257,50 @@ class Game(commands.Cog):
             )
 
         await ctx.send("Starting the game!")
+        await (asyncio.gather(self.timer(ctx), self.clue_check(ctx)))
+    
+    async def timer(self, ctx):
+        """Prints out the timer"""
+        time_remaining = gamedata.GAME_LENGTH
+        def pad(num):
+            return str(int(num)).zfill(2)
+        while time_remaining > 0:
+            time_remaining -= gamedata.TIMER_GAP
+
+            minutes = math.floor(time_remaining / 60)
+            seconds =  time_remaining % 60
+            if ctx.game.show_timer:
+                await ctx.send(":".join((pad(minutes), pad(seconds))))
+            await asyncio.sleep(gamedata.TIMER_GAP)
+
+    async def clue_check(self, ctx):
+        """Runs clue check every 5 minutes and calls send_clue()"""
+        
+        minutes_remaining = 90
+        check_interval = 5
+        while minutes_remaining > 0:
+            if ctx.game.automatic:
+                if minutes_remaining in gamedata.CLUE_TIMES and minutes_remaining <= ctx.game.next_clue:
+                    self.bot.cogs["Manual"].send_clue(ctx.game, minutes_remaining)
+                await asyncio.sleep(check_interval * 60)
+            else:
+                # Wait for the buffer before sending the reminder
+                await asyncio.sleep(gamedata.REMINDER_BUFFER * 60)
+                
+                # Check if player hasn't drawn the clue yet
+                if minutes_remaining <= ctx.game.next_clue:
+                    # Find character who owns the clue
+                    for name in ctx.game.clue_assignments:
+                        if time in ctx.game.clue_assignments[name]:
+                            character = name
+                            break
+                    
+                    channel = ctx.text_channels[character + "-clues"]
+                    await channel.send("Reminder: You have the " + str(minutes_remaining) + " minute clue card")
+
+                # Wait out the rest of the interval
+                await asyncio.sleep((check_interval - gamedata.REMINDER_BUFFER) * 60)
+            minutes_remaining -= check_interval
 
     @commands.command()
     async def music(self, ctx):
@@ -276,7 +313,7 @@ class Game(commands.Cog):
             await ctx.send("Music stream disabled!")
 
     @commands.command(name="timer")
-    async def show_time(self, ctx):
+    async def show_timer(self, ctx):
         """Show/hide bot timer"""
 
         ctx.game.show_timer = not ctx.game.show_timer
@@ -284,56 +321,6 @@ class Game(commands.Cog):
             await ctx.send("Showing bot timer!")
         else:
             await ctx.send("Hiding bot timer!")
-
-    @tasks.loop(seconds=gamedata.TIMER_GAP)
-    async def timer(self):
-        """Timer loop for the bot"""
-
-        for game in self.bot.games.values():
-            # Skip server if game has not started
-            if not game.started:
-                continue
-            # Skip server if game has ended
-            if game.start_time + gamedata.GAME_LENGTH < time.time():
-                continue
-
-            remaining_time = (
-                game.start_time + gamedata.GAME_LENGTH - time.time()
-            )
-
-            # Print timer message if enabled in a server
-            if game.show_timer:
-                text_channels = {
-                    channel.name: channel
-                    for channel in game.guild.text_channels
-                }
-
-                def pad(num):
-                    return str(int(num)).zfill(2)
-
-                minutes = math.floor(remaining_time / 60)
-                seconds = math.floor((remaining_time % 60)/gamedata.TIMER_GAP) * gamedata.TIMER_GAP
-
-                await text_channels["bot-channel"].send((
-                    f"{pad(minutes)}:{pad(seconds)}"
-                ))
-
-            # Send clues if in automatic mode
-            minutes_left = math.ceil(remaining_time/60)
-            if game.automatic:
-                if minutes_left in gamedata.CLUE_TIMES and minutes_left <= game.next_clue:
-                    # Send clue
-                    self.bot.cogs["Manual"].send_clue(game, minutes_left)
-            # Otherwise, wait, then remind the player
-            else:
-                if minutes_left + gamedata.REMINDER_BUFFER in gamedata.CLUE_TIMES and minutes_left <= game.next_clue:
-                    for name in game.clue_assignments:
-                        if time in game.clue_assignments[name]:
-                            character = name
-                            break
-                    
-                    channel = utils.get_text_channels(game.guild)[f"{character}-clues"]
-                    await channel.send("Reminder: You have the " + str(minutes_left) + " minute clue card")
 
     @commands.command()
     async def search(self, ctx):

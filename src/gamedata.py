@@ -25,8 +25,9 @@ LOCATIONS = {
     "station": "Train Station",
 }
 
+# Game length, in seconds
 GAME_LENGTH = 90 * 60
-# How often the bot should check the timer
+# How often the bot should check the timer, in seconds
 TIMER_GAP = 10
 
 # How many minutes after the clue time has passed before reminding the player
