@@ -1,3 +1,5 @@
+# Built-in
+import asyncio
 # 3rd-party
 import discord
 from discord.ext import commands
