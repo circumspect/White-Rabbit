@@ -55,7 +55,9 @@ async def on_command_error(ctx, error):
         if ctx.channel.name != "bot-channel":
             asyncio.create_task(ctx.send(f"You can only use commands in {bot_channel.mention}"))
             return
-        asyncio.create_task(ctx.send("You can't do that"))
+        if ctx.game.automatic:
+            asyncio.create_task(ctx.send("Can't do that, are you running a manual command in automatic mode?"))
+        asyncio.create_task(ctx.send("You can't do that!"))
     else:
         asyncio.create_task(ctx.send("Unknown error: check console!"))
         raise error
