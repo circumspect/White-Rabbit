@@ -6,6 +6,7 @@ import discord
 # Local
 import gamedata
 
+# Image paths
 # White-Rabbit/src/utils.py
 WHITE_RABBIT_DIR = Path(__file__).parent.parent
 
