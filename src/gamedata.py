@@ -56,6 +56,8 @@ class Data:
         self.stream_music = False
         self.motives = {}
         self.ten_char = None
+        self.three_flip = False
+        self.second_culprit = False
 
         # How often the bot should check the timer, in seconds
         self.timer_gap = 10
