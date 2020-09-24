@@ -306,17 +306,17 @@ class Game(commands.Cog):
 
     @commands.command(name="10")
     async def ten_min_card(
-        self, ctx, character: typing.Union[discord.Member, discord.Role]
+        self, ctx, mention: typing.Union[discord.Member, discord.Role]
     ):
         """Assign the 10 minute card to another player"""
-
-        if isinstance(character, discord.Member):
-            if not ctx.character:
-                await ctx.send("Could not find player!")
-                return
-            ctx.game.ten_char = ctx.character
+        
+        if isinstance(mention, discord.Member):
+            character = mention.nick.split()[0].lower()
         else:
-            ctx.game.ten_char = ctx.character.name.lower()
+            character = mention.name.lower()
+        
+        ctx.game.ten_char = character
+        
 
     @commands.command()
     async def show_all(self, ctx):
