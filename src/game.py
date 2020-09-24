@@ -201,7 +201,7 @@ class Game(commands.Cog):
                     while culprit == ctx.game.suspects_drawn[30]:
                         culprit = random.choice(ctx.game.suspect_pile)
                         channel = ctx.text_channels["suspects-drawn"]
-                        asyncio.create_task(ctx.send("SECOND CULPRIT:"))
+                        asyncio.create_task(channel.send("SECOND CULPRIT:"))
                         path = utils.SUSPECT_IMAGE_DIR / (gamedata.SUSPECTS[culprit] + ".png")
                         utils.send_image(channel, path, ctx)
                 elif minutes_remaining == 3 and ctx.game.three_flip:
