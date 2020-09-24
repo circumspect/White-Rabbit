@@ -28,7 +28,7 @@ LOCATIONS = {
 # Game length, in seconds
 GAME_LENGTH = 90 * 60
 # Max game speed
-MAX_SPEED = 60
+MAX_SPEED = 30
 # Minimum seconds between timer messages
 MIN_TIMER_GAP = 10
 
