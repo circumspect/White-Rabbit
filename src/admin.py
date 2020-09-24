@@ -5,7 +5,6 @@ from PIL import Image
 # 3rd-party
 import discord
 from discord.ext import commands
-from fpdf import FPDF
 from reportlab.pdfgen import canvas
 from reportlab.lib import pagesizes
 # Local
