@@ -7,15 +7,28 @@ import gamedata
 import utils
 
 # PDF export constants
-# Dimensions
+PAGE_WIDTH = 8.5 # Letter size paper inch width
+CARD_RATIO = 1057 / 757 # Card height to width ratio
+
+# Character Pages
 TITLE_CELL_HEIGHT = 0.8
-TITLE_CARD_WIDTH = 2
+# Character/motive cards
+CHAR_IMAGE_WIDTH = 2
+CHAR_IMAGE_HEIGHT = CHAR_IMAGE_WIDTH * CARD_RATIO
 
 # Positions
 CHAR_IMAGE_X = 3.5
 CHAR_IMAGE_Y = 0.4
 CHAR_MOTIVE_GAP = 0.5
-MOTIVE_IMAGE_X = CHAR_IMAGE_X + TITLE_CARD_WIDTH + CHAR_MOTIVE_GAP
+MOTIVE_IMAGE_X = CHAR_IMAGE_X + CHAR_IMAGE_WIDTH + CHAR_MOTIVE_GAP
+
+# Clue cards
+CLUE_IMAGE_WIDTH = 1.75
+CLUE_IMAGE_HEIGHT = CLUE_IMAGE_WIDTH * CARD_RATIO
+CLUE_IMAGE_GAP = 0.25
+CHAR_CLUE_GAP = 0.5
+CLUE_IMAGE_LEFT = PAGE_WIDTH/2 - 1.5*CLUE_IMAGE_GAP - 2*CLUE_IMAGE_WIDTH
+CLUE_IMAGE_Y = CHAR_IMAGE_Y + CHAR_IMAGE_HEIGHT + CHAR_CLUE_GAP
 
 # Fonts
 COVER_TITLE_FONT = "Essays1743"
@@ -52,6 +65,9 @@ class Export(commands.Cog):
     async def pdf(self, ctx):
         """Exports the game to a PDF"""
 
+        # Check if game was run and if so use dicts created during play
+        fresh = ctx.game.started
+
         # Create pdf object
         pdf = PDF(format='letter', unit='in')
         pdf.alias_nb_pages()
@@ -69,12 +85,12 @@ class Export(commands.Cog):
 
         # Create pages for each character
         for character in ctx.game.char_roles():
-            self.generate_char_page(ctx, pdf, character.lower())
+            self.generate_char_page(ctx, pdf, character.lower(), fresh)
 
         # Output the file
         pdf.output('alice.pdf', 'F')
 
-    def generate_char_page(self, ctx, pdf, character):
+    def generate_char_page(self, ctx, pdf, character, fresh: bool):
         pdf.add_page()
 
         # Name at top left
@@ -84,10 +100,17 @@ class Export(commands.Cog):
 
         # Character and motive cards top right
         char_image = str(utils.MASTER_PATHS[character])
-        pdf.image(char_image, CHAR_IMAGE_X, CHAR_IMAGE_Y, TITLE_CARD_WIDTH)
+        pdf.image(char_image, CHAR_IMAGE_X, CHAR_IMAGE_Y, CHAR_IMAGE_WIDTH)
 
-        motive_image = str(utils.MOTIVE_DIR / ("Motive " + str(ctx.game.motives[character]) + ".png"))
-        pdf.image(motive_image, MOTIVE_IMAGE_X, CHAR_IMAGE_Y, TITLE_CARD_WIDTH)
+        motive_image = str(utils.MOTIVE_DIR / ("Motive " + str(ctx.game.motives[character]) + utils.IMAGE_EXT))
+        pdf.image(motive_image, MOTIVE_IMAGE_X, CHAR_IMAGE_Y, CHAR_IMAGE_WIDTH)
+
+        # Clue and corresponding suspect cards in two rows
+        clue_image_x = CLUE_IMAGE_LEFT
+        for clue in ctx.game.clue_assignments[character]:
+            clue_image = str(utils.CLUE_DIR / str(clue) / (str(clue) + "-" + str(ctx.game.picked_clues[clue]) + utils.IMAGE_EXT))
+            pdf.image(clue_image, clue_image_x, CLUE_IMAGE_Y, CLUE_IMAGE_WIDTH)
+            clue_image_x += (CLUE_IMAGE_WIDTH + CLUE_IMAGE_GAP)
 
 def setup(bot):
     bot.add_cog(Export(bot))
