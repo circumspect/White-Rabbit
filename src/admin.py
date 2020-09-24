@@ -5,11 +5,12 @@ from PIL import Image
 # 3rd-party
 import discord
 from discord.ext import commands
+from fpdf import FPDF
 from reportlab.pdfgen import canvas
 from reportlab.lib import pagesizes
 # Local
-import utils
 import gamedata
+import utils
 
 class Admin(commands.Cog):
     def __init__(self, bot):
@@ -73,40 +74,6 @@ class Admin(commands.Cog):
         # Delete files
         shutil.rmtree(message_dir)
         zip_file.unlink()
-
-    @commands.command()
-    async def pdf(self, ctx):
-        """Exports the game to a PDF"""
-
-        FONT = "Times-Roman"
-
-        def from_corner(x, y, top=True, left=True, pagesize=pagesizes.letter):
-            """Converts distance from corner to cartesian coordinates"""
-            return x if left else pagesize[0] - x, pagesize[1] - y if top else y
-
-        def draw_image(filepath, coordinates, shrink=4):
-            temp_png = utils.WHITE_RABBIT_DIR / f"temp {filepath.stem}.png"
-            Image.open(filepath).reduce(shrink).save(temp_png)
-            c.drawImage(temp_png, *coordinates)
-            temp_png.unlink()
-
-        c = canvas.Canvas(str(utils.WHITE_RABBIT_DIR / "test.pdf"), pagesize=pagesizes.letter)
-        for character in gamedata.CHARACTERS:
-            # character name
-            c.setFont(FONT, 40)
-            c.drawString(*from_corner(50, 50), gamedata.CHARACTERS[character].split()[0])
-            c.drawString(*from_corner(50, 100), gamedata.CHARACTERS[character].split()[1])
-
-            # character and motive card
-            draw_image(utils.MASTER_PATHS[character], from_corner(200, 300))
-            draw_image(
-                utils.MOTIVE_DIR / f"Motive {ctx.game.motives[character]}.png",
-                from_corner(400, 300)
-            )
-
-            c.showPage()
-        c.save()
-
 
 def setup(bot):
     bot.add_cog(Admin(bot))
