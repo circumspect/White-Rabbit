@@ -6,31 +6,44 @@ from fpdf import FPDF
 import gamedata
 import utils
 
-# PDF export constants
+# PDF export constants - all measurements are in inches
 PAGE_WIDTH = 8.5 # Letter size paper inch width
 CARD_RATIO = 1057 / 757 # Card height to width ratio
 
 # Character Pages
 TITLE_CELL_HEIGHT = 0.8
 # Character/motive cards
+# Dimensions of character/motive card images
 CHAR_IMAGE_WIDTH = 2
 CHAR_IMAGE_HEIGHT = CHAR_IMAGE_WIDTH * CARD_RATIO
 
 # Positions
+# Left edge of character card to left edge of page
 CHAR_IMAGE_X = 3.5
+# Top edge of character/motive cards to top edge of page
 CHAR_IMAGE_Y = 0.4
+# Gap between character card and motive card
 CHAR_MOTIVE_GAP = 0.5
+# Calculate left edge of motive card - DO NOT TOUCH
 MOTIVE_IMAGE_X = CHAR_IMAGE_X + CHAR_IMAGE_WIDTH + CHAR_MOTIVE_GAP
 
+
 # Clue cards
+# Dimensions of character/motive card images
 CLUE_IMAGE_WIDTH = 1.75
 CLUE_IMAGE_HEIGHT = CLUE_IMAGE_WIDTH * CARD_RATIO
+
+# Gap between clue card images
 CLUE_IMAGE_GAP = 0.25
+# Vertical gap between character/motive cards and clue cards
 CHAR_CLUE_GAP = 0.5
+# Vertical gap between clue cards and corresponding suspect cards
 CLUE_SUSPECT_GAP = 0.25
+# Calculations - DO NOT TOUCH
 CLUE_IMAGE_LEFT = PAGE_WIDTH/2 - 1.5*CLUE_IMAGE_GAP - 2*CLUE_IMAGE_WIDTH
 CLUE_IMAGE_Y = CHAR_IMAGE_Y + CHAR_IMAGE_HEIGHT + CHAR_CLUE_GAP
 SUSPECT_IMAGE_Y = CLUE_IMAGE_Y + CLUE_IMAGE_HEIGHT + CLUE_SUSPECT_GAP
+
 
 # Fonts
 COVER_TITLE_FONT = "Essays1743"
@@ -111,26 +124,28 @@ class Export(commands.Cog):
         image_x = CLUE_IMAGE_LEFT
 
         for clue in ctx.game.clue_assignments[character]:
-            if clue == 90:
-                continue
-            
             # Add clue card to page
             clue_image = str(utils.CLUE_DIR / str(clue) / (str(clue) + "-" + str(ctx.game.picked_clues[clue]) + utils.IMAGE_EXT))
-            pdf.image(clue_image, image_x, CLUE_IMAGE_Y, CLUE_IMAGE_WIDTH)
+            image_y = CLUE_IMAGE_Y
+            if clue == 90:
+                image_y += (CLUE_IMAGE_HEIGHT + CLUE_SUSPECT_GAP)/2
 
-            # Add suspect card to page
-            for time in ctx.game.suspects_drawn:
-                if time == clue:
-                    suspect = ctx.game.suspects_drawn[time]
-                    break
-            else:
-                for time in ctx.game.locations_drawn:
+            pdf.image(clue_image, image_x, image_y, CLUE_IMAGE_WIDTH)
+
+            if clue != 90:
+                # Add suspect card to page
+                for time in ctx.game.suspects_drawn:
                     if time == clue:
-                        suspect = ctx.game.locations_drawn[time]
+                        suspect = ctx.game.suspects_drawn[time]
                         break
-            
-            suspect_image = str(utils.MASTER_PATHS[suspect])
-            pdf.image(suspect_image, image_x, SUSPECT_IMAGE_Y, CLUE_IMAGE_WIDTH)
+                else:
+                    for time in ctx.game.locations_drawn:
+                        if time == clue:
+                            suspect = ctx.game.locations_drawn[time]
+                            break
+                
+                suspect_image = str(utils.MASTER_PATHS[suspect])
+                pdf.image(suspect_image, image_x, SUSPECT_IMAGE_Y, CLUE_IMAGE_WIDTH)
             
             # Adjust for next column
             image_x += (CLUE_IMAGE_WIDTH + CLUE_IMAGE_GAP)
