@@ -46,14 +46,18 @@ SUSPECT_IMAGE_Y = CLUE_IMAGE_Y + CLUE_IMAGE_HEIGHT + CLUE_SUSPECT_GAP
 
 
 # Fonts
-COVER_TITLE_FONT = "Essays1743"
-CHAR_TITLE_FONT = "Bebas"
+COVER_TITLE_FONT = ("Built", 'bd', 96)
+CHAR_TITLE_FONT = ("Built", 'sb', 60)
 
 # Font paths
 FONT_DIR = utils.WHITE_RABBIT_DIR / "Fonts"
 
 BEBAS_DIR = FONT_DIR / "bebas_neue"
 BEBAS_NEUE = BEBAS_DIR / "BebasNeue-Regular.ttf"
+
+BUILT_DIR = FONT_DIR / "built_titling"
+BUILT_TITLING_SB = BUILT_DIR / "built titling sb.ttf"
+BUILT_TITLING_BD = BUILT_DIR / "built titling bd.ttf"
 
 ESSAYS_DIR = FONT_DIR / "Essays1743"
 ESSAYS_1743 = ESSAYS_DIR / "Essays1743.ttf"
@@ -64,7 +68,7 @@ ESSAYS_1743_B = ESSAYS_DIR / "Essays1743-Bold.ttf"
 class PDF(FPDF):
     # Page footer
     def footer(self):
-        # Position at 1.5 cm from bottom
+        # Position 3/4 inch from bottom
         self.set_y(-0.75)
         # Arial italic 8
         self.set_font('Arial', 'I', 8)
@@ -88,14 +92,16 @@ class Export(commands.Cog):
         pdf.alias_nb_pages()
 
         # Add fonts
-        pdf.add_font('Bebas', '', str(BEBAS_NEUE), True)
+        pdf.add_font('Built', 'sb', str(BUILT_TITLING_SB), True)
+        pdf.add_font('Built', 'bd', str(BUILT_TITLING_BD), True)
 
         pdf.add_font('Essays1743', '', str(ESSAYS_1743), True)
         pdf.add_font('Essays1743', 'B', str(ESSAYS_1743), True)
 
         # Cover page
         pdf.add_page()
-        pdf.set_font(COVER_TITLE_FONT, 'B', 60)
+        family, font, size = COVER_TITLE_FONT
+        pdf.set_font(family, font, size)
         pdf.cell(0, TITLE_CELL_HEIGHT, "Alice is Missing", align='C')
 
         # Create pages for each character
@@ -109,7 +115,8 @@ class Export(commands.Cog):
         pdf.add_page()
 
         # Name at top left
-        pdf.set_font(CHAR_TITLE_FONT, '', 60)
+        family, font, size = CHAR_TITLE_FONT
+        pdf.set_font(family, font, size)
         title = "\n".join(gamedata.CHARACTERS[character].split())
         pdf.multi_cell(0, TITLE_CELL_HEIGHT, title)
 
