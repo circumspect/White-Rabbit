@@ -27,8 +27,10 @@ CLUE_IMAGE_WIDTH = 1.75
 CLUE_IMAGE_HEIGHT = CLUE_IMAGE_WIDTH * CARD_RATIO
 CLUE_IMAGE_GAP = 0.25
 CHAR_CLUE_GAP = 0.5
+CLUE_SUSPECT_GAP = 0.25
 CLUE_IMAGE_LEFT = PAGE_WIDTH/2 - 1.5*CLUE_IMAGE_GAP - 2*CLUE_IMAGE_WIDTH
 CLUE_IMAGE_Y = CHAR_IMAGE_Y + CHAR_IMAGE_HEIGHT + CHAR_CLUE_GAP
+SUSPECT_IMAGE_Y = CLUE_IMAGE_Y + CLUE_IMAGE_HEIGHT + CLUE_SUSPECT_GAP
 
 # Fonts
 COVER_TITLE_FONT = "Essays1743"
@@ -106,11 +108,32 @@ class Export(commands.Cog):
         pdf.image(motive_image, MOTIVE_IMAGE_X, CHAR_IMAGE_Y, CHAR_IMAGE_WIDTH)
 
         # Clue and corresponding suspect cards in two rows
-        clue_image_x = CLUE_IMAGE_LEFT
+        image_x = CLUE_IMAGE_LEFT
+
         for clue in ctx.game.clue_assignments[character]:
+            if clue == 90:
+                continue
+            
+            # Add clue card to page
             clue_image = str(utils.CLUE_DIR / str(clue) / (str(clue) + "-" + str(ctx.game.picked_clues[clue]) + utils.IMAGE_EXT))
-            pdf.image(clue_image, clue_image_x, CLUE_IMAGE_Y, CLUE_IMAGE_WIDTH)
-            clue_image_x += (CLUE_IMAGE_WIDTH + CLUE_IMAGE_GAP)
+            pdf.image(clue_image, image_x, CLUE_IMAGE_Y, CLUE_IMAGE_WIDTH)
+
+            # Add suspect card to page
+            for time in ctx.game.suspects_drawn:
+                if time == clue:
+                    suspect = ctx.game.suspects_drawn[time]
+                    break
+            else:
+                for time in ctx.game.locations_drawn:
+                    if time == clue:
+                        suspect = ctx.game.locations_drawn[time]
+                        break
+            
+            suspect_image = str(utils.MASTER_PATHS[suspect])
+            pdf.image(suspect_image, image_x, SUSPECT_IMAGE_Y, CLUE_IMAGE_WIDTH)
+            
+            # Adjust for next column
+            image_x += (CLUE_IMAGE_WIDTH + CLUE_IMAGE_GAP)
 
 def setup(bot):
     bot.add_cog(Export(bot))
