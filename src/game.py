@@ -185,10 +185,33 @@ class Game(commands.Cog):
                 if minutes_remaining in gamedata.CLUE_TIMES and minutes_remaining <= ctx.game.next_clue:
                     self.bot.cogs["Manual"].send_clue(ctx, minutes_remaining)
                 elif minutes_remaining == 10:
-                    channel = str(ctx.game.ten_char) + "-clues"
+                    channel = ctx.game.ten_char + "-clues"
                     ending = random.choice(list(i for i in ctx.game.endings if ctx.game.endings[i]))
                     clue = utils.CLUE_DIR / "10" / ("10-" + str(ending) + ".png")
                     utils.send_image(channel, clue, ctx)
+
+                    if ending != 3:
+                        ctx.game.three_flip = True
+                    else:
+                        ctx.game.second_culprit = True
+                    
+                    check_interval = 1
+                elif minutes_remaining == 8 and ctx.game.second_culprit:
+                    culprit = ctx.game.suspects_drawn[30]
+                    while culprit == ctx.game.suspects_drawn[30]:
+                        culprit = random.choice(ctx.game.suspect_pile)
+                        channel = ctx.text_channels["suspects-drawn"]
+                        asyncio.create_task(ctx.send("SECOND CULPRIT:"))
+                        path = utils.SUSPECT_IMAGE_DIR / (gamedata.SUSPECTS[culprit] + ".png")
+                        utils.send_image(channel, path, ctx)
+                elif minutes_remaining == 3 and ctx.game.three_flip:
+                    flip = random.choice([True, False])
+                    channel = ctx.game.ten_char + "-clues"
+                    channel = ctx.text_channels[channel]
+                    if flip:
+                        asyncio.create_task(channel.send("Heads"))
+                    else:
+                        asyncio.create_task(channel.send("Tails"))
 
                 await asyncio.sleep(check_interval * 60 / ctx.game.game_speed)
             else:
