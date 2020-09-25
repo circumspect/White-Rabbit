@@ -18,7 +18,7 @@ CARD_RATIO = 1057 / 757  # Card height to width ratio
 PAGE_NUMBER_Y = -0.8  # Vertical position of page number
 
 # Character Pages
-TITLE_CELL_HEIGHT = 0.8
+CHAR_TITLE_HEIGHT = 0.8
 # Character/motive cards
 # Dimensions of character/motive card images
 CHAR_IMAGE_WIDTH = 2
@@ -54,10 +54,17 @@ CLUE_IMAGE_Y = CHAR_IMAGE_Y + CHAR_IMAGE_HEIGHT + CHAR_CLUE_GAP
 SUSPECT_IMAGE_Y = CLUE_IMAGE_Y + CLUE_IMAGE_HEIGHT + CLUE_SUSPECT_GAP
 
 
+# PM Pages
+PM_TITLE_HEIGHT = 1
+PM_LINE_HEIGHT = 0.3
+
+
 # Fonts
 COVER_TITLE_FONT = ("Built", 'bd', 80)
 CHAR_TITLE_FONT = ("Built", 'sb', 60)
 PAGE_NUMBER_FONT = ("Essays", '', 16)
+PM_TITLE_FONT = ("Essays", '', 24)
+PM_FONT = ("Essays", '', 12)
 
 # Font paths
 FONT_DIR = utils.WHITE_RABBIT_DIR / "Fonts"
@@ -172,13 +179,29 @@ class Export(commands.Cog):
         # Cover page
         pdf.add_page()
         pdf.set_font(*COVER_TITLE_FONT)
-        pdf.cell(0, TITLE_CELL_HEIGHT, "Alice is Missing", align="C")
+        pdf.cell(0, CHAR_TITLE_HEIGHT, "Alice is Missing", align="C")
 
-        # Create pages for each character
-        for character in ctx.game.char_roles():
-            self.generate_char_page(ctx, pdf, character.lower())
+        # Create list of player characters
+        characters = [character for character in gamedata.CHARACTERS if (character.title() in ctx.game.char_roles())]
+
+        pm_channels = []
+        for i in range(len(characters)):
+            # Create pages for each character
+            self.generate_char_page(ctx, pdf, characters[i].lower())
+            
+            # Create list of character pairs
+            for j in range(i+1, len(characters)):
+                pm_channels.append((characters[i], characters[j]))
 
         # Chat message exports
+        for a, b in pm_channels:
+            pdf.add_page()
+            pdf.set_font(*PM_TITLE_FONT)
+            pdf.cell(0, PM_TITLE_HEIGHT, a.title() + "/" + b.title())
+            pdf.ln()
+
+            channel = a + "-" + b + "-pm"
+            await self.channel_export(ctx, pdf, channel)
 
         # Output the file
         pdf.output("alice.pdf")
@@ -191,7 +214,7 @@ class Export(commands.Cog):
         pdf.set_xy(CHAR_TITLE_X, CHAR_TITLE_Y)
         pdf.set_font(*CHAR_TITLE_FONT)
         title = "\n".join(gamedata.CHARACTERS[character].split())
-        pdf.multi_cell(0, TITLE_CELL_HEIGHT, title)
+        pdf.multi_cell(0, CHAR_TITLE_HEIGHT, title)
 
         # Character and motive cards top right
         char_image = utils.MASTER_PATHS[character]
@@ -233,6 +256,13 @@ class Export(commands.Cog):
 
             # Adjust for next column
             image_x += CLUE_IMAGE_WIDTH + CLUE_IMAGE_GAP
+
+    async def channel_export(self, ctx, pdf, channel):
+        pdf.set_font(*PM_FONT)
+        channel = ctx.text_channels[channel]
+        async for message in channel.history(limit=None, oldest_first=True):
+            line = message.content
+            pdf.multi_cell(0, PM_LINE_HEIGHT, line)
 
     @commands.command()
     async def txt(self, ctx):
