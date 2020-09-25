@@ -78,7 +78,8 @@ class PDF(FPDF):
         self.set_y(PAGE_NUMBER_Y)
         family, font, size = PAGE_NUMBER_FONT
         self.set_font(family, font, size)
-        self.cell(0, 1, 'Page ' + str(self.page_no()), 0, 0, 'R')
+        page_number_text = str(self.page_no())
+        self.cell(0, 1, page_number_text, 0, 0, 'R')
 
 
 class Export(commands.Cog):
