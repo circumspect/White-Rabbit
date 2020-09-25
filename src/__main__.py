@@ -10,18 +10,22 @@ import gamedata
 bot = commands.Bot(command_prefix="!")
 bot.games = {}
 
+
 @bot.event
 async def on_ready():
     # Set custom status
     await bot.change_presence(activity=discord.Game("Alice is Missing"))
 
+
 @bot.check
 def check_channel(ctx):
     return ctx.channel.name == "bot-channel"
 
+
 @bot.check
 def not_spectator(ctx):
     return "spectator" not in [role.name.lower() for role in ctx.author.roles]
+
 
 @bot.before_invoke
 async def before_invoke(ctx):
@@ -34,6 +38,7 @@ async def before_invoke(ctx):
     for role in ctx.author.roles:
         if role.name.lower() in gamedata.CHARACTERS:
             ctx.character = role.name.lower()
+
 
 @bot.event
 async def on_command_error(ctx, error):
