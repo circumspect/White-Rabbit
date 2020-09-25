@@ -51,6 +51,7 @@ async def before_invoke(ctx):
 async def on_command_error(ctx, error):
     """Default error catcher"""
     bot_channel = utils.get_text_channels(ctx.guild)["bot-channel"]
+    ctx.game = bot.games.setdefault(ctx.guild.id, gamedata.Data(ctx.guild))
 
     # bad input
     if isinstance(error, commands.errors.UserInputError):
