@@ -1,9 +1,11 @@
 # 3rd-party
+import asyncio
 import discord
 from discord.ext import commands
 from fpdf import FPDF
 # Local
 import gamedata
+import shutil
 import utils
 
 # PDF export constants - all measurements are in inches
@@ -46,7 +48,7 @@ SUSPECT_IMAGE_Y = CLUE_IMAGE_Y + CLUE_IMAGE_HEIGHT + CLUE_SUSPECT_GAP
 
 
 # Fonts
-COVER_TITLE_FONT = ("Built", 'bd', 96)
+COVER_TITLE_FONT = ("Built", 'bd', 80)
 CHAR_TITLE_FONT = ("Built", 'sb', 60)
 
 # Font paths
@@ -80,12 +82,20 @@ class Export(commands.Cog):
     def __init__(self, bot):
         self.bot = bot
     
+    def import_data(self, ctx):
+        pass
+
     @commands.command()
     async def pdf(self, ctx):
         """Exports the game to a PDF"""
 
-        # Check if game was run and if so use dicts created during play
-        fresh = ctx.game.started
+        # If the bot does not have game data loaded, attempt to import
+        if not ctx.game.started:
+            self.import_data(ctx)
+        # If import failed, display error message and quit
+        if not ctx.game.motives:
+            asyncio.create_task(ctx.send("Couldn't find game data to export!"))
+            return
 
         # Create pdf object
         pdf = PDF(format='letter', unit='in')
@@ -106,12 +116,12 @@ class Export(commands.Cog):
 
         # Create pages for each character
         for character in ctx.game.char_roles():
-            self.generate_char_page(ctx, pdf, character.lower(), fresh)
+            self.generate_char_page(ctx, pdf, character.lower())
 
         # Output the file
         pdf.output('alice.pdf', 'F')
 
-    def generate_char_page(self, ctx, pdf, character, fresh: bool):
+    def generate_char_page(self, ctx, pdf, character):
         pdf.add_page()
 
         # Name at top left
@@ -156,6 +166,41 @@ class Export(commands.Cog):
             
             # Adjust for next column
             image_x += (CLUE_IMAGE_WIDTH + CLUE_IMAGE_GAP)
+        
+    @commands.command()
+    async def txt(self, ctx):
+        """Gets all messages from a guild and writes to a .txt file"""
+
+        await ctx.send("Downloading...")
+        # make folder for messages
+        message_dir = utils.WHITE_RABBIT_DIR / ctx.guild.name
+        message_dir.mkdir(parents=True, exist_ok=True)
+
+        # Download messages
+        for channel in ctx.guild.text_channels:
+            messages = [
+                " ".join((
+                    message.created_at.strftime('%Y-%m-%d %H:%M'),
+                    message.author.display_name + ":",
+                    message.clean_content,
+                    ", ".join(attachment.url for attachment in message.attachments)
+                ))
+                async for message in channel.history(limit=None, oldest_first=True)
+            ]
+            with open(message_dir / f"{channel.name}.txt", mode="w") as message_file:
+                message_file.write("\n".join(messages))
+
+        # Send zip
+        zip_file = utils.WHITE_RABBIT_DIR / f"{ctx.guild.name} Messages.zip"
+        shutil.make_archive(
+            zip_file.with_suffix(""),
+            "zip", message_dir,
+        )
+        await ctx.send(file=discord.File(zip_file))
+
+        # Delete files
+        shutil.rmtree(message_dir)
+        zip_file.unlink()
 
 def setup(bot):
     bot.add_cog(Export(bot))
