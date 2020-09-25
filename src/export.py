@@ -15,8 +15,6 @@ import utils
 # PDF export constants - all measurements are in inches
 PAGE_WIDTH = 8.5  # Letter size paper inch width
 CARD_RATIO = 1057 / 757  # Card height to width ratio
-PAGE_NUMBER_X = 8.2
-PAGE_NUMBER_Y = -0.5  # Vertical position of page number
 
 # Watermark
 CREATED_Y = -0.7
@@ -25,10 +23,14 @@ CREATED = "Created by:"
 WATERMARK = "The White Rabbit"
 WATERMARK_Y = CREATED_Y + CREATED_WATERMARK_GAP
 
+# Page numbers
+PAGE_NUMBER_X = 8.2
+PAGE_NUMBER_Y = WATERMARK_Y
+
 # Cover page
-COVER_TITLE_Y = 2
-COVER_TITLE_POSTER_GAP = 1
-COVER_POSTER_WIDTH = 5
+COVER_TITLE_Y = 1
+COVER_TITLE_POSTER_GAP = 0.8
+COVER_POSTER_WIDTH = 6
 COVER_POSTER_Y = COVER_TITLE_Y + COVER_TITLE_POSTER_GAP
 COVER_POSTER_X = PAGE_WIDTH/2 - COVER_POSTER_WIDTH/2
 
@@ -69,19 +71,23 @@ CLUE_IMAGE_Y = CHAR_IMAGE_Y + CHAR_IMAGE_HEIGHT + CHAR_CLUE_GAP
 SUSPECT_IMAGE_Y = CLUE_IMAGE_Y + CLUE_IMAGE_HEIGHT + CLUE_SUSPECT_GAP
 
 
-# PM Pages
-PM_TITLE_TEXT_GAP = 0.3
-PM_LINE_HEIGHT = 0.25
+# Group chat/PM pages
+MESSAGES_TITLE_Y = 0.5
+MESSAGES_TITLE_TEXT_GAP = 0.3
+MESSAGES_LINE_HEIGHT = 0.25
 
 
 # Fonts
 COVER_TITLE_FONT = ("Built", 'bd', 80)
 CHAR_TITLE_FONT = ("Built", 'sb', 60)
-PAGE_NUMBER_FONT = ("Essays", '', 16)
-PM_TITLE_FONT = ("Essays", '', 24)
+
+PM_TITLE_FONT = ("Built", 'sb', 24)
 PM_FONT = ("Essays", '', 12)
+
 CREATED_FONT = ("SmallType", '', 12)
 WATERMARK_FONT = ("SmallType", '', 16)
+PAGE_NUMBER_FONT = WATERMARK_FONT
+
 
 # Font paths
 FONT_DIR = utils.WHITE_RABBIT_DIR / "Fonts"
@@ -191,6 +197,7 @@ class Export(commands.Cog):
                         if filename == gamedata.SEARCHING[item]:
                             ctx.game.searching[name].append(item)
                             break
+
                 # Clue cards
                 else:
                     try:
@@ -253,7 +260,7 @@ class Export(commands.Cog):
 
         # Group chat export
         pdf.add_page()
-        self.heading(ctx, pdf, "Group Chat", PM_TITLE_FONT, gap=PM_TITLE_TEXT_GAP)
+        self.heading(ctx, pdf, "Group Chat", PM_TITLE_FONT, gap=MESSAGES_TITLE_TEXT_GAP, y=MESSAGES_TITLE_Y)
         channel = "group-chat"
         await self.channel_export(ctx, pdf, channel)
 
@@ -265,7 +272,7 @@ class Export(commands.Cog):
             if last_message:
                 title = a.title() + "/" + b.title()
                 pdf.add_page()
-                self.heading(ctx, pdf, title, PM_TITLE_FONT, gap=PM_TITLE_TEXT_GAP)
+                self.heading(ctx, pdf, title, PM_TITLE_FONT, gap=MESSAGES_TITLE_TEXT_GAP, y=MESSAGES_TITLE_Y)
 
                 await self.channel_export(ctx, pdf, channel)
 
@@ -345,7 +352,7 @@ class Export(commands.Cog):
         channel = ctx.text_channels[channel]
         async for message in channel.history(limit=None, oldest_first=True):
             line = utils.remove_emojis(message.content)
-            pdf.multi_cell(0, PM_LINE_HEIGHT, line)
+            pdf.multi_cell(0, MESSAGES_LINE_HEIGHT, line)
 
     @commands.command()
     async def txt(self, ctx):
