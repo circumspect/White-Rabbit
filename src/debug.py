@@ -1,9 +1,8 @@
-# Built-in
 import asyncio
-# 3rd-party
+
 import discord
 from discord.ext import commands
-# Local
+
 import gamedata
 import utils
 
@@ -15,6 +14,7 @@ class Debug(commands.Cog):
             self.dev_ids = [int(line.strip()) for line in f.readlines()]
 
     async def cog_check(self, ctx):
+        """Only people with access to the code"""
         return ctx.author.id in self.dev_ids
 
     @commands.Cog.listener()
@@ -45,11 +45,9 @@ class Debug(commands.Cog):
     async def plugins(self, ctx):
         """Lists all currently loaded plugins"""
 
-        message = "```\n"
-        message += "Plugins loaded:\n"
-        message += '\n'.join(self.bot.cogs.keys())
-        message += "\n```"
-        await ctx.send(message)
+        message = "Plugins loaded:"
+        message += "\n".join(self.bot.cogs.keys())
+        await ctx.send(f"```{message}```")
 
     @ commands.command()
     async def load(self, ctx, extension_name: str = "all"):
@@ -59,10 +57,11 @@ class Debug(commands.Cog):
 
         # Reload all
         if extension_name == "all":
-            loaded_extensions = list(self.bot.extensions.keys())
-            for extension in loaded_extensions:
+            # avoid RuntimeError: dictionary keys changed during iteration
+            extensions = list(self.bot.extensions.keys())
+            for extension in extensions:
                 self.bot.reload_extension(extension)
-            await ctx.send(f"Reloaded {', '.join(loaded_extensions)}")
+            await ctx.send(f"Reloaded {', '.join(self.bot.extensions.keys())}")
             return
 
         # Load extension
@@ -72,15 +71,18 @@ class Debug(commands.Cog):
             else:
                 self.bot.load_extension(extension_name)
             await ctx.send(f"Loaded {extension_name}")
-        except discord.ext.commands.errors.ExtensionNotFound:
+
+        except commands.errors.ExtensionNotFound:
             await ctx.send(f"Couldn't find plugin: \"{extension_name}\"")
 
     @ commands.command()
     async def unload(self, ctx, extension_name: str):
         """Unloads a plugin."""
-
-        self.bot.unload_extension(extension_name)
-        await ctx.send(f"Unloaded {extension_name}")
+        try:
+            self.bot.unload_extension(extension_name)
+            await ctx.send(f"Unloaded {extension_name}")
+        except commands.errors.ExtensionNotLoaded:
+            await ctx.send(f"{extension_name} was never loaded")
 
     @ commands.command(aliases=["stop", "shutdown"])
     async def quit(self, ctx):
