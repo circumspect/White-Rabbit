@@ -21,6 +21,7 @@ MOTIVE_DIR = CARD_DIR / "Motives"
 SUSPECT_IMAGE_DIR = CARD_DIR / "Suspects"
 LOCATION_IMAGE_DIR = CARD_DIR / "Locations"
 CLUE_DIR = CARD_DIR / "Clues"
+SEARCHING_DIR = CARD_DIR / "Searching"
 
 # Easy access filepaths
 MASTER_PATHS = {

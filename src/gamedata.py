@@ -25,6 +25,17 @@ LOCATIONS = {
     "station": "Train Station",
 }
 
+SEARCHING = {
+    "10k": "10000 Dollars",
+    "alcohol": "Bottle of Alcohol",
+    "blade": "Broken Switchblade",
+    "blood": "Drops of Blood",
+    "firearm": "Firearm",
+    "followed": "Followed",
+    "mask": "Mask",
+    "van": "White Van",
+}
+
 # Game length, in seconds
 GAME_LENGTH = 90 * 60
 # Max game speed
@@ -69,10 +80,17 @@ class Data:
         # Clue vars
         self.clue_assignments = {}
         self.picked_clues = {}
+
+        # Enabled endings
         self.endings = {}
         for i in range(1, 4):
             # Enable all endings
             self.endings[i] = True
+
+        # Searching
+        self.searches = {}
+        for character in CHARACTERS:
+            self.searches[character] = []
 
         # Suspects and locations
         self.suspect_pile = []
