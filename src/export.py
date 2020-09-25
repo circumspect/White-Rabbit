@@ -1,8 +1,13 @@
+import itertools
+from urllib.parse import urlparse
+from pathlib import Path
+
 # 3rd-party
 import asyncio
 import discord
 from discord.ext import commands
 from fpdf import FPDF
+
 # Local
 import gamedata
 import shutil
@@ -77,7 +82,7 @@ class PDF(FPDF):
         self.set_y(PAGE_NUMBER_Y)
         family, font, size = PAGE_NUMBER_FONT
         self.set_font(family, font, size)
-        
+
         page_number_text = str(self.page_no() - 1)
         if page_number_text != "0":
             self.cell(0, 1, page_number_text, 0, 0, 'R')
@@ -88,24 +93,22 @@ class Export(commands.Cog):
         self.bot = bot
 
     async def import_data(self, ctx):
-        names = list(gamedata.CHARACTERS)
 
-        for name in names:
+        for name in gamedata.CHARACTERS:
             # Create blank values to fill out
             ctx.game.clue_assignments[name] = []
 
-            channel = ctx.text_channels[name + "-clues"]
+            channel = ctx.text_channels[f"{name}-clues"]
             current_clue = 90
-            image_list = [message.attachments async for message in channel.history(limit=None, oldest_first=True)]
+            image_list = list(itertools.chain.from_iterable([
+                message.attachments
+                async for message in channel.history(limit=None, oldest_first=True)
+            ]))
             for image in image_list:
                 if not image:
                     continue
 
-                url = image[0].url
-                filename = url.split("/")[-1]
-
-                # Strip extension
-                filename = filename.split(".")[0]
+                filename = Path(urlparse(image.url).path).stem
 
                 # Replace underscore with space
                 filename = filename.replace("_", " ")
@@ -179,7 +182,6 @@ class Export(commands.Cog):
             self.generate_char_page(ctx, pdf, character.lower())
 
         # Chat message exports
-
 
         # Output the file
         pdf.output('alice.pdf')

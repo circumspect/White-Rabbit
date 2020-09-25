@@ -256,10 +256,14 @@ class Game(commands.Cog):
 
         minutes_remaining = 90
         check_interval = 5
+
         while minutes_remaining > 0:
+            # normal cards
             if ctx.game.automatic:
                 if minutes_remaining in gamedata.CLUE_TIMES and minutes_remaining <= ctx.game.next_clue:
                     self.bot.cogs["Manual"].send_clue(ctx, minutes_remaining)
+
+                # 10 min card
                 elif minutes_remaining == 10:
                     channel = ctx.game.ten_char + "-clues"
                     ending = random.choice(list(i for i in ctx.game.endings if ctx.game.endings[i]))
@@ -272,6 +276,8 @@ class Game(commands.Cog):
                         ctx.game.second_culprit = True
 
                     check_interval = 1
+
+                # ending 3
                 elif minutes_remaining == 8 and ctx.game.second_culprit:
                     culprit = ctx.game.suspects_drawn[30]
                     while culprit == ctx.game.suspects_drawn[30]:
@@ -280,6 +286,8 @@ class Game(commands.Cog):
                     asyncio.create_task(channel.send("SECOND CULPRIT:"))
                     path = utils.SUSPECT_IMAGE_DIR / (gamedata.SUSPECTS[culprit] + ".png")
                     utils.send_image(channel, path, ctx)
+
+                # endings 1 and 2
                 elif minutes_remaining == 3 and ctx.game.three_flip:
                     flip = random.choice([True, False])
                     channel = ctx.game.ten_char + "-clues"
@@ -290,6 +298,8 @@ class Game(commands.Cog):
                         asyncio.create_task(channel.send("Tails"))
 
                 await asyncio.sleep(check_interval * 60 / ctx.game.game_speed)
+
+            # Manual
             else:
                 # Wait for the buffer before sending the reminder
                 await asyncio.sleep(gamedata.REMINDER_BUFFER * 60 / ctx.game.game_speed)
@@ -307,6 +317,7 @@ class Game(commands.Cog):
 
                 # Wait out the rest of the interval
                 await asyncio.sleep((check_interval - gamedata.REMINDER_BUFFER) * 60 / ctx.game.game_speed)
+
             minutes_remaining -= check_interval
 
     @commands.command()
