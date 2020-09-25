@@ -150,10 +150,9 @@ class Export(commands.Cog):
     @commands.command()
     async def pdf(self, ctx):
         """Exports the game to a PDF"""
-
         # If the bot does not have game data loaded, attempt to import
         if not ctx.game.started:
-            asyncio.create_task(self.import_data(ctx))
+            await self.import_data(ctx)
         # If import failed, display error message and quit
         if not ctx.game.motives:
             asyncio.create_task(ctx.send("Couldn't find game data to export!"))

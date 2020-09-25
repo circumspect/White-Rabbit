@@ -57,7 +57,9 @@ class Debug(commands.Cog):
 
         # Reload all
         if extension_name == "all":
-            for extension in self.bot.extensions.keys():
+            # avoid RuntimeError: dictionary keys changed during iteration
+            extensions = list(self.bot.extensions.keys())
+            for extension in extensions:
                 self.bot.reload_extension(extension)
             await ctx.send(f"Reloaded {', '.join(self.bot.extensions.keys())}")
             return
