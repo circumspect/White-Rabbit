@@ -6,7 +6,7 @@ import time
 import typing
 # 3rd-party
 import discord
-from discord.ext import commands, tasks
+from discord.ext import commands
 # Local
 import gamedata
 import utils
@@ -77,7 +77,7 @@ class Game(commands.Cog):
                 utils.MASTER_PATHS[name],
                 ctx
             )
-        
+
         # Shuffle and send motives if in automatic mode
         if ctx.game.automatic:
             await self.bot.cogs["Manual"].shuffle_motives(ctx)
@@ -88,7 +88,7 @@ class Game(commands.Cog):
     @commands.command()
     async def setup_clues(self, ctx):
         """Shuffle and distribute clues"""
-        
+
         if (not ctx.game.init) and ctx.game.automatic:
             # Disallow if init hasn't been run yet and manual mode is off
             await ctx.send("Need to initialize first!")
@@ -106,7 +106,7 @@ class Game(commands.Cog):
         elif "Charlie" not in ctx.game.char_roles():
             await ctx.send("Can't find Charlie!")
             return
-        
+
         asyncio.create_task(ctx.send("Distributing clues!"))
 
         asyncio.create_task(self.bot.cogs["Manual"].shuffle_clues(ctx))
@@ -234,26 +234,26 @@ class Game(commands.Cog):
 
         # Start timer and clue_check tasks simultaneously
         await (asyncio.gather(self.timer(ctx), self.clue_check(ctx)))
-    
+
     async def timer(self, ctx):
         """Prints out the timer"""
 
         def pad(num):
             return str(int(num)).zfill(2)
-        
+
         time_remaining = gamedata.GAME_LENGTH
         while time_remaining > 0:
             time_remaining -= ctx.game.timer_gap
 
             minutes = math.floor(time_remaining / 60)
-            seconds =  time_remaining % 60
+            seconds = time_remaining % 60
             if ctx.game.show_timer:
                 await ctx.send(":".join((pad(minutes), pad(seconds))))
             await asyncio.sleep(ctx.game.timer_gap / ctx.game.game_speed)
 
     async def clue_check(self, ctx):
         """Runs clue check every 5 minutes and calls send_clue()"""
-        
+
         minutes_remaining = 90
         check_interval = 5
         while minutes_remaining > 0:
@@ -263,14 +263,14 @@ class Game(commands.Cog):
                 elif minutes_remaining == 10:
                     channel = ctx.game.ten_char + "-clues"
                     ending = random.choice(list(i for i in ctx.game.endings if ctx.game.endings[i]))
-                    clue = utils.CLUE_DIR / "10" / ("10-" + str(ending) + ".png")
+                    clue = utils.CLUE_DIR / "10" / f"10-{ending}.png"
                     utils.send_image(channel, clue, ctx)
 
                     if ending != 3:
                         ctx.game.three_flip = True
                     else:
                         ctx.game.second_culprit = True
-                    
+
                     check_interval = 1
                 elif minutes_remaining == 8 and ctx.game.second_culprit:
                     culprit = ctx.game.suspects_drawn[30]
@@ -293,7 +293,7 @@ class Game(commands.Cog):
             else:
                 # Wait for the buffer before sending the reminder
                 await asyncio.sleep(gamedata.REMINDER_BUFFER * 60 / ctx.game.game_speed)
-                
+
                 # Check if player hasn't drawn the clue yet
                 if minutes_remaining <= ctx.game.next_clue:
                     # Find character who owns the clue
@@ -301,9 +301,9 @@ class Game(commands.Cog):
                         if time in ctx.game.clue_assignments[name]:
                             character = name
                             break
-                    
+
                     channel = ctx.text_channels[character + "-clues"]
-                    await channel.send("Reminder: You have the " + str(minutes_remaining) + " minute clue card")
+                    await channel.send(f"Reminder: You have the {minutes_remaining} minute clue card")
 
                 # Wait out the rest of the interval
                 await asyncio.sleep((check_interval - gamedata.REMINDER_BUFFER) * 60 / ctx.game.game_speed)
@@ -333,14 +333,13 @@ class Game(commands.Cog):
         self, ctx, mention: typing.Union[discord.Member, discord.Role]
     ):
         """Assign the 10 minute card to another player"""
-        
+
         if isinstance(mention, discord.Member):
             character = mention.nick.split()[0].lower()
         else:
             character = mention.name.lower()
-        
+
         ctx.game.ten_char = character
-        
 
     @commands.command()
     async def show_all(self, ctx):
