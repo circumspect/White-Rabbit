@@ -151,7 +151,7 @@ class Export(commands.Cog):
 
         # If the bot does not have game data loaded, attempt to import
         if not ctx.game.started:
-            asyncio.create_task(self.import_data(ctx))
+            await self.import_data(ctx)
         # If import failed, display error message and quit
         if not ctx.game.motives:
             asyncio.create_task(ctx.send("Couldn't find game data to export!"))
@@ -198,7 +198,7 @@ class Export(commands.Cog):
         char_image = str(utils.MASTER_PATHS[character])
         pdf.image(char_image, CHAR_IMAGE_X, CHAR_IMAGE_Y, CHAR_IMAGE_WIDTH)
 
-        motive_image = (utils.MOTIVE_DIR / f"Motive {ctx.game.motives[character]}").with_suffix(utils.IMAGE_EXT)
+        motive_image = str((utils.MOTIVE_DIR / f"Motive {ctx.game.motives[character]}").with_suffix(utils.IMAGE_EXT))
         pdf.image(motive_image, MOTIVE_IMAGE_X, CHAR_IMAGE_Y, CHAR_IMAGE_WIDTH)
 
         # Clue and corresponding suspect cards in two rows
