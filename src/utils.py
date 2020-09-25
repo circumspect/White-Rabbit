@@ -1,5 +1,6 @@
 # Built-in
 import asyncio
+import os
 from pathlib import Path
 import re
 # 3rd-party
@@ -23,6 +24,14 @@ SUSPECT_IMAGE_DIR = CARD_DIR / "Suspects"
 LOCATION_IMAGE_DIR = CARD_DIR / "Locations"
 CLUE_DIR = CARD_DIR / "Clues"
 SEARCHING_DIR = CARD_DIR / "Searching"
+
+EXPORT_DIR = WHITE_RABBIT_DIR / "Exports"
+PDF_EXPORT_DIR = EXPORT_DIR / "PDFs"
+if not os.path.isdir(EXPORT_DIR):
+    os.mkdir(EXPORT_DIR)
+if not os.path.isdir(PDF_EXPORT_DIR):
+    os.mkdir(PDF_EXPORT_DIR)
+
 
 # Easy access filepaths
 MASTER_PATHS = {
