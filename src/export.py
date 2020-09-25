@@ -78,8 +78,10 @@ class PDF(FPDF):
         self.set_y(PAGE_NUMBER_Y)
         family, font, size = PAGE_NUMBER_FONT
         self.set_font(family, font, size)
-        page_number_text = str(self.page_no())
-        self.cell(0, 1, page_number_text, 0, 0, 'R')
+        
+        page_number_text = str(self.page_no() - 1)
+        if page_number_text != "0":
+            self.cell(0, 1, page_number_text, 0, 0, 'R')
 
 
 class Export(commands.Cog):
@@ -150,7 +152,7 @@ class Export(commands.Cog):
 
         # If the bot does not have game data loaded, attempt to import
         if not ctx.game.started:
-            await self.import_data(ctx)
+            asyncio.create_task(self.import_data(ctx))
         # If import failed, display error message and quit
         if not ctx.game.motives:
             asyncio.create_task(ctx.send("Couldn't find game data to export!"))
