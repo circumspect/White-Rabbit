@@ -19,6 +19,10 @@ PAGE_NUMBER_Y = -0.5  # Vertical position of page number
 
 # Cover page
 COVER_TITLE_Y = 2
+COVER_TITLE_POSTER_GAP = 1
+COVER_POSTER_WIDTH = 5
+COVER_POSTER_Y = COVER_TITLE_Y + COVER_TITLE_POSTER_GAP
+COVER_POSTER_X = 8.5/2 - COVER_POSTER_WIDTH/2
 
 # Character Pages
 CHAR_TITLE_HEIGHT = 0.8
@@ -102,6 +106,24 @@ class Export(commands.Cog):
 
     async def import_data(self, ctx):
         """imports data from message history"""
+
+        # Alice
+        channel = ctx.text_channels["player-resources"]
+        image_list = list(itertools.chain.from_iterable([
+                message.attachments
+                async for message in channel.history(limit=None)
+            ]))
+        for image in image_list:
+            # Get the image name
+            filename = Path(urlparse(image.url).path).stem
+            # Replace underscore with space
+            filename = filename.replace("_", " ")
+            
+            if filename.startswith("Alice Briarwood"):
+                ctx.game.alice = int(filename.split()[-1])
+                break
+
+        # Clues
         for name in gamedata.CHARACTERS:
             # Create blank values to fill out
             ctx.game.clue_assignments[name] = []
@@ -113,7 +135,7 @@ class Export(commands.Cog):
                 async for message in channel.history(limit=None, oldest_first=True)
             ]))
             for image in image_list:
-                # get the image name
+                # Get the image name
                 filename = Path(urlparse(image.url).path).stem
 
                 # Replace underscore with space
@@ -182,7 +204,11 @@ class Export(commands.Cog):
 
         # Cover page
         pdf.add_page()
+        # Heading
         self.heading(ctx, pdf, "Alice is Missing", COVER_TITLE_FONT, align="C", y=COVER_TITLE_Y)
+        # Poster
+        poster = utils.POSTER_DIR / ("Alice Briarwood " + str(ctx.game.alice) + utils.IMAGE_EXT)
+        pdf.image(str(poster), COVER_POSTER_X, COVER_POSTER_Y, COVER_POSTER_WIDTH)
 
         # Create list of player characters
         characters = [character for character in gamedata.CHARACTERS if (character.title() in ctx.game.char_roles())]
