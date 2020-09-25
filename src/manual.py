@@ -2,7 +2,6 @@
 import asyncio
 import random
 # 3rd-party
-import discord
 from discord.ext import commands
 # Local
 import gamedata
