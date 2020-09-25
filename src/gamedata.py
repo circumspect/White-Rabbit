@@ -64,26 +64,30 @@ class Data:
         self.init = False
         self.setup = False
         self.started = False
-        
+
+        self.ten_char = None
+        self.three_flip = False
+        self.second_culprit = False
+
+
         # Setings
         self.automatic = True
         self.show_timer = False
         self.stream_music = False
+
 
         # Enabled endings
         self.endings = {}
         for i in range(1, 4):
             # Enable all endings
             self.endings[i] = True
-        
+
+
         # Game data
         self.motives = {}
         self.clue_assignments = {}
         self.picked_clues = {}
-
-        self.ten_char = None
-        self.three_flip = False
-        self.second_culprit = False
+        self.alice = 0
 
         # Suspects and locations
         self.suspect_pile = []
