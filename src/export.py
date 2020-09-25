@@ -197,13 +197,8 @@ class Export(commands.Cog):
         char_image = utils.MASTER_PATHS[character]
         pdf.image(str(char_image), CHAR_IMAGE_X, CHAR_IMAGE_Y, CHAR_IMAGE_WIDTH)
 
-<<<<<<< HEAD
-        motive_image = str((utils.MOTIVE_DIR / f"Motive {ctx.game.motives[character]}").with_suffix(utils.IMAGE_EXT))
-        pdf.image(motive_image, MOTIVE_IMAGE_X, CHAR_IMAGE_Y, CHAR_IMAGE_WIDTH)
-=======
         motive_image = utils.MOTIVE_DIR / f"Motive {ctx.game.motives[character]}.png"
         pdf.image(str(motive_image), MOTIVE_IMAGE_X, CHAR_IMAGE_Y, CHAR_IMAGE_WIDTH)
->>>>>>> bf36332e293e3741173e60b8a1bcc8d5666de2a0
 
         # Clue and corresponding suspect cards in two rows
         image_x = CLUE_IMAGE_LEFT
