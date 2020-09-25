@@ -1,14 +1,14 @@
+# Built-in
 import itertools
-from urllib.parse import urlparse
 from pathlib import Path
 import shutil
-
-
+from urllib.parse import urlparse
+# 3rd-party
 import asyncio
 import discord
 from discord.ext import commands
 from fpdf import FPDF
-
+# Local
 import gamedata
 import utils
 
