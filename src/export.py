@@ -17,6 +17,9 @@ PAGE_WIDTH = 8.5  # Letter size paper inch width
 CARD_RATIO = 1057 / 757  # Card height to width ratio
 PAGE_NUMBER_Y = -0.8  # Vertical position of page number
 
+# Cover page
+COVER_TITLE_Y = 1
+
 # Character Pages
 CHAR_TITLE_HEIGHT = 0.8
 # Character/motive cards
@@ -55,7 +58,7 @@ SUSPECT_IMAGE_Y = CLUE_IMAGE_Y + CLUE_IMAGE_HEIGHT + CLUE_SUSPECT_GAP
 
 
 # PM Pages
-PM_TITLE_HEIGHT = 1
+PM_TITLE_TEXT_GAP = 0.5
 PM_LINE_HEIGHT = 0.3
 
 
@@ -90,7 +93,7 @@ class PDF(FPDF):
 
         page_number_text = str(self.page_no() - 1)
         if page_number_text != "0":
-            self.cell(0, 1, page_number_text, 0, 0, 'R')
+            self.cell(0, 0, page_number_text, 0, 0, 'R')
 
 
 class Export(commands.Cog):
@@ -179,7 +182,8 @@ class Export(commands.Cog):
         # Cover page
         pdf.add_page()
         pdf.set_font(*COVER_TITLE_FONT)
-        pdf.cell(0, CHAR_TITLE_HEIGHT, "Alice is Missing", align="C")
+        pdf.set_y(COVER_TITLE_Y)
+        pdf.cell(0, 0, "Alice is Missing", align="C")
 
         # Create list of player characters
         characters = [character for character in gamedata.CHARACTERS if (character.title() in ctx.game.char_roles())]
@@ -197,8 +201,8 @@ class Export(commands.Cog):
         for a, b in pm_channels:
             pdf.add_page()
             pdf.set_font(*PM_TITLE_FONT)
-            pdf.cell(0, PM_TITLE_HEIGHT, a.title() + "/" + b.title())
-            pdf.ln()
+            pdf.cell(0, 0, a.title() + "/" + b.title())
+            pdf.ln(PM_TITLE_TEXT_GAP)
 
             channel = a + "-" + b + "-pm"
             await self.channel_export(ctx, pdf, channel)
