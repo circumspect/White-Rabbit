@@ -162,12 +162,15 @@ class Export(commands.Cog):
         """Exports the game to a PDF"""
         # If the bot does not have game data loaded, attempt to import
         if not ctx.game.started:
+            await ctx.send("Gathering game data...")
             await self.import_data(ctx)
         # If import failed, display error message and quit
         if not ctx.game.motives:
             asyncio.create_task(ctx.send("Couldn't find game data to export!"))
             return
 
+        await ctx.send("Building PDF...")
+            
         # Create pdf object
         pdf = PDF(format="letter", unit="in")
         pdf.alias_nb_pages()
@@ -197,6 +200,8 @@ class Export(commands.Cog):
             for j in range(i+1, len(characters)):
                 pm_channels.append((characters[i], characters[j]))
 
+        await ctx.send("Collecting messages...")
+
         # Chat message exports
         for a, b in pm_channels:
             pdf.add_page()
@@ -209,6 +214,7 @@ class Export(commands.Cog):
 
         # Output the file
         pdf.output("alice.pdf")
+        await ctx.send("PDF created!")
 
     def generate_char_page(self, ctx, pdf, character):
         """Creates a character page"""
