@@ -46,9 +46,9 @@ class Game(commands.Cog):
             utils.MASTER_PATHS["intro"],
             ctx
         )
-        alice = random.choice(list(
-            (utils.POSTER_DIR).glob("*.png")
-        ))
+
+        ctx.game.alice = random.randint(1, 10)
+        alice = utils.POSTER_DIR / ("Alice Briarwood " + ctx.game.alice + utils.IMAGE_EXT)
         utils.send_image("player-resources", alice, ctx)
 
         # Send characters, suspects, and locations to appropriate channels
