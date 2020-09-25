@@ -31,11 +31,11 @@ CHAR_TITLE_Y = 1
 
 # Positions
 # Left edge of character card to left edge of page
-CHAR_IMAGE_X = 3.5
+CHAR_IMAGE_X = 3.8
 # Top edge of character/motive cards to top edge of page
 CHAR_IMAGE_Y = 0.4
 # Gap between character card and motive card
-CHAR_MOTIVE_GAP = 0.5
+CHAR_MOTIVE_GAP = 0.3
 # Calculate left edge of motive card - DO NOT TOUCH
 MOTIVE_IMAGE_X = CHAR_IMAGE_X + CHAR_IMAGE_WIDTH + CHAR_MOTIVE_GAP
 
@@ -58,8 +58,8 @@ SUSPECT_IMAGE_Y = CLUE_IMAGE_Y + CLUE_IMAGE_HEIGHT + CLUE_SUSPECT_GAP
 
 
 # PM Pages
-PM_TITLE_TEXT_GAP = 0.5
-PM_LINE_HEIGHT = 0.3
+PM_TITLE_TEXT_GAP = 0.3
+PM_LINE_HEIGHT = 0.25
 
 
 # Fonts
@@ -168,8 +168,6 @@ class Export(commands.Cog):
         if not ctx.game.motives:
             asyncio.create_task(ctx.send("Couldn't find game data to export!"))
             return
-
-        await ctx.send("Building PDF...")
             
         # Create pdf object
         pdf = PDF(format="letter", unit="in")
@@ -190,6 +188,8 @@ class Export(commands.Cog):
 
         # Create list of player characters
         characters = [character for character in gamedata.CHARACTERS if (character.title() in ctx.game.char_roles())]
+
+        await ctx.send("Building character pages...")
 
         pm_channels = []
         for i in range(len(characters)):
