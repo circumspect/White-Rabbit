@@ -1,16 +1,15 @@
 import itertools
 from urllib.parse import urlparse
 from pathlib import Path
+import shutil
 
-# 3rd-party
+
 import asyncio
 import discord
 from discord.ext import commands
 from fpdf import FPDF
 
-# Local
 import gamedata
-import shutil
 import utils
 
 # PDF export constants - all measurements are in inches
@@ -80,8 +79,7 @@ class PDF(FPDF):
     def footer(self):
         # Page number
         self.set_y(PAGE_NUMBER_Y)
-        family, font, size = PAGE_NUMBER_FONT
-        self.set_font(family, font, size)
+        self.set_font(*PAGE_NUMBER_FONT)
 
         page_number_text = str(self.page_no() - 1)
         if page_number_text != "0":
@@ -93,7 +91,7 @@ class Export(commands.Cog):
         self.bot = bot
 
     async def import_data(self, ctx):
-
+        """imports data from message history"""
         for name in gamedata.CHARACTERS:
             # Create blank values to fill out
             ctx.game.clue_assignments[name] = []
@@ -105,44 +103,45 @@ class Export(commands.Cog):
                 async for message in channel.history(limit=None, oldest_first=True)
             ]))
             for image in image_list:
-                if not image:
-                    continue
-
+                # get the image name
                 filename = Path(urlparse(image.url).path).stem
 
                 # Replace underscore with space
                 filename = filename.replace("_", " ")
 
+                # Ignore character cards
                 if filename in gamedata.CHARACTERS.values():
-                    # Ignore character cards
                     continue
+
+                # Motives
                 elif filename.split()[0] == "Motive":
-                    # Motives
                     ctx.game.motives[name] = filename.split()[1]
+
+                # Suspects
                 elif filename in gamedata.SUSPECTS.values():
-                    # Suspects
                     for suspect in gamedata.SUSPECTS:
                         if filename == gamedata.SUSPECTS[suspect]:
                             ctx.game.suspects_drawn[current_clue] = suspect
                             break
+
+                # Locations
                 elif filename in gamedata.LOCATIONS.values():
-                    # Locations
                     for location in gamedata.LOCATIONS:
                         if filename == gamedata.LOCATIONS[location]:
                             ctx.game.locations_drawn[current_clue] = location
                             break
+
+                # Searching cards
                 elif filename in gamedata.SEARCHING.values():
-                    # Searching cards
                     for item in gamedata.SEARCHING:
                         if filename == gamedata.SEARCHING[item]:
                             ctx.game.searching[name].append(item)
                             break
+                # Clue cards
                 else:
-                    # Clue cards
                     try:
-                        time = int(filename.split("-")[0])
+                        time, choice = [int(num) for num in filename.split("-", maxsplit=2)]
                         current_clue = time
-                        choice = int(filename.split("-")[1])
                         ctx.game.clue_assignments[name].append(time)
                         ctx.game.picked_clues[time] = choice
                     except TypeError:
@@ -161,21 +160,20 @@ class Export(commands.Cog):
             return
 
         # Create pdf object
-        pdf = PDF(format='letter', unit='in')
+        pdf = PDF(format="letter", unit="in")
         pdf.alias_nb_pages()
 
         # Add fonts
-        pdf.add_font('Built', 'sb', str(BUILT_TITLING_SB), True)
-        pdf.add_font('Built', 'bd', str(BUILT_TITLING_BD), True)
+        pdf.add_font("Built", "sb", str(BUILT_TITLING_SB), True)
+        pdf.add_font("Built", "bd", str(BUILT_TITLING_BD), True)
 
-        pdf.add_font('Essays', '', str(ESSAYS_1743), True)
-        pdf.add_font('Essays', 'B', str(ESSAYS_1743_B), True)
+        pdf.add_font("Essays", "", str(ESSAYS_1743), True)
+        pdf.add_font("Essays", "B", str(ESSAYS_1743_B), True)
 
         # Cover page
         pdf.add_page()
-        family, font, size = COVER_TITLE_FONT
-        pdf.set_font(family, font, size)
-        pdf.cell(0, TITLE_CELL_HEIGHT, "Alice is Missing", align='C')
+        pdf.set_font(*COVER_TITLE_FONT)
+        pdf.cell(0, TITLE_CELL_HEIGHT, "Alice is Missing", align="C")
 
         # Create pages for each character
         for character in ctx.game.char_roles():
@@ -184,24 +182,24 @@ class Export(commands.Cog):
         # Chat message exports
 
         # Output the file
-        pdf.output('alice.pdf')
+        pdf.output("alice.pdf")
 
     def generate_char_page(self, ctx, pdf, character):
+        """Creates a character page"""
         pdf.add_page()
 
         # Name at top left
         pdf.set_xy(CHAR_TITLE_X, CHAR_TITLE_Y)
-        family, font, size = CHAR_TITLE_FONT
-        pdf.set_font(family, font, size)
+        pdf.set_font(*CHAR_TITLE_FONT)
         title = "\n".join(gamedata.CHARACTERS[character].split())
         pdf.multi_cell(0, TITLE_CELL_HEIGHT, title)
 
         # Character and motive cards top right
-        char_image = str(utils.MASTER_PATHS[character])
-        pdf.image(char_image, CHAR_IMAGE_X, CHAR_IMAGE_Y, CHAR_IMAGE_WIDTH)
+        char_image = utils.MASTER_PATHS[character]
+        pdf.image(str(char_image), CHAR_IMAGE_X, CHAR_IMAGE_Y, CHAR_IMAGE_WIDTH)
 
-        motive_image = (utils.MOTIVE_DIR / f"Motive {ctx.game.motives[character]}").with_suffix(utils.IMAGE_EXT)
-        pdf.image(motive_image, MOTIVE_IMAGE_X, CHAR_IMAGE_Y, CHAR_IMAGE_WIDTH)
+        motive_image = utils.MOTIVE_DIR / f"Motive {ctx.game.motives[character]}.png"
+        pdf.image(str(motive_image), MOTIVE_IMAGE_X, CHAR_IMAGE_Y, CHAR_IMAGE_WIDTH)
 
         # Clue and corresponding suspect cards in two rows
         image_x = CLUE_IMAGE_LEFT
@@ -212,10 +210,10 @@ class Export(commands.Cog):
                 continue
 
             # Add clue card to page
-            clue_image = (utils.CLUE_DIR / str(clue) / f"{clue}-{ctx.game.picked_clues[clue]}.png")
+            clue_image = utils.CLUE_DIR / str(clue) / f"{clue}-{ctx.game.picked_clues[clue]}.png"
             image_y = CLUE_IMAGE_Y
             if clue == 90:
-                image_y += (CLUE_IMAGE_HEIGHT + CLUE_SUSPECT_GAP)/2
+                image_y += (CLUE_IMAGE_HEIGHT + CLUE_SUSPECT_GAP) / 2
 
             pdf.image(str(clue_image), image_x, image_y, CLUE_IMAGE_WIDTH)
 
@@ -231,11 +229,11 @@ class Export(commands.Cog):
                             suspect = ctx.game.locations_drawn[time]
                             break
 
-                suspect_image = str(utils.MASTER_PATHS[suspect])
-                pdf.image(suspect_image, image_x, SUSPECT_IMAGE_Y, CLUE_IMAGE_WIDTH)
+                suspect_image = utils.MASTER_PATHS[suspect]
+                pdf.image(str(suspect_image), image_x, SUSPECT_IMAGE_Y, CLUE_IMAGE_WIDTH)
 
             # Adjust for next column
-            image_x += (CLUE_IMAGE_WIDTH + CLUE_IMAGE_GAP)
+            image_x += CLUE_IMAGE_WIDTH + CLUE_IMAGE_GAP
 
     @commands.command()
     async def txt(self, ctx):
