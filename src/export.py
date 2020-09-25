@@ -82,8 +82,63 @@ class Export(commands.Cog):
     def __init__(self, bot):
         self.bot = bot
     
-    def import_data(self, ctx):
-        pass
+    async def import_data(self, ctx):
+        names = list(gamedata.CHARACTERS)
+        
+        for name in names:
+            # Create blank values to fill out
+            ctx.game.clue_assignments[name] = []
+
+            channel = ctx.text_channels[name + "-clues"]
+            current_clue = 90
+            image_list = [message.attachments async for message in channel.history(limit=None, oldest_first=True)]
+            for image in image_list:
+                if not image:
+                    continue
+
+                url = image[0].url
+                filename = url.split("/")[-1]
+                
+                # Strip extension
+                filename = filename.split(".")[0]
+                
+                # Replace underscore with space
+                filename = filename.replace("_", " ")
+
+                if filename in gamedata.CHARACTERS.values():
+                    # Ignore character cards
+                    continue
+                elif filename.split()[0] == "Motive":
+                    # Motives
+                    ctx.game.motives[name] = filename.split()[1]
+                elif filename in gamedata.SUSPECTS.values():
+                    # Suspects
+                    for suspect in gamedata.SUSPECTS:
+                        if filename == gamedata.SUSPECTS[suspect]:
+                            ctx.game.suspects_drawn[current_clue] = suspect
+                            break
+                elif filename in gamedata.LOCATIONS.values():
+                    # Locations
+                    for location in gamedata.LOCATIONS:
+                        if filename == gamedata.LOCATIONS[location]:
+                            ctx.game.locations_drawn[current_clue] = location
+                            break
+                elif filename in gamedata.SEARCHING.values():
+                    # Searching cards
+                    for item in gamedata.SEARCHING:
+                        if filename == gamedata.SEARCHING[item]:
+                            ctx.game.searching[name].append(item)
+                            break
+                else:
+                    # Clue cards
+                    try:
+                        time = int(filename.split("-")[0])
+                        current_clue = time
+                        choice = int(filename.split("-")[1])
+                        ctx.game.clue_assignments[name].append(time)
+                        ctx.game.picked_clues[time] = choice
+                    except:
+                        print(filename)
 
     @commands.command()
     async def pdf(self, ctx):
@@ -91,7 +146,7 @@ class Export(commands.Cog):
 
         # If the bot does not have game data loaded, attempt to import
         if not ctx.game.started:
-            self.import_data(ctx)
+            await self.import_data(ctx)
         # If import failed, display error message and quit
         if not ctx.game.motives:
             asyncio.create_task(ctx.send("Couldn't find game data to export!"))
@@ -119,7 +174,7 @@ class Export(commands.Cog):
             self.generate_char_page(ctx, pdf, character.lower())
 
         # Output the file
-        pdf.output('alice.pdf', 'F')
+        pdf.output('alice.pdf')
 
     def generate_char_page(self, ctx, pdf, character):
         pdf.add_page()
