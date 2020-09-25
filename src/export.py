@@ -204,6 +204,8 @@ class Export(commands.Cog):
 
         # Group chat export
         self.heading(ctx, pdf, "Group Chat", PM_TITLE_FONT, gap=PM_TITLE_TEXT_GAP)
+        channel = "group-chat"
+        await self.channel_export(ctx, pdf, channel)
 
         # Chat message exports
         for a, b in pm_channels:
@@ -229,6 +231,7 @@ class Export(commands.Cog):
 
     def generate_char_page(self, ctx, pdf, character):
         """Creates a character page"""
+
         pdf.add_page()
 
         # Name at top left
@@ -279,6 +282,11 @@ class Export(commands.Cog):
             image_x += CLUE_IMAGE_WIDTH + CLUE_IMAGE_GAP
 
     async def channel_export(self, ctx, pdf, channel):
+        """
+        Takes all messages from a text channel and adds them 
+        to the current page
+        """
+
         pdf.set_font(*PM_FONT)
         channel = ctx.text_channels[channel]
         async for message in channel.history(limit=None, oldest_first=True):
