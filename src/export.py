@@ -15,7 +15,15 @@ import utils
 # PDF export constants - all measurements are in inches
 PAGE_WIDTH = 8.5  # Letter size paper inch width
 CARD_RATIO = 1057 / 757  # Card height to width ratio
+PAGE_NUMBER_X = 8.2
 PAGE_NUMBER_Y = -0.5  # Vertical position of page number
+
+# Watermark
+CREATED_Y = -0.7
+CREATED_WATERMARK_GAP = 0.2
+CREATED = "Created by:"
+WATERMARK = "The White Rabbit"
+WATERMARK_Y = CREATED_Y + CREATED_WATERMARK_GAP
 
 # Cover page
 COVER_TITLE_Y = 2
@@ -72,12 +80,11 @@ CHAR_TITLE_FONT = ("Built", 'sb', 60)
 PAGE_NUMBER_FONT = ("Essays", '', 16)
 PM_TITLE_FONT = ("Essays", '', 24)
 PM_FONT = ("Essays", '', 12)
+CREATED_FONT = ("SmallType", '', 12)
+WATERMARK_FONT = ("SmallType", '', 16)
 
 # Font paths
 FONT_DIR = utils.WHITE_RABBIT_DIR / "Fonts"
-
-BEBAS_DIR = FONT_DIR / "bebas_neue"
-BEBAS_NEUE = BEBAS_DIR / "BebasNeue-Regular.ttf"
 
 BUILT_DIR = FONT_DIR / "built_titling"
 BUILT_TITLING_SB = BUILT_DIR / "built titling sb.ttf"
@@ -87,15 +94,30 @@ ESSAYS_DIR = FONT_DIR / "Essays1743"
 ESSAYS_1743 = ESSAYS_DIR / "Essays1743.ttf"
 ESSAYS_1743_B = ESSAYS_DIR / "Essays1743-Bold.ttf"
 
+SMALLTYPE_DIR = FONT_DIR / "smalltypewriting_medium"
+SMALLTYPE_SMALL = SMALLTYPE_DIR / "SmallTypeWriting.ttf"
+SMALLTYPE_MEDIUM = SMALLTYPE_DIR / "SmallTypeWritingMedium.ttf"
 
 class PDF(FPDF):
     # Page footer
     def footer(self):
+        # Watermark
+        self.set_y(CREATED_Y)
+        self.set_font(*CREATED_FONT)
+        width = self.get_string_width(CREATED)
+        self.cell(width, 0, CREATED, 0, 0, 'L')
+
+        self.set_y(WATERMARK_Y)
+        self.set_font(*WATERMARK_FONT)
+        width = self.get_string_width(WATERMARK)
+        self.cell(width, 0, WATERMARK, 0, 0, 'L')
+
         # Page number
         self.set_y(PAGE_NUMBER_Y)
         self.set_font(*PAGE_NUMBER_FONT)
-
         page_number_text = str(self.page_no() - 1)
+
+        # Skip cover page
         if page_number_text != "0":
             self.cell(0, 0, page_number_text, 0, 0, 'R')
 
@@ -201,6 +223,9 @@ class Export(commands.Cog):
 
         pdf.add_font("Essays", "", str(ESSAYS_1743), True)
         pdf.add_font("Essays", "B", str(ESSAYS_1743_B), True)
+
+        pdf.add_font("SmallType", "", str(SMALLTYPE_SMALL), True)
+        pdf.add_font("SmallType", "B", str(SMALLTYPE_MEDIUM), True)
 
         # Cover page
         pdf.add_page()
