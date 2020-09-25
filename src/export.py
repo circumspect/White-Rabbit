@@ -11,6 +11,7 @@ import utils
 # PDF export constants - all measurements are in inches
 PAGE_WIDTH = 8.5 # Letter size paper inch width
 CARD_RATIO = 1057 / 757 # Card height to width ratio
+PAGE_NUMBER_Y = -0.8 # Vertical position of page number
 
 # Character Pages
 TITLE_CELL_HEIGHT = 0.8
@@ -18,6 +19,8 @@ TITLE_CELL_HEIGHT = 0.8
 # Dimensions of character/motive card images
 CHAR_IMAGE_WIDTH = 2
 CHAR_IMAGE_HEIGHT = CHAR_IMAGE_WIDTH * CARD_RATIO
+CHAR_TITLE_X = 0.5
+CHAR_TITLE_Y = 1
 
 # Positions
 # Left edge of character card to left edge of page
@@ -50,6 +53,7 @@ SUSPECT_IMAGE_Y = CLUE_IMAGE_Y + CLUE_IMAGE_HEIGHT + CLUE_SUSPECT_GAP
 # Fonts
 COVER_TITLE_FONT = ("Built", 'bd', 80)
 CHAR_TITLE_FONT = ("Built", 'sb', 60)
+PAGE_NUMBER_FONT = ("Essays", '', 16)
 
 # Font paths
 FONT_DIR = utils.WHITE_RABBIT_DIR / "Fonts"
@@ -70,12 +74,11 @@ ESSAYS_1743_B = ESSAYS_DIR / "Essays1743-Bold.ttf"
 class PDF(FPDF):
     # Page footer
     def footer(self):
-        # Position 3/4 inch from bottom
-        self.set_y(-0.75)
-        # Arial italic 8
-        self.set_font('Arial', 'I', 8)
         # Page number
-        self.cell(0, 10, 'Page ' + str(self.page_no()) + '/{nb}', 0, 0, 'C')
+        self.set_y(PAGE_NUMBER_Y)
+        family, font, size = PAGE_NUMBER_FONT
+        self.set_font(family, font, size)
+        self.cell(0, 1, 'Page ' + str(self.page_no()), 0, 0, 'R')
 
 
 class Export(commands.Cog):
@@ -160,8 +163,8 @@ class Export(commands.Cog):
         pdf.add_font('Built', 'sb', str(BUILT_TITLING_SB), True)
         pdf.add_font('Built', 'bd', str(BUILT_TITLING_BD), True)
 
-        pdf.add_font('Essays1743', '', str(ESSAYS_1743), True)
-        pdf.add_font('Essays1743', 'B', str(ESSAYS_1743), True)
+        pdf.add_font('Essays', '', str(ESSAYS_1743), True)
+        pdf.add_font('Essays', 'B', str(ESSAYS_1743_B), True)
 
         # Cover page
         pdf.add_page()
@@ -173,6 +176,9 @@ class Export(commands.Cog):
         for character in ctx.game.char_roles():
             self.generate_char_page(ctx, pdf, character.lower())
 
+        # Chat message exports
+        
+
         # Output the file
         pdf.output('alice.pdf')
 
@@ -180,6 +186,7 @@ class Export(commands.Cog):
         pdf.add_page()
 
         # Name at top left
+        pdf.set_xy(CHAR_TITLE_X, CHAR_TITLE_Y)
         family, font, size = CHAR_TITLE_FONT
         pdf.set_font(family, font, size)
         title = "\n".join(gamedata.CHARACTERS[character].split())
@@ -196,6 +203,10 @@ class Export(commands.Cog):
         image_x = CLUE_IMAGE_LEFT
 
         for clue in ctx.game.clue_assignments[character]:
+            # Don't print 10 minute image
+            if clue == 10:
+                continue
+            
             # Add clue card to page
             clue_image = str(utils.CLUE_DIR / str(clue) / (str(clue) + "-" + str(ctx.game.picked_clues[clue]) + utils.IMAGE_EXT))
             image_y = CLUE_IMAGE_Y
