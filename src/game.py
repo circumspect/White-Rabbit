@@ -244,11 +244,12 @@ class Game(commands.Cog):
             await ctx.send("You don't have a character role!")
             return
 
-        search_card = random.choice(
-            list((utils.CARD_DIR / "Searching").glob("*.png"))
-        )
+        search = random.choice(list(gamedata.SEARCHING))
+        print(ctx.character)
+        ctx.game.searches[ctx.character].append(search)
+        image = utils.SEARCHING_DIR / (gamedata.SEARCHING[search] + utils.IMAGE_EXT)
         asyncio.create_task(ctx.text_channels[f"{ctx.character}-clues"].send(
-            file=discord.File(search_card)
+            file=discord.File(image)
         ))
 
     @commands.command(name="10")
