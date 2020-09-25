@@ -209,6 +209,7 @@ class Export(commands.Cog):
         # Chat message exports
         for a, b in pm_channels:
             channel = a + "-" + b + "-pm"
+            # Make sure channel has messages
             last_message = await ctx.text_channels[channel].history(limit=1).flatten()
             if last_message:
                 title = a.title() + "/" + b.title()
@@ -218,7 +219,8 @@ class Export(commands.Cog):
                 await self.channel_export(ctx, pdf, channel)
 
         # Output the file
-        pdf.output("alice.pdf")
+        out = str(utils.PDF_EXPORT_DIR / (ctx.guild.name + ".pdf"))
+        pdf.output(out)
         await ctx.send("PDF created!")
 
     def heading(self, ctx, pdf, title: str, font, align='', y=None, gap:float=0):
