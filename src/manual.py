@@ -92,7 +92,7 @@ class Manual(commands.Cog):
 
     def send_clue(self, ctx, time: int):
         # Sends clue based on picked_clues value
-        
+
         # Find character who the clue has been assigned to
         for name in ctx.game.clue_assignments:
             if time in ctx.game.clue_assignments[name]:
@@ -100,7 +100,7 @@ class Manual(commands.Cog):
                 break
         else:
             raise ValueError("Missing clue")
-        
+
         # Send clue card
         channel = utils.get_text_channels(ctx.game.guild)[f"{character}-clues"]
         choice = ctx.game.picked_clues[time]
@@ -129,7 +129,7 @@ class Manual(commands.Cog):
             else:
                 asyncio.create_task(channel.send("Something has gone very very wrong."))
         utils.send_image(channel, path)
-        
+
         # Update next_clue unless at end
         if ctx.game.next_clue != 20:
             for i in range(len(gamedata.CLUE_TIMES)):

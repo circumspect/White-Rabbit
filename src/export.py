@@ -9,9 +9,9 @@ import shutil
 import utils
 
 # PDF export constants - all measurements are in inches
-PAGE_WIDTH = 8.5 # Letter size paper inch width
-CARD_RATIO = 1057 / 757 # Card height to width ratio
-PAGE_NUMBER_Y = -0.8 # Vertical position of page number
+PAGE_WIDTH = 8.5  # Letter size paper inch width
+CARD_RATIO = 1057 / 757  # Card height to width ratio
+PAGE_NUMBER_Y = -0.8  # Vertical position of page number
 
 # Character Pages
 TITLE_CELL_HEIGHT = 0.8
@@ -70,7 +70,6 @@ ESSAYS_1743 = ESSAYS_DIR / "Essays1743.ttf"
 ESSAYS_1743_B = ESSAYS_DIR / "Essays1743-Bold.ttf"
 
 
-
 class PDF(FPDF):
     # Page footer
     def footer(self):
@@ -87,10 +86,10 @@ class PDF(FPDF):
 class Export(commands.Cog):
     def __init__(self, bot):
         self.bot = bot
-    
+
     async def import_data(self, ctx):
         names = list(gamedata.CHARACTERS)
-        
+
         for name in names:
             # Create blank values to fill out
             ctx.game.clue_assignments[name] = []
@@ -104,10 +103,10 @@ class Export(commands.Cog):
 
                 url = image[0].url
                 filename = url.split("/")[-1]
-                
+
                 # Strip extension
                 filename = filename.split(".")[0]
-                
+
                 # Replace underscore with space
                 filename = filename.replace("_", " ")
 
@@ -143,7 +142,7 @@ class Export(commands.Cog):
                         choice = int(filename.split("-")[1])
                         ctx.game.clue_assignments[name].append(time)
                         ctx.game.picked_clues[time] = choice
-                    except:
+                    except TypeError:
                         print(filename)
 
     @commands.command()
@@ -180,7 +179,7 @@ class Export(commands.Cog):
             self.generate_char_page(ctx, pdf, character.lower())
 
         # Chat message exports
-        
+
 
         # Output the file
         pdf.output('alice.pdf')
@@ -199,7 +198,7 @@ class Export(commands.Cog):
         char_image = str(utils.MASTER_PATHS[character])
         pdf.image(char_image, CHAR_IMAGE_X, CHAR_IMAGE_Y, CHAR_IMAGE_WIDTH)
 
-        motive_image = str(utils.MOTIVE_DIR / ("Motive " + str(ctx.game.motives[character]) + utils.IMAGE_EXT))
+        motive_image = (utils.MOTIVE_DIR / f"Motive {ctx.game.motives[character]}").with_suffix(utils.IMAGE_EXT)
         pdf.image(motive_image, MOTIVE_IMAGE_X, CHAR_IMAGE_Y, CHAR_IMAGE_WIDTH)
 
         # Clue and corresponding suspect cards in two rows
@@ -209,14 +208,14 @@ class Export(commands.Cog):
             # Don't print 10 minute image
             if clue == 10:
                 continue
-            
+
             # Add clue card to page
-            clue_image = str(utils.CLUE_DIR / str(clue) / (str(clue) + "-" + str(ctx.game.picked_clues[clue]) + utils.IMAGE_EXT))
+            clue_image = (utils.CLUE_DIR / str(clue) / f"{clue}-{ctx.game.picked_clues[clue]}.png")
             image_y = CLUE_IMAGE_Y
             if clue == 90:
                 image_y += (CLUE_IMAGE_HEIGHT + CLUE_SUSPECT_GAP)/2
 
-            pdf.image(clue_image, image_x, image_y, CLUE_IMAGE_WIDTH)
+            pdf.image(str(clue_image), image_x, image_y, CLUE_IMAGE_WIDTH)
 
             if clue != 90:
                 # Add suspect card to page
@@ -229,13 +228,13 @@ class Export(commands.Cog):
                         if time == clue:
                             suspect = ctx.game.locations_drawn[time]
                             break
-                
+
                 suspect_image = str(utils.MASTER_PATHS[suspect])
                 pdf.image(suspect_image, image_x, SUSPECT_IMAGE_Y, CLUE_IMAGE_WIDTH)
-            
+
             # Adjust for next column
             image_x += (CLUE_IMAGE_WIDTH + CLUE_IMAGE_GAP)
-        
+
     @commands.command()
     async def txt(self, ctx):
         """Gets all messages from a guild and writes to a .txt file"""
@@ -270,6 +269,7 @@ class Export(commands.Cog):
         # Delete files
         shutil.rmtree(message_dir)
         zip_file.unlink()
+
 
 def setup(bot):
     bot.add_cog(Export(bot))

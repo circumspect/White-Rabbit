@@ -51,7 +51,7 @@ class Settings(commands.Cog):
             await ctx.send("Music stream disabled!")
 
     @commands.command(name="timer")
-    async def show_timer(self, ctx, gap: int=0):
+    async def show_timer(self, ctx, gap: int = 0):
         """
         Show/hide bot timer
         
@@ -61,11 +61,9 @@ class Settings(commands.Cog):
 
         if gap:
             if gap < gamedata.MIN_TIMER_GAP:
-                asyncio.create_task(
-                    ctx.send("Can't set timer pings less than "
-                                + str(gamedata.MIN_TIMER_GAP)
-                                + " seconds apart!")
-                )
+                asyncio.create_task(ctx.send(
+                    f"Can't set timer pings less than {gamedata.MIN_TIMER_GAP} seconds apart!"
+                ))
                 return
                 
             # If timer spacing between pings exists, enable timer
@@ -78,6 +76,7 @@ class Settings(commands.Cog):
             await ctx.send("Showing bot timer!")
         else:
             await ctx.send("Hiding bot timer!")
+
 
 def setup(bot):
     bot.add_cog(Settings(bot))
