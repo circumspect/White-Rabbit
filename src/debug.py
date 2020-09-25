@@ -33,13 +33,13 @@ class Debug(commands.Cog):
 
         # Cap the top speed
         if speed > gamedata.MAX_SPEED:
-            asyncio.create_task(ctx.send("Too fast! Max is " + str(gamedata.MAX_SPEED)))
+            asyncio.create_task(ctx.send(f"Too fast! Max is {gamedata.MAX_SPEED}"))
             return
+
+        if speed == 1:
+            asyncio.create_task(ctx.send("Reset the game speed!"))
         else:
-            if speed == 1:
-                asyncio.create_task(ctx.send("Reset the game speed!"))
-            else:
-                asyncio.create_task(ctx.send("Set the game speed!"))
+            asyncio.create_task(ctx.send("Set the game speed!"))
 
     @ commands.command()
     async def plugins(self, ctx):
