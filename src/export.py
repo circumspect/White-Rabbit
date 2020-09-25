@@ -271,7 +271,7 @@ class Export(commands.Cog):
         pdf.set_font(*PM_FONT)
         channel = ctx.text_channels[channel]
         async for message in channel.history(limit=None, oldest_first=True):
-            line = message.content
+            line = utils.remove_emojis(message.content)
             pdf.multi_cell(0, PM_LINE_HEIGHT, line)
 
     @commands.command()
