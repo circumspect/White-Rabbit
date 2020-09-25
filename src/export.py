@@ -182,9 +182,7 @@ class Export(commands.Cog):
 
         # Cover page
         pdf.add_page()
-        pdf.set_font(*COVER_TITLE_FONT)
-        pdf.set_y(COVER_TITLE_Y)
-        pdf.cell(0, 0, "Alice is Missing", align="C")
+        self.heading(ctx, pdf, "Alice is Missing", COVER_TITLE_FONT, align="C", y=COVER_TITLE_Y)
 
         # Create list of player characters
         characters = [character for character in gamedata.CHARACTERS if (character.title() in ctx.game.char_roles())]
@@ -203,6 +201,7 @@ class Export(commands.Cog):
         await ctx.send("Collecting messages...")
 
         # Group chat export
+        pdf.add_page()
         self.heading(ctx, pdf, "Group Chat", PM_TITLE_FONT, gap=PM_TITLE_TEXT_GAP)
         channel = "group-chat"
         await self.channel_export(ctx, pdf, channel)
@@ -210,6 +209,7 @@ class Export(commands.Cog):
         # Chat message exports
         for a, b in pm_channels:
             title = a.title() + "/" + b.title()
+            pdf.add_page()
             self.heading(ctx, pdf, title, PM_TITLE_FONT, gap=PM_TITLE_TEXT_GAP)
 
             channel = a + "-" + b + "-pm"
@@ -219,14 +219,13 @@ class Export(commands.Cog):
         pdf.output("alice.pdf")
         await ctx.send("PDF created!")
 
-    def heading(self, ctx, pdf, title: str, font, y: float=0, gap:float=0):
-        """Create a new page and add a heading"""
+    def heading(self, ctx, pdf, title: str, font, align='', y=None, gap:float=0):
+        """Add a heading to the current page"""
 
-        pdf.add_page()
         pdf.set_font(*font)
-        if y:
+        if y != None:
             pdf.set_y(y)
-        pdf.cell(0, 0, title)
+        pdf.cell(0, 0, title, align=align)
         pdf.ln(gap)
 
     def generate_char_page(self, ctx, pdf, character):
