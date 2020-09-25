@@ -150,7 +150,6 @@ class Export(commands.Cog):
     @commands.command()
     async def pdf(self, ctx):
         """Exports the game to a PDF"""
-
         # If the bot does not have game data loaded, attempt to import
         if not ctx.game.started:
             await self.import_data(ctx)
