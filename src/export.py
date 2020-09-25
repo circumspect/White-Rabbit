@@ -22,7 +22,7 @@ COVER_TITLE_Y = 2
 COVER_TITLE_POSTER_GAP = 1
 COVER_POSTER_WIDTH = 5
 COVER_POSTER_Y = COVER_TITLE_Y + COVER_TITLE_POSTER_GAP
-COVER_POSTER_X = 8.5/2 - COVER_POSTER_WIDTH/2
+COVER_POSTER_X = PAGE_WIDTH/2 - COVER_POSTER_WIDTH/2
 
 # Character Pages
 CHAR_TITLE_HEIGHT = 0.8
@@ -118,7 +118,7 @@ class Export(commands.Cog):
             filename = Path(urlparse(image.url).path).stem
             # Replace underscore with space
             filename = filename.replace("_", " ")
-            
+
             if filename.startswith("Alice Briarwood"):
                 ctx.game.alice = int(filename.split()[-1])
                 break
