@@ -208,12 +208,14 @@ class Export(commands.Cog):
 
         # Chat message exports
         for a, b in pm_channels:
-            title = a.title() + "/" + b.title()
-            pdf.add_page()
-            self.heading(ctx, pdf, title, PM_TITLE_FONT, gap=PM_TITLE_TEXT_GAP)
-
             channel = a + "-" + b + "-pm"
-            await self.channel_export(ctx, pdf, channel)
+            last_message = await ctx.text_channels[channel].history(limit=1).flatten()
+            if last_message:
+                title = a.title() + "/" + b.title()
+                pdf.add_page()
+                self.heading(ctx, pdf, title, PM_TITLE_FONT, gap=PM_TITLE_TEXT_GAP)
+
+                await self.channel_export(ctx, pdf, channel)
 
         # Output the file
         pdf.output("alice.pdf")
