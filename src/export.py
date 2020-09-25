@@ -202,12 +202,13 @@ class Export(commands.Cog):
 
         await ctx.send("Collecting messages...")
 
+        # Group chat export
+        self.heading(ctx, pdf, "Group Chat", PM_TITLE_FONT, gap=PM_TITLE_TEXT_GAP)
+
         # Chat message exports
         for a, b in pm_channels:
-            pdf.add_page()
-            pdf.set_font(*PM_TITLE_FONT)
-            pdf.cell(0, 0, a.title() + "/" + b.title())
-            pdf.ln(PM_TITLE_TEXT_GAP)
+            title = a.title() + "/" + b.title()
+            self.heading(ctx, pdf, title, PM_TITLE_FONT, gap=PM_TITLE_TEXT_GAP)
 
             channel = a + "-" + b + "-pm"
             await self.channel_export(ctx, pdf, channel)
@@ -215,6 +216,16 @@ class Export(commands.Cog):
         # Output the file
         pdf.output("alice.pdf")
         await ctx.send("PDF created!")
+
+    def heading(self, ctx, pdf, title: str, font, y: float=0, gap:float=0):
+        """Create a new page and add a heading"""
+
+        pdf.add_page()
+        pdf.set_font(*font)
+        if y:
+            pdf.set_y(y)
+        pdf.cell(0, 0, title)
+        pdf.ln(gap)
 
     def generate_char_page(self, ctx, pdf, character):
         """Creates a character page"""
