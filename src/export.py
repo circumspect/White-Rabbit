@@ -15,10 +15,10 @@ import utils
 # PDF export constants - all measurements are in inches
 PAGE_WIDTH = 8.5  # Letter size paper inch width
 CARD_RATIO = 1057 / 757  # Card height to width ratio
-PAGE_NUMBER_Y = -0.8  # Vertical position of page number
+PAGE_NUMBER_Y = -0.5  # Vertical position of page number
 
 # Cover page
-COVER_TITLE_Y = 1
+COVER_TITLE_Y = 2
 
 # Character Pages
 CHAR_TITLE_HEIGHT = 0.8
