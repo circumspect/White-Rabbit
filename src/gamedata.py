@@ -59,38 +59,31 @@ CLUE_TYPES = {
 class Data:
     def __init__(self, guild):
         self.guild = guild
+
+        # Status
         self.init = False
         self.setup = False
         self.started = False
+        
+        # Setings
         self.automatic = True
         self.show_timer = False
         self.stream_music = False
-        self.motives = {}
-        self.ten_char = None
-        self.three_flip = False
-        self.second_culprit = False
-
-        # How often the bot should check the timer, in seconds
-        self.timer_gap = 10
-
-        # DO NOT CHANGE
-        # Use !speed when bot is running to set value (DEBUG USE ONLY)
-        self.game_speed = 1
-
-        # Clue vars
-        self.clue_assignments = {}
-        self.picked_clues = {}
 
         # Enabled endings
         self.endings = {}
         for i in range(1, 4):
             # Enable all endings
             self.endings[i] = True
+        
+        # Game data
+        self.motives = {}
+        self.clue_assignments = {}
+        self.picked_clues = {}
 
-        # Searching
-        self.searches = {}
-        for character in CHARACTERS:
-            self.searches[character] = []
+        self.ten_char = None
+        self.three_flip = False
+        self.second_culprit = False
 
         # Suspects and locations
         self.suspect_pile = []
@@ -106,6 +99,20 @@ class Data:
         self.suspects_drawn = {}
         self.locations_drawn = {}
         self.next_clue = 80
+
+        # Searching
+        self.searches = {}
+        for character in CHARACTERS:
+            self.searches[character] = []
+
+
+        # DO NOT TOUCH
+        # How often the bot should check the timer, in seconds
+        # Use !timer to change
+        self.timer_gap = 10
+        # Use !speed when bot is running to set value (DEBUG USE ONLY)
+        self.game_speed = 1
+
 
     def char_roles(self):
         unsorted = {
