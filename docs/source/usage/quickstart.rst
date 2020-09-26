@@ -4,6 +4,8 @@ Quickstart Guide
 
 This guide assumes familiarity with the rules and gameplay of Alice is Missing. To purchase a PDF copy of the game, including the rulebook, `click here <https://www.drivethrurpg.com/product/321387/Alice-Is-Missing-A-Silent-Roleplaying-Game>`_.
 
+If you have not yet installed the bot, see :doc:`installation`
+
 Playing the game
 ================
 
@@ -33,7 +35,7 @@ To begin setting up the game, type ``!init`` into the channel titled ``#bot-chan
 Starting the game
 -----------------
 
-To start the game, run ``!start``.
+To start the game, run ``!start``. The bot will automatically send clues to the appropriate clues channel along with the corresponding suspect/location. The only other command that needs to be run after the game has begun is using the 10 command to assign the 10 minute clue card to the player who is going to Alice's location near the end of the game, e.g. ``!10 Dakota``.
 
 
 .. note::
