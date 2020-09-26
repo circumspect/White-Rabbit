@@ -68,6 +68,8 @@ class Game(commands.Cog):
             "Stream timer (https://www.youtube.com/watch?v=ysOOFIOAy7A)", 
             "!start", "Send first message", 
         ])
+        prompts = utils.codeblock(prompts)
+
         background = " ".join([
             "CHARLIE BARNES moved away from Silent Falls", 
             "with their mom at the end of the last school year",
@@ -78,8 +80,10 @@ class Game(commands.Cog):
             "They haven’t heard from her since.",
         ])
 
-        asyncio.create_task(channel.send(f"```{prompts}```"))
-        asyncio.create_task(channel.send(f"```{background}```"))
+        background = utils.codeblock(background)
+
+        asyncio.create_task(channel.send(prompts))
+        asyncio.create_task(channel.send(background))
 
         # Character and motive cards in clues channels
         for name in gamedata.CHARACTERS:

@@ -227,8 +227,10 @@ class Manual(commands.Cog):
             f"{player.title()}: {', '.join(str(x) for x in bucket)}"
             for player, bucket in ctx.game.clue_assignments.items()
         ])
+        message = utils.codeblock(message)
+
         channel = ctx.text_channels["player-resources"]
-        asyncio.create_task(channel.send(f"```{message}```"))
+        asyncio.create_task(channel.send(message))
 
         # Console logging
         print("Randomly assigned clue cards!")
