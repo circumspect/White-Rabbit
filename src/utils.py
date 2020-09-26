@@ -12,9 +12,10 @@ import gamedata
 # Image paths
 # White-Rabbit/src/utils.py
 WHITE_RABBIT_DIR = Path(__file__).parent.parent
+RESOURCE_DIR = WHITE_RABBIT_DIR / "resources"
 
-IMAGE_DIR = WHITE_RABBIT_DIR / "Images"
-RESOURCE_DIR = IMAGE_DIR / "Player Resources"
+IMAGE_DIR = RESOURCE_DIR / "Images"
+PLAYER_RESOURCE_DIR = IMAGE_DIR / "Player Resources"
 POSTER_DIR = IMAGE_DIR / "Missing Person Posters"
 TIMER_AUDIO = WHITE_RABBIT_DIR / "Alice is Missing Playlist.mp3"
 
@@ -26,7 +27,7 @@ LOCATION_IMAGE_DIR = CARD_DIR / "Locations"
 CLUE_DIR = CARD_DIR / "Clues"
 SEARCHING_DIR = CARD_DIR / "Searching"
 
-EXPORT_DIR = WHITE_RABBIT_DIR / "Exports"
+EXPORT_DIR = WHITE_RABBIT_DIR / "exports"
 PDF_EXPORT_DIR = EXPORT_DIR / "PDFs"
 if not os.path.isdir(EXPORT_DIR):
     os.mkdir(EXPORT_DIR)
@@ -36,8 +37,8 @@ if not os.path.isdir(PDF_EXPORT_DIR):
 
 # Easy access filepaths
 MASTER_PATHS = {
-    "guide": (RESOURCE_DIR / "Alice is Missing - Guide.jpg"),
-    "character_sheet": (RESOURCE_DIR / "Alice is Missing - Character Sheet.jpg"),
+    "guide": (PLAYER_RESOURCE_DIR / "Alice is Missing - Guide.jpg"),
+    "character_sheet": (PLAYER_RESOURCE_DIR / "Alice is Missing - Character Sheet.jpg"),
     "intro": (CARD_DIR / "Misc" / "Introduction.png"),
 }
 
