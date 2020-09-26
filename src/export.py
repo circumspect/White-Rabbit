@@ -13,14 +13,26 @@ import gamedata
 import utils
 
 # PDF export constants - all measurements are in inches
-PAGE_WIDTH = 8.5  # Letter size paper inch width
+# Letter size paper
+PAGE_WIDTH = 8.5 
+PAGE_HEIGHT = 11
 CARD_RATIO = 1057 / 757  # Card height to width ratio
+AUTO_BREAK = 1
+
+# Separator
+BREAK_SEPARATOR_GAP = 0.1
+SEPARATOR_THICKNESS = 0.01
+WATERMARK_SEPARATOR_Y = PAGE_HEIGHT - AUTO_BREAK + BREAK_SEPARATOR_GAP
+WATERMARK_SEPARATOR_LEFT = 0.45
+WATERMARK_SEPARATOR_LENGTH = 3
+WATERMARK_SEPARATOR_RIGHT = WATERMARK_SEPARATOR_LEFT + WATERMARK_SEPARATOR_LENGTH
 
 # Watermark
-CREATED_Y = -0.7
+SEPARATOR_CREATED_GAP = 0.2
 CREATED_WATERMARK_GAP = 0.2
 CREATED = "Created by:"
 WATERMARK = "The White Rabbit"
+CREATED_Y = WATERMARK_SEPARATOR_Y + SEPARATOR_CREATED_GAP
 WATERMARK_Y = CREATED_Y + CREATED_WATERMARK_GAP
 
 # Page numbers
@@ -82,7 +94,7 @@ COVER_TITLE_FONT = ("Built", 'bd', 80)
 CHAR_TITLE_FONT = ("Built", 'sb', 60)
 
 PM_TITLE_FONT = ("Built", 'sb', 24)
-PM_FONT = ("Essays", '', 12)
+PM_FONT = ("Baloo", '', 12)
 
 CREATED_FONT = ("SmallType", '', 12)
 WATERMARK_FONT = ("SmallType", '', 16)
@@ -92,6 +104,9 @@ PAGE_NUMBER_FONT = WATERMARK_FONT
 # Font paths
 FONT_DIR = utils.WHITE_RABBIT_DIR / "Fonts"
 
+BALOO_DIR = FONT_DIR / "Baloo_Tammudu_2"
+BALOO_REGULAR = BALOO_DIR / "BalooTammudu2-Regular.ttf"
+
 BUILT_DIR = FONT_DIR / "built_titling"
 BUILT_TITLING_SB = BUILT_DIR / "built titling sb.ttf"
 BUILT_TITLING_BD = BUILT_DIR / "built titling bd.ttf"
@@ -100,13 +115,21 @@ ESSAYS_DIR = FONT_DIR / "Essays1743"
 ESSAYS_1743 = ESSAYS_DIR / "Essays1743.ttf"
 ESSAYS_1743_B = ESSAYS_DIR / "Essays1743-Bold.ttf"
 
+ROBOTO_DIR = FONT_DIR / "roboto"
+ROBOTO_REGULAR = ROBOTO_DIR / "Roboto-Regular.ttf"
+
 SMALLTYPE_DIR = FONT_DIR / "smalltypewriting_medium"
 SMALLTYPE_SMALL = SMALLTYPE_DIR / "SmallTypeWriting.ttf"
 SMALLTYPE_MEDIUM = SMALLTYPE_DIR / "SmallTypeWritingMedium.ttf"
 
+
 class PDF(FPDF):
     # Page footer
     def footer(self):
+        # Watermark separator
+        self.set_line_width(SEPARATOR_THICKNESS)
+        self.line(WATERMARK_SEPARATOR_LEFT, WATERMARK_SEPARATOR_Y, WATERMARK_SEPARATOR_RIGHT, WATERMARK_SEPARATOR_Y)
+
         # Watermark
         self.set_y(CREATED_Y)
         self.set_font(*CREATED_FONT)
@@ -222,14 +245,18 @@ class Export(commands.Cog):
             
         # Create pdf object
         pdf = PDF(format="letter", unit="in")
-        pdf.alias_nb_pages()
+        pdf.set_auto_page_break(True, margin=1)
 
         # Add fonts
+        pdf.add_font("Baloo", "", str(BALOO_REGULAR), True)
+
         pdf.add_font("Built", "sb", str(BUILT_TITLING_SB), True)
         pdf.add_font("Built", "bd", str(BUILT_TITLING_BD), True)
 
         pdf.add_font("Essays", "", str(ESSAYS_1743), True)
         pdf.add_font("Essays", "B", str(ESSAYS_1743_B), True)
+
+        pdf.add_font("Roboto", "", str(ROBOTO_REGULAR), True)
 
         pdf.add_font("SmallType", "", str(SMALLTYPE_SMALL), True)
         pdf.add_font("SmallType", "B", str(SMALLTYPE_MEDIUM), True)
