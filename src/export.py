@@ -1,4 +1,5 @@
 # Built-in
+import asyncio
 import datetime
 import itertools
 import math
@@ -6,7 +7,6 @@ from pathlib import Path
 import shutil
 from urllib.parse import urlparse
 # 3rd-party
-import asyncio
 import discord
 from discord.ext import commands
 from fpdf import FPDF
