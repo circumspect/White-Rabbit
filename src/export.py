@@ -28,16 +28,13 @@ WATERMARK_SEPARATOR_LENGTH = 3
 WATERMARK_SEPARATOR_RIGHT = WATERMARK_SEPARATOR_LEFT + WATERMARK_SEPARATOR_LENGTH
 
 # Watermark
-SEPARATOR_CREATED_GAP = 0.2
-CREATED_WATERMARK_GAP = 0.2
-CREATED = "Created by:"
-WATERMARK = "The White Rabbit"
-CREATED_Y = WATERMARK_SEPARATOR_Y + SEPARATOR_CREATED_GAP
-WATERMARK_Y = CREATED_Y + CREATED_WATERMARK_GAP
+SEPARATOR_WATERMARK_GAP = 0.1
+WATERMARK_GAPS = (SEPARATOR_WATERMARK_GAP, 0.2)
+WATERMARK = ("Created by:", "The White Rabbit")
+WATERMARK_Y = WATERMARK_SEPARATOR_Y + SEPARATOR_WATERMARK_GAP
 
 # Page numbers
 PAGE_NUMBER_X = 8.2
-PAGE_NUMBER_Y = WATERMARK_Y
 
 # Cover page
 COVER_TITLE_Y = 1
@@ -96,9 +93,8 @@ CHAR_TITLE_FONT = ("Built", 'sb', 60)
 PM_TITLE_FONT = ("Built", 'sb', 24)
 PM_FONT = ("Baloo", '', 12)
 
-CREATED_FONT = ("SmallType", '', 12)
-WATERMARK_FONT = ("SmallType", '', 16)
-PAGE_NUMBER_FONT = WATERMARK_FONT
+WATERMARK_FONTS = (("Baloo", '', 12), ("Baloo", '', 16))
+PAGE_NUMBER_FONT = WATERMARK_FONTS[1]
 
 
 # Font paths
@@ -111,17 +107,6 @@ BUILT_DIR = FONT_DIR / "built_titling"
 BUILT_TITLING_SB = BUILT_DIR / "built titling sb.ttf"
 BUILT_TITLING_BD = BUILT_DIR / "built titling bd.ttf"
 
-ESSAYS_DIR = FONT_DIR / "Essays1743"
-ESSAYS_1743 = ESSAYS_DIR / "Essays1743.ttf"
-ESSAYS_1743_B = ESSAYS_DIR / "Essays1743-Bold.ttf"
-
-ROBOTO_DIR = FONT_DIR / "roboto"
-ROBOTO_REGULAR = ROBOTO_DIR / "Roboto-Regular.ttf"
-
-SMALLTYPE_DIR = FONT_DIR / "smalltypewriting_medium"
-SMALLTYPE_SMALL = SMALLTYPE_DIR / "SmallTypeWriting.ttf"
-SMALLTYPE_MEDIUM = SMALLTYPE_DIR / "SmallTypeWritingMedium.ttf"
-
 
 class PDF(FPDF):
     # Page footer
@@ -130,19 +115,16 @@ class PDF(FPDF):
         self.set_line_width(SEPARATOR_THICKNESS)
         self.line(WATERMARK_SEPARATOR_LEFT, WATERMARK_SEPARATOR_Y, WATERMARK_SEPARATOR_RIGHT, WATERMARK_SEPARATOR_Y)
 
-        # Watermark
-        self.set_y(CREATED_Y)
-        self.set_font(*CREATED_FONT)
-        width = self.get_string_width(CREATED)
-        self.cell(width, 0, CREATED, 0, 0, 'L')
-
         self.set_y(WATERMARK_Y)
-        self.set_font(*WATERMARK_FONT)
-        width = self.get_string_width(WATERMARK)
-        self.cell(width, 0, WATERMARK, 0, 0, 'L')
+        # Watermark
+        for i in range(len(WATERMARK)):
+            self.set_y(self.get_y() + WATERMARK_GAPS[i])
+            self.set_font(*WATERMARK_FONTS[i])
+            text = WATERMARK[i]
+            width = self.get_string_width(text)
+            self.cell(width, 0, text, 0, 0, 'L')
 
         # Page number
-        self.set_y(PAGE_NUMBER_Y)
         self.set_font(*PAGE_NUMBER_FONT)
         page_number_text = str(self.page_no() - 1)
 
@@ -252,14 +234,6 @@ class Export(commands.Cog):
 
         pdf.add_font("Built", "sb", str(BUILT_TITLING_SB), True)
         pdf.add_font("Built", "bd", str(BUILT_TITLING_BD), True)
-
-        pdf.add_font("Essays", "", str(ESSAYS_1743), True)
-        pdf.add_font("Essays", "B", str(ESSAYS_1743_B), True)
-
-        pdf.add_font("Roboto", "", str(ROBOTO_REGULAR), True)
-
-        pdf.add_font("SmallType", "", str(SMALLTYPE_SMALL), True)
-        pdf.add_font("SmallType", "B", str(SMALLTYPE_MEDIUM), True)
 
         # Cover page
         pdf.add_page()
