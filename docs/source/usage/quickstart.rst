@@ -8,9 +8,8 @@ Log in to the Discord Developer portal at https://discord.com/developers/applica
 
 Now, create a new Discord server using the following template: https://discord.new/YD7aEUr8AdBQ. 
 
-================
-Playing the game
-================
+
+**Playing the game**
 
 To run the bot, open a shell window and enter the following::
 
@@ -18,8 +17,7 @@ To run the bot, open a shell window and enter the following::
 
 Where /path/to/src is the path to the src folder in the bot's root directory
 
-============
-Bot commands
-============
+
+**Bot commands**
 
 For a list of all available bot commands, use !help
