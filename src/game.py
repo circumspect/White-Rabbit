@@ -276,11 +276,17 @@ class Game(commands.Cog):
                 # ending 3
                 elif minutes_remaining == 8 and ctx.game.second_culprit:
                     culprit = ctx.game.suspects_drawn[30]
-                    while culprit == ctx.game.suspects_drawn[30]:
-                        culprit = random.choice(ctx.game.suspect_pile)
+                    
+                    remaining_suspects = []
+                    for suspect in gamedata.SUSPECTS:
+                        if suspect != culprit:
+                            remaining_suspects.append(suspect)
+                    
+                    second = random.choice(remaining_suspects)
+
                     channel = ctx.text_channels["suspects-drawn"]
                     asyncio.create_task(channel.send("SECOND CULPRIT:"))
-                    path = utils.SUSPECT_IMAGE_DIR / (gamedata.SUSPECTS[culprit] + ".png")
+                    path = utils.SUSPECT_IMAGE_DIR / (gamedata.SUSPECTS[second] + ".png")
                     utils.send_image(channel, path, ctx)
 
                 # endings 1 and 2
