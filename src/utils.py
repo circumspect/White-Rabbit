@@ -1,5 +1,6 @@
 # Built-in
 import asyncio
+import math
 import os
 from pathlib import Path
 import re
@@ -55,6 +56,16 @@ def get_text_channels(guild):
         for channel in guild.text_channels
     }
 
+def time_string(time):
+    """Takes # of seconds and returns formatted string mm:ss"""
+
+    def pad(num):
+        return str(int(num)).zfill(2)
+    
+    minutes = pad(math.floor(time / 60))
+    seconds = pad(time % 60)
+    
+    return f"({minutes}:{seconds})"
 
 def send_image(channel, filepath, ctx=None):
     """Sends an image to a specified channel"""
