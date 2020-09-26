@@ -1,5 +1,7 @@
 # Built-in
+import datetime
 import itertools
+import math
 from pathlib import Path
 import shutil
 from urllib.parse import urlparse
@@ -140,6 +142,13 @@ class Export(commands.Cog):
     async def import_data(self, ctx):
         """imports data from message history"""
 
+        # Find game start
+        channel = ctx.text_channels["bot-channel"]
+        async for message in channel.history(limit=None, oldest_first=True):
+            if "!start" in message.content:
+                ctx.game.start_time = message.created_at
+                break
+
         # Alice
         channel = ctx.text_channels["player-resources"]
         image_list = list(itertools.chain.from_iterable([
@@ -216,8 +225,9 @@ class Export(commands.Cog):
     @commands.command()
     async def pdf(self, ctx):
         """Exports the game to a PDF"""
+
         # If the bot does not have game data loaded, attempt to import
-        if not ctx.game.started:
+        if not ctx.game.start_time:
             await ctx.send("Gathering game data...")
             await self.import_data(ctx)
         # If import failed, display error message and quit
@@ -352,7 +362,18 @@ class Export(commands.Cog):
         pdf.set_font(*PM_FONT)
         channel = ctx.text_channels[channel]
         async for message in channel.history(limit=None, oldest_first=True):
-            line = utils.remove_emojis(message.content)
+            # Time remaining
+            delta = message.created_at - ctx.game.start_time
+            dseconds = delta.seconds
+            time = gamedata.GAME_LENGTH - dseconds
+            stamp = utils.time_string(time)
+
+            # Name
+            author = message.author.display_name.split()[0]
+
+            line = utils.remove_emojis(message.clean_content)
+            line = f"{author}: {line} {stamp}"
+
             pdf.multi_cell(0, MESSAGES_LINE_HEIGHT, line)
 
     @commands.command()

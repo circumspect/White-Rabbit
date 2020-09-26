@@ -1,8 +1,8 @@
 # Built-in
 import asyncio
+import datetime
 import math
 import random
-import time
 import typing
 # 3rd-party
 import discord
@@ -20,7 +20,7 @@ class Game(commands.Cog):
     async def initialize(self, ctx):
         """Initial setup before character selection"""
 
-        if ctx.game.started:
+        if ctx.game.start_time:
             await ctx.send("Game has already begun!")
             return
         elif ctx.game.init and ctx.game.automatic:
@@ -93,7 +93,7 @@ class Game(commands.Cog):
             # Disallow if init hasn't been run yet and manual mode is off
             await ctx.send("Need to initialize first!")
             return
-        elif ctx.game.started:
+        elif ctx.game.start_time:
             await ctx.send("Game has already begun!")
             return
 
@@ -199,7 +199,7 @@ class Game(commands.Cog):
             await ctx.send("Can't start before setting up!")
             return
 
-        if ctx.game.started:
+        if ctx.game.start_time:
             await ctx.send("Game has already begun!")
             return
 
@@ -229,7 +229,7 @@ class Game(commands.Cog):
                 ))
             )
 
-        ctx.game.started = True
+        ctx.game.start_time = datetime.datetime.now()
         asyncio.create_task(ctx.send("Starting the game!"))
 
         # Start timer and clue_check tasks simultaneously
@@ -238,17 +238,13 @@ class Game(commands.Cog):
     async def timer(self, ctx):
         """Prints out the timer"""
 
-        def pad(num):
-            return str(int(num)).zfill(2)
-
         time_remaining = gamedata.GAME_LENGTH
         while time_remaining > 0:
             time_remaining -= ctx.game.timer_gap
 
-            minutes = math.floor(time_remaining / 60)
-            seconds = time_remaining % 60
             if ctx.game.show_timer:
-                await ctx.send(":".join((pad(minutes), pad(seconds))))
+                time = utils.time_string(time_remaining)
+                await ctx.send(time)
             await asyncio.sleep(ctx.game.timer_gap / ctx.game.game_speed)
 
     async def clue_check(self, ctx):
@@ -308,7 +304,7 @@ class Game(commands.Cog):
                 if minutes_remaining <= ctx.game.next_clue:
                     # Find character who owns the clue
                     for name in ctx.game.clue_assignments:
-                        if time in ctx.game.clue_assignments[name]:
+                        if minutes_remaining in ctx.game.clue_assignments[name]:
                             character = name
                             break
 
@@ -324,7 +320,7 @@ class Game(commands.Cog):
     async def search(self, ctx):
         """Draw a searching card"""
 
-        if not ctx.game.started:
+        if not ctx.game.start_time:
             await ctx.send("Game hasn't started yet!")
             return
         if not ctx.character:
