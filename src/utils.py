@@ -65,7 +65,7 @@ def time_string(time):
     minutes = pad(math.floor(time / 60))
     seconds = pad(time % 60)
     
-    return f"({minutes}:{seconds})"
+    return f"{minutes}:{seconds}"
 
 def send_image(channel, filepath, ctx=None):
     """Sends an image to a specified channel"""
