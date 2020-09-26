@@ -5,6 +5,7 @@ import discord
 from discord.ext import commands, tasks
 # Local
 import gamedata
+import utils
 
 class Settings(commands.Cog):
     def __init__(self, bot):
@@ -24,12 +25,13 @@ class Settings(commands.Cog):
 
         if not mode:
             # Print current mode
-            message = "```\nCurrent mode: "
+            message = "Current mode: "
             if ctx.game.automatic:
                 message += "automatic"
             else:
                 message += "manual"
-            message += "\n```"
+            
+            message = utils.codeblock(message)
             await ctx.send(message)
         elif mode == "on":
             ctx.game.automatic = True
