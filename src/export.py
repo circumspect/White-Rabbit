@@ -100,7 +100,7 @@ PAGE_NUMBER_FONT = WATERMARK_FONTS[1]
 
 
 # Font paths
-FONT_DIR = utils.WHITE_RABBIT_DIR / "Fonts"
+FONT_DIR = utils.RESOURCE_DIR / "Fonts"
 
 BALOO_DIR = FONT_DIR / "Baloo_Tammudu_2"
 BALOO_REGULAR = BALOO_DIR / "BalooTammudu2-Regular.ttf"
