@@ -345,7 +345,7 @@ class Game(commands.Cog):
 
             minutes_remaining -= check_interval
 
-    @commands.command()
+    @commands.command(aliases=["searching"])
     async def search(self, ctx):
         """Draw a searching card"""
 
