@@ -59,13 +59,14 @@ class Game(commands.Cog):
         # Instructions for Charlie Barnes
         channel = ctx.text_channels["charlie-clues"]
         prompts = "\n".join([
-            "Read introduction", "Introduce Alice from poster",
-            "Introduce/pick characters", "Explain character cards",
-            "Explain motive cards", "Character introductions (relationships)",
-            "Voicemails", "Suspects and locations", "Explain clue cards",
-            "Explain searching", "Game guide",
-            "Stream timer (https://www.youtube.com/watch?v=ysOOFIOAy7A)",
-            "Run !start", "90 min card",
+            "Read introduction", "Introduce Alice from poster", 
+            "Introduce/pick characters", "!setup_clues", 
+            "Explain character cards", "Explain motive cards", 
+            "Character backgrounds", "Relationships", 
+            "Suspects and locations", "Explain clue cards", 
+            "Explain searching", "Game guide", "Voicemails", 
+            "Stream timer (https://www.youtube.com/watch?v=ysOOFIOAy7A)", 
+            "!start", "Send first message", 
         ])
         asyncio.create_task(channel.send(f"```{prompts}```"))
 
