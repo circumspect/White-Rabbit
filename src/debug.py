@@ -47,7 +47,8 @@ class Debug(commands.Cog):
 
         message = "Plugins loaded:"
         message += "\n".join(self.bot.cogs.keys())
-        await ctx.send(f"```{message}```")
+        message = utils.codeblock(message)
+        await ctx.send(message)
 
     @ commands.command()
     async def load(self, ctx, extension_name: str = "all"):

@@ -50,6 +50,8 @@ for suspect in gamedata.SUSPECTS:
 for location in gamedata.LOCATIONS:
     MASTER_PATHS[location] = (LOCATION_IMAGE_DIR / gamedata.LOCATIONS[location]).with_suffix(IMAGE_EXT)
 
+def codeblock(text: str):
+    return f"```{text}```"
 
 def get_text_channels(guild):
     return {
