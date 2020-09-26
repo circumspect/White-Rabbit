@@ -366,7 +366,7 @@ class Export(commands.Cog):
             delta = message.created_at - ctx.game.start_time
             dseconds = delta.seconds
             time = gamedata.GAME_LENGTH - dseconds
-            stamp = utils.time_string(time)
+            stamp = f"({utils.time_string(time)})"
 
             # Name
             author = message.author.display_name.split()[0]
