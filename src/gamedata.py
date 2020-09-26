@@ -63,7 +63,7 @@ class Data:
         # Status
         self.init = False
         self.setup = False
-        self.started = False
+        self.start_time = None
 
         self.ten_char = None
         self.three_flip = False
