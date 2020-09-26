@@ -222,8 +222,8 @@ class Export(commands.Cog):
                     except TypeError:
                         print(filename)
 
-    @commands.command()
-    async def pdf(self, ctx):
+    @commands.command(aliases=["PDF"])
+    async def pdf(self, ctx, file_name=""):
         """Exports the game to a PDF"""
 
         # If the bot does not have game data loaded, attempt to import
@@ -288,7 +288,10 @@ class Export(commands.Cog):
                 await self.channel_export(ctx, pdf, channel)
 
         # Output the file
-        out = str(utils.PDF_EXPORT_DIR / (ctx.guild.name + ".pdf"))
+        if not file_name:
+            file_name = ctx.guild.name
+        
+        out = str(utils.PDF_EXPORT_DIR / (file_name + ".pdf"))
         pdf.output(out)
         await ctx.send("PDF created!")
 
