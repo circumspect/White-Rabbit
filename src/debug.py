@@ -10,7 +10,7 @@ import utils
 class Debug(commands.Cog):
     def __init__(self, bot):
         self.bot = bot
-        with open(utils.WHITE_RABBIT_DIR / "dev_ids.txt") as f:
+        with open(utils.WHITE_RABBIT_DIR / "dev_ids.txt", "w") as f:
             self.dev_ids = [int(line.strip()) for line in f.readlines()]
 
     async def cog_check(self, ctx):
@@ -23,7 +23,7 @@ class Debug(commands.Cog):
         print("Bot has logged in!")
 
     @ commands.command()
-    async def speed(self, ctx, speed: int = 1):
+    async def speed(self, ctx, speed: float=1):
         """Changes the speed of the game - DEBUG USE ONLY"""
 
         ctx.game.game_speed = speed
@@ -34,6 +34,11 @@ class Debug(commands.Cog):
         # Cap the top speed
         if speed > gamedata.MAX_SPEED:
             asyncio.create_task(ctx.send(f"Too fast! Max is {gamedata.MAX_SPEED}"))
+            return
+        
+        # Speed must be at least 1
+        if speed < 1:
+            asyncio.create_task(ctx.send("Too slow! Speed must be at least 1"))
             return
 
         if speed == 1:
