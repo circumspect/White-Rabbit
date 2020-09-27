@@ -3,7 +3,7 @@ The White Rabbit
 ****************
 
 .. image:: https://img.shields.io/github/license/circumspect/white-rabbit
-  :target: https://img.shields.io/github/license/circumspect/white-rabbit
+  :target: https://github.com/circumspect/White-Rabbit/blob/master/LICENSE
   :alt: License
 .. image:: https://readthedocs.org/projects/white-rabbit/badge/?version=latest
   :target: https://white-rabbit.readthedocs.io/en/latest/?badge=latest
