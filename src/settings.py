@@ -79,6 +79,19 @@ class Settings(commands.Cog):
         else:
             await ctx.send("Hiding bot timer!")
 
+    @commands.command(hidden=True)
+    async def endings(self, ctx, index: int=0):
+        """Enables/disables an ending. See docs for details"""
+
+        if not index:
+            # Print out currently enabled endings
+            message = "Endings enabled: "
+            message += ", ".join([f"#{end}" for end in ctx.game.endings if ctx.game.endings[end]])
+            message = utils.codeblock(message)
+            await ctx.send(message)
+        else:
+            # Toggle specified ending
+            ctx.game.endings[index] = not ctx.game.endings[index]
 
 def setup(bot):
     bot.add_cog(Settings(bot))
