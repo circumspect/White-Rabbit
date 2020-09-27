@@ -66,6 +66,9 @@ MOTIVE_CARD_TOP = CHAR_CARD_TOP + CHAR_CARD_HEIGHT + CHAR_CARD_MOTIVE_GAP
 
 # Clues
 CLUE_CARD_LEFT = 4.5
+CLUE_LABEL_CARD_GAP = 0.8
+CLUE_LABEL_Y_OFFSET = 0.4
+CLUE_LABEL_X = CLUE_CARD_LEFT - CLUE_LABEL_CARD_GAP
 CLUE_CARDS_TOP = 0.6
 CLUE_CARD_WIDTH = 1.5
 CLUE_CARD_HEIGHT = CLUE_CARD_WIDTH * CARD_RATIO
@@ -81,12 +84,18 @@ MESSAGES_LINE_HEIGHT = 0.25
 
 
 # Fonts
+# Cover page
 COVER_TITLE_FONT = ("Built", 'bd', 80)
-CHAR_TITLE_FONT = ("Built", 'sb', 60)
 
+# Character pages
+CHAR_TITLE_FONT = ("Built", 'sb', 60)
+CLUE_LABEL_FONT = ("Built", 'sb', 48)
+
+# Message pages
 PM_TITLE_FONT = ("Built", 'sb', 24)
 PM_FONT = ("Baloo", '', 12)
 
+# Footer
 WATERMARK_FONTS = (("Baloo", '', 12), ("Baloo", '', 16))
 PAGE_NUMBER_FONT = WATERMARK_FONTS[1]
 
@@ -319,7 +328,14 @@ class Export(commands.Cog):
         # Clues
         current_y = CLUE_CARDS_TOP
         for clue in ctx.game.clue_assignments[character]:
-            # Clue time
+            # Clue label
+            label = str(clue)
+            label_width = pdf.get_string_width(label)
+            label_x = CLUE_LABEL_X
+            label_y = current_y + CLUE_LABEL_Y_OFFSET
+            pdf.set_xy(label_x, label_y)
+            pdf.set_font(*CLUE_LABEL_FONT)
+            pdf.cell(label_width, 0, label)
 
             # Clue card
             choice = ctx.game.picked_clues[clue]
