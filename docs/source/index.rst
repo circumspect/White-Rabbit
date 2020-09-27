@@ -1,7 +1,8 @@
-Welcome to The White Rabbit's documentation!
-============================================
+The White Rabbit documentation
+==============================
 
 .. toctree::
    :maxdepth: 2
    
-   contents
+   usage/installation
+   usage/quickstart
