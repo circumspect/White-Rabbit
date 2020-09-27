@@ -41,7 +41,7 @@ To start the game, run ``!start``. The bot will automatically send clues to the 
 Other settings
 --------------
 
-The bot has a few settings available, including a timer and a manual mode.
+The bot has a few gameplay-related settings available, including displaying a timer and running in manual mode. For more information on these, see :doc:`settings`
 
 .. note::
    For a list of all available bot commands, use ``!help``
