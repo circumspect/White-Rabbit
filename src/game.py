@@ -262,7 +262,7 @@ class Game(commands.Cog):
                             break
 
                     channel = ctx.text_channels[character + "-clues"]
-                    await channel.send(f"Reminder: You have the {minutes_remaining} minute clue card")
+                    await channel.send(f"Reminder: You have the {ctx.game.next_clue} minute clue card")
 
                 # Wait out the rest of the interval
                 await asyncio.sleep((check_interval - gamedata.REMINDER_BUFFER) * 60 / ctx.game.game_speed)
