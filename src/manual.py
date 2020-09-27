@@ -259,6 +259,13 @@ class Manual(commands.Cog):
         """
 
         for bucket in clue_buckets:
+            # If three players, make sure Charlie gets the 4 clue bucket
+            # This both ensures that each player has the same number of clues
+            # (not counting the 90 minute card) and caps the clues on each
+            # character page in the PDF export at 3
+            if len(bucket) == 4 and 90 not in bucket:
+                return False
+
             for i in range(len(bucket)):
                 for j in range(i + 1, len(bucket)):
                     diff = abs(bucket[i] - bucket[j])

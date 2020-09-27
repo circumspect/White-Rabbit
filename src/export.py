@@ -48,6 +48,8 @@ COVER_POSTER_X = PAGE_WIDTH/2 - COVER_POSTER_WIDTH/2
 
 
 # Character Pages
+# Title cell size - if this is too small,
+# the text will overlap itself
 CHAR_TITLE_HEIGHT = 0.8
 # Character/motive cards
 # Dimensions of character/motive card images
@@ -65,6 +67,9 @@ CHAR_CARD_MOTIVE_GAP = 0.4
 MOTIVE_CARD_TOP = CHAR_CARD_TOP + CHAR_CARD_HEIGHT + CHAR_CARD_MOTIVE_GAP
 
 # Clues
+# Card dimensions
+CLUE_CARD_HEIGHT = 2.3
+CLUE_CARD_WIDTH = CLUE_CARD_HEIGHT / CARD_RATIO
 # Location
 CLUE_CARD_LEFT = 4.5
 CLUE_CARDS_TOP = 0.6
@@ -72,9 +77,6 @@ CLUE_CARDS_TOP = 0.6
 CLUE_LABEL_CARD_GAP = 0.8
 CLUE_LABEL_Y_OFFSET = 0.4
 CLUE_LABEL_X = CLUE_CARD_LEFT - CLUE_LABEL_CARD_GAP
-# Card dimensions
-CLUE_CARD_WIDTH = 1.5
-CLUE_CARD_HEIGHT = CLUE_CARD_WIDTH * CARD_RATIO
 # Suspect card positioning
 CLUE_SUSPECT_GAP = 0.3
 SUSPECT_CARD_LEFT = CLUE_CARD_LEFT + CLUE_CARD_WIDTH + CLUE_SUSPECT_GAP
@@ -333,6 +335,10 @@ class Export(commands.Cog):
         # Clues
         current_y = CLUE_CARDS_TOP
         for clue in ctx.game.clue_assignments[character]:
+            # Skip 90 and 10 clues
+            if clue == 90 or clue == 10:
+                continue
+
             # Clue label
             label = str(clue)
             label_width = pdf.get_string_width(label)
@@ -346,17 +352,17 @@ class Export(commands.Cog):
             choice = ctx.game.picked_clues[clue]
             card = utils.CLUE_DIR / str(clue) / f"{clue}-{choice}{utils.IMAGE_EXT}"
             pdf.image(str(card), CLUE_CARD_LEFT, current_y, CLUE_CARD_WIDTH)
+
+
+            # Suspect card
+            if clue in ctx.game.suspects_drawn:
+                suspect = gamedata.SUSPECTS[ctx.game.suspects_drawn[clue]]
+                card = utils.SUSPECT_IMAGE_DIR / f"{suspect}{utils.IMAGE_EXT}"
+            elif clue in ctx.game.locations_drawn:
+                location = gamedata.LOCATIONS[ctx.game.locations_drawn[clue]]
+                card = utils.LOCATION_IMAGE_DIR / f"{location}{utils.IMAGE_EXT}"
             
-            if clue != 90:
-                # Suspect card
-                if clue in ctx.game.suspects_drawn:
-                    suspect = gamedata.SUSPECTS[ctx.game.suspects_drawn[clue]]
-                    card = utils.SUSPECT_IMAGE_DIR / f"{suspect}{utils.IMAGE_EXT}"
-                elif clue in ctx.game.locations_drawn:
-                    location = gamedata.LOCATIONS[ctx.game.locations_drawn[clue]]
-                    card = utils.LOCATION_IMAGE_DIR / f"{location}{utils.IMAGE_EXT}"
-                
-                pdf.image(str(card), SUSPECT_CARD_LEFT, current_y, CLUE_CARD_WIDTH)
+            pdf.image(str(card), SUSPECT_CARD_LEFT, current_y, CLUE_CARD_WIDTH)
 
             current_y += CLUE_CARD_HEIGHT + CLUE_CLUE_GAP
 
