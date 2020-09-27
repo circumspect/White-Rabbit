@@ -310,9 +310,14 @@ class Game(commands.Cog):
                     
                     second = random.choice(remaining_suspects)
 
+                    # Send to clues channel
+                    path = utils.SUSPECT_IMAGE_DIR / (gamedata.SUSPECTS[second] + ".png")
+                    channel = ctx.game.ten_char + "-clues"
+                    utils.send_image(channel, path, ctx)
+
+                    # Send to suspects-drawn channel
                     channel = ctx.text_channels["suspects-drawn"]
                     asyncio.create_task(channel.send("SECOND CULPRIT:"))
-                    path = utils.SUSPECT_IMAGE_DIR / (gamedata.SUSPECTS[second] + ".png")
                     utils.send_image(channel, path, ctx)
 
                 # Endings 1 and 2
