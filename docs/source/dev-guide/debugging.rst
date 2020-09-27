@@ -1,5 +1,5 @@
 ***********
-Debug tools
+Debug Tools
 ***********
 
 This page documents commands which may be useful for debugging and bot development.
