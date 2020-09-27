@@ -38,6 +38,7 @@ WATERMARK_Y = WATERMARK_SEPARATOR_Y + SEPARATOR_WATERMARK_GAP
 # Page numbers
 PAGE_NUMBER_X = 8.2
 
+
 # Cover page
 COVER_TITLE_Y = 1
 COVER_TITLE_POSTER_GAP = 0.8
@@ -45,41 +46,21 @@ COVER_POSTER_WIDTH = 6
 COVER_POSTER_Y = COVER_TITLE_Y + COVER_TITLE_POSTER_GAP
 COVER_POSTER_X = PAGE_WIDTH/2 - COVER_POSTER_WIDTH/2
 
+
 # Character Pages
 CHAR_TITLE_HEIGHT = 0.8
 # Character/motive cards
 # Dimensions of character/motive card images
-CHAR_IMAGE_WIDTH = 2
-CHAR_IMAGE_HEIGHT = CHAR_IMAGE_WIDTH * CARD_RATIO
+CHAR_CARD_WIDTH = 2
+CHAR_CARD_HEIGHT = CHAR_CARD_WIDTH * CARD_RATIO
 CHAR_TITLE_X = 0.5
 CHAR_TITLE_Y = 1
 
-# Positions
-# Left edge of character card to left edge of page
-CHAR_IMAGE_X = 3.8
-# Top edge of character/motive cards to top edge of page
-CHAR_IMAGE_Y = 0.4
-# Gap between character card and motive card
-CHAR_MOTIVE_GAP = 0.3
-# Calculate left edge of motive card - DO NOT TOUCH
-MOTIVE_IMAGE_X = CHAR_IMAGE_X + CHAR_IMAGE_WIDTH + CHAR_MOTIVE_GAP
-
-
-# Clue cards
-# Dimensions of character/motive card images
-CLUE_IMAGE_WIDTH = 1.75
-CLUE_IMAGE_HEIGHT = CLUE_IMAGE_WIDTH * CARD_RATIO
-
-# Gap between clue card images
-CLUE_IMAGE_GAP = 0.25
-# Vertical gap between character/motive cards and clue cards
-CHAR_CLUE_GAP = 0.5
-# Vertical gap between clue cards and corresponding suspect cards
-CLUE_SUSPECT_GAP = 0.25
-# Calculations - DO NOT TOUCH
-CLUE_IMAGE_LEFT = PAGE_WIDTH/2 - 1.5*CLUE_IMAGE_GAP - 2*CLUE_IMAGE_WIDTH
-CLUE_IMAGE_Y = CHAR_IMAGE_Y + CHAR_IMAGE_HEIGHT + CHAR_CLUE_GAP
-SUSPECT_IMAGE_Y = CLUE_IMAGE_Y + CLUE_IMAGE_HEIGHT + CLUE_SUSPECT_GAP
+CHAR_CARD_LEFT = 0.6
+CHAR_TITLE_CARD_GAP = 0.3
+CHAR_CARD_TOP = CHAR_TITLE_Y + CHAR_TITLE_HEIGHT * 2 + CHAR_TITLE_CARD_GAP
+CHAR_CARD_MOTIVE_GAP = 0.4
+MOTIVE_CARD_TOP = CHAR_CARD_TOP + CHAR_CARD_HEIGHT + CHAR_CARD_MOTIVE_GAP
 
 
 # Group chat/PM pages
@@ -315,46 +296,14 @@ class Export(commands.Cog):
         title = "\n".join(gamedata.CHARACTERS[character].split())
         pdf.multi_cell(0, CHAR_TITLE_HEIGHT, title)
 
-        # Character and motive cards top right
-        char_image = utils.MASTER_PATHS[character]
-        pdf.image(str(char_image), CHAR_IMAGE_X, CHAR_IMAGE_Y, CHAR_IMAGE_WIDTH)
+        # Character and motive cards
+        name = gamedata.CHARACTERS[character]
+        card = utils.CHARACTER_IMAGE_DIR / (name + utils.IMAGE_EXT)
+        pdf.image(str(card), CHAR_CARD_LEFT, CHAR_CARD_TOP, CHAR_CARD_WIDTH)
 
-        motive_image = utils.MOTIVE_DIR / f"Motive {ctx.game.motives[character]}.png"
-        pdf.image(str(motive_image), MOTIVE_IMAGE_X, CHAR_IMAGE_Y, CHAR_IMAGE_WIDTH)
-
-        # Clue and corresponding suspect cards in two rows
-        image_x = CLUE_IMAGE_LEFT
-
-        for clue in ctx.game.clue_assignments[character]:
-            # Don't print 10 minute image
-            if clue == 10:
-                continue
-
-            # Add clue card to page
-            clue_image = utils.CLUE_DIR / str(clue) / f"{clue}-{ctx.game.picked_clues[clue]}.png"
-            image_y = CLUE_IMAGE_Y
-            if clue == 90:
-                image_y += (CLUE_IMAGE_HEIGHT + CLUE_SUSPECT_GAP) / 2
-
-            pdf.image(str(clue_image), image_x, image_y, CLUE_IMAGE_WIDTH)
-
-            if clue != 90:
-                # Add suspect card to page
-                for time in ctx.game.suspects_drawn:
-                    if time == clue:
-                        suspect = ctx.game.suspects_drawn[time]
-                        break
-                else:
-                    for time in ctx.game.locations_drawn:
-                        if time == clue:
-                            suspect = ctx.game.locations_drawn[time]
-                            break
-
-                suspect_image = utils.MASTER_PATHS[suspect]
-                pdf.image(str(suspect_image), image_x, SUSPECT_IMAGE_Y, CLUE_IMAGE_WIDTH)
-
-            # Adjust for next column
-            image_x += CLUE_IMAGE_WIDTH + CLUE_IMAGE_GAP
+        motive = ctx.game.motives[character]
+        card = utils.MOTIVE_DIR / (f"Motive {motive}{utils.IMAGE_EXT}")
+        pdf.image(str(card), CHAR_CARD_LEFT, MOTIVE_CARD_TOP, CHAR_CARD_WIDTH)
 
     async def channel_export(self, ctx, pdf, channel):
         """
