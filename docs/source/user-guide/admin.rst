@@ -1,5 +1,5 @@
 **************
-Admin commands
+Admin Commands
 **************
 
 This page documents the commands available for admins of servers in which the bot is running. Users who do not have admin permissions in the discord server will not be able to run these commands.
