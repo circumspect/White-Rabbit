@@ -10,3 +10,5 @@ The White Rabbit documentation
    user-guide/settings
    user-guide/manual-mode
    user-guide/exports
+   user-guide/admin
+   dev-guide/debugging
