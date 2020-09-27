@@ -5,5 +5,8 @@ The White Rabbit documentation
 .. toctree::
    :maxdepth: 2
    
-   intro/installation
-   intro/quickstart
+   user-guide/installation
+   user-guide/quick-start
+   user-guide/settings
+   user-guide/manual-mode
+   user-guide/exports
