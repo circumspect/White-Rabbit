@@ -53,14 +53,25 @@ CHAR_TITLE_HEIGHT = 0.8
 # Dimensions of character/motive card images
 CHAR_CARD_WIDTH = 2
 CHAR_CARD_HEIGHT = CHAR_CARD_WIDTH * CARD_RATIO
-CHAR_TITLE_X = 0.5
-CHAR_TITLE_Y = 1
-
-CHAR_CARD_LEFT = 0.6
+# Character page title location
+CHAR_TITLE_X = 0.7
+CHAR_TITLE_Y = 0.5
+# Character card location
+CHAR_CARD_LEFT = 0.8
 CHAR_TITLE_CARD_GAP = 0.3
 CHAR_CARD_TOP = CHAR_TITLE_Y + CHAR_TITLE_HEIGHT * 2 + CHAR_TITLE_CARD_GAP
+# Motive card location
 CHAR_CARD_MOTIVE_GAP = 0.4
 MOTIVE_CARD_TOP = CHAR_CARD_TOP + CHAR_CARD_HEIGHT + CHAR_CARD_MOTIVE_GAP
+
+# Clues
+CLUE_CARD_LEFT = 4.5
+CLUE_CARDS_TOP = 0.6
+CLUE_CARD_WIDTH = 1.5
+CLUE_CARD_HEIGHT = CLUE_CARD_WIDTH * CARD_RATIO
+CLUE_SUSPECT_GAP = 0.3
+SUSPECT_CARD_LEFT = CLUE_CARD_LEFT + CLUE_CARD_WIDTH + CLUE_SUSPECT_GAP
+CLUE_CLUE_GAP = 0.3
 
 
 # Group chat/PM pages
@@ -304,6 +315,29 @@ class Export(commands.Cog):
         motive = ctx.game.motives[character]
         card = utils.MOTIVE_DIR / (f"Motive {motive}{utils.IMAGE_EXT}")
         pdf.image(str(card), CHAR_CARD_LEFT, MOTIVE_CARD_TOP, CHAR_CARD_WIDTH)
+
+        # Clues
+        current_y = CLUE_CARDS_TOP
+        for clue in ctx.game.clue_assignments[character]:
+            # Clue time
+
+            # Clue card
+            choice = ctx.game.picked_clues[clue]
+            card = utils.CLUE_DIR / str(clue) / f"{clue}-{choice}{utils.IMAGE_EXT}"
+            pdf.image(str(card), CLUE_CARD_LEFT, current_y, CLUE_CARD_WIDTH)
+            
+            if clue != 90:
+                # Suspect card
+                if clue in ctx.game.suspects_drawn:
+                    suspect = gamedata.SUSPECTS[ctx.game.suspects_drawn[clue]]
+                    card = utils.SUSPECT_IMAGE_DIR / f"{suspect}{utils.IMAGE_EXT}"
+                elif clue in ctx.game.locations_drawn:
+                    location = gamedata.LOCATIONS[ctx.game.locations_drawn[clue]]
+                    card = utils.LOCATION_IMAGE_DIR / f"{location}{utils.IMAGE_EXT}"
+                
+                pdf.image(str(card), SUSPECT_CARD_LEFT, current_y, CLUE_CARD_WIDTH)
+
+            current_y += CLUE_CARD_HEIGHT + CLUE_CLUE_GAP
 
     async def channel_export(self, ctx, pdf, channel):
         """
