@@ -84,13 +84,11 @@ SUSPECT_CARD_LEFT = CLUE_CARD_LEFT + CLUE_CARD_WIDTH + CLUE_SUSPECT_GAP
 CLUE_CLUE_GAP = 0.3
 
 # Voicemails
-VOICEMAIL_TITLE_X = 0.8
 VOICEMAIL_TITLE_Y = 8.5
 VOICEMAIL_TITLE = "Voicemail:"
 VOICEMAIL_TEXT_OFFSET = 0
 VOICEMAIL_TITLE_TEXT_GAP = 0.2
 VOICEMAIL_TEXT_LINE_HEIGHT = 0.2
-VOICEMAIL_X = VOICEMAIL_TITLE_X + VOICEMAIL_TEXT_OFFSET
 VOICEMAIL_Y = VOICEMAIL_TITLE_Y + VOICEMAIL_TITLE_TEXT_GAP
 
 
@@ -387,10 +385,10 @@ class Export(commands.Cog):
         
         # Voicemail
         pdf.set_font(*VOICEMAIL_TITLE_FONT)
-        pdf.set_xy(VOICEMAIL_TITLE_X, VOICEMAIL_TITLE_Y)
+        pdf.set_y(VOICEMAIL_TITLE_Y)
         pdf.cell(0, 0, VOICEMAIL_TITLE)
         pdf.set_font(*VOICEMAIL_FONT)
-        pdf.set_xy(VOICEMAIL_X, VOICEMAIL_Y)
+        pdf.set_y(VOICEMAIL_Y)
         pdf.multi_cell(0, VOICEMAIL_TEXT_LINE_HEIGHT, ctx.game.voicemails[character])
 
     async def channel_export(self, ctx, pdf, channel):
