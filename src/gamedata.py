@@ -84,10 +84,11 @@ class Data:
 
 
         # Game data
+        self.alice = 0
         self.motives = {}
         self.clue_assignments = {}
         self.picked_clues = {}
-        self.alice = 0
+        self.voicemails = {}
 
         # Suspects and locations
         self.suspect_pile = []
