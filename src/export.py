@@ -400,17 +400,19 @@ class Export(commands.Cog):
         pdf.set_font(*PM_FONT)
         channel = ctx.text_channels[channel]
         async for message in channel.history(limit=None, oldest_first=True):
+            # Name
+            author = message.author.display_name.split()[0]
+            line = utils.remove_emojis(message.clean_content)
+            line = f"{author}: {line}"
+
             # Time remaining
             delta = message.created_at - ctx.game.start_time
             dseconds = delta.seconds
             time = gamedata.GAME_LENGTH - dseconds
-            stamp = f"({utils.time_string(time)})"
-
-            # Name
-            author = message.author.display_name.split()[0]
-
-            line = utils.remove_emojis(message.clean_content)
-            line = f"{author}: {line} {stamp}"
+            if time >= 0:
+                # Don't display timestamp if after game has ended
+                stamp = f"({utils.time_string(time)})"
+                line += f" {stamp}"
 
             pdf.multi_cell(0, MESSAGES_LINE_HEIGHT, line)
 
