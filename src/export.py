@@ -60,10 +60,10 @@ CHAR_TITLE_X = 0.7
 CHAR_TITLE_Y = 0.5
 # Character card location
 CHAR_CARD_LEFT = 0.8
-CHAR_TITLE_CARD_GAP = 0.3
+CHAR_TITLE_CARD_GAP = 0.2
 CHAR_CARD_TOP = CHAR_TITLE_Y + CHAR_TITLE_HEIGHT * 2 + CHAR_TITLE_CARD_GAP
 # Motive card location
-CHAR_CARD_MOTIVE_GAP = 0.4
+CHAR_CARD_MOTIVE_GAP = 0.2
 MOTIVE_CARD_TOP = CHAR_CARD_TOP + CHAR_CARD_HEIGHT + CHAR_CARD_MOTIVE_GAP
 
 # Clues
@@ -83,6 +83,16 @@ SUSPECT_CARD_LEFT = CLUE_CARD_LEFT + CLUE_CARD_WIDTH + CLUE_SUSPECT_GAP
 # Vertical gap between clues
 CLUE_CLUE_GAP = 0.3
 
+# Voicemails
+VOICEMAIL_TITLE_X = 0.8
+VOICEMAIL_TITLE_Y = 8.5
+VOICEMAIL_TITLE = "Voicemail:"
+VOICEMAIL_TEXT_OFFSET = 0
+VOICEMAIL_TITLE_TEXT_GAP = 0.2
+VOICEMAIL_TEXT_LINE_HEIGHT = 0.2
+VOICEMAIL_X = VOICEMAIL_TITLE_X + VOICEMAIL_TEXT_OFFSET
+VOICEMAIL_Y = VOICEMAIL_TITLE_Y + VOICEMAIL_TITLE_TEXT_GAP
+
 
 # Group chat/PM pages
 MESSAGES_TITLE_Y = 0.5
@@ -97,6 +107,8 @@ COVER_TITLE_FONT = ("Built", 'bd', 80)
 # Character pages
 CHAR_TITLE_FONT = ("Built", 'sb', 60)
 CLUE_LABEL_FONT = ("Built", 'sb', 48)
+VOICEMAIL_TITLE_FONT = ("Baloo", '', 16)
+VOICEMAIL_FONT = ("Baloo", '', 12)
 
 # Message pages
 PM_TITLE_FONT = ("Built", 'sb', 24)
@@ -166,7 +178,7 @@ class Export(commands.Cog):
         for image in image_list:
             # Get the image name
             filename = Path(urlparse(image.url).path).stem
-            # Replace underscore with space
+            # Replace Discord's automatically added underscores with spaces
             filename = filename.replace("_", " ")
 
             if filename.startswith("Alice Briarwood"):
@@ -229,16 +241,23 @@ class Export(commands.Cog):
                         ctx.game.picked_clues[time] = choice
                     except TypeError:
                         print(filename)
+        
+        # Voicemails
+        channel = ctx.text_channels["voicemails"]
+        async for message in channel.history(limit=None, oldest_first=True):
+            # Name
+            character = message.author.display_name.lower().split()[0]
+            voicemail = utils.remove_emojis(message.clean_content)
+            ctx.game.voicemails[character] = voicemail.split("||")[1]
 
     @commands.command(aliases=["PDF"])
     async def pdf(self, ctx, file_name=""):
         """Exports the game to a PDF"""
 
-        # If the bot does not have game data loaded, attempt to import
-        if not ctx.game.start_time:
-            await ctx.send("Gathering game data...")
-            await self.import_data(ctx)
-        # If import failed, display error message and quit
+        # Import game data
+        await ctx.send("Gathering game data...")
+        await self.import_data(ctx)
+
         if not ctx.game.motives:
             asyncio.create_task(ctx.send("Couldn't find game data to export!"))
             return
@@ -365,6 +384,14 @@ class Export(commands.Cog):
             pdf.image(str(card), SUSPECT_CARD_LEFT, current_y, CLUE_CARD_WIDTH)
 
             current_y += CLUE_CARD_HEIGHT + CLUE_CLUE_GAP
+        
+        # Voicemail
+        pdf.set_font(*VOICEMAIL_TITLE_FONT)
+        pdf.set_xy(VOICEMAIL_TITLE_X, VOICEMAIL_TITLE_Y)
+        pdf.cell(0, 0, VOICEMAIL_TITLE)
+        pdf.set_font(*VOICEMAIL_FONT)
+        pdf.set_xy(VOICEMAIL_X, VOICEMAIL_Y)
+        pdf.multi_cell(0, VOICEMAIL_TEXT_LINE_HEIGHT, ctx.game.voicemails[character])
 
     async def channel_export(self, ctx, pdf, channel):
         """
