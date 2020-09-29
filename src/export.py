@@ -96,19 +96,29 @@ VOICEMAIL_Y = VOICEMAIL_TITLE_Y + VOICEMAIL_TITLE_TEXT_GAP
 # Title
 CONCLUSION_TITLE = "Conclusions"
 CONCLUSION_TITLE_Y = 0.8
+
+# Row 1
+CONCLUSION_TITLE_ROW1_LABEL_GAP = 0.8
+CONCLUSION_ROW1_LABEL_Y = CONCLUSION_TITLE_Y + CONCLUSION_TITLE_ROW1_LABEL_GAP
 # Character card
-CONCLUSION_TITLE_CHAR_GAP = 0.5
+CONCLUSION_LABEL_IMAGE_GAP = 0.8
 CONCLUSION_CHAR_CARD_X = 0.5
-CONCLUSION_CHAR_CARD_Y = CONCLUSION_TITLE_Y + CONCLUSION_TITLE_CHAR_GAP
+CONCLUSION_ROW1_IMAGE_Y = CONCLUSION_TITLE_Y + CONCLUSION_LABEL_IMAGE_GAP
 CONCLUSION_CARD_WIDTH = 2
 CONCLUSION_CARD_HEIGHT = CONCLUSION_CARD_WIDTH * CARD_RATIO
+# 10 minute clue card
+CONCLUSION_CLUE_CARD_X = PAGE_WIDTH/2 - CONCLUSION_CARD_WIDTH/2
 # Location card
 CONCLUSION_LOCATION_CARD_X = 8.5 - CONCLUSION_CHAR_CARD_X - CONCLUSION_CARD_WIDTH
-CONCLUSION_LOCATION_CARD_Y = 3
+
+# Row 2
+CONCLUSION_ROW1_ROW2_GAP = 0.2
+CONCLUSION_ROW2_LABEL_Y = CONCLUSION_ROW1_IMAGE_Y + CONCLUSION_CARD_HEIGHT + CONCLUSION_ROW1_ROW2_GAP
 # Suspect cards
 CONCLUSION_CHAR_SUSPECT_GAP = 0.3
 CONCLUSION_SUSPECT_CARD_X = CONCLUSION_CHAR_CARD_X
-CONCLUSION_SUSPECT_CARD_Y = CONCLUSION_CHAR_CARD_Y + CONCLUSION_CARD_HEIGHT + CONCLUSION_CHAR_SUSPECT_GAP
+CONCLUSION_ROW2_IMAGE_Y = CONCLUSION_ROW2_LABEL_Y + CONCLUSION_LABEL_IMAGE_GAP
+
 # Body text
 CONCLUSION_BODY_X = 3.3
 CONCLUSION_BODY_Y = 7
@@ -190,9 +200,9 @@ class Export(commands.Cog):
         """imports data from message history"""
 
         # Find game start
-        channel = ctx.text_channels["bot-channel"]
+        channel = ctx.text_channels["group-chat"]
         async for message in channel.history(limit=None, oldest_first=True):
-            if "!start" in message.content:
+            if "Hey! Sorry for the big group text" in message.clean_content:
                 ctx.game.start_time = message.created_at
                 break
 
@@ -262,7 +272,14 @@ class Export(commands.Cog):
                 # Clue cards
                 else:
                     try:
-                        time, choice = [int(num) for num in filename.split("-", maxsplit=2)]
+                        time, choice = [num for num in filename.split("-", maxsplit=2)]
+
+                        # Split in case of old filenames
+                        choice = choice.split()[0]
+                        
+                        time = int(time)
+                        choice = int(choice)
+
                         current_clue = time
                         # If 10 minute clue card, mark ten_char
                         if time == 10:
@@ -270,7 +287,9 @@ class Export(commands.Cog):
 
                         ctx.game.clue_assignments[name].append(time)
                         ctx.game.picked_clues[time] = choice
-                    except TypeError:
+                    except:
+                        # If still can't determine image type, log to console
+                        # and ignore
                         print(filename)
         
         # Look for coin flip
@@ -447,15 +466,19 @@ class Export(commands.Cog):
 
         # Add character card
         card = utils.MASTER_PATHS[ctx.game.ten_char]
-        pdf.image(str(card), CONCLUSION_CHAR_CARD_X, CONCLUSION_CHAR_CARD_Y, CONCLUSION_CARD_WIDTH)
+        pdf.image(str(card), CONCLUSION_CHAR_CARD_X, CONCLUSION_ROW1_IMAGE_Y, CONCLUSION_CARD_WIDTH)
+
+        # Add clue card
+        card = utils.CLUE_DIR / "10" / f"10-{ctx.game.picked_clues[10]}{utils.IMAGE_EXT}"
+        pdf.image(str(card), CONCLUSION_CLUE_CARD_X, CONCLUSION_ROW1_IMAGE_Y, CONCLUSION_CARD_WIDTH)
 
         # Add location card
         card = utils.MASTER_PATHS[ctx.game.locations_drawn[20]]
-        pdf.image(str(card), CONCLUSION_LOCATION_CARD_X, CONCLUSION_LOCATION_CARD_Y, CONCLUSION_CARD_WIDTH)
+        pdf.image(str(card), CONCLUSION_LOCATION_CARD_X, CONCLUSION_ROW1_IMAGE_Y, CONCLUSION_CARD_WIDTH)
 
         # Add first suspect card
         card = utils.MASTER_PATHS[ctx.game.suspects_drawn[30]]
-        pdf.image(str(card), CONCLUSION_SUSPECT_CARD_X, CONCLUSION_SUSPECT_CARD_Y, CONCLUSION_CARD_WIDTH)
+        pdf.image(str(card), CONCLUSION_SUSPECT_CARD_X, CONCLUSION_ROW2_IMAGE_Y, CONCLUSION_CARD_WIDTH)
 
         # Find involved parties
         investigator = gamedata.CHARACTERS[ctx.game.ten_char]
@@ -465,10 +488,9 @@ class Export(commands.Cog):
             culprit = "Mr. Halvert"
         # Check for second culprit
         try:
-            if ctx.game.suspects_drawn[10]:
-                second_culprit = ctx.game.suspects_drawn[10]
-                if second_culprit == "Mr Halvert":
-                    second_culprit = "Mr. Halvert"
+            second_culprit = ctx.game.suspects_drawn[10]
+            if second_culprit == "Mr Halvert":
+                second_culprit = "Mr. Halvert"
         except KeyError:
             pass
         
