@@ -110,6 +110,8 @@ class Data:
         for character in CHARACTERS:
             self.searching[character] = []
 
+        # PDF export values
+        self.ooc_strip = 1
 
         # DO NOT TOUCH
         # How often the bot should check the timer, in seconds
