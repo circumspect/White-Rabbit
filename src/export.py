@@ -85,7 +85,7 @@ CLUE_CLUE_GAP = 0.3
 
 # Voicemails
 VOICEMAIL_TITLE_Y = 8.5
-VOICEMAIL_TITLE = "Voicemail:"
+VOICEMAIL_TITLE = "Voicemail"
 VOICEMAIL_TEXT_OFFSET = 0
 VOICEMAIL_TITLE_TEXT_GAP = 0.2
 VOICEMAIL_TEXT_LINE_HEIGHT = 0.2
@@ -105,7 +105,7 @@ COVER_TITLE_FONT = ("Built", 'bd', 80)
 # Character pages
 CHAR_TITLE_FONT = ("Built", 'sb', 60)
 CLUE_LABEL_FONT = ("Built", 'sb', 48)
-VOICEMAIL_TITLE_FONT = ("Abel", '', 16)
+VOICEMAIL_TITLE_FONT = ("Built", '', 20)
 VOICEMAIL_FONT = ("Abel", '', 12)
 
 # Message pages
@@ -121,6 +121,7 @@ PAGE_NUMBER_FONT = WATERMARK_FONTS[1]
 FONT_DIR = utils.RESOURCE_DIR / "Fonts"
 
 BUILT_DIR = FONT_DIR / "built_titling"
+BUILT_TITLING_RG = BUILT_DIR / "built titling rg.ttf"
 BUILT_TITLING_SB = BUILT_DIR / "built titling sb.ttf"
 BUILT_TITLING_BD = BUILT_DIR / "built titling bd.ttf"
 
@@ -265,6 +266,7 @@ class Export(commands.Cog):
         pdf.set_auto_page_break(True, margin=1)
 
         # Add fonts
+        pdf.add_font("Built", "", str(BUILT_TITLING_RG), True)
         pdf.add_font("Built", "sb", str(BUILT_TITLING_SB), True)
         pdf.add_font("Built", "bd", str(BUILT_TITLING_BD), True)
 
