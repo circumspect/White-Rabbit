@@ -247,7 +247,7 @@ class Export(commands.Cog):
             # Name
             character = message.author.display_name.lower().split()[0]
             voicemail = utils.remove_emojis(message.clean_content)
-            ctx.game.voicemails[character] = voicemail.split("||")[1]
+            ctx.game.voicemails[character] = voicemail.strip("|")
 
     @commands.command(aliases=["PDF"])
     async def pdf(self, ctx, file_name=""):
@@ -278,38 +278,37 @@ class Export(commands.Cog):
         # Heading
         self.heading(ctx, pdf, "Alice is Missing", COVER_TITLE_FONT, align="C", y=COVER_TITLE_Y)
         # Poster
-        poster = utils.POSTER_DIR / ("Alice Briarwood " + str(ctx.game.alice) + utils.IMAGE_EXT)
+        poster = utils.POSTER_DIR / f"Alice Briarwood {ctx.game.alice}{utils.IMAGE_EXT}"
         pdf.image(str(poster), COVER_POSTER_X, COVER_POSTER_Y, COVER_POSTER_WIDTH)
 
         # Create list of player characters
-        characters = [character for character in gamedata.CHARACTERS if (character.title() in ctx.game.char_roles())]
+        characters = [character.lower() for character in ctx.game.char_roles()]
 
         await ctx.send("Building character pages...")
 
         pm_channels = []
-        for i in range(len(characters)):
+        for i, character in enumerate(characters):
             # Create pages for each character
-            self.generate_char_page(ctx, pdf, characters[i].lower())
+            self.generate_char_page(ctx, pdf, character)
             
             # Create list of character pairs
             for j in range(i+1, len(characters)):
-                pm_channels.append((characters[i], characters[j]))
+                pm_channels.append((character, characters[j]))
 
         await ctx.send("Collecting messages...")
 
         # Group chat export
         pdf.add_page()
         self.heading(ctx, pdf, "Group Chat", PM_TITLE_FONT, gap=MESSAGES_TITLE_TEXT_GAP, y=MESSAGES_TITLE_Y)
-        channel = "group-chat"
-        await self.channel_export(ctx, pdf, channel)
+        await self.channel_export(ctx, pdf, "group-chat")
 
         # Chat message exports
         for a, b in pm_channels:
-            channel = a + "-" + b + "-pm"
+            channel = f"{a}-{b}-pm"
             # Make sure channel has messages
             last_message = await ctx.text_channels[channel].history(limit=1).flatten()
             if last_message:
-                title = a.title() + "/" + b.title()
+                title = f"{a.title()}/{b.title()}"
                 pdf.add_page()
                 self.heading(ctx, pdf, title, PM_TITLE_FONT, gap=MESSAGES_TITLE_TEXT_GAP, y=MESSAGES_TITLE_Y)
 
@@ -319,15 +318,15 @@ class Export(commands.Cog):
         if not file_name:
             file_name = ctx.guild.name
         
-        out = str(utils.PDF_EXPORT_DIR / (file_name + ".pdf"))
-        pdf.output(out)
+        out = (utils.PDF_EXPORT_DIR / file_name).with_suffix(".pdf")
+        pdf.output(str(out))
         await ctx.send("PDF created!")
 
     def heading(self, ctx, pdf, title: str, font, align='', y=None, gap:float=0):
         """Add a heading to the current page"""
 
         pdf.set_font(*font)
-        if y != None:
+        if y is not None:
             pdf.set_y(y)
         pdf.cell(0, 0, title, align=align)
         pdf.ln(gap)
@@ -345,7 +344,7 @@ class Export(commands.Cog):
 
         # Character and motive cards
         name = gamedata.CHARACTERS[character]
-        card = utils.CHARACTER_IMAGE_DIR / (name + utils.IMAGE_EXT)
+        card = (utils.CHARACTER_IMAGE_DIR / name).with_suffix(utils.IMAGE_EXT)
         pdf.image(str(card), CHAR_CARD_LEFT, CHAR_CARD_TOP, CHAR_CARD_WIDTH)
 
         motive = ctx.game.motives[character]
