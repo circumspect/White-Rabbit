@@ -2,11 +2,11 @@
 import random
 
 PRONOUNS = {
-    "charlie": "they",
-    "dakota": "they",
-    "evan": "he",
-    "jack": "he",
-    "julia": "she"
+    "charlie": ("they", "them", "their"),
+    "dakota": ("they", "them", "their"),
+    "evan": ("he", "him", "his"),
+    "jack": ("he", "him", "his"),
+    "julia": ("she", "her", "her")
 }
 
 CHARACTERS = {
