@@ -1,8 +1,10 @@
+# Built-in
 import asyncio
-
+import sys
+# 3rd-party
 import discord
 from discord.ext import commands
-
+# Local
 import gamedata
 import utils
 
@@ -19,18 +21,21 @@ async def on_ready():
 @bot.check
 def check_channel(ctx):
     """Only allow commands in #bot-channel"""
+
     return ctx.channel.name == "bot-channel"
 
 
 @bot.check
 def not_spectator(ctx):
     """Don't let spectators run commands"""
+    
     return "spectator" not in [role.name.lower() for role in ctx.author.roles]
 
 
 @bot.before_invoke
 async def before_invoke(ctx):
     """Attaches stuff to ctx for convenience"""
+
     # that guild's game
     ctx.game = bot.games.setdefault(ctx.guild.id, gamedata.Data(ctx.guild))
 
@@ -49,7 +54,8 @@ async def before_invoke(ctx):
 
 @bot.event
 async def on_command_error(ctx, error):
-    """Default error catcher"""
+    """Default error catcher for commands"""
+
     bot_channel = utils.get_text_channels(ctx.guild)["bot-channel"]
     ctx.game = bot.games.setdefault(ctx.guild.id, gamedata.Data(ctx.guild))
 
@@ -83,6 +89,9 @@ for plugin in PLUGINS:
     bot.load_extension(plugin)
 
 # Import bot token
-with open(utils.WHITE_RABBIT_DIR / "token.txt") as token_file:
-    token = token_file.read()
-bot.run(token)
+try:
+    with open(utils.WHITE_RABBIT_DIR / "token.txt") as token_file:
+        token = token_file.read()
+    bot.run(token)
+except:
+    sys.exit("Couldn't find token for the bot, shutting down!")
