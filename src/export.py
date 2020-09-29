@@ -405,6 +405,15 @@ class Export(commands.Cog):
 
             # Remove emojis then strip whitespace at start/end
             line = utils.remove_emojis(message.clean_content).strip()
+            
+            # If message looks like a command attempt, ignore it
+            if utils.is_command(line):
+                continue
+
+            # If message is out of character, ignore
+            if ctx.game.ooc_strip:
+                if line.startswith("(") and line.endswith(")"):
+                    continue
 
             # If string is now empty, move to next message
             if line == "":
