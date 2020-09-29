@@ -277,7 +277,7 @@ class Game(commands.Cog):
     async def search(self, ctx):
         """Draw a searching card"""
 
-        if not ctx.game.start_time:
+        if ctx.game.automatic and not ctx.game.start_time:
             await ctx.send("Game hasn't started yet!")
             return
         if not ctx.character:
@@ -285,8 +285,6 @@ class Game(commands.Cog):
             return
 
         search = random.choice(list(gamedata.SEARCHING))
-        print(ctx.character)
-        ctx.game.searches[ctx.character].append(search)
         image = utils.SEARCHING_DIR / (gamedata.SEARCHING[search] + utils.IMAGE_EXT)
         asyncio.create_task(ctx.text_channels[f"{ctx.character}-clues"].send(
             file=discord.File(image)
