@@ -110,9 +110,9 @@ CONCLUSION_CHAR_SUSPECT_GAP = 0.3
 CONCLUSION_SUSPECT_CARD_X = CONCLUSION_CHAR_CARD_X
 CONCLUSION_SUSPECT_CARD_Y = CONCLUSION_CHAR_CARD_Y + CONCLUSION_CARD_HEIGHT + CONCLUSION_CHAR_SUSPECT_GAP
 # Body text
-CONCLUSION_BODY_X = 4
+CONCLUSION_BODY_X = 3.3
 CONCLUSION_BODY_Y = 7
-CONCLUSION_BODY_RIGHT = 8
+CONCLUSION_BODY_RIGHT = 7.8
 CONCLUSION_BODY_WIDTH = CONCLUSION_BODY_RIGHT - CONCLUSION_BODY_X
 CONCLUSION_BODY_LINE_HEIGHT = 0.3
 
@@ -134,7 +134,7 @@ VOICEMAIL_FONT = ("Abel", '', 12)
 
 # Conclusions page
 CONCLUSION_TITLE_FONT = ("Built", 'sb', 72)
-CONCLUSION_BODY_FONT = ("Abel", '', 24)
+CONCLUSION_BODY_FONT = ("Abel", '', 18)
 
 # Message pages
 PM_TITLE_FONT = ("Built", 'sb', 24)
@@ -273,6 +273,14 @@ class Export(commands.Cog):
                     except TypeError:
                         print(filename)
         
+        # Look for coin flip
+        channel = ctx.text_channels[f"{ctx.game.ten_char}-clues"]
+        async for message in channel.history(limit=5):
+            text = message.clean_content.strip().title()
+            if text in ("Heads", "Tails"):
+                ctx.game.ending_flip = text
+                break
+
         # Voicemails
         channel = ctx.text_channels["voicemails"]
         async for message in channel.history(limit=None, oldest_first=True):
@@ -465,14 +473,20 @@ class Export(commands.Cog):
             pass
         
         # Add conclusion body text
-        text = f"{investigator} went to the {location} searching for Alice."
+        text = f"{investigator} went to the {location} searching for Alice, where {gamedata.PRONOUNS[ctx.game.ten_char][0]} found "
         ending = ctx.game.picked_clues[10]
         if ending == 1:
-            text += ""
+            text += f""
         elif ending == 2:
-            text += ""
+            text += f"Alice's body, left there by {culprit}, who then returned and saw {investigator.split()[0]}. {culprit} then chased after {ctx.game.ten_char.title()}"
+            
+            if ctx.game.ending_flip == "Heads":
+                text += f", who barely managed to escape."
+            elif ctx.game.ending_flip == "Tails":
+                text += f" and caught {gamedata.PRONOUNS[ctx.game.ten_char][1]}."
+
         elif ending == 3:
-            text += ""
+            text += f""
 
         pdf.set_font(*CONCLUSION_BODY_FONT)
         pdf.set_xy(CONCLUSION_BODY_X, CONCLUSION_BODY_Y)
