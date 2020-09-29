@@ -402,7 +402,14 @@ class Export(commands.Cog):
         async for message in channel.history(limit=None, oldest_first=True):
             # Name
             author = message.author.display_name.split()[0]
-            line = utils.remove_emojis(message.clean_content)
+
+            # Remove emojis then strip whitespace at start/end
+            line = utils.remove_emojis(message.clean_content).strip()
+
+            # If string is now empty, move to next message
+            if line == "":
+                continue
+
             line = f"{author}: {line}"
 
             # Time remaining

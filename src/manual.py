@@ -199,7 +199,7 @@ class Manual(commands.Cog):
         # Generate clues
         while True:
             clue_buckets = self._randomize_clues(player_count)
-            if self._test_clue_buckets(clue_buckets):
+            if self._test_clue_buckets(ctx, clue_buckets):
                 break
 
         random.shuffle(clue_buckets)
@@ -252,7 +252,7 @@ class Manual(commands.Cog):
 
         return clue_buckets
 
-    def _test_clue_buckets(self, clue_buckets):
+    def _test_clue_buckets(self, ctx, clue_buckets):
         """
         Checks to see if any clue bucket contains two times
         within 10 minutes of each other
@@ -264,6 +264,10 @@ class Manual(commands.Cog):
             # (not counting the 90 minute card) and caps the clues on each
             # character page in the PDF export at 3
             if len(bucket) == 4 and 90 not in bucket:
+                return False
+            # If four players, make sure Charlie gets 3 clues so PDF export
+            # doesn't look like Charlie has one and someone else has 3
+            elif len(ctx.game.char_roles()) == 4 and 90 in bucket and len(bucket) == 2:
                 return False
 
             for i in range(len(bucket)):
