@@ -106,9 +106,9 @@ class Data:
         self.next_clue = 80
 
         # Searching
-        self.searches = {}
+        self.searching = {}
         for character in CHARACTERS:
-            self.searches[character] = []
+            self.searching[character] = []
 
 
         # DO NOT TOUCH
