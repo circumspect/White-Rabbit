@@ -1,14 +1,6 @@
 # Built-in
 import random
 
-PRONOUNS = {
-    "charlie": ("they", "them", "their"),
-    "dakota": ("they", "them", "their"),
-    "evan": ("he", "him", "his"),
-    "jack": ("he", "him", "his"),
-    "julia": ("she", "her", "her")
-}
-
 CHARACTERS = {
     "charlie": "Charlie Barnes",
     "dakota": "Dakota Travis",
@@ -96,6 +88,7 @@ class Data:
         self.motives = {}
         self.clue_assignments = {}
         self.picked_clues = {}
+        self.second_culprit = ""
 
         # Suspects and locations
         self.suspect_pile = []
