@@ -34,8 +34,8 @@ if not os.path.isdir(EXPORT_DIR):
     os.mkdir(EXPORT_DIR)
 if not os.path.isdir(PDF_EXPORT_DIR):
     os.mkdir(PDF_EXPORT_DIR)
-if not os.path.isdir(TXT_EXPORT_DIR):
-    os.mkdir(TXT_EXPORT_DIR)
+if not os.path.isdir(TEXT_EXPORT_DIR):
+    os.mkdir(TEXT_EXPORT_DIR)
 
 
 # Easy access filepaths
