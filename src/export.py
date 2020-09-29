@@ -92,6 +92,11 @@ VOICEMAIL_TEXT_LINE_HEIGHT = 0.2
 VOICEMAIL_Y = VOICEMAIL_TITLE_Y + VOICEMAIL_TITLE_TEXT_GAP
 
 
+# Conclusions page
+CONCLUSION_TITLE = "Conclusions"
+CONCLUSION_TITLE_Y = 0.8
+
+
 # Group chat/PM pages
 MESSAGES_TITLE_Y = 0.5
 MESSAGES_TITLE_TEXT_GAP = 0.3
@@ -107,6 +112,9 @@ CHAR_TITLE_FONT = ("Built", 'sb', 60)
 CLUE_LABEL_FONT = ("Built", 'sb', 48)
 VOICEMAIL_TITLE_FONT = ("Built", '', 20)
 VOICEMAIL_FONT = ("Abel", '', 12)
+
+# Conclusions page
+CONCLUSION_TITLE_FONT = ("Built", 'sb', 72)
 
 # Message pages
 PM_TITLE_FONT = ("Built", 'sb', 24)
@@ -295,6 +303,9 @@ class Export(commands.Cog):
             for j in range(i+1, len(characters)):
                 pm_channels.append((character, characters[j]))
 
+        # Conclusion/ending page
+        self.conclusion_page(ctx, pdf)
+
         await ctx.send("Collecting messages...")
 
         # Group chat export
@@ -392,6 +403,14 @@ class Export(commands.Cog):
         pdf.set_font(*VOICEMAIL_FONT)
         pdf.set_y(VOICEMAIL_Y)
         pdf.multi_cell(0, VOICEMAIL_TEXT_LINE_HEIGHT, ctx.game.voicemails[character])
+
+    def conclusion_page(self, ctx, pdf):
+        """Create conclusions page based on 10 minute clue"""
+        
+        pdf.add_page()
+        pdf.set_y(CONCLUSION_TITLE_Y)
+        pdf.set_font(*CONCLUSION_TITLE_FONT)
+        pdf.cell(0, 0, CONCLUSION_TITLE)
 
     async def channel_export(self, ctx, pdf, channel):
         """
