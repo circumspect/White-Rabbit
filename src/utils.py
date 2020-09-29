@@ -86,6 +86,27 @@ def send_folder(channel, path, ctx=None):
     for image in sorted(path.glob("*")):
         send_image(channel, image, ctx)
 
+def is_command(message: str):
+    """Checks if a string seems like an attempt to send a command"""
+
+    # Check if message has ! prefix
+    if not message.startswith("!"):
+        return False
+    # If space after the !, not a command 
+    if message.startswith("! "):
+        return False
+
+    # Remove ! from start of string
+    message = message[1:]
+
+    # If string contains non-alphanumeric characters (besides spaces)
+    # then it is not a command
+    if not message.replace(' ','').isalnum():
+        return False
+    
+    # If it passes all the above checks it is probably a command attempt
+    return True
+
 def remove_emojis(text: str):
     emojis = re.compile(pattern = "["
         u"\U0001F600-\U0001F64F"  # emoticons
