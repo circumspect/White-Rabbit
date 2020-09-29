@@ -93,6 +93,10 @@ VOICEMAIL_Y = VOICEMAIL_TITLE_Y + VOICEMAIL_TITLE_TEXT_GAP
 
 
 # Conclusions page
+CONCLUSION_LABEL_OFFSET = 0.1
+CONCLUSION_CARD_WIDTH = 2
+CONCLUSION_CARD_HEIGHT = CONCLUSION_CARD_WIDTH * CARD_RATIO
+
 # Title
 CONCLUSION_TITLE = "Conclusions"
 CONCLUSION_TITLE_Y = 0.8
@@ -104,8 +108,6 @@ CONCLUSION_ROW1_LABEL_Y = CONCLUSION_TITLE_Y + CONCLUSION_TITLE_ROW1_LABEL_GAP
 CONCLUSION_LABEL_IMAGE_GAP = 0.3
 CONCLUSION_CHAR_CARD_X = 0.5
 CONCLUSION_ROW1_IMAGE_Y = CONCLUSION_ROW1_LABEL_Y + CONCLUSION_LABEL_IMAGE_GAP
-CONCLUSION_CARD_WIDTH = 2
-CONCLUSION_CARD_HEIGHT = CONCLUSION_CARD_WIDTH * CARD_RATIO
 # 10 minute clue card
 CONCLUSION_CLUE_CARD_X = PAGE_WIDTH/2 - CONCLUSION_CARD_WIDTH/2
 # Location card
@@ -472,17 +474,17 @@ class Export(commands.Cog):
         pdf.set_font(*CONCLUSION_LABEL_FONT)
         pdf.set_y(CONCLUSION_ROW1_LABEL_Y)
 
-        pdf.set_x(CONCLUSION_CHAR_CARD_X)
+        pdf.set_x(CONCLUSION_CHAR_CARD_X - CONCLUSION_LABEL_OFFSET)
         label = "Investigator"
         width = pdf.get_string_width(label)
         pdf.cell(width, 0, label)
 
-        pdf.set_x(CONCLUSION_CLUE_CARD_X)
+        pdf.set_x(CONCLUSION_CLUE_CARD_X - CONCLUSION_LABEL_OFFSET)
         label = "Ending"
         width = pdf.get_string_width(label)
         pdf.cell(width, 0, label)
 
-        pdf.set_x(CONCLUSION_LOCATION_CARD_X)
+        pdf.set_x(CONCLUSION_LOCATION_CARD_X - CONCLUSION_LABEL_OFFSET)
         label = "Location"
         width = pdf.get_string_width(label)
         pdf.cell(width, 0, label)
@@ -490,7 +492,7 @@ class Export(commands.Cog):
         # Row 2
         pdf.set_y(CONCLUSION_ROW2_LABEL_Y)
         
-        pdf.set_x(CONCLUSION_CHAR_CARD_X)
+        pdf.set_x(CONCLUSION_CHAR_CARD_X - CONCLUSION_LABEL_OFFSET)
         label = "Culprit"
         if ctx.game.second_culprit:
             label += " #1"
@@ -498,7 +500,7 @@ class Export(commands.Cog):
         pdf.cell(width, 0, label)
 
         if ctx.game.second_culprit:    
-            pdf.set_x(CONCLUSION_CLUE_CARD_X)
+            pdf.set_x(CONCLUSION_CLUE_CARD_X - CONCLUSION_LABEL_OFFSET)
             label = "Culprit #2"
             width = pdf.get_string_width(label)
             pdf.cell(width, 0, label)
