@@ -93,8 +93,22 @@ VOICEMAIL_Y = VOICEMAIL_TITLE_Y + VOICEMAIL_TITLE_TEXT_GAP
 
 
 # Conclusions page
+# Title
 CONCLUSION_TITLE = "Conclusions"
 CONCLUSION_TITLE_Y = 0.8
+# Character card
+CONCLUSION_TITLE_CHAR_GAP = 0.5
+CONCLUSION_CHAR_CARD_X = 0.5
+CONCLUSION_CHAR_CARD_Y = CONCLUSION_TITLE_Y + CONCLUSION_TITLE_CHAR_GAP
+CONCLUSION_CARD_WIDTH = 2
+CONCLUSION_CARD_HEIGHT = CONCLUSION_CARD_WIDTH * CARD_RATIO
+# Location card
+CONCLUSION_LOCATION_CARD_X = 8.5 - CONCLUSION_CHAR_CARD_X - CONCLUSION_CARD_WIDTH
+CONCLUSION_LOCATION_CARD_Y = 3
+# Suspect cards
+CONCLUSION_CHAR_SUSPECT_GAP = 0.3
+CONCLUSION_SUSPECT_CARD_X = CONCLUSION_CHAR_CARD_X
+CONCLUSION_SUSPECT_CARD_Y = CONCLUSION_CHAR_CARD_Y + CONCLUSION_CARD_HEIGHT + CONCLUSION_CHAR_SUSPECT_GAP
 
 
 # Group chat/PM pages
@@ -244,6 +258,10 @@ class Export(commands.Cog):
                     try:
                         time, choice = [int(num) for num in filename.split("-", maxsplit=2)]
                         current_clue = time
+                        # If 10 minute clue card, mark ten_char
+                        if time == 10:
+                            ctx.game.ten_char = name
+
                         ctx.game.clue_assignments[name].append(time)
                         ctx.game.picked_clues[time] = choice
                     except TypeError:
@@ -407,10 +425,24 @@ class Export(commands.Cog):
     def conclusion_page(self, ctx, pdf):
         """Create conclusions page based on 10 minute clue"""
         
+        # Add title
         pdf.add_page()
         pdf.set_y(CONCLUSION_TITLE_Y)
         pdf.set_font(*CONCLUSION_TITLE_FONT)
         pdf.cell(0, 0, CONCLUSION_TITLE)
+
+        # Add character card
+        card = utils.MASTER_PATHS[ctx.game.ten_char]
+        pdf.image(str(card), CONCLUSION_CHAR_CARD_X, CONCLUSION_CHAR_CARD_Y, CONCLUSION_CARD_WIDTH)
+
+        # Add location card
+        card = utils.MASTER_PATHS[ctx.game.locations_drawn[20]]
+        pdf.image(str(card), CONCLUSION_LOCATION_CARD_X, CONCLUSION_LOCATION_CARD_Y, CONCLUSION_CARD_WIDTH)
+
+        # Add first suspect card
+        card = utils.MASTER_PATHS[ctx.game.suspects_drawn[30]]
+        pdf.image(str(card), CONCLUSION_SUSPECT_CARD_X, CONCLUSION_SUSPECT_CARD_Y, CONCLUSION_CARD_WIDTH)
+
 
     async def channel_export(self, ctx, pdf, channel):
         """
