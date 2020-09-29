@@ -105,27 +105,27 @@ COVER_TITLE_FONT = ("Built", 'bd', 80)
 # Character pages
 CHAR_TITLE_FONT = ("Built", 'sb', 60)
 CLUE_LABEL_FONT = ("Built", 'sb', 48)
-VOICEMAIL_TITLE_FONT = ("Baloo", '', 16)
-VOICEMAIL_FONT = ("Baloo", '', 12)
+VOICEMAIL_TITLE_FONT = ("Abel", '', 16)
+VOICEMAIL_FONT = ("Abel", '', 12)
 
 # Message pages
 PM_TITLE_FONT = ("Built", 'sb', 24)
-PM_FONT = ("Baloo", '', 12)
+PM_FONT = ("Abel", '', 12)
 
 # Footer
-WATERMARK_FONTS = (("Baloo", '', 12), ("Baloo", '', 16))
+WATERMARK_FONTS = (("Abel", '', 12), ("Abel", '', 16))
 PAGE_NUMBER_FONT = WATERMARK_FONTS[1]
 
 
 # Font paths
 FONT_DIR = utils.RESOURCE_DIR / "Fonts"
 
-BALOO_DIR = FONT_DIR / "Baloo_Tammudu_2"
-BALOO_REGULAR = BALOO_DIR / "BalooTammudu2-Regular.ttf"
-
 BUILT_DIR = FONT_DIR / "built_titling"
 BUILT_TITLING_SB = BUILT_DIR / "built titling sb.ttf"
 BUILT_TITLING_BD = BUILT_DIR / "built titling bd.ttf"
+
+ABEL_DIR = FONT_DIR / "Abel"
+ABEL_REGULAR = ABEL_DIR / "Abel-Regular.ttf"
 
 
 class PDF(FPDF):
@@ -265,10 +265,11 @@ class Export(commands.Cog):
         pdf.set_auto_page_break(True, margin=1)
 
         # Add fonts
-        pdf.add_font("Baloo", "", str(BALOO_REGULAR), True)
-
         pdf.add_font("Built", "sb", str(BUILT_TITLING_SB), True)
         pdf.add_font("Built", "bd", str(BUILT_TITLING_BD), True)
+
+        pdf.add_font("Abel", "", str(ABEL_REGULAR), True)
+
 
         # Cover page
         pdf.add_page()
