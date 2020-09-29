@@ -88,7 +88,6 @@ class Data:
         self.motives = {}
         self.clue_assignments = {}
         self.picked_clues = {}
-        self.voicemails = {}
 
         # Suspects and locations
         self.suspect_pile = []
@@ -109,6 +108,11 @@ class Data:
         self.searching = {}
         for character in CHARACTERS:
             self.searching[character] = []
+        
+        # Voicemails
+        self.voicemails = {}
+        for character in CHARACTERS:
+            self.voicemails[character] = ""
 
         # PDF export values
         self.ooc_strip = 1
