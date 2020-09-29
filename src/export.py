@@ -109,7 +109,12 @@ CONCLUSION_LOCATION_CARD_Y = 3
 CONCLUSION_CHAR_SUSPECT_GAP = 0.3
 CONCLUSION_SUSPECT_CARD_X = CONCLUSION_CHAR_CARD_X
 CONCLUSION_SUSPECT_CARD_Y = CONCLUSION_CHAR_CARD_Y + CONCLUSION_CARD_HEIGHT + CONCLUSION_CHAR_SUSPECT_GAP
-
+# Body text
+CONCLUSION_BODY_X = 4
+CONCLUSION_BODY_Y = 7
+CONCLUSION_BODY_RIGHT = 8
+CONCLUSION_BODY_WIDTH = CONCLUSION_BODY_RIGHT - CONCLUSION_BODY_X
+CONCLUSION_BODY_LINE_HEIGHT = 0.3
 
 # Group chat/PM pages
 MESSAGES_TITLE_Y = 0.5
@@ -129,6 +134,7 @@ VOICEMAIL_FONT = ("Abel", '', 12)
 
 # Conclusions page
 CONCLUSION_TITLE_FONT = ("Built", 'sb', 72)
+CONCLUSION_BODY_FONT = ("Abel", '', 24)
 
 # Message pages
 PM_TITLE_FONT = ("Built", 'sb', 24)
@@ -443,6 +449,34 @@ class Export(commands.Cog):
         card = utils.MASTER_PATHS[ctx.game.suspects_drawn[30]]
         pdf.image(str(card), CONCLUSION_SUSPECT_CARD_X, CONCLUSION_SUSPECT_CARD_Y, CONCLUSION_CARD_WIDTH)
 
+        # Find involved parties
+        investigator = gamedata.CHARACTERS[ctx.game.ten_char]
+        location = gamedata.LOCATIONS[ctx.game.locations_drawn[20]]
+        culprit = gamedata.SUSPECTS[ctx.game.suspects_drawn[30]]
+        if culprit == "Mr Halvert":
+            culprit = "Mr. Halvert"
+        # Check for second culprit
+        try:
+            if ctx.game.suspects_drawn[10]:
+                second_culprit = ctx.game.suspects_drawn[10]
+                if second_culprit == "Mr Halvert":
+                    second_culprit = "Mr. Halvert"
+        except KeyError:
+            pass
+        
+        # Add conclusion body text
+        text = f"{investigator} went to the {location} searching for Alice."
+        ending = ctx.game.picked_clues[10]
+        if ending == 1:
+            text += ""
+        elif ending == 2:
+            text += ""
+        elif ending == 3:
+            text += ""
+
+        pdf.set_font(*CONCLUSION_BODY_FONT)
+        pdf.set_xy(CONCLUSION_BODY_X, CONCLUSION_BODY_Y)
+        pdf.multi_cell(CONCLUSION_BODY_WIDTH, CONCLUSION_BODY_LINE_HEIGHT, text)
 
     async def channel_export(self, ctx, pdf, channel):
         """

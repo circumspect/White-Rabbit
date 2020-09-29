@@ -1,6 +1,14 @@
 # Built-in
 import random
 
+PRONOUNS = {
+    "charlie": "they",
+    "dakota": "they",
+    "evan": "he",
+    "jack": "he",
+    "julia": "she"
+}
+
 CHARACTERS = {
     "charlie": "Charlie Barnes",
     "dakota": "Dakota Travis",
