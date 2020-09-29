@@ -575,7 +575,7 @@ class Export(commands.Cog):
 
         await ctx.send("Downloading...")
         # make folder for messages
-        message_dir = utils.WHITE_RABBIT_DIR / ctx.guild.name
+        message_dir = utils.TXT_EXPORT_DIR / ctx.guild.name
         message_dir.mkdir(parents=True, exist_ok=True)
 
         # Download messages
