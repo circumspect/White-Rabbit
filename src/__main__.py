@@ -53,18 +53,10 @@ async def on_command_error(ctx, error):
     bot_channel = utils.get_text_channels(ctx.guild)["bot-channel"]
     ctx.game = bot.games.setdefault(ctx.guild.id, gamedata.Data(ctx.guild))
 
-    # bad input
-    if isinstance(error, commands.errors.UserInputError):
-        asyncio.create_task(ctx.send("Can't understand input!"))
-
-    # cant find command
-    elif isinstance(error, commands.errors.CommandNotFound):
-        asyncio.create_task(ctx.send("Command not found!"))
-
-    # failed a check
-    elif isinstance(error, commands.errors.CheckFailure):
-        if ctx.channel.name != "bot-channel":
-            asyncio.create_task(ctx.send(f"You can only use commands in {bot_channel.mention}"))
+    # Failed a check
+    if isinstance(error, commands.errors.CheckFailure):
+        if ctx.channel.name != "bot-channel" and utils.is_command(ctx.message.clean_content):
+            asyncio.create_task(bot_channel.send(f"{ctx.author.mention} You can only use commands in {bot_channel.mention}!"))
             return
 
         if ctx.game.automatic:
@@ -72,7 +64,15 @@ async def on_command_error(ctx, error):
             return
         asyncio.create_task(ctx.send("You can't do that!"))
 
-    # other stuff
+    # Bad input
+    elif isinstance(error, commands.errors.UserInputError):
+        asyncio.create_task(ctx.send("Can't understand input!"))
+
+    # Can't find command
+    elif isinstance(error, commands.errors.CommandNotFound):
+        asyncio.create_task(ctx.send("Command not found!"))
+
+    # Everything else
     else:
         asyncio.create_task(ctx.send("Unknown error: check console!"))
         raise error
