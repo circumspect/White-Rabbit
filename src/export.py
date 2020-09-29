@@ -101,9 +101,9 @@ CONCLUSION_TITLE_Y = 0.8
 CONCLUSION_TITLE_ROW1_LABEL_GAP = 0.8
 CONCLUSION_ROW1_LABEL_Y = CONCLUSION_TITLE_Y + CONCLUSION_TITLE_ROW1_LABEL_GAP
 # Character card
-CONCLUSION_LABEL_IMAGE_GAP = 0.8
+CONCLUSION_LABEL_IMAGE_GAP = 0.3
 CONCLUSION_CHAR_CARD_X = 0.5
-CONCLUSION_ROW1_IMAGE_Y = CONCLUSION_TITLE_Y + CONCLUSION_LABEL_IMAGE_GAP
+CONCLUSION_ROW1_IMAGE_Y = CONCLUSION_ROW1_LABEL_Y + CONCLUSION_LABEL_IMAGE_GAP
 CONCLUSION_CARD_WIDTH = 2
 CONCLUSION_CARD_HEIGHT = CONCLUSION_CARD_WIDTH * CARD_RATIO
 # 10 minute clue card
@@ -112,10 +112,11 @@ CONCLUSION_CLUE_CARD_X = PAGE_WIDTH/2 - CONCLUSION_CARD_WIDTH/2
 CONCLUSION_LOCATION_CARD_X = 8.5 - CONCLUSION_CHAR_CARD_X - CONCLUSION_CARD_WIDTH
 
 # Row 2
-CONCLUSION_ROW1_ROW2_GAP = 0.2
+CONCLUSION_ROW1_ROW2_GAP = 1
 CONCLUSION_ROW2_LABEL_Y = CONCLUSION_ROW1_IMAGE_Y + CONCLUSION_CARD_HEIGHT + CONCLUSION_ROW1_ROW2_GAP
 # Suspect cards
 CONCLUSION_CHAR_SUSPECT_GAP = 0.3
+CONCLUSION_SUSPECT_CARD_GAP = 0.3 # Gap between first and second suspect cards
 CONCLUSION_SUSPECT_CARD_X = CONCLUSION_CHAR_CARD_X
 CONCLUSION_ROW2_IMAGE_Y = CONCLUSION_ROW2_LABEL_Y + CONCLUSION_LABEL_IMAGE_GAP
 
@@ -144,6 +145,7 @@ VOICEMAIL_FONT = ("Abel", '', 12)
 
 # Conclusions page
 CONCLUSION_TITLE_FONT = ("Built", 'sb', 72)
+CONCLUSION_LABEL_FONT = ("Built", 'sb', 24)
 CONCLUSION_BODY_FONT = ("Abel", '', 18)
 
 # Message pages
@@ -253,6 +255,8 @@ class Export(commands.Cog):
                     for suspect in gamedata.SUSPECTS:
                         if filename == gamedata.SUSPECTS[suspect]:
                             ctx.game.suspects_drawn[current_clue] = suspect
+                            if current_clue == 10:
+                                ctx.game.second_culprit = suspect
                             break
 
                 # Locations
@@ -464,6 +468,43 @@ class Export(commands.Cog):
         pdf.set_font(*CONCLUSION_TITLE_FONT)
         pdf.cell(0, 0, CONCLUSION_TITLE)
 
+        # Labels
+        pdf.set_font(*CONCLUSION_LABEL_FONT)
+        pdf.set_y(CONCLUSION_ROW1_LABEL_Y)
+
+        pdf.set_x(CONCLUSION_CHAR_CARD_X)
+        label = "Investigator"
+        width = pdf.get_string_width(label)
+        pdf.cell(width, 0, label)
+
+        pdf.set_x(CONCLUSION_CLUE_CARD_X)
+        label = "Ending"
+        width = pdf.get_string_width(label)
+        pdf.cell(width, 0, label)
+
+        pdf.set_x(CONCLUSION_LOCATION_CARD_X)
+        label = "Location"
+        width = pdf.get_string_width(label)
+        pdf.cell(width, 0, label)
+
+        # Row 2
+        pdf.set_y(CONCLUSION_ROW2_LABEL_Y)
+        
+        pdf.set_x(CONCLUSION_CHAR_CARD_X)
+        label = "Culprit"
+        if ctx.game.second_culprit:
+            label += " #1"
+        width = pdf.get_string_width(label)
+        pdf.cell(width, 0, label)
+
+        if ctx.game.second_culprit:    
+            pdf.set_x(CONCLUSION_CLUE_CARD_X)
+            label = "Culprit #2"
+            width = pdf.get_string_width(label)
+            pdf.cell(width, 0, label)
+
+
+        # Images
         # Add character card
         card = utils.MASTER_PATHS[ctx.game.ten_char]
         pdf.image(str(card), CONCLUSION_CHAR_CARD_X, CONCLUSION_ROW1_IMAGE_Y, CONCLUSION_CARD_WIDTH)
@@ -480,39 +521,10 @@ class Export(commands.Cog):
         card = utils.MASTER_PATHS[ctx.game.suspects_drawn[30]]
         pdf.image(str(card), CONCLUSION_SUSPECT_CARD_X, CONCLUSION_ROW2_IMAGE_Y, CONCLUSION_CARD_WIDTH)
 
-        # Find involved parties
-        investigator = gamedata.CHARACTERS[ctx.game.ten_char]
-        location = gamedata.LOCATIONS[ctx.game.locations_drawn[20]]
-        culprit = gamedata.SUSPECTS[ctx.game.suspects_drawn[30]]
-        if culprit == "Mr Halvert":
-            culprit = "Mr. Halvert"
-        # Check for second culprit
-        try:
-            second_culprit = ctx.game.suspects_drawn[10]
-            if second_culprit == "Mr Halvert":
-                second_culprit = "Mr. Halvert"
-        except KeyError:
-            pass
-        
-        # Add conclusion body text
-        text = f"{investigator} went to the {location} searching for Alice, where {gamedata.PRONOUNS[ctx.game.ten_char][0]} found "
-        ending = ctx.game.picked_clues[10]
-        if ending == 1:
-            text += f""
-        elif ending == 2:
-            text += f"Alice's body, left there by {culprit}, who then returned and saw {investigator.split()[0]}. {culprit} then chased after {ctx.game.ten_char.title()}"
-            
-            if ctx.game.ending_flip == "Heads":
-                text += f", who barely managed to escape."
-            elif ctx.game.ending_flip == "Tails":
-                text += f" and caught {gamedata.PRONOUNS[ctx.game.ten_char][1]}."
-
-        elif ending == 3:
-            text += f""
-
-        pdf.set_font(*CONCLUSION_BODY_FONT)
-        pdf.set_xy(CONCLUSION_BODY_X, CONCLUSION_BODY_Y)
-        pdf.multi_cell(CONCLUSION_BODY_WIDTH, CONCLUSION_BODY_LINE_HEIGHT, text)
+        # Add second suspect card
+        if ctx.game.second_culprit:
+            card = utils.MASTER_PATHS[ctx.game.second_culprit]
+            pdf.image(str(card), CONCLUSION_CLUE_CARD_X, CONCLUSION_ROW2_IMAGE_Y, CONCLUSION_CARD_WIDTH)
 
     async def channel_export(self, ctx, pdf, channel):
         """
