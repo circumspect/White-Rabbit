@@ -92,6 +92,10 @@ VOICEMAIL_TEXT_LINE_HEIGHT = 0.2
 VOICEMAIL_Y = VOICEMAIL_TITLE_Y + VOICEMAIL_TITLE_TEXT_GAP
 
 
+# Timeline
+TIMELINE_TITLE = "Timeline"
+TIMELINE_TITLE_Y = 0.8
+
 # Conclusions page
 CONCLUSION_LABEL_OFFSET = 0.1
 CONCLUSION_CARD_WIDTH = 2
@@ -144,6 +148,9 @@ CHAR_TITLE_FONT = ("Built", 'sb', 60)
 CLUE_LABEL_FONT = ("Built", 'sb', 48)
 VOICEMAIL_TITLE_FONT = ("Built", '', 20)
 VOICEMAIL_FONT = ("Abel", '', 12)
+
+# Timeline
+TIMELINE_TITLE_FONT = ("Built", 'sb', 72)
 
 # Conclusions page
 CONCLUSION_TITLE_FONT = ("Built", 'sb', 72)
@@ -360,7 +367,10 @@ class Export(commands.Cog):
             for j in range(i+1, len(characters)):
                 pm_channels.append((character, characters[j]))
 
-        # Conclusion/ending page
+        await ctx.send("Recreating timeline...")
+
+        # Conclusions/timeline
+        self.timeline(ctx, pdf)
         self.conclusion_page(ctx, pdf)
 
         await ctx.send("Collecting messages...")
@@ -528,6 +538,14 @@ class Export(commands.Cog):
             card = utils.MASTER_PATHS[ctx.game.second_culprit]
             pdf.image(str(card), CONCLUSION_CLUE_CARD_X, CONCLUSION_ROW2_IMAGE_Y, CONCLUSION_CARD_WIDTH)
 
+    def timeline(self, ctx, pdf):
+        """Adds timeline pages to PDf"""
+        
+        pdf.add_page()
+        pdf.set_y(TIMELINE_TITLE_Y)
+        pdf.set_font(*TIMELINE_TITLE_FONT)
+        pdf.cell(0, 0, TIMELINE_TITLE)
+
     async def channel_export(self, ctx, pdf, channel):
         """
         Takes all messages from a text channel and adds them 
@@ -575,7 +593,7 @@ class Export(commands.Cog):
 
         await ctx.send("Downloading...")
         # make folder for messages
-        message_dir = utils.TXT_EXPORT_DIR / ctx.guild.name
+        message_dir = utils.TEXT_EXPORT_DIR / ctx.guild.name
         message_dir.mkdir(parents=True, exist_ok=True)
 
         # Download messages
