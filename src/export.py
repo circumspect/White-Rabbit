@@ -251,6 +251,11 @@ class Export(commands.Cog):
                 # Replace underscore with space
                 filename = filename.replace("_", " ")
 
+                # Legacy check
+                if filename == "Mr. Halvert":
+                    ctx.game.suspects_drawn[current_clue] = "halvert"
+                    continue
+
                 # Ignore character cards
                 if filename in gamedata.CHARACTERS.values():
                     continue
@@ -318,8 +323,11 @@ class Export(commands.Cog):
         async for message in channel.history(limit=None, oldest_first=True):
             # Name
             character = message.author.display_name.lower().split()[0]
-            voicemail = utils.remove_emojis(message.clean_content)
-            ctx.game.voicemails[character] = voicemail.strip("|")
+
+            # Only grab first message from each player
+            if not ctx.game.voicemails[character]:
+                voicemail = utils.remove_emojis(message.clean_content)
+                ctx.game.voicemails[character] = voicemail.replace("|", "").replace("\n", "")
 
     @commands.command(aliases=["PDF"])
     async def pdf(self, ctx, file_name=""):
@@ -370,7 +378,7 @@ class Export(commands.Cog):
         await ctx.send("Recreating timeline...")
 
         # Conclusions/timeline
-        self.timeline(ctx, pdf)
+        # self.timeline(ctx, pdf)
         self.conclusion_page(ctx, pdf)
 
         await ctx.send("Collecting messages...")
