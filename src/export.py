@@ -386,14 +386,22 @@ class Export(commands.Cog):
         # Group chat export
         pdf.add_page()
         self.heading(ctx, pdf, "Group Chat", PM_TITLE_FONT, gap=MESSAGES_TITLE_TEXT_GAP, y=MESSAGES_TITLE_Y)
-        await self.channel_export(ctx, pdf, "group-chat")
+        await self.channel_export(ctx, pdf, ctx.text_channels["group-chat"])
 
         # Chat message exports
         for a, b in pm_channels:
             channel = f"{a}-{b}-pm"
-            # Make sure channel has messages
-            last_message = await ctx.text_channels[channel].history(limit=1).flatten()
-            if last_message:
+            channel = ctx.text_channels[channel]
+            
+            # Make sure channel has messages that will be counted
+            empty = True
+            async for message in channel.history(limit=None, oldest_first=True):
+                line = utils.remove_emojis(message.clean_content).strip()
+                
+                if not (line.startswith("(") and line.endswith(")")):
+                    empty = False
+
+            if not empty:
                 title = f"{a.title()}/{b.title()}"
                 pdf.add_page()
                 self.heading(ctx, pdf, title, PM_TITLE_FONT, gap=MESSAGES_TITLE_TEXT_GAP, y=MESSAGES_TITLE_Y)
@@ -561,7 +569,6 @@ class Export(commands.Cog):
         """
 
         pdf.set_font(*PM_FONT)
-        channel = ctx.text_channels[channel]
         async for message in channel.history(limit=None, oldest_first=True):
             # Name
             author = message.author.display_name.split()[0]
