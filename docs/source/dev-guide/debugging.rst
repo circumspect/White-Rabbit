@@ -18,5 +18,5 @@ When debugging the bot, you may find it helpful to speed up the bot to avoid hav
 
     !speed 3
 
-The the minimum speed is 1, and the maximum is 30. Note that setting a speed higher than 1 will cause the bot to change the gap between timer messages to 60 seconds to avoid bumping into the Discord rate limit. Should you wish to change this, simply set the timer frequency using ``!timer`` after running ``!speed``.
+The minimum speed is 1, and the maximum is 30. Note that setting a speed higher than 1 will cause the bot to change the gap between timer messages to 60 seconds to avoid bumping into the Discord rate limit. Should you wish to change this, simply set the timer frequency using ``!timer`` after running ``!speed``.
 
