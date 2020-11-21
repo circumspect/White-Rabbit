@@ -400,6 +400,7 @@ class Export(commands.Cog):
                 
                 if not (line.startswith("(") and line.endswith(")")):
                     empty = False
+                    break
 
             if not empty:
                 title = f"{a.title()}/{b.title()}"
