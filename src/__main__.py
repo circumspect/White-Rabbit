@@ -93,5 +93,8 @@ try:
     with open(utils.WHITE_RABBIT_DIR / "token.txt") as token_file:
         token = token_file.read()
     bot.run(token)
-except:
+except FileNotFoundError:
     sys.exit("Couldn't find token for the bot, shutting down!")
+else:
+    sys.exit("Something went wrong")
+
