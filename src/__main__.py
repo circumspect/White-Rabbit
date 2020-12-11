@@ -8,7 +8,11 @@ from discord.ext import commands
 import gamedata
 import utils
 
-bot = commands.Bot(command_prefix="!")
+# See https://stackoverflow.com/questions/64524256/guild-members-not-working-correctly-discord-py
+intents = discord.Intents.default()
+intents.members = True
+
+bot = commands.Bot(command_prefix="!", intents=intents)
 bot.games = {}
 
 
