@@ -125,6 +125,11 @@ class Data:
         # Use !speed when bot is running to set value (DEBUG USE ONLY)
         self.game_speed = 1
 
+        for role in self.guild.roles:
+            if role.name == "Spectator":
+                self.spectator_role = role
+                break
+
 
     def char_roles(self):
         unsorted = {

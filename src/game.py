@@ -303,14 +303,6 @@ class Game(commands.Cog):
 
         ctx.game.ten_char = character
 
-    @commands.command()
-    async def show_all(self, ctx):
-        """Allows all members to read every channel and disables sending"""
-
-        for channel in ctx.guild.text_channels:
-            await channel.edit(sync_permissions=True)
-        await ctx.send("All channels shown")
-
 
 def setup(bot):
     bot.add_cog(Game(bot))
