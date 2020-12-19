@@ -333,6 +333,9 @@ class Export(commands.Cog):
     async def pdf(self, ctx, file_name=""):
         """Exports the game to a PDF"""
 
+        # Get event loop
+        loop = asyncio.get_running_loop()
+
         # Import game data
         await ctx.send("Gathering game data...")
         await self.import_data(ctx)
@@ -343,23 +346,21 @@ class Export(commands.Cog):
             
         # Create pdf object
         pdf = PDF(format="letter", unit="in")
-        pdf.set_auto_page_break(True, margin=1)
+        await loop.run_in_executor(None, pdf.set_auto_page_break, *(True, 1))
 
         # Add fonts
-        pdf.add_font("Built", "", str(BUILT_TITLING_RG), True)
-        pdf.add_font("Built", "sb", str(BUILT_TITLING_SB), True)
-        pdf.add_font("Built", "bd", str(BUILT_TITLING_BD), True)
-
-        pdf.add_font("Abel", "", str(ABEL_REGULAR), True)
-
+        await loop.run_in_executor(None, pdf.add_font, *("Built", "", str(BUILT_TITLING_RG), True))
+        await loop.run_in_executor(None, pdf.add_font, *("Built", "sb", str(BUILT_TITLING_SB), True))
+        await loop.run_in_executor(None, pdf.add_font, *("Built", "bd", str(BUILT_TITLING_BD), True))
+        await loop.run_in_executor(None, pdf.add_font, *("Abel", "", str(ABEL_REGULAR), True))
 
         # Cover page
-        pdf.add_page()
+        await loop.run_in_executor(None, pdf.add_page)
         # Heading
-        self.heading(ctx, pdf, "Alice is Missing", COVER_TITLE_FONT, align="C", y=COVER_TITLE_Y)
+        await loop.run_in_executor(None, self.heading, *(ctx, pdf, "Alice is Missing", COVER_TITLE_FONT, "C", COVER_TITLE_Y))
         # Poster
         poster = utils.POSTER_DIR / f"Alice Briarwood {ctx.game.alice}{utils.IMAGE_EXT}"
-        pdf.image(str(poster), COVER_POSTER_X, COVER_POSTER_Y, COVER_POSTER_WIDTH)
+        await loop.run_in_executor(None, pdf.image, *(str(poster), COVER_POSTER_X, COVER_POSTER_Y, COVER_POSTER_WIDTH))
 
         # Create list of player characters
         characters = [character.lower() for character in ctx.game.char_roles()]
@@ -369,7 +370,7 @@ class Export(commands.Cog):
         pm_channels = []
         for i, character in enumerate(characters):
             # Create pages for each character
-            self.generate_char_page(ctx, pdf, character)
+            await loop.run_in_executor(None, self.generate_char_page, *(ctx, pdf, character))
             
             # Create list of character pairs
             for j in range(i+1, len(characters)):
@@ -379,13 +380,13 @@ class Export(commands.Cog):
 
         # Conclusions/timeline
         # self.timeline(ctx, pdf)
-        self.conclusion_page(ctx, pdf)
+        await loop.run_in_executor(None, self.conclusion_page, *(ctx, pdf))
 
         await ctx.send("Collecting messages...")
 
         # Group chat export
         pdf.add_page()
-        self.heading(ctx, pdf, "Group Chat", PM_TITLE_FONT, gap=MESSAGES_TITLE_TEXT_GAP, y=MESSAGES_TITLE_Y)
+        await loop.run_in_executor(None, self.heading, *(ctx, pdf, "Group Chat", PM_TITLE_FONT, '', MESSAGES_TITLE_Y, MESSAGES_TITLE_TEXT_GAP))
         await self.channel_export(ctx, pdf, ctx.text_channels["group-chat"])
 
         # Chat message exports
@@ -405,7 +406,7 @@ class Export(commands.Cog):
             if not empty:
                 title = f"{a.title()}/{b.title()}"
                 pdf.add_page()
-                self.heading(ctx, pdf, title, PM_TITLE_FONT, gap=MESSAGES_TITLE_TEXT_GAP, y=MESSAGES_TITLE_Y)
+                await loop.run_in_executor(None, self.heading, *(ctx, pdf, title, PM_TITLE_FONT, '', MESSAGES_TITLE_Y, MESSAGES_TITLE_TEXT_GAP))
 
                 await self.channel_export(ctx, pdf, channel)
 
@@ -569,6 +570,9 @@ class Export(commands.Cog):
         to the current page
         """
 
+        # Get event loop
+        loop = asyncio.get_running_loop()
+
         pdf.set_font(*PM_FONT)
         async for message in channel.history(limit=None, oldest_first=True):
             # Name
@@ -601,7 +605,7 @@ class Export(commands.Cog):
                 stamp = f"({utils.time_string(time)})"
                 line += f" {stamp}"
 
-            pdf.multi_cell(0, MESSAGES_LINE_HEIGHT, line)
+            await loop.run_in_executor(None, pdf.multi_cell, *(0, MESSAGES_LINE_HEIGHT, line))
 
     @commands.command()
     async def txt(self, ctx):
