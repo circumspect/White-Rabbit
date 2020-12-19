@@ -94,11 +94,15 @@ for plugin in PLUGINS:
 
 # Import bot token
 try:
-    with open(utils.WHITE_RABBIT_DIR / "token.txt") as token_file:
+    with open(utils.TOKEN_FILE) as token_file:
         token = token_file.read()
     bot.run(token)
 except FileNotFoundError:
-    sys.exit("Couldn't find token for the bot, shutting down!")
-else:
-    sys.exit("Something went wrong")
+    with open(utils.TOKEN_FILE, "w") as token_file:
+        pass
+    sys.exit("No token file found! Creating empty token.txt and shutting down")
+except discord.errors.LoginFailure:
+    sys.exit("Couldn't log in! Was the token incorrect?")
+except:
+    sys.exit("Error on startup, shutting down!")
 

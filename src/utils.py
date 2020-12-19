@@ -12,6 +12,7 @@ import gamedata
 # Image paths
 # White-Rabbit/src/utils.py
 WHITE_RABBIT_DIR = Path(__file__).parent.parent
+TOKEN_FILE = WHITE_RABBIT_DIR / "token.txt"
 RESOURCE_DIR = WHITE_RABBIT_DIR / "resources"
 
 IMAGE_DIR = RESOURCE_DIR / "Images"
