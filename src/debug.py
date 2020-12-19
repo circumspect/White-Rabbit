@@ -1,11 +1,11 @@
+# Built-in
 import asyncio
-
+# 3rd-party
 import discord
 from discord.ext import commands
-
+# Local
 import gamedata
 import utils
-
 
 class Debug(commands.Cog):
     def __init__(self, bot):
