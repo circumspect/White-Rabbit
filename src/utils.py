@@ -9,6 +9,12 @@ import discord
 # Local
 import gamedata
 
+# Console logging message stuff
+LOG_SEP = ": "
+INFO_PREFIX = "INFO" + LOG_SEP
+WARNING_PREFIX = "WARNING" + LOG_SEP
+ERROR_PREFIX = "ERROR" + LOG_SEP
+
 # Image paths
 # White-Rabbit/src/utils.py
 WHITE_RABBIT_DIR = Path(__file__).parent.parent

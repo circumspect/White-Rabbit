@@ -23,7 +23,7 @@ class Manual(commands.Cog):
         ctx.game = self.bot.games.setdefault(ctx.guild.id, gamedata.Data(ctx.guild))
         # Console logging
         if ctx.game.automatic:
-            print(f"{ctx.author.name} tried to run {ctx.command.name} in automatic mode!")
+            print(f"{utils.WARNING_PREFIX}{ctx.author.name} tried to run {self.bot.command_prefix}{ctx.command.name} in automatic mode!")
 
         return not ctx.game.automatic
 
