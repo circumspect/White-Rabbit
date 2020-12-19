@@ -10,7 +10,7 @@ class Admin(commands.Cog):
         self.bot = bot
 
     async def cog_check(self, ctx):
-        """Only let guild admins run"""
+        """Only let server admins run"""
         return ctx.author.guild_permissions.administrator
 
     @commands.command(aliases=["wipe"])
