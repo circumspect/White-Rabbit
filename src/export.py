@@ -192,7 +192,7 @@ class PDF(FPDF):
             self.set_font(*WATERMARK_FONTS[i])
             text = WATERMARK[i]
             width = self.get_string_width(text)
-            self.cell(width, 0, text, 0, 0, 'L')
+            self.cell(width, 0, text, 0, 0, 'L', link=utils.DOCS_URL)
 
         # Page number
         self.set_font(*PAGE_NUMBER_FONT)
@@ -379,6 +379,7 @@ class Export(commands.Cog):
         await ctx.send("Recreating timeline...")
 
         # Conclusions/timeline
+        # Note: either timeline will have to be async or it will also need to be wrapped in loop.run_in_executor
         # self.timeline(ctx, pdf)
         await loop.run_in_executor(None, self.conclusion_page, *(ctx, pdf))
 
@@ -559,6 +560,7 @@ class Export(commands.Cog):
     def timeline(self, ctx, pdf):
         """Adds timeline pages to PDf"""
         
+        # TODO: Finish timeline
         pdf.add_page()
         pdf.set_y(TIMELINE_TITLE_Y)
         pdf.set_font(*TIMELINE_TITLE_FONT)
@@ -567,7 +569,7 @@ class Export(commands.Cog):
     async def channel_export(self, ctx, pdf, channel):
         """
         Takes all messages from a text channel and adds them 
-        to the current page
+        to the current page of the PDF object
         """
 
         # Get event loop
@@ -607,9 +609,12 @@ class Export(commands.Cog):
 
             await loop.run_in_executor(None, pdf.multi_cell, *(0, MESSAGES_LINE_HEIGHT, line))
 
-    @commands.command()
+    @commands.command(hidden=True)
     async def txt(self, ctx):
         """Gets all messages from a guild and writes to a .txt file"""
+
+        # TODO: Make this cleaner
+        # Hidden from users until then
 
         await ctx.send("Downloading...")
         # make folder for messages

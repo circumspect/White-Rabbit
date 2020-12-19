@@ -9,6 +9,11 @@ import discord
 # Local
 import gamedata
 
+# Links
+DOCS_URL = "https://white-rabbit.readthedocs.io/"
+DOCS_SHORT_URL = "https://white-rabbit.rtfd.io/"
+SOURCE_URL = "https://github.com/circumspect/White-Rabbit"
+
 # Console logging message stuff
 LOG_SEP = ": "
 INFO_PREFIX = "INFO" + LOG_SEP

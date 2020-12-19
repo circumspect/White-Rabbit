@@ -15,7 +15,7 @@ class About(commands.Cog):
 
         message = "\n".join([
             "The White Rabbit was created by circumspect.",
-            "Source code available at https://github.com/circumspect/White-Rabbit"
+            "Source code available at " + utils.SOURCE_URL,
         ])
         message = utils.codeblock(message)
         asyncio.create_task(ctx.send(message))
@@ -26,7 +26,7 @@ class About(commands.Cog):
 
         message = "\n".join([
             "Documentation for The White Rabbit can be found here:",
-            "https://white-rabbit.rtfd.io/"
+            utils.DOCS_SHORT_URL,
         ])
         message = utils.codeblock(message)
         asyncio.create_task(ctx.send(message))
