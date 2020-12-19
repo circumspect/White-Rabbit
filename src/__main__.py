@@ -98,11 +98,9 @@ try:
         token = token_file.read()
     bot.run(token)
 except FileNotFoundError:
-    with open(utils.TOKEN_FILE, "w") as token_file:
+    with open(utils.TOKEN_FILE, "x") as token_file:
         pass
     sys.exit("No token file found! Creating empty token.txt and shutting down")
 except discord.errors.LoginFailure:
     sys.exit("Couldn't log in! Was the token incorrect?")
-except:
-    sys.exit("Error on startup, shutting down!")
-
+    
