@@ -10,14 +10,15 @@ import utils
 class Debug(commands.Cog):
     def __init__(self, bot):
         self.bot = bot
-        dev_id_file = utils.WHITE_RABBIT_DIR / "dev_ids.txt"
         
-        # Create file if it doesn't exist
-        with open(dev_id_file, 'a+') as f:
-            pass
-
-        with open(dev_id_file) as f:
-            self.dev_ids = [int(line.strip()) for line in f.readlines()]
+        try:
+            with open(utils.DEV_ID_FILE) as f:
+                self.dev_ids = [int(line.strip()) for line in f.readlines()]
+        except FileNotFoundError:
+            # Create file if it doesn't exist
+            print("No dev_ids.txt found, making empty file")
+            with open(utils.DEV_ID_FILE, 'x') as f:
+                pass
 
     async def cog_check(self, ctx):
         """Only people with access to the code"""
