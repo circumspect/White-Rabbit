@@ -56,6 +56,6 @@ The bot has a few gameplay-related settings available, including displaying a ti
 End of game
 -----------
 
-At the end of the game, you may wish to allow your players to see the other characters' clues and messages. To do this, run ``!show_all``.
+At the end of the game, you may wish to allow your players to see the other characters' clues and messages. To do this, run ``!show_all``. (Note that this command is only available to those with admin permissions on the server.)
 
 You can also export the game content to a PDF using ``!pdf``. This will create a folder titled "exports" in the bot's root directory, where you can find the .pdf file.
