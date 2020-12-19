@@ -16,7 +16,7 @@ class Debug(commands.Cog):
                 self.dev_ids = [int(line.strip()) for line in f.readlines()]
         except FileNotFoundError:
             # Create file if it doesn't exist
-            print("No dev_ids.txt found, making empty file")
+            print("No " + utils.DEV_ID_FILE.name + " found, making empty file")
             with open(utils.DEV_ID_FILE, 'x') as f:
                 pass
 
@@ -97,6 +97,9 @@ class Debug(commands.Cog):
         except commands.errors.ExtensionNotLoaded:
             await ctx.send(f"{extension_name} was never loaded")
 
+    # DO NOT MOVE TO admin.py!!! This command will shut down the bot across 
+    # all servers, and thus should only be able to be run by those listed
+    # in the dev_ids file
     @ commands.command(aliases=["stop", "shutdown"])
     async def quit(self, ctx):
         """Quits the bot"""
