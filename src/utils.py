@@ -32,6 +32,8 @@ SEARCHING_DIR = CARD_DIR / "Searching"
 EXPORT_DIR = WHITE_RABBIT_DIR / "exports"
 PDF_EXPORT_DIR = EXPORT_DIR / "PDFs"
 TEXT_EXPORT_DIR = EXPORT_DIR / "Text"
+
+# Make export folders if they don't exist
 if not os.path.isdir(EXPORT_DIR):
     os.mkdir(EXPORT_DIR)
 if not os.path.isdir(PDF_EXPORT_DIR):
