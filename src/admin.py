@@ -80,13 +80,20 @@ class Admin(commands.Cog):
 
     @commands.command()
     async def reset(self, ctx):
-        """Resets server, including channel permissions"""
+        """Resets server, including channel permissions and user roles/nicknames"""
 
         # Confirm command to user
         await ctx.send("Resetting the server!")
+        await ctx.send("Note: This action will not affect the server owner")
 
         # Console logging
         print(f'Resetting server: "{ctx.guild.name}" with ID: "{ctx.guild.id}"')
+
+        # Clear roles and nicknames from all users, skipping bots and 
+        # the server owner
+        for member in ctx.guild.members:
+            if not member.bot and member is not ctx.guild.owner:
+                await member.edit(nick=None, roles=[])
 
         # Erase all messages
         await self.wipe(ctx)
