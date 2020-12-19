@@ -9,7 +9,7 @@ class About(commands.Cog):
     def __init__(self, bot):
         self.bot = bot
 
-    @commands.command(aliases=["about"])
+    @commands.command(aliases=["about", "info"])
     async def credits(self, ctx):
         """Prints information about the bot"""
 
