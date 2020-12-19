@@ -42,7 +42,7 @@ class Settings(commands.Cog):
         else:
             await ctx.send("Input error, try !auto on or !auto off")
 
-    @commands.command()
+    @commands.command(hidden=True)
     async def music(self, ctx):
         """Enable/disable music stream when game starts"""
 

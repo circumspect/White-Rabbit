@@ -16,8 +16,8 @@ class Game(commands.Cog):
     def __init__(self, bot):
         self.bot = bot
 
-    @commands.command(aliases=["init"])
-    async def initialize(self, ctx):
+    @commands.command(aliases=["initialize"])
+    async def init(self, ctx):
         """Initial setup before character selection"""
 
         if ctx.game.start_time:
