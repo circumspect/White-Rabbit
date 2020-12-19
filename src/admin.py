@@ -11,12 +11,13 @@ class Admin(commands.Cog):
         self.bot = bot
 
     async def cog_check(self, ctx):
-        """Only let server admins run"""
+        """Commands for server admins only"""
+
         return ctx.author.guild_permissions.administrator
     
     @commands.command()
     async def show_all(self, ctx):
-        """Allows all members to read every channel and disables sending"""
+        """Reveal all channels and disable sending messages"""
 
         for channel in ctx.guild.text_channels:
             await channel.edit(sync_permissions=True)
@@ -43,7 +44,7 @@ class Admin(commands.Cog):
 
     @commands.command()
     async def reset_perms(self, ctx):
-        """Resets channel permissions to the default"""
+        """Resets channel permissions to the default (undoes !show_all)"""
 
         everyone = ctx.guild.default_role
         spectator = ctx.game.spectator_role
@@ -80,7 +81,7 @@ class Admin(commands.Cog):
 
     @commands.command()
     async def reset(self, ctx):
-        """Resets server, including channel permissions and user roles/nicknames"""
+        """Complete server reset"""
 
         # Confirm command to user
         await ctx.send("Resetting the server!")

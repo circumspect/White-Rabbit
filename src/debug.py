@@ -102,7 +102,7 @@ class Debug(commands.Cog):
     # in the dev_ids file
     @ commands.command(aliases=["stop", "shutdown"])
     async def quit(self, ctx):
-        """Quits the bot"""
+        """Shuts down the bot - AFFECTS ALL SERVERS"""
 
         await ctx.send("Shutting down, thanks for playing!")
         await self.bot.close()
