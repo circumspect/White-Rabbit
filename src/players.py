@@ -34,8 +34,8 @@ class Players(commands.Cog):
                 return
 
         # Give role and update player's nickname
-        asyncio.create_task(ctx.author.add_roles(role))
-        asyncio.create_task(ctx.send(f"Gave you {role.name}!"))
+        await ctx.author.add_roles(role)
+        await ctx.send(f"Gave you {role.name}!")
         if ctx.author == ctx.guild.owner:
             # Can't update nickname for server owner
             asyncio.create_task(ctx.send("Couldn't update nickname because you are server owner!"))
@@ -52,8 +52,8 @@ class Players(commands.Cog):
                 await ctx.author.remove_roles(role)
                 asyncio.create_task(ctx.send(f"Removed role {role.name}"))
                 if ctx.author == ctx.guild.owner:
-                        # Can't update nickname for server owner
-                        asyncio.create_task(ctx.send("Couldn't update nickname because you are server owner!"))
+                    # Can't update nickname for server owner
+                    asyncio.create_task(ctx.send("Couldn't update nickname because you are server owner!"))
                 else:
                     asyncio.create_task(ctx.author.edit(nick=None))
                 return
