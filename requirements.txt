@@ -1,2 +1,2 @@
-discord
+discord.py[voice]
 fpdf
