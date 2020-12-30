@@ -135,3 +135,22 @@ def remove_emojis(text: str):
         u"\U0001F90C-\U0001F9FF"  # more emojis
                            "]+", flags = re.UNICODE)
     return emojis.sub(r'',text)
+
+def ooc_strip(ctx, text: str):
+    """
+    Takes a string and removes out of context portions
+
+    String should be stripped of whitespace first
+    """
+
+    # If entire message is out of character, ignore
+    if ctx.game.ooc_strip_level >= 1:
+        if text.startswith("(") and text.endswith(")"):
+            return ""
+    
+    # If using aggressive removal for OOC messages, greedy remove anything 
+    # inside parentheses
+    if ctx.game.ooc_strip_level >= 2:
+        re.sub(r'\([^)]*\)', '', text)
+    
+    return text
