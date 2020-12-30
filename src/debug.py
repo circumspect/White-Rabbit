@@ -29,7 +29,7 @@ class Debug(commands.Cog):
         # Console logging
         print("Bot has logged in!")
 
-    @ commands.command()
+    @commands.command()
     async def speed(self, ctx, speed: float=1):
         """Changes the speed of the game - DEBUG USE ONLY"""
 
@@ -53,7 +53,7 @@ class Debug(commands.Cog):
         else:
             asyncio.create_task(ctx.send("Set the game speed!"))
 
-    @ commands.command()
+    @commands.command()
     async def plugins(self, ctx):
         """Lists all currently loaded plugins"""
 
@@ -62,7 +62,7 @@ class Debug(commands.Cog):
         message = utils.codeblock(message)
         await ctx.send(message)
 
-    @ commands.command()
+    @commands.command()
     async def load(self, ctx, extension_name: str = "all"):
         """(Re)loads a plugin"""
 
@@ -88,7 +88,7 @@ class Debug(commands.Cog):
         except commands.errors.ExtensionNotFound:
             await ctx.send(f"Couldn't find plugin: \"{extension_name}\"")
 
-    @ commands.command()
+    @commands.command()
     async def unload(self, ctx, extension_name: str):
         """Unloads a plugin."""
         try:
@@ -98,9 +98,9 @@ class Debug(commands.Cog):
             await ctx.send(f"{extension_name} was never loaded")
 
     # DO NOT MOVE TO admin.py!!! This command will shut down the bot across 
-    # all servers, and thus should only be able to be run by those listed
+    # ALL servers, and thus should only be able to be run by those listed
     # in the dev_ids file
-    @ commands.command(aliases=["stop", "shutdown"])
+    @commands.command(aliases=["stop", "shutdown"])
     async def quit(self, ctx):
         """Shuts down the bot - AFFECTS ALL SERVERS"""
 
