@@ -16,7 +16,7 @@ Setting the bot's game speed
 
 When debugging the bot, you may find it helpful to speed up the bot to avoid having to wait 90 minutes (the length of the game) for the bot to finish. This can be done using ``!speed``. For example, the following sets the bot to run at 3x speed:
 
-.. code-block::
+.. code::
 
     !speed 3
 
