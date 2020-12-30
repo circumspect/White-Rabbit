@@ -115,8 +115,8 @@ class Data:
         for character in CHARACTERS:
             self.voicemails[character] = ""
 
-        # PDF export values
-        self.ooc_strip = 1
+        # Default level for removing out-of-character messages
+        self.ooc_strip_level = 1
 
         # DO NOT TOUCH
         # How often the bot should check the timer, in seconds
@@ -125,13 +125,19 @@ class Data:
         # Use !speed when bot is running to set value (DEBUG USE ONLY)
         self.game_speed = 1
 
+        # Find the spectator role
         for role in self.guild.roles:
-            if role.name == "Spectator":
+            if role.name.title() == "Spectator":
                 self.spectator_role = role
                 break
 
 
     def char_roles(self):
+        """
+        Returns a dictionary mapping character names to their corresponding 
+        roles for all characters currently being played
+        """
+
         unsorted = {
             role.name: role
             for role in self.guild.roles

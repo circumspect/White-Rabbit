@@ -587,10 +587,8 @@ class Export(commands.Cog):
             if utils.is_command(line):
                 continue
 
-            # If message is out of character, ignore
-            if ctx.game.ooc_strip:
-                if line.startswith("(") and line.endswith(")"):
-                    continue
+            # Remove out of character messages
+            line = utils.ooc_strip(ctx, line)
 
             # If string is now empty, move to next message
             if line == "":
