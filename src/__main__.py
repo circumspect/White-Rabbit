@@ -65,10 +65,15 @@ async def on_command_error(ctx, error):
 
     # Failed a check
     if isinstance(error, commands.errors.CheckFailure):
+        # Commands must be in bot-channel
         if ctx.channel.name != "bot-channel" and utils.is_command(ctx.message.clean_content):
             asyncio.create_task(bot_channel.send(f"{ctx.author.mention} You can only use commands in {bot_channel.mention}!"))
             return
+        
+        # TODO: Check if running debug command without being in dev_ids.txt
+        
 
+        # Automatic/manual check
         if ctx.game.automatic:
             asyncio.create_task(ctx.send("Can't do that, are you running a manual command in automatic mode?"))
             return
