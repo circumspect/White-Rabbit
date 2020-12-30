@@ -173,6 +173,7 @@ class Manual(commands.Cog):
 
         for time in gamedata.CLUE_TIMES:
             ctx.game.picked_clues[time] = random.randint(1, 3)
+
         # Only one card for the 90 minute clue
         ctx.game.picked_clues[90] = 1
 
