@@ -16,7 +16,7 @@ To run the bot, open a shell window and enter the following:
 
 .. code:: console
 
-   $ python3 /path/to/src
+   $ python /path/to/src
 
 Where ``/path/to/src`` is the path to the src folder in the bot's root directory.
 
