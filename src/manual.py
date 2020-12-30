@@ -189,6 +189,8 @@ class Manual(commands.Cog):
         if player_count < 3:
             await ctx.send("Not enough players!")
             return
+        
+        # Can't play without Charlie
         elif "Charlie" not in ctx.game.char_roles():
             await ctx.send("Can't find Charlie!")
             return
@@ -210,14 +212,14 @@ class Manual(commands.Cog):
         # Give bucket with 90 minute card to Charlie Barnes
         for bucket in clue_buckets:
             if 90 in bucket:
-                # Willy Wonka sends his regards
+                # Charlie's bucket! Willy Wonka sends his regards
                 ctx.game.clue_assignments["charlie"] = sorted(bucket, reverse=True)
                 clue_buckets.remove(bucket)
                 break
 
         # Assign the rest of the buckets randomly
         names = [name.lower() for name in ctx.game.char_roles()]
-        names.remove("charlie")  # already assigned
+        names.remove("charlie")  # Already assigned
         for name in names:
             ctx.game.clue_assignments[name] = sorted(clue_buckets.pop(), reverse=True)
 
@@ -254,8 +256,7 @@ class Manual(commands.Cog):
 
     def _test_clue_buckets(self, ctx, clue_buckets):
         """
-        Checks to see if any clue bucket contains two times
-        within 10 minutes of each other
+        Checks clue buckets and returns False if any checks fail
         """
 
         for bucket in clue_buckets:
@@ -265,11 +266,13 @@ class Manual(commands.Cog):
             # character page in the PDF export at 3
             if len(bucket) == 4 and 90 not in bucket:
                 return False
-            # If four players, make sure Charlie gets 3 clues so PDF export
-            # doesn't look like Charlie has one and someone else has 3
-            elif len(ctx.game.char_roles()) == 4 and 90 in bucket and len(bucket) == 2:
+            
+            # If four players, make sure Charlie gets three clues so PDF export
+            # doesn't look like Charlie has one and someone else has three
+            if len(ctx.game.char_roles()) == 4 and 90 in bucket and len(bucket) == 2:
                 return False
 
+            # Make sure no bucket has clues within 10 minutes of each other
             for i in range(len(bucket)):
                 for j in range(i + 1, len(bucket)):
                     diff = abs(bucket[i] - bucket[j])
