@@ -58,6 +58,7 @@ MASTER_PATHS = {
     "guide": (PLAYER_RESOURCE_DIR / "Alice is Missing - Guide.jpg"),
     "character_sheet": (PLAYER_RESOURCE_DIR / "Alice is Missing - Character Sheet.jpg"),
     "intro": (CARD_DIR / "Misc" / "Introduction.png"),
+    "debrief": (CARD_DIR / "Misc" / "Debrief.png"),
 }
 
 IMAGE_EXT = ".png"

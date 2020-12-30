@@ -8,7 +8,7 @@ from discord.ext import commands
 import gamedata
 import utils
 
-# See https://stackoverflow.com/questions/64524256/guild-members-not-working-correctly-discord-py
+# Enable Server Members gateway intent to find all users
 intents = discord.Intents.default()
 intents.members = True
 

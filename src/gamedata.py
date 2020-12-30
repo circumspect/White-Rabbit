@@ -36,6 +36,10 @@ SEARCHING = {
     "van": "White Van",
 }
 
+# Message to send when reminding player
+TEN_MIN_REMINDER_TIME = 15
+TEN_MIN_REMINDER_TEXT = "Reminder to assign the 10 minute card to the player who is going to Alice's location! (e.g. !10 Evan)"
+
 # Game length, in seconds
 GAME_LENGTH = 90 * 60
 # Max game speed

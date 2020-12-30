@@ -263,14 +263,14 @@ class Game(commands.Cog):
             await asyncio.sleep(ctx.game.timer_gap / ctx.game.game_speed)
 
     async def clue_check(self, ctx):
-        """Runs clue check every 5 minutes and calls send_clue()"""
+        """Timer loop to check clues and perform various actions"""
 
         minutes_remaining = 90
         check_interval = 5
 
         while minutes_remaining > 0:
-            # Normal cards
             if ctx.game.automatic:
+                # Normal clue cards
                 if minutes_remaining in gamedata.CLUE_TIMES and minutes_remaining <= ctx.game.next_clue:
                     self.bot.cogs["Manual"].send_clue(ctx, minutes_remaining)
                     if minutes_remaining == 30 and ctx.game.picked_clues[minutes_remaining] == 1:
@@ -283,6 +283,15 @@ class Game(commands.Cog):
 
                         channel = ctx.text_channels[channel]
                         asyncio.create_task(channel.send(flip))
+                
+                # If 20 minutes left, make check run every minute
+                if minutes_remaining == 20:
+                    check_interval = 1
+
+                # Check if 10 min card has been assigned and send reminder if not
+                if minutes_remaining == gamedata.TEN_MIN_REMINDER_TIME and not ctx.game.ten_char:
+                    channel = ctx.text_channels["player-resources"]
+                    asyncio.create_task(channel.send(gamedata.TEN_MIN_REMINDER_TEXT))
 
                 # 10 min card
                 elif minutes_remaining == 10:
@@ -295,8 +304,6 @@ class Game(commands.Cog):
                         ctx.game.three_flip = True
                     else:
                         ctx.game.second_culprit = True
-
-                    check_interval = 1
 
                 # Ending 3
                 elif minutes_remaining == 8 and ctx.game.second_culprit:
@@ -348,6 +355,13 @@ class Game(commands.Cog):
                 await asyncio.sleep((check_interval - gamedata.REMINDER_BUFFER) * 60 / ctx.game.game_speed)
 
             minutes_remaining -= check_interval
+        
+        # End of game, send debrief
+        utils.send_image(
+            "charlie-clues",
+            utils.MASTER_PATHS["debrief"],
+            ctx
+        )
 
     @commands.command(aliases=["searching"])
     async def search(self, ctx):
