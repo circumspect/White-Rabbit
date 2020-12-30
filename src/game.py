@@ -317,6 +317,8 @@ class Game(commands.Cog):
 
         ctx.game.ten_char = character
 
+        await ctx.send(f"Assigned 10 minute card to {character.title()}!")
+
 
 def setup(bot):
     bot.add_cog(Game(bot))
