@@ -291,7 +291,7 @@ class Game(commands.Cog):
                 # Check if 10 min card has been assigned and send reminder if not
                 if minutes_remaining == gamedata.TEN_MIN_REMINDER_TIME and not ctx.game.ten_char:
                     channel = ctx.text_channels["player-resources"]
-                    asyncio.create_task(channel.send(gamedata.TEN_MIN_REMINDER_TEXT))
+                    await channel.send(gamedata.TEN_MIN_REMINDER_TEXT)
 
                 # 10 min card
                 elif minutes_remaining == 10:
