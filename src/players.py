@@ -63,13 +63,18 @@ class Players(commands.Cog):
     async def roles(self, ctx):
         """Displays your roles"""
 
-        await ctx.send(f"Your roles: {', '.join(role.name for role in ctx.author.roles[1:len(ctx.author.roles)])}")
-    
+        await ctx.send(f"Your roles: {', '.join(role.name for role in ctx.author.roles[1:])}")
+
     @commands.command(name="list")
     async def users(self, ctx):
         """Lists all players and spectators"""
 
-        await ctx.send(f"")
+        message = ""
+        if ctx.game.spectator_role.members:
+            message += f"Spectators: {', '.join(member.display_name for member in ctx.game.spectator_role.members)}\n"
+        if ctx.game.char_roles():
+            message += f"Players: {', '.join(member.name for member in ctx.game.char_roles().values())}\n"
+        await ctx.send(message if message else "No players or spectators found")
 
 
 def setup(bot):
