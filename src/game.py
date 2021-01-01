@@ -298,11 +298,17 @@ class Game(commands.Cog):
             await ctx.send("You don't have a character role!")
             return
 
-        search = random.choice(list(gamedata.SEARCHING))
-        image = utils.SEARCHING_DIR / (gamedata.SEARCHING[search] + utils.IMAGE_EXT)
-        asyncio.create_task(ctx.text_channels[f"{ctx.character}-clues"].send(
-            file=discord.File(image)
-        ))
+        char_channel = ctx.text_channels[f"{ctx.character}-clues"]
+
+        if ctx.game.search_cards:
+            search = random.choice(ctx.game.search_cards)
+            ctx.game.search_cards.remove(search)
+            image = utils.SEARCHING_DIR / (search + utils.IMAGE_EXT)
+            asyncio.create_task(char_channel.send(file=discord.File(image)))
+
+        else:
+            # out of unique cards
+            asyncio.create_task(char_channel.send("You found nothing"))
 
     @commands.command(name="10")
     async def ten_min_card(
