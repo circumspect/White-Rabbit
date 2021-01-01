@@ -64,6 +64,12 @@ class Players(commands.Cog):
         """Displays your roles"""
 
         await ctx.send(f"Your roles: {', '.join(role.name for role in ctx.author.roles[1:len(ctx.author.roles)])}")
+    
+    @commands.command(name="list")
+    async def users(self, ctx):
+        """Lists all players and spectators"""
+
+        await ctx.send(f"")
 
 
 def setup(bot):
