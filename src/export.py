@@ -399,8 +399,9 @@ class Export(commands.Cog):
             empty = True
             async for message in channel.history(limit=None, oldest_first=True):
                 line = utils.remove_emojis(message.clean_content).strip()
+                line = utils.ooc_strip(ctx, line)
                 
-                if not (line.startswith("(") and line.endswith(")")):
+                if line:
                     empty = False
                     break
 
