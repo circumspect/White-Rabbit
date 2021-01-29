@@ -74,9 +74,9 @@ class Game(commands.Cog):
             "with their mom at the end of the last school year",
             "after their parents divorced. They just arrived in",
             "town to stay with their dad for winter break, and",
-            "hope to see Alice and the others while they’re here.",
+            "hope to see Alice and the others while they're here.",
             "A few days ago, Alice stopped responding.", 
-            "They haven’t heard from her since.",
+            "They haven't heard from her since.",
         ])
 
         background = utils.codeblock(background)
