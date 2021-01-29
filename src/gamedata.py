@@ -74,7 +74,7 @@ class Data:
         self.second_culprit = False
 
 
-        # Setings
+        # Settings
         self.automatic = True
         self.show_timer = False
         self.stream_music = False
