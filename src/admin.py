@@ -5,6 +5,9 @@ import discord
 from discord.ext import commands
 # Local
 import gamedata
+from localization import LOCALIZATION_DATA
+
+loc = LOCALIZATION_DATA["commands"]["admin"]
 
 class Admin(commands.Cog):
     def __init__(self, bot):
@@ -15,7 +18,7 @@ class Admin(commands.Cog):
 
         return ctx.author.guild_permissions.administrator
     
-    @commands.command()
+    @commands.command(name=loc["show_all"]["name"], aliases=loc["show_all"]["aliases"], description=loc["show_all"]["description"])
     async def show_all(self, ctx):
         """Reveal all channels and disable sending messages"""
 
@@ -23,7 +26,7 @@ class Admin(commands.Cog):
             await channel.edit(sync_permissions=True)
         await ctx.send("All channels revealed!")
 
-    @commands.command(aliases=["clear"])
+    @commands.command(name=loc["wipe"]["name"], aliases=loc["wipe"]["aliases"], description=loc["wipe"]["description"])
     async def wipe(self, ctx, *text_channels: discord.TextChannel):
         """Erases all messages and clears game data"""
 
@@ -42,7 +45,7 @@ class Admin(commands.Cog):
         # Console logging
         print(f'Wiped messages from server: "{ctx.guild.name}" with ID: "{ctx.guild.id}"')
 
-    @commands.command()
+    @commands.command(name=loc["reset_perms"]["name"], aliases=loc["reset_perms"]["aliases"], description=loc["reset_perms"]["description"])
     async def reset_perms(self, ctx):
         """Resets channel permissions to the default (undoes !show_all)"""
 
@@ -79,7 +82,7 @@ class Admin(commands.Cog):
                     if role.name == player_a or role.name == player_b:
                         await channel.set_permissions(role, view_channel=True)
 
-    @commands.command()
+    @commands.command(name=loc["reset"]["name"], aliases=loc["reset"]["aliases"], description=loc["reset"]["description"])
     async def reset(self, ctx):
         """Complete server reset"""
 

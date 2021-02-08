@@ -5,13 +5,16 @@ import discord
 from discord.ext import commands, tasks
 # Local
 import gamedata
+from localization import LOCALIZATION_DATA
 import utils
+
+loc = LOCALIZATION_DATA["commands"]["settings"]
 
 class Settings(commands.Cog):
     def __init__(self, bot):
         self.bot = bot
 
-    @commands.command()
+    @commands.command(name=loc["auto"]["name"], aliases=loc["auto"]["aliases"], description=loc["auto"]["description"])
     async def auto(self, ctx, mode: str=""):
         """
         Prints current mode or turn automatic on/off (on by default)
@@ -42,7 +45,7 @@ class Settings(commands.Cog):
         else:
             await ctx.send("Input error, try !auto on or !auto off")
 
-    @commands.command(hidden=True)
+    @commands.command(hidden=True, name=loc["music"]["name"], aliases=loc["music"]["aliases"], description=loc["music"]["description"])
     async def music(self, ctx):
         """Enable/disable music stream when game starts"""
 
@@ -52,7 +55,7 @@ class Settings(commands.Cog):
         else:
             await ctx.send("Music stream disabled!")
 
-    @commands.command(name="timer")
+    @commands.command(name=loc["show_timer"]["name"], aliases=loc["show_timer"]["aliases"], description=loc["show_timer"]["description"])
     async def show_timer(self, ctx, gap: int = 0):
         """
         Show/hide bot timer
@@ -79,7 +82,7 @@ class Settings(commands.Cog):
         else:
             await ctx.send("Hiding bot timer!")
 
-    @commands.command(hidden=True)
+    @commands.command(hidden=True, name=loc["endings"]["name"], aliases=loc["endings"]["aliases"], description=loc["endings"]["description"])
     async def endings(self, ctx, index: int=0):
         """Enables/disables an ending. See docs for details"""
 
