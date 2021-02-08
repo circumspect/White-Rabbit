@@ -247,6 +247,7 @@
     "errors": {
         "UserInputError": "Can't understand input!",
         "CommandNotFound": "Command not found!",
+        "CommandInWrongChannel": "You can only use commands in this channel!",
         "ManualCommandInAuto": "Can't do that, are you running a manual command in automatic mode?",
         "SpectatorCommandAttempt": "Spectators can't run commands!",
         "GenericCheckFailure": "You can't do that!",

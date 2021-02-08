@@ -78,7 +78,7 @@ async def on_command_error(ctx, error):
 
         # Commands must be in bot-channel
         if ctx.channel.name != BOT_CHANNEL and utils.is_command(ctx.message.clean_content):
-            asyncio.create_task(bot_channel.send(f"{ctx.author.mention} You can only use commands in {bot_channel.mention}!"))
+            asyncio.create_task(bot_channel.send(f"{ctx.author.mention} " + LOCALIZATION_DATA["errors"]["CommandInWrongChannel"]))
             return
 
         # TODO: Check if running debug command without being in dev_ids.txt
