@@ -45,13 +45,16 @@
             "credits": {
                 "name": "credits",
                 "aliases": ["about", "info"],
-                "description": "Prints information about the bot"
+                "description": "Prints information about the bot",
+                "creators": "The White Rabbit was created by circumspect.",
+                "source": "Source code available here:"
             },
 
             "docs": {
                 "name": "docs",
                 "aliases": ["guide"],
-                "description": "Link to the documentation"
+                "description": "Link to the documentation",
+                "documentation": "Documentation for The White Rabbit can be found here:"
             }
         },
 
