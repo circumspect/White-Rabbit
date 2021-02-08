@@ -10,8 +10,9 @@
         "bot-channel": "bot-channel",
         "call": "call",
 
+        "resources": "player-resources",
+
         "cards": {
-            "resources": "player-resources",
             "character-cards": "character-cards",
             "suspect-cards": "suspect-cards",
             "location-cards": "location-cards",

@@ -34,32 +34,32 @@ class Game(commands.Cog):
 
         # Introduction images
         utils.send_image(
-            "player-resources",
+            LOCALIZATION_DATA["channels"]["resources"],
             utils.MASTER_PATHS["guide"],
             ctx
         )
         utils.send_image(
-            "player-resources",
+            LOCALIZATION_DATA["channels"]["resources"],
             utils.MASTER_PATHS["character_sheet"],
             ctx
         )
         utils.send_image(
-            "player-resources",
+            LOCALIZATION_DATA["channels"]["resources"],
             utils.MASTER_PATHS["intro"],
             ctx
         )
 
         ctx.game.alice = random.randint(1, 10)
         alice = utils.POSTER_DIR / ("Alice Briarwood " + str(ctx.game.alice) + utils.IMAGE_EXT)
-        utils.send_image("player-resources", alice, ctx)
+        utils.send_image(LOCALIZATION_DATA["channels"]["resources"], alice, ctx)
 
         # Send characters, suspects, and locations to appropriate channels
-        utils.send_folder("character-cards", utils.CHARACTER_IMAGE_DIR, ctx)
-        utils.send_folder("suspect-cards", utils.SUSPECT_IMAGE_DIR, ctx)
-        utils.send_folder("location-cards", utils.LOCATION_IMAGE_DIR, ctx)
+        utils.send_folder(LOCALIZATION_DATA["channels"]["cards"]["character-cards"], utils.CHARACTER_IMAGE_DIR, ctx)
+        utils.send_folder(LOCALIZATION_DATA["channels"]["cards"]["suspect-cards"], utils.SUSPECT_IMAGE_DIR, ctx)
+        utils.send_folder(LOCALIZATION_DATA["channels"]["cards"]["location-cards"], utils.LOCATION_IMAGE_DIR, ctx)
 
         # Instructions for Charlie Barnes
-        channel = ctx.text_channels["charlie-clues"]
+        channel = ctx.text_channels[LOCALIZATION_DATA["channels"]["clues"]["charlie"]]
         prompts = "\n".join([
             "Read introduction", "Introduce Alice from poster", 
             "Introduce/pick characters", "Explain character cards", 
@@ -204,7 +204,7 @@ class Game(commands.Cog):
 
                         for character in ctx.game.clue_assignments:
                             if 30 in ctx.game.clue_assignments[character]:
-                                channel = character + "-clues"
+                                channel = LOCALIZATION_DATA["channels"]["clues"][character]
                                 break
 
                         channel = ctx.text_channels[channel]
@@ -216,12 +216,12 @@ class Game(commands.Cog):
 
                 # Check if 10 min card has been assigned and send reminder if not
                 if minutes_remaining == gamedata.TEN_MIN_REMINDER_TIME and not ctx.game.ten_char:
-                    channel = ctx.text_channels["player-resources"]
+                    channel = ctx.text_channels[LOCALIZATION_DATA["channels"]["resources"]]
                     await channel.send(gamedata.TEN_MIN_REMINDER_TEXT)
 
                 # 10 min card
                 elif minutes_remaining == 10:
-                    channel = ctx.game.ten_char + "-clues"
+                    channel = LOCALIZATION_DATA["channels"]["clues"][ctx.game.ten_char]
                     ending = random.choice(list(i for i in ctx.game.endings if ctx.game.endings[i]))
                     clue = utils.CLUE_DIR / "10" / f"10-{ending}.png"
                     utils.send_image(channel, clue, ctx)
