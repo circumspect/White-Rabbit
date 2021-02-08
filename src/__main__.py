@@ -4,6 +4,8 @@ import sys
 # 3rd-party
 import discord
 from discord.ext import commands
+from dotenv import dotenv_values
+import requests
 # Local
 import gamedata
 import utils
@@ -99,13 +101,12 @@ for plugin in PLUGINS:
 
 # Import bot token
 try:
-    with open(utils.TOKEN_FILE) as token_file:
-        token = token_file.read()
-    bot.run(token)
+    bot.run(dotenv_values(utils.ENV_FILE)["TOKEN"])
 except FileNotFoundError:
-    with open(utils.TOKEN_FILE, "x") as token_file:
-        pass
-    sys.exit("No token file found! Creating empty token.txt and shutting down")
+    r = requests.get(utils.BLANK_DOTENV_URL)
+    with open(utils.ENV_FILE, 'x') as env:
+        env.write(r.content)
+    sys.exit("No dotenv file found! Downloading sample .env and shutting down")
 except discord.errors.LoginFailure:
     sys.exit("Couldn't log in! Was the token incorrect?")
     
