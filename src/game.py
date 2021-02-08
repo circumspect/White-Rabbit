@@ -9,14 +9,16 @@ import discord
 from discord.ext import commands
 # Local
 import gamedata
+from localization import LOCALIZATION_DATA
 import utils
 
+loc = LOCALIZATION_DATA["commands"]["game"]
 
 class Game(commands.Cog):
     def __init__(self, bot):
         self.bot = bot
 
-    @commands.command(aliases=["initialize"])
+    @commands.command(name=loc["init"]["name"], aliases=loc["init"]["aliases"], description=loc["init"]["description"])
     async def init(self, ctx):
         """Initial setup before character selection"""
 
@@ -100,7 +102,7 @@ class Game(commands.Cog):
 
         ctx.game.init = True
 
-    @commands.command()
+    @commands.command(name=loc["setup_clues"]["name"], aliases=loc["setup_clues"]["aliases"], description=loc["setup_clues"]["description"])
     async def setup_clues(self, ctx):
         """Shuffle and distribute clues"""
 
@@ -129,7 +131,7 @@ class Game(commands.Cog):
 
         ctx.game.setup = True
 
-    @commands.command()
+    @commands.command(name=loc["start"]["name"], aliases=loc["start"]["aliases"], description=loc["start"]["description"])
     async def start(self, ctx):
         """Begins the game"""
 
@@ -287,7 +289,7 @@ class Game(commands.Cog):
             ctx
         )
 
-    @commands.command(aliases=["searching"])
+    @commands.command(name=loc["search"]["name"], aliases=loc["search"]["aliases"], description=loc["search"]["description"])
     async def search(self, ctx):
         """Draw a searching card"""
 
@@ -310,7 +312,7 @@ class Game(commands.Cog):
             # out of unique cards
             asyncio.create_task(char_channel.send("You found nothing"))
 
-    @commands.command(name="10")
+    @commands.command(name=loc["ten_min_card"]["name"], aliases=loc["ten_min_card"]["aliases"], description=loc["ten_min_card"]["description"])
     async def ten_min_card(
         self, ctx, mention: typing.Union[discord.Member, discord.Role]
     ):
