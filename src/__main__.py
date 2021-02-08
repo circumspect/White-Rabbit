@@ -8,6 +8,7 @@ from dotenv import dotenv_values
 import requests
 # Local
 import gamedata
+from localization import LOCALIZATION_DATA
 import utils
 
 # Enable Server Members gateway intent to find all users
@@ -17,25 +18,28 @@ intents.members = True
 bot = commands.Bot(command_prefix="!", intents=intents)
 bot.games = {}
 
+# Localization
+BOT_CHANNEL = LOCALIZATION_DATA["channels"]["bot-channel"]
+SPECTATOR_ROLE = LOCALIZATION_DATA["spectator-role"]
 
 @bot.event
 async def on_ready():
     # Set custom status
-    await bot.change_presence(activity=discord.Game("Alice is Missing"))
+    await bot.change_presence(activity=discord.Game(LOCALIZATION_DATA["title"]))
 
 
 @bot.check
 def check_channel(ctx):
     """Only allow commands in #bot-channel"""
 
-    return ctx.channel.name == "bot-channel"
+    return ctx.channel.name == BOT_CHANNEL
 
 
 @bot.check
 def not_spectator(ctx):
     """Don't let spectators run commands"""
     
-    return "spectator" not in [role.name.lower() for role in ctx.author.roles]
+    return SPECTATOR_ROLE not in [role.name for role in ctx.author.roles]
 
 
 @bot.before_invoke
@@ -62,36 +66,41 @@ async def before_invoke(ctx):
 async def on_command_error(ctx, error):
     """Default error catcher for commands"""
 
-    bot_channel = utils.get_text_channels(ctx.guild)["bot-channel"]
+    bot_channel = utils.get_text_channels(ctx.guild)[BOT_CHANNEL]
     ctx.game = bot.games.setdefault(ctx.guild.id, gamedata.Data(ctx.guild))
 
     # Failed a check
     if isinstance(error, commands.errors.CheckFailure):
+        # Check if user is spectator
+        if SPECTATOR_ROLE in [role.name for role in ctx.author.roles]:
+            asyncio.create_task(ctx.send(LOCALIZATION_DATA["errors"]["SpectatorCommandAttempt"]))
+            return
+
         # Commands must be in bot-channel
-        if ctx.channel.name != "bot-channel" and utils.is_command(ctx.message.clean_content):
+        if ctx.channel.name != BOT_CHANNEL and utils.is_command(ctx.message.clean_content):
             asyncio.create_task(bot_channel.send(f"{ctx.author.mention} You can only use commands in {bot_channel.mention}!"))
             return
-        
+
         # TODO: Check if running debug command without being in dev_ids.txt
-        
 
         # Automatic/manual check
         if ctx.game.automatic:
-            asyncio.create_task(ctx.send("Can't do that, are you running a manual command in automatic mode?"))
+            asyncio.create_task(ctx.send(LOCALIZATION_DATA["errors"]["ManualCommandInAuto"]))
             return
-        asyncio.create_task(ctx.send("You can't do that!"))
+
+        asyncio.create_task(ctx.send(LOCALIZATION_DATA["errors"]["GenericCheckFailure"]))
 
     # Bad input
     elif isinstance(error, commands.errors.UserInputError):
-        asyncio.create_task(ctx.send("Can't understand input!"))
+        asyncio.create_task(ctx.send(LOCALIZATION_DATA["errors"]["UserInputError"]))
 
     # Can't find command
     elif isinstance(error, commands.errors.CommandNotFound):
-        asyncio.create_task(ctx.send("Command not found!"))
+        asyncio.create_task(ctx.send(LOCALIZATION_DATA["errors"]["CommandNotFound"]))
 
     # Everything else
     else:
-        asyncio.create_task(ctx.send("Unknown error: check console!"))
+        asyncio.create_task(ctx.send(LOCALIZATION_DATA["errors"]["UnknownError"]))
         raise error
 
 # Load all extensions
@@ -106,7 +115,7 @@ except FileNotFoundError:
     r = requests.get(utils.BLANK_DOTENV_URL)
     with open(utils.ENV_FILE, 'x') as env:
         env.write(r.content)
-    sys.exit("No dotenv file found! Downloading sample .env and shutting down")
+    sys.exit(LOCALIZATION_DATA["errors"]["MissingDotEnv"])
 except discord.errors.LoginFailure:
-    sys.exit("Couldn't log in! Was the token incorrect?")
+    sys.exit(LOCALIZATION_DATA["errors"]["LoginFailure"])
     

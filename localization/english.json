@@ -1,5 +1,8 @@
 {
+    "title": "Alice is Missing",
     "template": "https://discord.new/YD7aEUr8AdBQ",
+
+    "spectator-role": "Spectator",
 
     "channels": {
         "discussion": "discussion",
@@ -239,5 +242,16 @@
                 "description": "Enables/disables an ending. See docs for details"
             }
         }
+    },
+
+    "errors": {
+        "UserInputError": "Can't understand input!",
+        "CommandNotFound": "Command not found!",
+        "ManualCommandInAuto": "Can't do that, are you running a manual command in automatic mode?",
+        "SpectatorCommandAttempt": "Spectators can't run commands!",
+        "GenericCheckFailure": "You can't do that!",
+        "MissingDotEnv": "No dotenv file found! Downloading sample .env and shutting down",
+        "LoginFailure": "Couldn't log in! Was the token incorrect?",
+        "UnknownError": "Unknown error: check console!"
     }
 }
