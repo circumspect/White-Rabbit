@@ -1,4 +1,6 @@
 {
+    "template": "https://discord.new/YD7aEUr8AdBQ",
+
     "channels": {
         "discussion": "discussion",
         "bot-channel": "bot-channel",
@@ -39,14 +41,200 @@
     },
 
     "commands": {
-        "credits": {
-            "aliases": ["about", "info"],
-            "help": "Prints information about the bot"
+        "about": {
+            "credits": {
+                "name": "credits",
+                "aliases": ["about", "info"],
+                "description": "Prints information about the bot"
+            },
+
+            "docs": {
+                "name": "docs",
+                "aliases": ["guide"],
+                "description": "Link to the documentation"
+            }
         },
 
-        "docs": {
-            "aliases": ["guide"],
-            "help": "Link to the documentation"
+        "admin": {
+            "show_all": {
+                "name": "show_all",
+                "aliases": [],
+                "description": "Reveal all channels and disable sending messages"
+            },
+
+            "wipe": {
+                "name": "wipe",
+                "aliases": ["clear"],
+                "description": "Erases all messages and clears game data"
+            },
+
+            "reset_perms": {
+                "name": "reset_perms",
+                "aliases": [],
+                "description": "Resets channel permissions to the default (undoes !show_all)"
+            },
+
+            "reset": {
+                "name": "reset",
+                "aliases": [],
+                "description": "Complete server reset"
+            }
+        },
+
+        "debug": {
+            "speed": {
+                "name": "speed",
+                "aliases": [],
+                "description": "Changes the speed of the game"
+            },
+
+            "plugins": {
+                "name": "plugins",
+                "aliases": [],
+                "description": "Lists all currently loaded plugins"
+            },
+
+            "load": {
+                "name": "load",
+                "aliases": [],
+                "description": "(Re)loads a plugin"
+            },
+
+            "unload": {
+                "name": "unload",
+                "aliases": [],
+                "description": "Unloads a plugin"
+            },
+
+            "quit": {
+                "name": "quit",
+                "aliases": ["stop", "shutdown"],
+                "description": "Shuts down the bot - AFFECTS ALL SERVERS"
+            }
+        },
+
+        "export": {
+            "pdf": {
+                "name": "pdf",
+                "aliases": ["PDF"],
+                "description": "Exports the game to a PDF"
+            }
+        },
+
+        "game": {
+            "init": {
+                "name": "init",
+                "aliases": ["initialize"],
+                "description": "Initial setup before character selection"
+            },
+
+            "setup_clues": {
+                "name": "setup_clues",
+                "aliases": [],
+                "description": "Shuffle and distribute clues"
+            },
+
+            "start": {
+                "name": "start",
+                "aliases": [],
+                "description": "Begins the game"
+            },
+
+            "search": {
+                "name": "search",
+                "aliases": ["searching"],
+                "description": "Draw a searching card"
+            },
+
+            "ten_min_card": {
+                "name": "10",
+                "aliases": [],
+                "description": "Assign the 10 minute card to another player"
+            }
+        },
+
+        "manual": {
+            "shuffle_motives": {
+                "name": "shuffle_motives",
+                "aliases": [],
+                "description": "Shuffle and assign motive cards"
+            },
+
+            "send_motives": {
+                "name": "send_motives",
+                "aliases": [],
+                "description": "Distributes motive cards"
+            },
+
+            "clue": {
+                "name": "clue",
+                "aliases": [],
+                "description": "Draws a clue card given a time"
+            },
+
+            "shuffle_clues": {
+                "name": "shuffle_clues",
+                "aliases": [],
+                "description": "(Re)shuffles the clue card piles"
+            },
+
+            "assign_clues": {
+                "name": "assign_clues",
+                "aliases": [],
+                "description": "Randomizes and assigns clue times"
+            }
+        },
+
+        "players": {
+            "claim": {
+                "name": "",
+                "aliases": [],
+                "description": "Claim a character/spectator role"
+            },
+
+            "unclaim": {
+                "name": "",
+                "aliases": [],
+                "description": "Remove character roles"
+            },
+
+            "roles": {
+                "name": "",
+                "aliases": [],
+                "description": "Displays your roles"
+            },
+
+            "users": {
+                "name": "list",
+                "aliases": [],
+                "description": "Lists all players and spectators"
+            }
+        },
+
+        "settings": {
+            "auto": {
+                "name": "auto",
+                "aliases": [],
+                "description": "Prints current mode or turn automatic on/off (on by default)"
+            },
+
+            "music": {
+                "name": "music",
+                "aliases": [],
+                "description": "Enable/disable music stream when game starts"
+            },
+
+            "show_timer": {
+                "name": "timer",
+                "aliases": [],
+                "description": "Show/hide bot timer"
+            },
+
+            "endings": {
+                "name": "endings",
+                "aliases": [],
+                "description": "Enables/disables an ending. See docs for details"
+            }
         }
     }
 }

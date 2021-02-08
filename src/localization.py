@@ -12,7 +12,8 @@ LOCALIZATIONS = {
 }
 
 config = dotenv_values(".env")
+localization_file = LOCALIZATIONS[config["LANGUAGE"]]
 
-
-with open(LOCALIZATIONS["en"]) as f:
-    localization = json.loads(f.read())
+LOCALIZATION_DATA = None
+with open(localization_file) as f:
+    LOCALIZATION_DATA = json.loads(f.read())

@@ -5,12 +5,15 @@ import discord
 from discord.ext import commands
 # Local
 import gamedata
+from localization import LOCALIZATION_DATA
 import utils
+
+loc = LOCALIZATION_DATA["commands"]["debug"]
 
 class Debug(commands.Cog):
     def __init__(self, bot):
         self.bot = bot
-        
+
         try:
             with open(utils.DEV_ID_FILE) as f:
                 self.dev_ids = [int(line.strip()) for line in f.readlines()]
@@ -29,7 +32,7 @@ class Debug(commands.Cog):
         # Console logging
         print("Bot has logged in!")
 
-    @commands.command()
+    @commands.command(aliases=loc["speed"]["aliases"], description=loc["speed"]["description"])
     async def speed(self, ctx, speed: float=1):
         """Changes the speed of the game - DEBUG USE ONLY"""
 
@@ -53,7 +56,7 @@ class Debug(commands.Cog):
         else:
             asyncio.create_task(ctx.send("Set the game speed!"))
 
-    @commands.command()
+    @commands.command(aliases=loc["plugins"]["aliases"], description=loc["plugins"]["description"])
     async def plugins(self, ctx):
         """Lists all currently loaded plugins"""
 
@@ -62,7 +65,7 @@ class Debug(commands.Cog):
         message = utils.codeblock(message)
         await ctx.send(message)
 
-    @commands.command()
+    @commands.command(aliases=loc["load"]["aliases"], description=loc["load"]["description"])
     async def load(self, ctx, extension_name: str = "all"):
         """(Re)loads a plugin"""
 
@@ -88,9 +91,9 @@ class Debug(commands.Cog):
         except commands.errors.ExtensionNotFound:
             await ctx.send(f"Couldn't find plugin: \"{extension_name}\"")
 
-    @commands.command()
+    @commands.command(aliases=loc["unload"]["aliases"], description=loc["unload"]["description"])
     async def unload(self, ctx, extension_name: str):
-        """Unloads a plugin."""
+        """Unloads a plugin"""
         try:
             self.bot.unload_extension(extension_name)
             await ctx.send(f"Unloaded {extension_name}")
@@ -100,7 +103,7 @@ class Debug(commands.Cog):
     # DO NOT MOVE TO admin.py!!! This command will shut down the bot across 
     # ALL servers, and thus should only be able to be run by those listed
     # in the dev_ids file
-    @commands.command(aliases=["stop", "shutdown"])
+    @commands.command(aliases=loc["quit"]["aliases"], description=loc["quit"]["description"])
     async def quit(self, ctx):
         """Shuts down the bot - AFFECTS ALL SERVERS"""
 
