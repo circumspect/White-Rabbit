@@ -88,7 +88,7 @@ class Game(commands.Cog):
 
         # Character and motive cards in clues channels
         for name in gamedata.CHARACTERS:
-            channel = ctx.text_channels[f"{name}-clues"]
+            channel = ctx.text_channels[LOCALIZATION_DATA["channels"]["clues"][name]]
             utils.send_image(
                 channel,
                 utils.MASTER_PATHS[name],
@@ -153,7 +153,7 @@ class Game(commands.Cog):
             return
 
         # 90 minute card/message for Charlie Barnes
-        channel = ctx.text_channels["charlie-clues"]
+        channel = ctx.text_channels[LOCALIZATION_DATA["channels"]["clues"]["charlie"]]
         await channel.send(file=discord.File(utils.CLUE_DIR / "90/90-1.png"))
         first_message = "Hey! Sorry for the big group text, but I just got "\
                         "into town for winter break at my dad's and haven't "\
@@ -255,7 +255,7 @@ class Game(commands.Cog):
                 # Endings 1 and 2
                 elif minutes_remaining == 3 and ctx.game.three_flip:
                     flip = random.choice(["Heads", "Tails"])
-                    channel = ctx.game.ten_char + "-clues"
+                    channel = LOCALIZATION_DATA["channels"]["clues"][ctx.game.ten_char]
                     channel = ctx.text_channels[channel]
                     asyncio.create_task(channel.send(flip))
 
