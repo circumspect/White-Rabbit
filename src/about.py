@@ -17,8 +17,9 @@ class About(commands.Cog):
         """Prints information about the bot"""
 
         message = "\n".join([
-            "The White Rabbit was created by Chenkai and Chendi Luo.",
-            "Source code available at " + utils.SOURCE_URL,
+            loc["credits"]["creators"],
+            loc["credits"]["source"],
+            utils.SOURCE_URL,
         ])
         message = utils.codeblock(message)
         asyncio.create_task(ctx.send(message))
@@ -28,7 +29,7 @@ class About(commands.Cog):
         """Link to the documentation"""
 
         message = "\n".join([
-            "Documentation for The White Rabbit can be found here:",
+            loc["docs"]["documentation"],
             utils.DOCS_SHORT_URL,
         ])
         message = utils.codeblock(message)
