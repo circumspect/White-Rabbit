@@ -248,7 +248,7 @@ class Game(commands.Cog):
                     utils.send_image(channel, path, ctx)
 
                     # Send to suspects-drawn channel
-                    channel = ctx.text_channels["suspects-drawn"]
+                    channel = ctx.text_channels[LOCALIZATION_DATA["channels"]["cards"]["suspects-drawn"]]
                     asyncio.create_task(channel.send("SECOND CULPRIT:"))
                     utils.send_image(channel, path, ctx)
 
@@ -274,7 +274,7 @@ class Game(commands.Cog):
                             character = name
                             break
 
-                    channel = ctx.text_channels[character + "-clues"]
+                    channel = ctx.text_channels[LOCALIZATION_DATA["channels"]["clues"][character]]
                     await channel.send(f"Reminder: You have the {ctx.game.next_clue} minute clue card")
 
                 # Wait out the rest of the interval
@@ -284,7 +284,7 @@ class Game(commands.Cog):
         
         # End of game, send debrief
         utils.send_image(
-            "charlie-clues",
+            LOCALIZATION_DATA["channels"]["clues"]["charlie"],
             utils.MASTER_PATHS["debrief"],
             ctx
         )
@@ -300,7 +300,7 @@ class Game(commands.Cog):
             await ctx.send("You don't have a character role!")
             return
 
-        char_channel = ctx.text_channels[f"{ctx.character}-clues"]
+        char_channel = ctx.text_channels[LOCALIZATION_DATA["channels"]["clues"][ctx.character]]
 
         if ctx.game.search_cards:
             search = random.choice(ctx.game.search_cards)
