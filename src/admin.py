@@ -8,6 +8,7 @@ import gamedata
 from localization import LOCALIZATION_DATA
 
 loc = LOCALIZATION_DATA["commands"]["admin"]
+GROUP_CHAT = LOCALIZATION_DATA["channels"]["texts"]["group-chat"]
 
 class Admin(commands.Cog):
     def __init__(self, bot):
@@ -53,7 +54,8 @@ class Admin(commands.Cog):
         spectator = ctx.game.spectator_role
 
         for channel in ctx.guild.text_channels:
-            if "-clues" in channel.name:
+            # Clues channels
+            if channel.name in LOCALIZATION_DATA["channels"]["clues"].values():
                 await channel.set_permissions(everyone, view_channel=False, send_messages=False)
                 await channel.set_permissions(spectator, view_channel=True)
 
@@ -61,18 +63,16 @@ class Admin(commands.Cog):
                 for role in ctx.guild.roles:
                     if role.name == player:
                         await channel.set_permissions(role, view_channel=True)
-            
-            elif channel.name == "voicemails" or channel.name == "group-chat":
+
+            # Channels that all players can send messages
+            elif channel.name == LOCALIZATION_DATA["channels"]["voicemails"] or channel.name == GROUP_CHAT:
                 await channel.set_permissions(everyone, send_messages=False)
                 for role in ctx.guild.roles:
                     if role.name.lower() in gamedata.CHARACTERS:
                         await channel.set_permissions(role, send_messages=True)
 
-            elif channel.name == "group-chat":
-                await channel.set_permissions(everyone, send_messages=None)
-                await channel.set_permissions(spectator, send_messages=False)
-
-            elif "-pm" in channel.name:
+            # Private message channels
+            elif channel.name in LOCALIZATION_DATA["channels"]["texts"].values() and channel.name != GROUP_CHAT:
                 await channel.set_permissions(everyone, view_channel=False, send_messages=None)
                 await channel.set_permissions(spectator, view_channel=True, send_messages=False)
                 split_name = channel.name.split("-")
