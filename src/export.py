@@ -35,7 +35,7 @@ WATERMARK_SEPARATOR_RIGHT = WATERMARK_SEPARATOR_LEFT + WATERMARK_SEPARATOR_LENGT
 # Watermark
 SEPARATOR_WATERMARK_GAP = 0.1
 WATERMARK_GAPS = (SEPARATOR_WATERMARK_GAP, 0.2)
-WATERMARK = ("Created by:", "The White Rabbit")
+WATERMARK = ("Created by:", LOCALIZATION_DATA["bot-name"])
 WATERMARK_Y = WATERMARK_SEPARATOR_Y + SEPARATOR_WATERMARK_GAP
 
 # Page numbers
@@ -360,7 +360,7 @@ class Export(commands.Cog):
         # Cover page
         await loop.run_in_executor(None, pdf.add_page)
         # Heading
-        await loop.run_in_executor(None, self.heading, *(ctx, pdf, "Alice is Missing", COVER_TITLE_FONT, "C", COVER_TITLE_Y))
+        await loop.run_in_executor(None, self.heading, *(ctx, pdf, LOCALIZATION_DATA["title"], COVER_TITLE_FONT, "C", COVER_TITLE_Y))
         # Poster
         poster = utils.POSTER_DIR / f"Alice Briarwood {ctx.game.alice}{utils.IMAGE_EXT}"
         await loop.run_in_executor(None, pdf.image, *(str(poster), COVER_POSTER_X, COVER_POSTER_Y, COVER_POSTER_WIDTH))
