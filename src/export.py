@@ -12,7 +12,10 @@ from discord.ext import commands
 from fpdf import FPDF
 # Local
 import gamedata
+from localization import LOCALIZATION_DATA
 import utils
+
+loc = LOCALIZATION_DATA["commands"]["export"]
 
 # PDF export constants - all measurements are in inches
 # Letter size paper
@@ -329,7 +332,7 @@ class Export(commands.Cog):
                 voicemail = utils.remove_emojis(message.clean_content)
                 ctx.game.voicemails[character] = voicemail.replace("|", "").replace("\n", "")
 
-    @commands.command(aliases=["PDF"])
+    @commands.command(name=loc["pdf"]["name"], aliases=loc["pdf"]["aliases"], description=loc["pdf"]["description"])
     async def pdf(self, ctx, file_name=""):
         """Exports the game to a PDF"""
 

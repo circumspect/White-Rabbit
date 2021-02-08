@@ -5,14 +5,16 @@ import discord
 from discord.ext import commands
 # Local
 import gamedata
+from localization import LOCALIZATION_DATA
 
+loc = LOCALIZATION_DATA["commands"]["players"]
 
 class Players(commands.Cog):
     def __init__(self, bot):
         self.bot = bot
 
     # Commands for players to claim character roles
-    @commands.command()
+    @commands.command(name=loc["claim"]["name"], aliases=loc["claim"]["aliases"], description=loc["claim"]["description"])
     async def claim(self, ctx, role: discord.Role):
         """Claim a character/spectator role"""
 
@@ -42,7 +44,7 @@ class Players(commands.Cog):
         elif role.name.lower() in gamedata.CHARACTERS:
             asyncio.create_task(ctx.author.edit(nick=gamedata.CHARACTERS[role.name.lower()]))
 
-    @commands.command()
+    @commands.command(name=loc["unclaim"]["name"], aliases=loc["unclaim"]["aliases"], description=loc["unclaim"]["description"])
     async def unclaim(self, ctx):
         """Remove character roles"""
 
@@ -59,13 +61,13 @@ class Players(commands.Cog):
                 return
         await ctx.send("You don't have any character roles!")
 
-    @commands.command()
+    @commands.command(name=loc["roles"]["name"], aliases=loc["roles"]["aliases"], description=loc["roles"]["description"])
     async def roles(self, ctx):
         """Displays your roles"""
 
         await ctx.send(f"Your roles: {', '.join(role.name for role in ctx.author.roles[1:])}")
 
-    @commands.command(name="list")
+    @commands.command(name=loc["users"]["name"], aliases=loc["users"]["aliases"], description=loc["users"]["description"])
     async def users(self, ctx):
         """Lists all players and spectators"""
 
