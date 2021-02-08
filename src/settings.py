@@ -33,7 +33,7 @@ class Settings(commands.Cog):
                 message += "automatic"
             else:
                 message += "manual"
-            
+
             message = utils.codeblock(message)
             await ctx.send(message)
         elif mode == "on":
@@ -59,8 +59,8 @@ class Settings(commands.Cog):
     async def show_timer(self, ctx, gap: int = 0):
         """
         Show/hide bot timer
-        
-        Takes optional argument of how often to 
+
+        Takes optional argument of how often to
         send timer messages (in seconds)
         """
 
