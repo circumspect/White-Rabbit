@@ -13,6 +13,7 @@ import gamedata
 DOCS_URL = "https://white-rabbit.readthedocs.io/"
 DOCS_SHORT_URL = "https://white-rabbit.rtfd.io/"
 SOURCE_URL = "https://github.com/Chenkail/White-Rabbit"
+BLANK_DOTENV_URL = ""
 
 # Console logging message stuff
 LOG_SEP = ": "
@@ -23,7 +24,7 @@ ERROR_PREFIX = "ERROR" + LOG_SEP
 # Image paths
 # White-Rabbit/src/utils.py
 WHITE_RABBIT_DIR = Path(__file__).parent.parent
-TOKEN_FILE = WHITE_RABBIT_DIR / "token.txt"
+ENV_FILE = WHITE_RABBIT_DIR / ".env"
 DEV_ID_FILE = WHITE_RABBIT_DIR / "dev_ids.txt"
 RESOURCE_DIR = WHITE_RABBIT_DIR / "resources"
 
