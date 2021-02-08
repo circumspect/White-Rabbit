@@ -1,0 +1,52 @@
+{
+    "channels": {
+        "discussion": "discussion",
+        "bot-channel": "bot-channel",
+        "call": "call",
+
+        "cards": {
+            "resources": "player-resources",
+            "character-cards": "character-cards",
+            "suspect-cards": "suspect-cards",
+            "location-cards": "location-cards",
+            "suspects-drawn": "suspects-drawn",
+            "locations-drawn": "locations-drawn"
+        },
+
+        "clues": {
+            "charlie": "charlie-clues",
+            "dakota": "dakota-clues",
+            "evan": "evan-clues",
+            "jack": "jack-clues",
+            "julia": "julia-clues"
+        },
+
+        "voicemails": "voicemails",
+
+        "texts": {
+            "group-chat": "group-chat",
+            "charlie-dakota": "charlie-dakota-pm",
+            "charlie-evan": "charlie-evan-pm",
+            "charlie-jack": "charlie-jack-pm",
+            "charlie-julia": "charlie-julia-pm",
+            "dakota-evan": "dakota-evan-pm",
+            "dakota-jack": "dakota-jack-pm",
+            "dakota-julia": "dakota-julia-pm",
+            "evan-jack": "evan-jack-pm",
+            "evan-julia": "evan-julia-pm",
+            "jack-julia": "jack-julia-pm"
+        }
+    },
+
+    "commands": {
+        "credits": {
+            "aliases": ["about", "info"],
+            "help": "Prints information about the bot"
+        },
+
+        "docs": {
+            "aliases": ["guide"],
+            "help": "Link to the documentation"
+        }
+    }
+}
