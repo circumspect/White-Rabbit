@@ -1,6 +1,7 @@
 # Built-in
 import asyncio
 import math
+import random
 import os
 from pathlib import Path
 import re
@@ -8,6 +9,7 @@ import re
 import discord
 # Local
 import gamedata
+from localization import LOCALIZATION_DATA
 
 # Links
 DOCS_URL = "https://white-rabbit.readthedocs.io/"
@@ -69,6 +71,9 @@ for suspect in gamedata.SUSPECTS:
     MASTER_PATHS[suspect] = (SUSPECT_IMAGE_DIR / gamedata.SUSPECTS[suspect]).with_suffix(IMAGE_EXT)
 for location in gamedata.LOCATIONS:
     MASTER_PATHS[location] = (LOCATION_IMAGE_DIR / gamedata.LOCATIONS[location]).with_suffix(IMAGE_EXT)
+
+def flip():
+    return random.choice([LOCALIZATION_DATA["flip"]["heads"], LOCALIZATION_DATA["flip"]["tails"]])
 
 def codeblock(text: str):
     return f"```{text}```"
