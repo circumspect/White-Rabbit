@@ -23,14 +23,14 @@ class Game(commands.Cog):
         """Initial setup before character selection"""
 
         if ctx.game.start_time:
-            await ctx.send("Game has already begun!")
+            await ctx.send(LOCALIZATION_DATA["errors"]["AlreadyStarted"])
             return
         elif ctx.game.init and ctx.game.automatic:
-            # Disallow unless manual mode is enabled
-            await ctx.send("Initialization already run!")
+            # Disallow another initialization attempt unless manual mode is enabled
+            await ctx.send(LOCALIZATION_DATA["errors"]["AlreadyInitialized"])
             return
 
-        await ctx.send("Initializing game")
+        await ctx.send(LOCALIZATION_DATA["messages"]["Initializing"])
 
         # Introduction images
         utils.send_image(
@@ -60,26 +60,10 @@ class Game(commands.Cog):
 
         # Instructions for Charlie Barnes
         channel = ctx.text_channels[LOCALIZATION_DATA["channels"]["clues"]["charlie"]]
-        prompts = "\n".join([
-            "Read introduction", "Introduce Alice from poster", 
-            "Introduce/pick characters", "Explain character cards", 
-            "Explain motive cards", "Character backgrounds", "Relationships", 
-            "Suspects and locations", "!setup_clues", "Explain clue cards", 
-            "Explain searching", "Game guide", "Voicemails", 
-            "Stream timer (https://www.youtube.com/watch?v=ysOOFIOAy7A)", 
-            "!start", "Send first message", 
-        ])
+        prompts = "\n".join(LOCALIZATION_DATA["stuff-for-charlie"]["instructions"])
         prompts = utils.codeblock(prompts)
 
-        background = " ".join([
-            "CHARLIE BARNES moved away from Silent Falls", 
-            "with their mom at the end of the last school year",
-            "after their parents divorced. They just arrived in",
-            "town to stay with their dad for winter break, and",
-            "hope to see Alice and the others while they're here.",
-            "A few days ago, Alice stopped responding.", 
-            "They haven't heard from her since.",
-        ])
+        background = LOCALIZATION_DATA["stuff-for-charlie"]["background"]
 
         background = utils.codeblock(background)
 
@@ -108,23 +92,23 @@ class Game(commands.Cog):
 
         if (not ctx.game.init) and ctx.game.automatic:
             # Disallow if init hasn't been run yet and manual mode is off
-            await ctx.send("Need to initialize first!")
+            await ctx.send(LOCALIZATION_DATA["errors"]["NotInitialized"])
             return
         elif ctx.game.start_time:
-            await ctx.send("Game has already begun!")
+            await ctx.send(LOCALIZATION_DATA["errors"]["AlreadyStarted"])
             return
 
         player_count = len(ctx.game.char_roles())
         # Can't set up if there aren't enough players to assign clues
         if player_count < 3:
-            await ctx.send("Not enough players!")
+            await ctx.send(LOCALIZATION_DATA["errors"]["NotEnoughPlayers"])
             return
         # Can't set up without Charlie Barnes
         elif "Charlie" not in ctx.game.char_roles():
-            await ctx.send("Can't find Charlie!")
+            await ctx.send(LOCALIZATION_DATA["errors"]["MissingCharlie"])
             return
 
-        asyncio.create_task(ctx.send("Distributing clues!"))
+        asyncio.create_task(ctx.send(LOCALIZATION_DATA["messages"]["DistributingClues"]))
 
         asyncio.create_task(self.bot.cogs["Manual"].shuffle_clues(ctx))
         asyncio.create_task(self.bot.cogs["Manual"].assign_clues(ctx))
@@ -137,28 +121,25 @@ class Game(commands.Cog):
 
         # Validity checks
         if not ctx.game.setup:
-            await ctx.send("Can't start before setting up!")
+            await ctx.send(LOCALIZATION_DATA["errors"]["NeedToSetUp"])
             return
 
         if ctx.game.start_time:
-            await ctx.send("Game has already begun!")
+            await ctx.send(LOCALIZATION_DATA["errors"]["AlreadyStarted"])
             return
 
         if "Charlie" not in ctx.game.char_roles():
-            await ctx.send("Can't play without Charlie!")
+            await ctx.send(LOCALIZATION_DATA["errors"]["MissingCharlie"])
             return
 
         if len(ctx.game.char_roles()) < 3:
-            await ctx.send("Not enough players!")
+            await ctx.send(LOCALIZATION_DATA["errors"]["NotEnoughPlayers"])
             return
 
         # 90 minute card/message for Charlie Barnes
         channel = ctx.text_channels[LOCALIZATION_DATA["channels"]["clues"]["charlie"]]
         await channel.send(file=discord.File(utils.CLUE_DIR / "90/90-1.png"))
-        first_message = "Hey! Sorry for the big group text, but I just got "\
-                        "into town for winter break at my dad's and haven't "\
-                        "been able to get ahold of Alice. Just wondering if "\
-                        "any of you have spoken to her?"
+        first_message = LOCALIZATION_DATA["stuff-for-charlie"]["first-message"]
         await channel.send(first_message)
 
         if ctx.game.stream_music:
@@ -171,7 +152,7 @@ class Game(commands.Cog):
             )
 
         ctx.game.start_time = datetime.datetime.now()
-        asyncio.create_task(ctx.send("Starting the game!"))
+        asyncio.create_task(ctx.send(LOCALIZATION_DATA["messages"]["StartingGame"]))
 
         # Start timer and clue_check tasks simultaneously
         await (asyncio.gather(self.timer(ctx), self.clue_check(ctx)))
@@ -200,7 +181,7 @@ class Game(commands.Cog):
                 if minutes_remaining in gamedata.CLUE_TIMES and minutes_remaining <= ctx.game.next_clue:
                     self.bot.cogs["Manual"].send_clue(ctx, minutes_remaining)
                     if minutes_remaining == 30 and ctx.game.picked_clues[minutes_remaining] == 1:
-                        flip = random.choice(["Heads", "Tails"])
+                        flip = utils.flip()
 
                         for character in ctx.game.clue_assignments:
                             if 30 in ctx.game.clue_assignments[character]:
@@ -254,7 +235,7 @@ class Game(commands.Cog):
 
                 # Endings 1 and 2
                 elif minutes_remaining == 3 and ctx.game.three_flip:
-                    flip = random.choice(["Heads", "Tails"])
+                    flip = utils.flip()
                     channel = LOCALIZATION_DATA["channels"]["clues"][ctx.game.ten_char]
                     channel = ctx.text_channels[channel]
                     asyncio.create_task(channel.send(flip))
@@ -275,7 +256,8 @@ class Game(commands.Cog):
                             break
 
                     channel = ctx.text_channels[LOCALIZATION_DATA["channels"]["clues"][character]]
-                    await channel.send(f"Reminder: You have the {ctx.game.next_clue} minute clue card")
+                    message = LOCALIZATION_DATA["messages"]["NextClueReminder"]
+                    await channel.send(f"{message} ({ctx.game.next_clue})")
 
                 # Wait out the rest of the interval
                 await asyncio.sleep((check_interval - gamedata.REMINDER_BUFFER) * 60 / ctx.game.game_speed)
