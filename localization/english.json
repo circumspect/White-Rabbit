@@ -379,6 +379,7 @@
         "AlreadyInitialized": "Initialization already run!",
         "ServerOwnerNicknameChange": "Couldn't update nickname because you are server owner!",
         "NoCharacterRoles": "You don't have any character roles!",
+        "PlayerNotFound": "Couldn't find that player!",
         "UnknownError": "Unknown error: check console!"
     }
 }

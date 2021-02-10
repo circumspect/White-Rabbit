@@ -215,11 +215,16 @@ class Export(commands.Cog):
 
         # Find game start
         channel = ctx.text_channels[LOCALIZATION_DATA["channels"]["texts"]["group-chat"]]
+        ctx.game.start_time = None
         async for message in channel.history(limit=None, oldest_first=True):
             # Check if first message matches
             if LOCALIZATION_DATA["stuff-for-charlie"]["first-message"][0:20] in message.clean_content:
                 ctx.game.start_time = message.created_at
                 break
+
+        # If couldn't find game start, break
+        if not ctx.game.start_time:
+            return
 
         # Alice
         channel = ctx.text_channels[LOCALIZATION_DATA["channels"]["resources"]]
@@ -344,7 +349,8 @@ class Export(commands.Cog):
         await ctx.send(loc["pdf"]["CollectingData"])
         await self.import_data(ctx)
 
-        if not ctx.game.motives:
+        # If data not found, tell user and quit
+        if not ctx.game.start_time:
             asyncio.create_task(ctx.send(loc["pdf"]["MissingGameData"]))
             return
             
