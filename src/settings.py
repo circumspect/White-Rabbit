@@ -28,22 +28,21 @@ class Settings(commands.Cog):
 
         if not mode:
             # Print current mode
-            message = "Current mode: "
             if ctx.game.automatic:
-                message += "automatic"
+                message = loc["auto"]["CurrentlyAuto"]
             else:
-                message += "manual"
+                message = loc["auto"]["CurrentlyManual"]
 
             message = utils.codeblock(message)
             await ctx.send(message)
-        elif mode == "on":
+        elif mode == loc["auto"]["on"]:
             ctx.game.automatic = True
-            await ctx.send("Automatic card draw enabled!")
-        elif mode == "off":
+            await ctx.send(loc["auto"]["AutoEnabled"])
+        elif mode == loc["auto"]["off"]:
             ctx.game.automatic = False
-            await ctx.send("Automatic card draw disabled!")
+            await ctx.send(loc["auto"]["AutoDisabled"])
         else:
-            await ctx.send("Input error, try !auto on or !auto off")
+            await ctx.send(LOCALIZATION_DATA["errors"]["UserInputError"])
 
     @commands.command(hidden=True, name=loc["music"]["name"], aliases=loc["music"]["aliases"], description=loc["music"]["description"])
     async def music(self, ctx):
@@ -51,9 +50,9 @@ class Settings(commands.Cog):
 
         ctx.game.stream_music = not ctx.game.stream_music
         if ctx.game.stream_music:
-            await ctx.send("Music stream enabled!")
+            await ctx.send(loc["music"]["MusicEnabled"])
         else:
-            await ctx.send("Music stream disabled!")
+            await ctx.send(loc["music"]["MusicDisabled"])
 
     @commands.command(name=loc["show_timer"]["name"], aliases=loc["show_timer"]["aliases"], description=loc["show_timer"]["description"])
     async def show_timer(self, ctx, gap: int = 0):
@@ -67,7 +66,7 @@ class Settings(commands.Cog):
         if gap:
             if gap < gamedata.MIN_TIMER_GAP:
                 asyncio.create_task(ctx.send(
-                    f"Can't set timer pings less than {gamedata.MIN_TIMER_GAP} seconds apart!"
+                    loc["show_timer"]["TimerGapTooSmall"]
                 ))
                 return
                 
@@ -78,9 +77,9 @@ class Settings(commands.Cog):
             ctx.game.show_timer = not ctx.game.show_timer
 
         if ctx.game.show_timer:
-            await ctx.send("Showing bot timer!")
+            await ctx.send(loc["show_timer"]["ShowingTimer"])
         else:
-            await ctx.send("Hiding bot timer!")
+            await ctx.send(loc["show_timer"]["HidingTimer"])
 
     @commands.command(hidden=True, name=loc["endings"]["name"], aliases=loc["endings"]["aliases"], description=loc["endings"]["description"])
     async def endings(self, ctx, index: int=0):
@@ -88,8 +87,8 @@ class Settings(commands.Cog):
 
         if not index:
             # Print out currently enabled endings
-            message = "Endings enabled: "
-            message += ", ".join([f"#{end}" for end in ctx.game.endings if ctx.game.endings[end]])
+            message = loc["endings"]["EndingsEnabled"] + "\n"
+            message += ", ".join([f"{end}" for end in ctx.game.endings if ctx.game.endings[end]])
             message = utils.codeblock(message)
             await ctx.send(message)
         else:
