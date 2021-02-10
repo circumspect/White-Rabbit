@@ -1,5 +1,7 @@
 # Built-in
 import random
+# Local
+from utils import LOCALIZATION_DATA
 
 CHARACTERS = {
     "charlie": "Charlie Barnes",
@@ -38,7 +40,7 @@ SEARCHING = {
 
 # Message to send when reminding player
 TEN_MIN_REMINDER_TIME = 15
-TEN_MIN_REMINDER_TEXT = "Reminder to assign the 10 minute card to the player who is going to Alice's location! (e.g. !10 Evan)"
+TEN_MIN_REMINDER_TEXT = LOCALIZATION_DATA["messages"]["TenMinuteReminder"]
 
 # Game length, in seconds
 GAME_LENGTH = 90 * 60
@@ -133,7 +135,7 @@ class Data:
 
         # Find the spectator role
         for role in self.guild.roles:
-            if role.name.title() == "Spectator":
+            if role.name.title() == LOCALIZATION_DATA["spectator-role"]:
                 self.spectator_role = role
                 break
 
