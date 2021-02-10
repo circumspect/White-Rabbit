@@ -9,7 +9,7 @@ import requests
 # Local
 import gamedata
 import utils
-from utils import LOCALIZATION_DATA
+from localization import LOCALIZATION_DATA
 
 # Enable Server Members gateway intent to find all users
 intents = discord.Intents.default()

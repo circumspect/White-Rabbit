@@ -13,7 +13,7 @@ from fpdf import FPDF
 # Local
 import gamedata
 import utils
-from utils import LOCALIZATION_DATA
+from localization import LOCALIZATION_DATA
 
 loc = LOCALIZATION_DATA["commands"]["export"]
 
