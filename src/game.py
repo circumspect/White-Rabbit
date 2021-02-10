@@ -301,15 +301,15 @@ class Game(commands.Cog):
         """Assign the 10 minute card to another player"""
 
         if isinstance(mention, discord.Member):
-            character = mention.nick.split()[0].lower()
+            character = mention.nick.split()[0]
         else:
-            character = mention.name.lower()
+            character = mention.name
 
         if character.title() not in ctx.game.char_roles():
             await ctx.send(LOCALIZATION_DATA["errors"]["PlayerNotFound"])
             return
 
-        ctx.game.ten_char = character
+        ctx.game.ten_char = character.lower()
 
         await ctx.send(loc["ten_min_card"]["Assigned"])
 
