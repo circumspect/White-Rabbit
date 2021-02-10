@@ -32,7 +32,7 @@ class Admin(commands.Cog):
         """Erases all messages and clears game data"""
 
         # Confirm command to user
-        await ctx.send("Deleting all messages!")
+        await ctx.send(loc["wipe"]["DeletingMessages"])
 
         # Wipe messages
         if not text_channels:
@@ -87,13 +87,13 @@ class Admin(commands.Cog):
         """Complete server reset"""
 
         # Confirm command to user
-        await ctx.send("Resetting the server!")
-        await ctx.send("Note: This action will not affect the server owner")
+        await ctx.send(loc["reset"]["ResettingServer"])
+        await ctx.send(loc["reset"]["NoteAboutOwner"])
 
         # Console logging
         print(f'Resetting server: "{ctx.guild.name}" with ID: "{ctx.guild.id}"')
 
-        # Clear roles and nicknames from all users, skipping bots and 
+        # Clear roles and nicknames from all users, skipping bots and
         # the server owner
         for member in ctx.guild.members:
             if not member.bot and member is not ctx.guild.owner:
