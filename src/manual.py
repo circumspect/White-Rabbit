@@ -5,8 +5,8 @@ import random
 from discord.ext import commands
 # Local
 import gamedata
-from localization import LOCALIZATION_DATA
 import utils
+from utils import LOCALIZATION_DATA
 
 loc = LOCALIZATION_DATA["commands"]["manual"]
 

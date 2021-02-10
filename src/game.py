@@ -9,8 +9,8 @@ import discord
 from discord.ext import commands
 # Local
 import gamedata
-from localization import LOCALIZATION_DATA
 import utils
+from utils import LOCALIZATION_DATA
 
 loc = LOCALIZATION_DATA["commands"]["game"]
 
@@ -225,7 +225,7 @@ class Game(commands.Cog):
 
                     # Send to clues channel
                     path = utils.SUSPECT_IMAGE_DIR / (gamedata.SUSPECTS[second] + ".png")
-                    channel = ctx.game.ten_char + "-clues"
+                    channel = LOCALIZATION_DATA["channels"]["clues"][ctx.game.ten_char]
                     utils.send_image(channel, path, ctx)
 
                     # Send to suspects-drawn channel
