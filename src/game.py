@@ -230,7 +230,7 @@ class Game(commands.Cog):
 
                     # Send to suspects-drawn channel
                     channel = ctx.text_channels[LOCALIZATION_DATA["channels"]["cards"]["suspects-drawn"]]
-                    asyncio.create_task(channel.send("SECOND CULPRIT:"))
+                    asyncio.create_task(channel.send(LOCALIZATION_DATA["messages"]["SecondCulprit"]))
                     utils.send_image(channel, path, ctx)
 
                 # Endings 1 and 2
@@ -276,10 +276,10 @@ class Game(commands.Cog):
         """Draw a searching card"""
 
         if ctx.game.automatic and not ctx.game.start_time:
-            await ctx.send("Game hasn't started yet!")
+            await ctx.send(LOCALIZATION_DATA["errors"]["GameNotStarted"])
             return
         if not ctx.character:
-            await ctx.send("You don't have a character role!")
+            await ctx.send(LOCALIZATION_DATA["errors"]["NotACharacter"])
             return
 
         char_channel = ctx.text_channels[LOCALIZATION_DATA["channels"]["clues"][ctx.character]]
@@ -292,7 +292,7 @@ class Game(commands.Cog):
 
         else:
             # out of unique cards
-            asyncio.create_task(char_channel.send("You found nothing"))
+            asyncio.create_task(char_channel.send(loc["search"]["NothingFound"]))
 
     @commands.command(name=loc["ten_min_card"]["name"], aliases=loc["ten_min_card"]["aliases"], description=loc["ten_min_card"]["description"])
     async def ten_min_card(
@@ -307,7 +307,7 @@ class Game(commands.Cog):
 
         ctx.game.ten_char = character
 
-        await ctx.send(f"Assigned 10 minute card to {character.title()}!")
+        await ctx.send(name=loc["ten_min_card"]["Assigned"])
 
 
 def setup(bot):
