@@ -13,4 +13,4 @@ Documentation can be found at <https://white-rabbit.readthedocs.io/>
 
 ## Translations Wanted
 
-If you would like to contribute translations, fork the repository, copy `english.json` in the `localization` folder, translate the values (leave the keys intact), and open a pull request.
+If you would like to contribute translations, fork the repository, copy `english.json` in the `localization` folder, translate the values (leave the keys intact), and open a pull request. For an example, see the (incomplete) French translation in `francais.json`.
