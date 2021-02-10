@@ -307,7 +307,7 @@ class Game(commands.Cog):
 
         ctx.game.ten_char = character
 
-        await ctx.send(name=loc["ten_min_card"]["Assigned"])
+        await ctx.send(loc["ten_min_card"]["Assigned"])
 
 
 def setup(bot):

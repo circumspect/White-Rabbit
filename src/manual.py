@@ -126,7 +126,7 @@ class Manual(commands.Cog):
             if suspect in gamedata.SUSPECTS:
                 asyncio.create_task(channel.send(loc["messages"]["Culprit"]))
             elif suspect in gamedata.LOCATIONS:
-                asyncio.create_task(channel.send(loc["messages"]["AlicesLocation"]))
+                asyncio.create_task(channel.send(loc["messages"]["AliceLocation"]))
             else:
                 print("Something has gone very very wrong.")
                 asyncio.create_task(channel.send(loc["errors"]["UnknownError"]))
