@@ -1,7 +1,7 @@
 # Built-in
 import random
 # Local
-from utils import LOCALIZATION_DATA
+from localization import LOCALIZATION_DATA
 
 CHARACTERS = {
     "charlie": "Charlie Barnes",
