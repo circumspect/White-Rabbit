@@ -74,7 +74,9 @@
             "wipe": {
                 "name": "wipe",
                 "aliases": ["clear"],
-                "description": "Erases all messages and clears game data"
+                "description": "Erases all messages and clears game data",
+
+                "DeletingMessages": "Deleting all messages!"
             },
 
             "reset_perms": {
@@ -86,7 +88,10 @@
             "reset": {
                 "name": "reset",
                 "aliases": [],
-                "description": "Complete server reset"
+                "description": "Complete server reset",
+
+                "ResettingServer": "Resetting the server!",
+                "NoteAboutOwner": "Note: This action will not affect the server owner"
             }
         },
 
