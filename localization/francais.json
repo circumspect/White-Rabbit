@@ -1,5 +1,5 @@
 {
-    "title": "Alice is Missing",
+    "title": "Alice a Disparu",
     "template": "",
     "bot-name": "Le Lapin Blanc",
 
@@ -28,7 +28,7 @@
             "julia": "notes-julia"
         },
 
-        "voicemails": "voicemails",
+        "voicemails": "messages-vocaux",
 
         "texts": {
             "group-chat": "discussion-groupe",
@@ -47,12 +47,12 @@
 
     "commands": {
         "about": {
-            "credits": {
-                "name": "credits",
-                "aliases": ["about", "info"],
+            "info": {
+                "name": "info",
+                "aliases": [],
                 "description": "Prints information about the bot",
 
-                "creators": "The White Rabbit was created by Chenkai and Chendi Luo.",
+                "creators": "Le Lapin Blanc a été créé par Chenkai et Chendi Luo.",
                 "source": "Source code available here:"
             },
 
@@ -134,7 +134,7 @@
                 "description": "Exports the game to a PDF",
 
                 "created-by": "Créé par :",
-                "voicemail": "Messages vocaux",
+                "voicemail": "Message vocale",
                 "timeline": "Timeline",
                 "conclusion": "Conclusions",
                 "group-chat": "Discussion Groupe",
