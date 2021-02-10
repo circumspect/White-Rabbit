@@ -240,7 +240,13 @@
             "claim": {
                 "name": "claim",
                 "aliases": [],
-                "description": "Claim a character/spectator role"
+                "description": "Claim a character/spectator role",
+
+                "AlreadyHaveThisRole": "You already have that role!",
+                "AlreadyHaveOtherRole": "You already have a role!",
+                "UnclaimableRole": "You cannot claim that role!",
+                "RoleIsTaken": "That role is taken!",
+                "UpdatedRoles": "Gave you the role!"
             },
 
             "unclaim": {
@@ -252,13 +258,19 @@
             "roles": {
                 "name": "roles",
                 "aliases": [],
-                "description": "Displays your roles"
+                "description": "Displays your roles",
+
+                "YourRoles": "Your roles:"
             },
 
             "users": {
-                "name": "list",
-                "aliases": [],
-                "description": "Lists all players and spectators"
+                "name": "users",
+                "aliases": ["list"],
+                "description": "Lists all players and spectators",
+
+                "spectators": "Spectators:",
+                "players": "Players:",
+                "NoneFound": "No players or spectators found"
             }
         },
 
@@ -347,6 +359,8 @@
         "NotInitialized": "Need to initialize first!",
         "AlreadyStarted": "Game has already begun!",
         "AlreadyInitialized": "Initialization already run!",
+        "ServerOwnerNicknameChange": "Couldn't update nickname because you are server owner!",
+        "NoCharacterRoles": "You don't have any character roles!",
         "UnknownError": "Unknown error: check console!"
     }
 }
