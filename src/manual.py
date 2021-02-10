@@ -34,7 +34,7 @@ class Manual(commands.Cog):
         """Shuffle and assign motive cards"""
 
         if not ctx.game.automatic:
-            asyncio.create_task(ctx.send("Shuffling motives!"))
+            asyncio.create_task(ctx.send(loc["shuffle_motives"]["Shuffling"]))
 
         motives = list(range(1, 6))
         random.shuffle(motives)
@@ -48,7 +48,7 @@ class Manual(commands.Cog):
         """Distributes motive cards"""
 
         if not ctx.game.motives:
-            asyncio.create_task(ctx.send("Need to shuffle motives first!"))
+            asyncio.create_task(ctx.send(loc["send_motives"]["NeedToShuffle"]))
             return
 
         for name in gamedata.CHARACTERS:
@@ -70,22 +70,22 @@ class Manual(commands.Cog):
 
         # Check that clue exists at specified time
         if time not in gamedata.CLUE_TIMES:
-            asyncio.create_task(ctx.send("No clue card found for that time!"))
+            asyncio.create_task(ctx.send(loc["clue"]["ClueNotFound"]))
             return
 
         # Check that clues have been assigned
         if not ctx.game.clue_assignments:
-            asyncio.create_task(ctx.send("Clues have not been assigned!"))
+            asyncio.create_task(ctx.send(loc["clue"]["CluesNotAssigned"]))
             return
 
         # Check if clues have been shuffled:
         if not ctx.game.picked_clues:
-            asyncio.create_task(ctx.send("Clues have not been shuffled!"))
+            asyncio.create_task(ctx.send(loc["clue"]["CluesNotShuffled"]))
             return
 
         # Check that the person calling the command has the clue
         if time not in ctx.game.clue_assignments[ctx.character]:
-            asyncio.create_task(ctx.send("That clue doesn't belong to you!"))
+            asyncio.create_task(ctx.send(loc["clue"]["NotYourClue"]))
             return
 
         # Send the clue
@@ -115,20 +115,21 @@ class Manual(commands.Cog):
 
         # Send suspect/location card to respective drawn cards channel
         if suspect in gamedata.SUSPECTS:
-            channel = "suspects-drawn"
+            channel = LOCALIZATION_DATA["channels"]["cards"]["suspects-drawn"]
         elif suspect in gamedata.LOCATIONS:
-            channel = "locations-drawn"
+            channel = LOCALIZATION_DATA["channels"]["cards"]["locations-drawn"]
         else:
-            channel = "bot-channel"
+            channel = LOCALIZATION_DATA["channels"]["bot-channel"]
         channel = utils.get_text_channels(ctx.game.guild)[channel]
         # Confirmed culprit/location
         if time <= 30:
             if suspect in gamedata.SUSPECTS:
-                asyncio.create_task(channel.send("CULPRIT:"))
+                asyncio.create_task(channel.send(loc["messages"]["Culprit"]))
             elif suspect in gamedata.LOCATIONS:
-                asyncio.create_task(channel.send("ALICE'S LOCATION:"))
+                asyncio.create_task(channel.send(loc["messages"]["AlicesLocation"]))
             else:
-                asyncio.create_task(channel.send("Something has gone very very wrong."))
+                print("Something has gone very very wrong.")
+                asyncio.create_task(channel.send(loc["errors"]["UnknownError"]))
         utils.send_image(channel, path)
 
         # Update next_clue unless at end
@@ -171,7 +172,7 @@ class Manual(commands.Cog):
         """(Re)shuffles the clue card piles"""
 
         if not ctx.game.automatic:
-            asyncio.create_task(ctx.send("Shuffling clues!"))
+            asyncio.create_task(ctx.send(loc["shuffle_clues"]["ShufflingClues"]))
 
         for time in gamedata.CLUE_TIMES:
             ctx.game.picked_clues[time] = random.randint(1, 3)
@@ -190,16 +191,16 @@ class Manual(commands.Cog):
         player_count = len(ctx.game.char_roles())
         # Stop if fewer than 3 player roles assigned
         if player_count < 3:
-            await ctx.send("Not enough players!")
+            await ctx.send(loc["errors"]["NotEnoughPlayers"])
             return
         
         # Can't play without Charlie
         elif "Charlie" not in ctx.game.char_roles():
-            await ctx.send("Can't find Charlie!")
+            await ctx.send(loc["errors"]["MissingCharlie"])
             return
 
         if not ctx.game.automatic:
-            asyncio.create_task(ctx.send("Assigning clue cards!"))
+            asyncio.create_task(ctx.send(loc["assign_clues"]["AssigningClues"]))
 
         # Generate clues
         while True:
@@ -227,14 +228,14 @@ class Manual(commands.Cog):
             ctx.game.clue_assignments[name] = sorted(clue_buckets.pop(), reverse=True)
 
         # Print in a code block
-        message = "Clue times:\n"
+        message = loc["assign_clues"]["ClueTimes"] + "\n"
         message += "\n".join([
             f"{player.title()}: {', '.join(str(x) for x in bucket)}"
             for player, bucket in ctx.game.clue_assignments.items()
         ])
         message = utils.codeblock(message)
 
-        channel = ctx.text_channels["player-resources"]
+        channel = ctx.text_channels[LOCALIZATION_DATA["channels"]["resources"]]
         asyncio.create_task(channel.send(message))
 
         # Console logging

@@ -194,31 +194,45 @@
             "shuffle_motives": {
                 "name": "shuffle_motives",
                 "aliases": [],
-                "description": "Shuffle and assign motive cards"
+                "description": "Shuffle and assign motive cards",
+
+                "Shuffling": "Shuffling motives!"
             },
 
             "send_motives": {
                 "name": "send_motives",
                 "aliases": [],
-                "description": "Distributes motive cards"
+                "description": "Distributes motive cards",
+
+                "NeedToShuffle": "Need to shuffle motives first!"
             },
 
             "clue": {
                 "name": "clue",
                 "aliases": [],
-                "description": "Draws a clue card given a time"
+                "description": "Draws a clue card given a time",
+
+                "ClueNotFound": "No clue card found for that time!",
+                "CluesNotAssigned": "Clues have not been assigned!",
+                "CluesNotShuffled": "Clues have not been shuffled!",
+                "NotYourClue": "That clue doesn't belong to you!"
             },
 
             "shuffle_clues": {
                 "name": "shuffle_clues",
                 "aliases": [],
-                "description": "(Re)shuffles the clue card piles"
+                "description": "(Re)shuffles the clue card piles",
+
+                "ShufflingClues": "Shuffling clues!"
             },
 
             "assign_clues": {
                 "name": "assign_clues",
                 "aliases": [],
-                "description": "Randomizes and assigns clue times"
+                "description": "Randomizes and assigns clue times",
+
+                "AssigningClues": "Assigning clue cards!",
+                "ClueTimes": "Clue times:"
             }
         },
 
@@ -306,7 +320,9 @@
         "Initalizing": "Initializing game",
         "DistributingClues": "Distributing clues!",
         "StartingGame": "Starting the game!",
-        "SecondCulprit": "SECOND CULPRIT:"
+        "Culprit": "CULPRIT:",
+        "SecondCulprit": "SECOND CULPRIT:",
+        "AlicesLocation": "ALICE'S LOCATION:"
     },
 
     "flip": {
