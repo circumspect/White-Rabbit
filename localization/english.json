@@ -347,7 +347,7 @@
     "messages": {
         "TenMinuteReminder": "Reminder to assign the 10 minute card to the player who is going to Alice's location! (e.g. !10 Evan)",
         "NextClueReminder": "Reminder: You have the next clue card",
-        "Initalizing": "Initializing game",
+        "Initializing": "Initializing game",
         "DistributingClues": "Distributing clues!",
         "StartingGame": "Starting the game!",
         "Culprit": "CULPRIT:",
