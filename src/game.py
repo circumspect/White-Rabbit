@@ -305,6 +305,10 @@ class Game(commands.Cog):
         else:
             character = mention.name.lower()
 
+        if character not in ctx.game.char_roles():
+            await ctx.send(LOCALIZATION_DATA["errors"]["PlayerNotFound"])
+            return
+
         ctx.game.ten_char = character
 
         await ctx.send(loc["ten_min_card"]["Assigned"])
