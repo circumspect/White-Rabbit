@@ -5,8 +5,8 @@ import discord
 from discord.ext import commands, tasks
 # Local
 import gamedata
-from localization import LOCALIZATION_DATA
 import utils
+from utils import LOCALIZATION_DATA
 
 loc = LOCALIZATION_DATA["commands"]["settings"]
 
