@@ -305,7 +305,7 @@ class Game(commands.Cog):
         else:
             character = mention.name.lower()
 
-        if character not in ctx.game.char_roles():
+        if character.title() not in ctx.game.char_roles():
             await ctx.send(LOCALIZATION_DATA["errors"]["PlayerNotFound"])
             return
 
