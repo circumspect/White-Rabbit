@@ -142,7 +142,7 @@ class Data:
 
     def char_roles(self):
         """
-        Returns a dictionary mapping character names to their corresponding 
+        Returns a dictionary mapping lowercase character names to their corresponding
         roles for all characters currently being played
         """
 
