@@ -533,7 +533,7 @@ class Export(commands.Cog):
         width = pdf.get_string_width(label)
         pdf.cell(width, 0, label)
 
-        if ctx.game.second_culprit:    
+        if ctx.game.second_culprit:
             pdf.set_x(CONCLUSION_CLUE_CARD_X - CONCLUSION_LABEL_OFFSET)
             label = loc["pdf"]["culprit2"]
             width = pdf.get_string_width(label)
