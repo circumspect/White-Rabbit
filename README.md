@@ -1,6 +1,6 @@
 # The White Rabbit
 
-![GitHub](https://img.shields.io/github/license/chenkail/White-Rabbit)
+![GitHub](https://img.shields.io/github/license/circumspect/White-Rabbit)
 [![Documentation Status](https://readthedocs.org/projects/white-rabbit/badge/?version=latest)](https://white-rabbit.readthedocs.io/en/latest/?badge=latest)
 
 A Discord bot for Alice is Missing. [Click here for the server template](https://discord.new/YD7aEUr8AdBQ).
