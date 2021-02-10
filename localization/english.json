@@ -220,19 +220,19 @@
 
         "players": {
             "claim": {
-                "name": "",
+                "name": "claim",
                 "aliases": [],
                 "description": "Claim a character/spectator role"
             },
 
             "unclaim": {
-                "name": "",
+                "name": "unclaim",
                 "aliases": [],
                 "description": "Remove character roles"
             },
 
             "roles": {
-                "name": "",
+                "name": "roles",
                 "aliases": [],
                 "description": "Displays your roles"
             },
