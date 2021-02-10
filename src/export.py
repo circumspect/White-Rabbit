@@ -88,7 +88,7 @@ CLUE_CLUE_GAP = 0.3
 
 # Voicemails
 VOICEMAIL_TITLE_Y = 8.5
-VOICEMAIL_TITLE = loc["pdf"]["voicemail-title"]
+VOICEMAIL_TITLE = loc["pdf"]["voicemail"]
 VOICEMAIL_TEXT_OFFSET = 0
 VOICEMAIL_TITLE_TEXT_GAP = 0.2
 VOICEMAIL_TEXT_LINE_HEIGHT = 0.2
@@ -96,7 +96,7 @@ VOICEMAIL_Y = VOICEMAIL_TITLE_Y + VOICEMAIL_TITLE_TEXT_GAP
 
 
 # Timeline
-TIMELINE_TITLE = loc["pdf"]["timeline-title"]
+TIMELINE_TITLE = loc["pdf"]["timeline"]
 TIMELINE_TITLE_Y = 0.8
 
 # Conclusions page
@@ -105,7 +105,7 @@ CONCLUSION_CARD_WIDTH = 2
 CONCLUSION_CARD_HEIGHT = CONCLUSION_CARD_WIDTH * CARD_RATIO
 
 # Title
-CONCLUSION_TITLE = loc["pdf"]["conclusion-title"]
+CONCLUSION_TITLE = loc["pdf"]["conclusion"]
 CONCLUSION_TITLE_Y = 0.8
 
 # Row 1
@@ -391,7 +391,7 @@ class Export(commands.Cog):
 
         # Group chat export
         pdf.add_page()
-        await loop.run_in_executor(None, self.heading, *(ctx, pdf, loc["pdf"]["group-chat-title"], PM_TITLE_FONT, '', MESSAGES_TITLE_Y, MESSAGES_TITLE_TEXT_GAP))
+        await loop.run_in_executor(None, self.heading, *(ctx, pdf, loc["pdf"]["group-chat"], PM_TITLE_FONT, '', MESSAGES_TITLE_Y, MESSAGES_TITLE_TEXT_GAP))
         await self.channel_export(ctx, pdf, ctx.text_channels[LOCALIZATION_DATA["channels"]["texts"]["group-chat"]])
 
         # Chat message exports
