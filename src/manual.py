@@ -124,12 +124,12 @@ class Manual(commands.Cog):
         # Confirmed culprit/location
         if time <= 30:
             if suspect in gamedata.SUSPECTS:
-                asyncio.create_task(channel.send(loc["messages"]["Culprit"]))
+                asyncio.create_task(channel.send(LOCALIZATION_DATA["messages"]["Culprit"]))
             elif suspect in gamedata.LOCATIONS:
-                asyncio.create_task(channel.send(loc["messages"]["AliceLocation"]))
+                asyncio.create_task(channel.send(LOCALIZATION_DATA["messages"]["AliceLocation"]))
             else:
                 print("Something has gone very very wrong.")
-                asyncio.create_task(channel.send(loc["errors"]["UnknownError"]))
+                asyncio.create_task(channel.send(LOCALIZATION_DATA["errors"]["UnknownError"]))
         utils.send_image(channel, path)
 
         # Update next_clue unless at end
