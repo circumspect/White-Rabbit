@@ -2,7 +2,7 @@
 Installation
 ************
 
-Download the zip from github `here <https://github.com/circumspect/White-Rabbit/archive/master.zip>`_ and extract the files to a directory of your choice. Install any missing libraries from ``requirements.txt`` using pip.
+Download the zip from github `here <https://github.com/circumspect/White-Rabbit/archive/0.1.0.zip>`_ and extract the files to a directory of your choice. Install any missing libraries from ``requirements.txt`` using pip.
 
 Create a new Discord server using the following template: https://discord.new/YD7aEUr8AdBQ and name it Alice is Missing.
 

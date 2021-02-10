@@ -5,7 +5,7 @@ import discord
 from discord.ext import commands
 # Local
 import gamedata
-from localization import LOCALIZATION_DATA
+from utils import LOCALIZATION_DATA
 
 loc = LOCALIZATION_DATA["commands"]["admin"]
 GROUP_CHAT = LOCALIZATION_DATA["channels"]["texts"]["group-chat"]

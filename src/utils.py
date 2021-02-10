@@ -1,5 +1,6 @@
 # Built-in
 import asyncio
+import json
 import math
 import random
 import os
@@ -7,9 +8,29 @@ from pathlib import Path
 import re
 # 3rd-party
 import discord
+from dotenv import dotenv_values
 # Local
 import gamedata
-from localization import LOCALIZATION_DATA
+
+
+# White-Rabbit/src/utils.py
+WHITE_RABBIT_DIR = Path(__file__).parent.parent
+
+
+# Localization
+LOCALIZATION_DIR = WHITE_RABBIT_DIR / "localization"
+
+LOCALIZATIONS = {
+    "en": LOCALIZATION_DIR / "english.json"
+}
+
+config = dotenv_values(".env")
+localization_file = LOCALIZATIONS[config["LANGUAGE"]]
+
+LOCALIZATION_DATA = None
+with open(localization_file) as f:
+    LOCALIZATION_DATA = json.loads(f.read())
+
 
 # Links
 DOCS_URL = "https://white-rabbit.readthedocs.io/"
@@ -24,8 +45,6 @@ WARNING_PREFIX = "WARNING" + LOG_SEP
 ERROR_PREFIX = "ERROR" + LOG_SEP
 
 # Image paths
-# White-Rabbit/src/utils.py
-WHITE_RABBIT_DIR = Path(__file__).parent.parent
 ENV_FILE = WHITE_RABBIT_DIR / ".env"
 DEV_ID_FILE = WHITE_RABBIT_DIR / "dev_ids.txt"
 RESOURCE_DIR = WHITE_RABBIT_DIR / "resources"

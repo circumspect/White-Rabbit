@@ -8,8 +8,8 @@ from dotenv import dotenv_values
 import requests
 # Local
 import gamedata
-from localization import LOCALIZATION_DATA
 import utils
+from utils import LOCALIZATION_DATA
 
 # Enable Server Members gateway intent to find all users
 intents = discord.Intents.default()
