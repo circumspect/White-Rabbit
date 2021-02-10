@@ -176,13 +176,17 @@
             "search": {
                 "name": "search",
                 "aliases": ["searching"],
-                "description": "Draw a searching card"
+                "description": "Draw a searching card",
+
+                "NothingFound": "You found nothing"
             },
 
             "ten_min_card": {
                 "name": "10",
                 "aliases": [],
-                "description": "Assign the 10 minute card to another player"
+                "description": "Assign the 10 minute card to another player",
+
+                "Assigned": "Assigned 10 minute card!"
             }
         },
 
@@ -300,7 +304,8 @@
         "NextClueReminder": "Reminder: You have the next clue card",
         "Initalizing": "Initializing game",
         "DistributingClues": "Distributing clues!",
-        "StartingGame": "Starting the game!"
+        "StartingGame": "Starting the game!",
+        "SecondCulprit": "SECOND CULPRIT:"
     },
 
     "flip": {
@@ -320,6 +325,8 @@
         "MissingCharlie": "Can't find Charlie!",
         "NotEnoughPlayers": "Not enough players!",
         "NeedToSetUp": "Can't start before setting up!",
+        "NotACharacter": "You don't have a character role!",
+        "GameNotStarted": "Game hasn't started yet!",
         "NotInitialized": "Need to initialize first!",
         "AlreadyStarted": "Game has already begun!",
         "AlreadyInitialized": "Initialization already run!",
