@@ -66,17 +66,17 @@
 
         "admin": {
             "show_all": {
-                "name": "show_all",
+                "name": "reveler",
                 "aliases": [],
                 "description": "Reveal all channels and disable sending messages"
             },
 
             "wipe": {
-                "name": "wipe",
-                "aliases": ["clear"],
-                "description": "Erases all messages and clears game data",
+                "name": "effacer",
+                "aliases": [],
+                "description": "Efface tous les messages",
 
-                "DeletingMessages": "Deleting all messages!"
+                "DeletingMessages": "Efface tous les messages !"
             },
 
             "reset_perms": {
