@@ -47,7 +47,7 @@
 
     "commands": {
         "about": {
-            "info": {
+            "credits": {
                 "name": "info",
                 "aliases": [],
                 "description": "Prints information about the bot",

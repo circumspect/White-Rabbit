@@ -11,11 +11,12 @@ WHITE_RABBIT_DIR = Path(__file__).parent.parent
 LOCALIZATION_DIR = WHITE_RABBIT_DIR / "localization"
 
 LOCALIZATIONS = {
-    "en": LOCALIZATION_DIR / "english.json"
+    "en": "english.json",
+    "fr": "francais.json",
 }
 
 config = dotenv_values(".env")
-localization_file = LOCALIZATIONS[config["LANGUAGE"]]
+localization_file = LOCALIZATION_DIR / LOCALIZATIONS[config["LANGUAGE"]]
 
 LOCALIZATION_DATA = None
 with open(localization_file) as f:
