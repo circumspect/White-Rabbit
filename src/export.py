@@ -391,7 +391,7 @@ class Export(commands.Cog):
 
         # Group chat export
         pdf.add_page()
-        await loop.run_in_executor(None, self.heading, *(ctx, pdf, "Group Chat", PM_TITLE_FONT, '', MESSAGES_TITLE_Y, MESSAGES_TITLE_TEXT_GAP))
+        await loop.run_in_executor(None, self.heading, *(ctx, pdf, loc["pdf"]["group-chat-title"], PM_TITLE_FONT, '', MESSAGES_TITLE_Y, MESSAGES_TITLE_TEXT_GAP))
         await self.channel_export(ctx, pdf, ctx.text_channels[LOCALIZATION_DATA["channels"]["texts"]["group-chat"]])
 
         # Chat message exports
@@ -422,7 +422,7 @@ class Export(commands.Cog):
         
         out = (utils.PDF_EXPORT_DIR / file_name).with_suffix(".pdf")
         pdf.output(str(out))
-        await ctx.send("PDF created!")
+        await ctx.send(loc["pdf"]["PDFCreated"])
 
     def heading(self, ctx, pdf, title: str, font, align='', y=None, gap:float=0):
         """Add a heading to the current page"""
@@ -509,17 +509,17 @@ class Export(commands.Cog):
         pdf.set_y(CONCLUSION_ROW1_LABEL_Y)
 
         pdf.set_x(CONCLUSION_CHAR_CARD_X - CONCLUSION_LABEL_OFFSET)
-        label = "Investigator"
+        label = loc["pdf"]["investigator"]
         width = pdf.get_string_width(label)
         pdf.cell(width, 0, label)
 
         pdf.set_x(CONCLUSION_CLUE_CARD_X - CONCLUSION_LABEL_OFFSET)
-        label = "Ending"
+        label = loc["pdf"]["ending"]
         width = pdf.get_string_width(label)
         pdf.cell(width, 0, label)
 
         pdf.set_x(CONCLUSION_LOCATION_CARD_X - CONCLUSION_LABEL_OFFSET)
-        label = "Location"
+        label = loc["pdf"]["location"]
         width = pdf.get_string_width(label)
         pdf.cell(width, 0, label)
 
@@ -527,15 +527,15 @@ class Export(commands.Cog):
         pdf.set_y(CONCLUSION_ROW2_LABEL_Y)
         
         pdf.set_x(CONCLUSION_CHAR_CARD_X - CONCLUSION_LABEL_OFFSET)
-        label = "Culprit"
+        label = loc["pdf"]["culprit"]
         if ctx.game.second_culprit:
-            label += " #1"
+            label = loc["pdf"]["culprit1"]
         width = pdf.get_string_width(label)
         pdf.cell(width, 0, label)
 
         if ctx.game.second_culprit:    
             pdf.set_x(CONCLUSION_CLUE_CARD_X - CONCLUSION_LABEL_OFFSET)
-            label = "Culprit #2"
+            label = loc["pdf"]["culprit2"]
             width = pdf.get_string_width(label)
             pdf.cell(width, 0, label)
 

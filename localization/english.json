@@ -128,15 +128,23 @@
                 "aliases": ["PDF"],
                 "description": "Exports the game to a PDF",
 
-                "voicemail-title": "Voicemail",
-                "timeline-title": "Timeline",
-                "conclusion-title": "Conclusions",
+                "voicemail": "Voicemail",
+                "timeline": "Timeline",
+                "conclusion": "Conclusions",
+                "group-chat": "Group Chat",
+                "investigator": "Investigator",
+                "ending": "Ending",
+                "location": "Location",
+                "culprit": "Culprit",
+                "culprit1": "Culprit #1",
+                "culprit2": "Culprit #2",
 
                 "CollectingData": "Gathering game data...",
                 "BuildingCharPages": "Building character pages...",
                 "MissingGameData": "Couldn't find game data to export!",
                 "RecreatingTimeline": "Recreating timeline...",
-                "CollectingMessages": "Collecting messages..."
+                "CollectingMessages": "Collecting messages...",
+                "PDFCreated": "PDF created!"
             }
         },
 
