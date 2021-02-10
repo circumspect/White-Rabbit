@@ -278,25 +278,43 @@
             "auto": {
                 "name": "auto",
                 "aliases": [],
-                "description": "Prints current mode or turn automatic on/off (on by default)"
+                "description": "Prints current mode or turn automatic on/off (on by default)",
+
+                "on": "on",
+                "off": "off",
+
+                "CurrentlyAuto": "Current mode: automatic",
+                "CurrentlyManual": "Current mode: manual",
+                "AutoEnabled": "Automatic card draw enabled!",
+                "AutoDisabled": "Automatic card draw disabled!"
             },
 
             "music": {
                 "name": "music",
                 "aliases": [],
-                "description": "Enable/disable music stream when game starts"
+                "description": "Enable/disable music stream when game starts",
+
+                "MusicEnabled": "Music stream enabled!",
+                "MusicDisabled": "Music stream disabled!"
             },
 
             "show_timer": {
                 "name": "timer",
                 "aliases": [],
-                "description": "Show/hide bot timer"
+                "description": "Show/hide bot timer",
+
+                "TimerGapTooSmall": "Gap between timer pings is too small!",
+
+                "ShowingTimer": "Showing bot timer!",
+                "HidingTimer": "Hiding bot timer!"
             },
 
             "endings": {
                 "name": "endings",
                 "aliases": [],
-                "description": "Enables/disables an ending. See docs for details"
+                "description": "Enables/disables an ending. See docs for details",
+
+                "EndingsEnabled": "Endings enabled:"
             }
         }
     },
@@ -334,7 +352,7 @@
         "StartingGame": "Starting the game!",
         "Culprit": "CULPRIT:",
         "SecondCulprit": "SECOND CULPRIT:",
-        "AlicesLocation": "ALICE'S LOCATION:"
+        "AliceLocation": "ALICE'S LOCATION:"
     },
 
     "flip": {
