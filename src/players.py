@@ -5,7 +5,7 @@ import discord
 from discord.ext import commands
 # Local
 import gamedata
-from utils import LOCALIZATION_DATA
+from localization import LOCALIZATION_DATA
 
 loc = LOCALIZATION_DATA["commands"]["players"]
 
