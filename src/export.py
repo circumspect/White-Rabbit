@@ -12,8 +12,8 @@ from discord.ext import commands
 from fpdf import FPDF
 # Local
 import gamedata
-from localization import LOCALIZATION_DATA
 import utils
+from utils import LOCALIZATION_DATA
 
 loc = LOCALIZATION_DATA["commands"]["export"]
 
@@ -88,7 +88,7 @@ CLUE_CLUE_GAP = 0.3
 
 # Voicemails
 VOICEMAIL_TITLE_Y = 8.5
-VOICEMAIL_TITLE = "Voicemail"
+VOICEMAIL_TITLE = loc["pdf"]["voicemail-title"]
 VOICEMAIL_TEXT_OFFSET = 0
 VOICEMAIL_TITLE_TEXT_GAP = 0.2
 VOICEMAIL_TEXT_LINE_HEIGHT = 0.2
@@ -96,7 +96,7 @@ VOICEMAIL_Y = VOICEMAIL_TITLE_Y + VOICEMAIL_TITLE_TEXT_GAP
 
 
 # Timeline
-TIMELINE_TITLE = "Timeline"
+TIMELINE_TITLE = loc["pdf"]["timeline-title"]
 TIMELINE_TITLE_Y = 0.8
 
 # Conclusions page
@@ -105,7 +105,7 @@ CONCLUSION_CARD_WIDTH = 2
 CONCLUSION_CARD_HEIGHT = CONCLUSION_CARD_WIDTH * CARD_RATIO
 
 # Title
-CONCLUSION_TITLE = "Conclusions"
+CONCLUSION_TITLE = loc["pdf"]["conclusion-title"]
 CONCLUSION_TITLE_Y = 0.8
 
 # Row 1
@@ -214,14 +214,15 @@ class Export(commands.Cog):
         """imports data from message history"""
 
         # Find game start
-        channel = ctx.text_channels["group-chat"]
+        channel = ctx.text_channels[LOCALIZATION_DATA["channels"]["texts"]["group-chat"]]
         async for message in channel.history(limit=None, oldest_first=True):
-            if "Hey! Sorry for the big group text" in message.clean_content:
+            # Check if first message matches
+            if LOCALIZATION_DATA["stuff-for-charlie"]["first-message"][0:20] in message.clean_content:
                 ctx.game.start_time = message.created_at
                 break
 
         # Alice
-        channel = ctx.text_channels["player-resources"]
+        channel = ctx.text_channels[LOCALIZATION_DATA["channels"]["resources"]]
         image_list = list(itertools.chain.from_iterable([
                 message.attachments
                 async for message in channel.history(limit=None)
@@ -314,15 +315,15 @@ class Export(commands.Cog):
                         print(filename)
         
         # Look for coin flip
-        channel = ctx.text_channels[f"{ctx.game.ten_char}-clues"]
+        channel = ctx.text_channels[LOCALIZATION_DATA["channels"]["clues"][ctx.game.ten_char]]
         async for message in channel.history(limit=5):
             text = message.clean_content.strip().title()
-            if text in ("Heads", "Tails"):
+            if text in (LOCALIZATION_DATA["flip"]["heads"], LOCALIZATION_DATA["flip"]["tails"]):
                 ctx.game.ending_flip = text
                 break
 
         # Voicemails
-        channel = ctx.text_channels["voicemails"]
+        channel = ctx.text_channels[LOCALIZATION_DATA["channels"]["voicemails"]]
         async for message in channel.history(limit=None, oldest_first=True):
             # Name
             character = message.author.display_name.lower().split()[0]
@@ -340,11 +341,11 @@ class Export(commands.Cog):
         loop = asyncio.get_running_loop()
 
         # Import game data
-        await ctx.send("Gathering game data...")
+        await ctx.send(loc["pdf"]["CollectingData"])
         await self.import_data(ctx)
 
         if not ctx.game.motives:
-            asyncio.create_task(ctx.send("Couldn't find game data to export!"))
+            asyncio.create_task(ctx.send(loc["pdf"]["MissingGameData"]))
             return
             
         # Create pdf object
@@ -368,7 +369,7 @@ class Export(commands.Cog):
         # Create list of player characters
         characters = [character.lower() for character in ctx.game.char_roles()]
 
-        await ctx.send("Building character pages...")
+        await ctx.send(loc["pdf"]["BuildingCharPages"])
 
         pm_channels = []
         for i, character in enumerate(characters):
@@ -379,23 +380,23 @@ class Export(commands.Cog):
             for j in range(i+1, len(characters)):
                 pm_channels.append((character, characters[j]))
 
-        await ctx.send("Recreating timeline...")
+        await ctx.send(loc["pdf"]["RecreatingTimeline"])
 
         # Conclusions/timeline
         # Note: either timeline will have to be async or it will also need to be wrapped in loop.run_in_executor
         # self.timeline(ctx, pdf)
         await loop.run_in_executor(None, self.conclusion_page, *(ctx, pdf))
 
-        await ctx.send("Collecting messages...")
+        await ctx.send(loc["pdf"]["CollectingMessages"])
 
         # Group chat export
         pdf.add_page()
         await loop.run_in_executor(None, self.heading, *(ctx, pdf, "Group Chat", PM_TITLE_FONT, '', MESSAGES_TITLE_Y, MESSAGES_TITLE_TEXT_GAP))
-        await self.channel_export(ctx, pdf, ctx.text_channels["group-chat"])
+        await self.channel_export(ctx, pdf, ctx.text_channels[LOCALIZATION_DATA["channels"]["texts"]["group-chat"]])
 
         # Chat message exports
         for a, b in pm_channels:
-            channel = f"{a}-{b}-pm"
+            channel = LOCALIZATION_DATA["channels"]["texts"][f"{a}-{b}"]
             channel = ctx.text_channels[channel]
             
             # Make sure channel has messages that will be counted

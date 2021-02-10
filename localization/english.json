@@ -51,6 +51,7 @@
                 "name": "credits",
                 "aliases": ["about", "info"],
                 "description": "Prints information about the bot",
+
                 "creators": "The White Rabbit was created by Chenkai and Chendi Luo.",
                 "source": "Source code available here:"
             },
@@ -125,7 +126,17 @@
             "pdf": {
                 "name": "pdf",
                 "aliases": ["PDF"],
-                "description": "Exports the game to a PDF"
+                "description": "Exports the game to a PDF",
+
+                "voicemail-title": "Voicemail",
+                "timeline-title": "Timeline",
+                "conclusion-title": "Conclusions",
+
+                "CollectingData": "Gathering game data...",
+                "BuildingCharPages": "Building character pages...",
+                "MissingGameData": "Couldn't find game data to export!",
+                "RecreatingTimeline": "Recreating timeline...",
+                "CollectingMessages": "Collecting messages..."
             }
         },
 
@@ -248,13 +259,22 @@
 
     "stuff-for-charlie": {
         "instructions": [
-            "Read introduction", "Introduce Alice from poster",
-            "Introduce/pick characters", "Explain character cards",
-            "Explain motive cards", "Character backgrounds", "Relationships",
-            "Suspects and locations", "!setup_clues", "Explain clue cards",
-            "Explain searching", "Game guide", "Voicemails",
+            "Read introduction",
+            "Introduce Alice from poster",
+            "Introduce/pick characters",
+            "Explain character cards",
+            "Explain motive cards",
+            "Character backgrounds",
+            "Relationships",
+            "Suspects and locations",
+            "!setup_clues",
+            "Explain clue cards",
+            "Explain searching",
+            "Game guide",
+            "Voicemails",
             "Stream timer (https://www.youtube.com/watch?v=ysOOFIOAy7A)",
-            "!start", "Send first message"
+            "!start",
+            "Send first message"
         ],
 
         "background": "CHARLIE BARNES moved away from Silent Falls with their mom at the end of the last school year after their parents divorced. They just arrived in town to stay with their dad for winter break, and hope to see Alice and the others while they're here. A few days ago, Alice stopped responding. They haven't heard from her since.",
