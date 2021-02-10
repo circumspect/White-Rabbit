@@ -128,6 +128,7 @@
                 "aliases": ["PDF"],
                 "description": "Exports the game to a PDF",
 
+                "created-by": "Created by:",
                 "voicemail": "Voicemail",
                 "timeline": "Timeline",
                 "conclusion": "Conclusions",
