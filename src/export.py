@@ -609,8 +609,8 @@ class Export(commands.Cog):
 
             # Time remaining
             delta = message.created_at - ctx.game.start_time
-            dseconds = delta.seconds
-            time = gamedata.GAME_LENGTH - dseconds
+            change = delta.seconds
+            time = gamedata.GAME_LENGTH - change
             if time >= 0:
                 # Don't display timestamp if after game has ended
                 stamp = f"({utils.time_string(time)})"
