@@ -60,6 +60,7 @@ async def before_invoke(ctx):
     for role in ctx.author.roles:
         if role.name.lower() in gamedata.CHARACTERS:
             ctx.character = role.name.lower()
+            break
 
 
 @bot.event
