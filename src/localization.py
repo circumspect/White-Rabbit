@@ -12,7 +12,7 @@ LOCALIZATION_DIR = WHITE_RABBIT_DIR / "localization"
 
 LOCALIZATIONS = {
     "en": "english.json",
-    "fr": "francais.json",
+    "fr": "french.json",
 }
 
 config = dotenv_values(".env")
