@@ -66,7 +66,7 @@
 
         "admin": {
             "show_all": {
-                "name": "revele",
+                "name": "révèle",
                 "aliases": [],
                 "description": "Reveal all channels and disable sending messages"
             },
@@ -200,7 +200,7 @@
             },
 
             "send_motives": {
-                "name": "envoye_motivations",
+                "name": "envoie_motivations",
                 "aliases": [],
                 "description": "Distributes motive cards",
 
@@ -265,7 +265,7 @@
 
             "users": {
                 "name": "utilisateurs",
-                "aliases": ["enumere"],
+                "aliases": ["énumère"],
                 "description": "Énumère les joueurs et les spectateurs",
 
                 "spectators": "Spectateurs :",
