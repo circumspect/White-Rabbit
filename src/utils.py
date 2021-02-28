@@ -14,8 +14,8 @@ from localization import LOCALIZATION_DATA
 # Links
 DOCS_URL = "https://white-rabbit.readthedocs.io/"
 DOCS_SHORT_URL = "https://white-rabbit.rtfd.io/"
-SOURCE_URL = "https://github.com/Chenkail/White-Rabbit"
-BLANK_DOTENV_URL = "https://raw.githubusercontent.com/Chenkail/White-Rabbit/main/example.env"
+SOURCE_URL = "https://github.com/circumspect/White-Rabbit"
+BLANK_DOTENV_URL = "https://raw.githubusercontent.com/circumspect/White-Rabbit/main/example.env"
 
 # Console logging message stuff
 LOG_SEP = ": "
