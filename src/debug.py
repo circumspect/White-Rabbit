@@ -1,7 +1,7 @@
 # Built-in
 import asyncio
+from os import environ
 # 3rd-party
-import discord
 from discord.ext import commands
 # Local
 import gamedata
@@ -14,14 +14,19 @@ class Debug(commands.Cog):
     def __init__(self, bot):
         self.bot = bot
 
+        self.dev_ids = []
+
         try:
             with open(utils.DEV_ID_FILE) as f:
-                self.dev_ids = [int(line.strip()) for line in f.readlines()]
+                self.dev_ids += [int(line.strip()) for line in f.readlines()]
         except FileNotFoundError:
             # Create file if it doesn't exist
             print("No " + utils.DEV_ID_FILE.name + " found, making empty file")
             with open(utils.DEV_ID_FILE, 'x') as f:
                 pass
+
+        if environ.get("DEV_ID"):
+            self.dev_ids.append(int(environ.get("DEV_ID")))
 
     async def cog_check(self, ctx):
         """Only people with access to the code"""
@@ -45,7 +50,7 @@ class Debug(commands.Cog):
         if speed > gamedata.MAX_SPEED:
             asyncio.create_task(ctx.send(f"Too fast! Max is {gamedata.MAX_SPEED}"))
             return
-        
+
         # Speed must be at least 1
         if speed < 1:
             asyncio.create_task(ctx.send("Too slow! Speed must be at least 1"))
@@ -100,7 +105,7 @@ class Debug(commands.Cog):
         except commands.errors.ExtensionNotLoaded:
             await ctx.send(f"{extension_name} was never loaded")
 
-    # DO NOT MOVE TO admin.py!!! This command will shut down the bot across 
+    # DO NOT MOVE TO admin.py!!! This command will shut down the bot across
     # ALL servers, and thus should only be able to be run by those listed
     # in the dev_ids file
     @commands.command(aliases=loc["quit"]["aliases"], description=loc["quit"]["description"])

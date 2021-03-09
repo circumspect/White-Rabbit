@@ -1,6 +1,7 @@
 # Built-in
 import asyncio
 import sys
+from os import environ
 # 3rd-party
 import discord
 from discord.ext import commands
@@ -38,7 +39,7 @@ def check_channel(ctx):
 @bot.check
 def not_spectator(ctx):
     """Don't let spectators run commands"""
-    
+
     return SPECTATOR_ROLE not in [role.name for role in ctx.author.roles]
 
 
@@ -111,7 +112,7 @@ for plugin in PLUGINS:
 
 # Import bot token
 try:
-    bot.run(dotenv_values(utils.ENV_FILE)["TOKEN"])
+    bot.run(environ.get('TOKEN') or dotenv_values(utils.ENV_FILE)["TOKEN"])
 except FileNotFoundError:
     r = requests.get(utils.BLANK_DOTENV_URL)
     with open(utils.ENV_FILE, 'x') as env:
@@ -119,4 +120,3 @@ except FileNotFoundError:
     sys.exit(LOCALIZATION_DATA["errors"]["MissingDotEnv"])
 except discord.errors.LoginFailure:
     sys.exit(LOCALIZATION_DATA["errors"]["LoginFailure"])
-    
