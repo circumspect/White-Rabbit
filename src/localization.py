@@ -1,5 +1,6 @@
 # Built-in
 import json
+from os import environ
 from pathlib import Path
 # 3rd-party
 from dotenv import dotenv_values
@@ -15,8 +16,8 @@ LOCALIZATIONS = {
     "fr": "french.json",
 }
 
-config = dotenv_values(".env")
-localization_file = LOCALIZATION_DIR / LOCALIZATIONS[config["LANGUAGE"]]
+language_key = environ.get("LANGUAGE") or dotenv_values(".env")["LANGUAGE"]
+localization_file = LOCALIZATION_DIR / LOCALIZATIONS[language_key]
 
 LOCALIZATION_DATA = None
 with open(localization_file) as f:
