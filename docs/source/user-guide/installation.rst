@@ -8,6 +8,57 @@ Create a new Discord server using the following template: https://discord.new/YD
 
 Next, create a new Discord bot as follows:
 
-Log in to the `Discord Developer portal <https://discord.com/developers/applications>`_. Click on "New Application" and name it "The White Rabbit". Then click on the Bot tab and click "Add Bot". You may optionally add the bot icon here. Copy the token using the button next to the icon. Open the file named ``example.env`` in the bot's root directory and paste the token in. Rename this file to ``.env``. Now go back to the Bot tab. Under "Privileged Gateway Intents", set the toggle for "Server Members Intent" to true, then click "Save Changes". Then go to the OAuth2 tab and scroll to the bottom. Under "Scopes", check the box labeled ``bot``. Scroll down to "Bot Permissions" and check the box labeled "Administrator". Scroll back up to "Scopes", copy the link at the bottom of the box and open it in a new tab. Follow the instructions to add the bot to the server you previously created.
+- Log in to the `Discord Developer portal <https://discord.com/developers/applications>`_.
+- Click on "New Application" and name it "The White Rabbit".
+- Click on the Bot tab and click "Add Bot".
 
-Finally, open the Discord app, find your server, and open the server role settings (click on the server name -> Server Settings -> Roles). Click and drag the "The White Rabbit" role to the top of the list of roles and click "Save Changes". Close the settings and you're done with setup!
+  - You may optionally add the bot icon here.
+
+- Copy the token using the button next to the icon.
+- Open the file named ``example.env`` in the bot's root directory and paste the token in.
+- Rename this file to ``.env``.
+- Go to the Bot tab.
+
+  - Under "Privileged Gateway Intents", set the toggle for "Server Members Intent" to true and click "Save Changes".
+
+- Go to the OAuth2 tab and scroll to the bottom.
+
+  - Under "Scopes", check the box labeled ``bot``.
+  - Scroll down to "Bot Permissions" and check the box labeled "Administrator".
+  - Scroll back up to "Scopes", copy the link at the bottom of the box and open it in a new tab.
+  - Follow the instructions to add the bot to the server you previously created.
+
+- Finally, open the Discord app, find your server, and open the server role settings (click on the server name -> Server Settings -> Roles).
+- Click and drag the "The White Rabbit" role to the top of the list of roles and click "Save Changes".
+- Close the settings and you're done with setup!
+
+Docker Installation
+===================
+
+Follow the Discord application setup above, don't worry about updating the .env file though
+
+Deploy the Docker container as follows, replacing ``YOUR_TOKEN_GOES_HERE`` with the discord token obtained above
+
+A list of specific tags can be found `here <https://hub.docker.com/r/trainrex/whiterabbit>`_.
+
+.. code::
+
+  docker run -d \
+    --name=whiterabbit \
+    --env TOKEN=YOUR_TOKEN_GOES_HERE \
+    --restart unless-stopped \
+    trainrex/whiterabbit
+
+
+Optional Environment Variables
+------------------------------
+
+Optionally, you can set additional environment variables through docker, they are listed below
+
++---------------+--------------------------------------+-----------------------+
+| Variable Name | Usage                                | Example               |
++===============+======================================+=======================+
+| LANGUAGE      | Sets the localization, default: en   | ``--env LANGUAGE=fr`` |
++---------------+--------------------------------------+-----------------------+
+| DEV_ID        | Gives debug command access to the ID | ``--env DEV_ID=1234`` |
++---------------+--------------------------------------+-----------------------+
