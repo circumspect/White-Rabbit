@@ -117,12 +117,12 @@ class Game(commands.Cog):
         ctx.game.setup = True
 
     @commands.command(
-        name=loc["sample"]["name"],
-        aliases=loc["sample"]["aliases"],
-        description=loc["sample"]["description"]
+        name=loc["example"]["name"],
+        aliases=loc["example"]["aliases"],
+        description=loc["example"]["description"]
     )
-    async def sample(self, ctx):
-        """Sends a sample clue and suspect"""
+    async def example(self, ctx):
+        """Sends an example clue and suspect"""
 
         # Send random 80 minute clue card
         channel = LOCALIZATION_DATA["channels"]["resources"]

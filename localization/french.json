@@ -173,10 +173,10 @@
                 "description": "Commencer le jeu"
             },
 
-            "sample": {
-                "name": "sample",
+            "example": {
+                "name": "example",
                 "aliases": [],
-                "description": "Sends a sample clue and suspect"
+                "description": "Sends an example clue and suspect"
             },
 
             "char_sheet": {
@@ -348,7 +348,7 @@
             "Parler des relations entre personnages",
             "Parler des suspects et des lieux",
             "!setup_clues",
-            "!sample",
+            "!example",
             "Expliquer les cartes indice",
             "Expliquer les mécaniques de jeu",
             "Guide du jeu",
