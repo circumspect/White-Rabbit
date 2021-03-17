@@ -36,6 +36,7 @@ jobs:
     #     pytest
     - name: Test logging in
       env:
+        SHUTDOWN: true
         TOKEN: ${{ secrets.WHITE_RABBIT_TOKEN }}
       run: |
         python -help
