@@ -173,6 +173,12 @@
                 "description": "Begins the game"
             },
 
+            "sample": {
+                "name": "sample",
+                "aliases": [],
+                "description": "Sends a sample clue and suspect"
+            },
+
             "search": {
                 "name": "search",
                 "aliases": ["searching"],
@@ -330,6 +336,7 @@
             "Relationships",
             "Suspects and locations",
             "!setup_clues",
+            "!sample",
             "Explain clue cards",
             "Explain searching",
             "Game guide",
