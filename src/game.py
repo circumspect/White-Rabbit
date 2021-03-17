@@ -296,7 +296,11 @@ class Game(commands.Cog):
             ctx
         )
 
-    @commands.command(name=loc["search"]["name"], aliases=loc["search"]["aliases"], description=loc["search"]["description"])
+    @commands.command(
+        name=loc["search"]["name"],
+        aliases=loc["search"]["aliases"],
+        description=loc["search"]["description"]
+    )
     async def search(self, ctx):
         """Draw a searching card"""
 
@@ -319,7 +323,11 @@ class Game(commands.Cog):
             # out of unique cards
             asyncio.create_task(char_channel.send(loc["search"]["NothingFound"]))
 
-    @commands.command(name=loc["ten_min_card"]["name"], aliases=loc["ten_min_card"]["aliases"], description=loc["ten_min_card"]["description"])
+    @commands.command(
+        name=loc["ten_min_card"]["name"],
+        aliases=loc["ten_min_card"]["aliases"],
+        description=loc["ten_min_card"]["description"]
+    )
     async def ten_min_card(
         self, ctx, mention: typing.Union[discord.Member, discord.Role]
     ):

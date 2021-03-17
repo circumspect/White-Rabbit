@@ -336,7 +336,11 @@ class Export(commands.Cog):
                 voicemail = utils.remove_emojis(message.clean_content)
                 ctx.game.voicemails[character] = voicemail.replace("|", "").replace("\n", "")
 
-    @commands.command(name=loc["pdf"]["name"], aliases=loc["pdf"]["aliases"], description=loc["pdf"]["description"])
+    @commands.command(
+        name=loc["pdf"]["name"],
+        aliases=loc["pdf"]["aliases"],
+        description=loc["pdf"]["description"]
+    )
     async def pdf(self, ctx, file_name=""):
         """Exports the game to a PDF"""
 
