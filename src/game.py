@@ -18,7 +18,11 @@ class Game(commands.Cog):
     def __init__(self, bot):
         self.bot = bot
 
-    @commands.command(name=loc["init"]["name"], aliases=loc["init"]["aliases"], description=loc["init"]["description"])
+    @commands.command(
+        name=loc["init"]["name"],
+        aliases=loc["init"]["aliases"],
+        description=loc["init"]["description"]
+    )
     async def init(self, ctx):
         """Initial setup before character selection"""
 
@@ -79,7 +83,11 @@ class Game(commands.Cog):
 
         ctx.game.init = True
 
-    @commands.command(name=loc["setup_clues"]["name"], aliases=loc["setup_clues"]["aliases"], description=loc["setup_clues"]["description"])
+    @commands.command(
+        name=loc["setup_clues"]["name"],
+        aliases=loc["setup_clues"]["aliases"],
+        description=loc["setup_clues"]["description"]
+    )
     async def setup_clues(self, ctx):
         """Shuffle and distribute clues"""
 
@@ -108,7 +116,11 @@ class Game(commands.Cog):
 
         ctx.game.setup = True
 
-    @commands.command(name=loc["sample"]["name"], aliases=loc["sample"]["aliases"], description=loc["sample"]["description"])
+    @commands.command(
+        name=loc["sample"]["name"],
+        aliases=loc["sample"]["aliases"],
+        description=loc["sample"]["description"]
+    )
     async def sample(self, ctx):
         """Sends a sample clue and suspect"""
 
@@ -123,7 +135,11 @@ class Game(commands.Cog):
         path = utils.MASTER_PATHS[suspect]
         utils.send_image(channel, path, ctx)
 
-    @commands.command(name=loc["char_sheet"]["name"], aliases=loc["char_sheet"]["aliases"], description=loc["char_sheet"]["description"])
+    @commands.command(
+        name=loc["char_sheet"]["name"],
+        aliases=loc["char_sheet"]["aliases"],
+        description=loc["char_sheet"]["description"]
+    )
     async def char_sheet(self, ctx):
         """Sends the character sheet to the resources channel"""
 
@@ -133,7 +149,11 @@ class Game(commands.Cog):
             ctx
         )
 
-    @commands.command(name=loc["start"]["name"], aliases=loc["start"]["aliases"], description=loc["start"]["description"])
+    @commands.command(
+        name=loc["start"]["name"],
+        aliases=loc["start"]["aliases"],
+        description=loc["start"]["description"]
+    )
     async def start(self, ctx):
         """Begins the game"""
 

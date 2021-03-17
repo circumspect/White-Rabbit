@@ -52,7 +52,8 @@ class Debug(commands.Cog):
 
         ctx.game.game_speed = speed
 
-        # Set timer to only ping once every minute to avoid hitting discord api limits
+        # Set timer to only ping once every minute to avoid
+        # hitting discord api limits
         ctx.game.timer_gap = 60
 
         # Cap the top speed

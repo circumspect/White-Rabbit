@@ -47,7 +47,9 @@ class Players(commands.Cog):
             # Can't update nickname for server owner
             asyncio.create_task(ctx.send(LOCALIZATION_DATA["errors"]["ServerOwnerNicknameChange"]))
         elif role.name.lower() in gamedata.CHARACTERS:
-            asyncio.create_task(ctx.author.edit(nick=gamedata.CHARACTERS[role.name.lower()]))
+            asyncio.create_task(
+                ctx.author.edit(nick=gamedata.CHARACTERS[role.name.lower()])
+            )
 
     @commands.command(
         name=loc["unclaim"]["name"],
