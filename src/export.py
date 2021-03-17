@@ -184,7 +184,12 @@ class PDF(FPDF):
     def footer(self):
         # Watermark separator
         self.set_line_width(SEPARATOR_THICKNESS)
-        self.line(WATERMARK_SEPARATOR_LEFT, WATERMARK_SEPARATOR_Y, WATERMARK_SEPARATOR_RIGHT, WATERMARK_SEPARATOR_Y)
+        self.line(
+            WATERMARK_SEPARATOR_LEFT,
+            WATERMARK_SEPARATOR_Y,
+            WATERMARK_SEPARATOR_RIGHT,
+            WATERMARK_SEPARATOR_Y
+        )
 
         self.set_y(WATERMARK_Y)
         # Watermark
@@ -361,18 +366,35 @@ class Export(commands.Cog):
         await loop.run_in_executor(None, pdf.set_auto_page_break, *(True, 1))
 
         # Add fonts
-        await loop.run_in_executor(None, pdf.add_font, *("Built", "", str(BUILT_TITLING_RG), True))
-        await loop.run_in_executor(None, pdf.add_font, *("Built", "sb", str(BUILT_TITLING_SB), True))
-        await loop.run_in_executor(None, pdf.add_font, *("Built", "bd", str(BUILT_TITLING_BD), True))
-        await loop.run_in_executor(None, pdf.add_font, *("Abel", "", str(ABEL_REGULAR), True))
+        await loop.run_in_executor(
+            None, pdf.add_font, *("Built", "", str(BUILT_TITLING_RG), True)
+        )
+        await loop.run_in_executor(
+            None, pdf.add_font, *("Built", "sb", str(BUILT_TITLING_SB), True)
+        )
+        await loop.run_in_executor(
+            None, pdf.add_font, *("Built", "bd", str(BUILT_TITLING_BD), True)
+        )
+        await loop.run_in_executor(
+            None, pdf.add_font, *("Abel", "", str(ABEL_REGULAR), True)
+        )
 
         # Cover page
         await loop.run_in_executor(None, pdf.add_page)
         # Heading
-        await loop.run_in_executor(None, self.heading, *(ctx, pdf, LOCALIZATION_DATA["title"], COVER_TITLE_FONT, "C", COVER_TITLE_Y))
+        await loop.run_in_executor(
+            None, self.heading,
+            *(ctx, pdf, LOCALIZATION_DATA["title"],
+              COVER_TITLE_FONT, "C", COVER_TITLE_Y)
+        )
+
         # Poster
         poster = utils.POSTER_DIR / f"Alice Briarwood {ctx.game.alice}{utils.IMAGE_EXT}"
-        await loop.run_in_executor(None, pdf.image, *(str(poster), COVER_POSTER_X, COVER_POSTER_Y, COVER_POSTER_WIDTH))
+        await loop.run_in_executor(
+            None, pdf.image,
+            *(str(poster), COVER_POSTER_X,
+              COVER_POSTER_Y, COVER_POSTER_WIDTH)
+        )
 
         # Create list of player characters
         characters = [character.lower() for character in ctx.game.char_roles()]
@@ -382,7 +404,9 @@ class Export(commands.Cog):
         pm_channels = []
         for i, character in enumerate(characters):
             # Create pages for each character
-            await loop.run_in_executor(None, self.generate_char_page, *(ctx, pdf, character))
+            await loop.run_in_executor(
+                None, self.generate_char_page, *(ctx, pdf, character)
+            )
 
             # Create list of character pairs
             for j in range(i+1, len(characters)):
@@ -391,7 +415,9 @@ class Export(commands.Cog):
         await ctx.send(loc["pdf"]["RecreatingTimeline"])
 
         # Conclusions/timeline
-        # Note: either timeline will have to be async or it will also need to be wrapped in loop.run_in_executor
+        # TODO: either timeline will have to be async or it will also need
+        # to be wrapped in loop.run_in_executor
+        #
         # self.timeline(ctx, pdf)
         await loop.run_in_executor(None, self.conclusion_page, *(ctx, pdf))
 
@@ -399,7 +425,11 @@ class Export(commands.Cog):
 
         # Group chat export
         pdf.add_page()
-        await loop.run_in_executor(None, self.heading, *(ctx, pdf, loc["pdf"]["group-chat"], PM_TITLE_FONT, '', MESSAGES_TITLE_Y, MESSAGES_TITLE_TEXT_GAP))
+        await loop.run_in_executor(
+            None, self.heading,
+            *(ctx, pdf, loc["pdf"]["group-chat"], PM_TITLE_FONT, '',
+              MESSAGES_TITLE_Y, MESSAGES_TITLE_TEXT_GAP)
+        )
         await self.channel_export(ctx, pdf, ctx.text_channels[LOCALIZATION_DATA["channels"]["texts"]["group-chat"]])
 
         # Chat message exports
@@ -420,7 +450,11 @@ class Export(commands.Cog):
             if not empty:
                 title = f"{a.title()}/{b.title()}"
                 pdf.add_page()
-                await loop.run_in_executor(None, self.heading, *(ctx, pdf, title, PM_TITLE_FONT, '', MESSAGES_TITLE_Y, MESSAGES_TITLE_TEXT_GAP))
+                await loop.run_in_executor(
+                    None, self.heading,
+                    *(ctx, pdf, title, PM_TITLE_FONT, '',
+                      MESSAGES_TITLE_Y, MESSAGES_TITLE_TEXT_GAP)
+                )
 
                 await self.channel_export(ctx, pdf, channel)
 
@@ -432,7 +466,8 @@ class Export(commands.Cog):
         pdf.output(str(out))
         await ctx.send(loc["pdf"]["PDFCreated"])
 
-    def heading(self, ctx, pdf, title: str, font, align='', y=None, gap: float = 0):
+    def heading(self, ctx, pdf, title: str, font,
+                align='', y=None, gap: float = 0):
         """Add a heading to the current page"""
 
         pdf.set_font(*font)
@@ -501,7 +536,8 @@ class Export(commands.Cog):
         pdf.cell(0, 0, VOICEMAIL_TITLE)
         pdf.set_font(*VOICEMAIL_FONT)
         pdf.set_y(VOICEMAIL_Y)
-        pdf.multi_cell(0, VOICEMAIL_TEXT_LINE_HEIGHT, ctx.game.voicemails[character])
+        pdf.multi_cell(0, VOICEMAIL_TEXT_LINE_HEIGHT,
+                       ctx.game.voicemails[character])
 
     def conclusion_page(self, ctx, pdf):
         """Create conclusions page based on 10 minute clue"""
@@ -551,24 +587,29 @@ class Export(commands.Cog):
         # Images
         # Add character card
         card = utils.MASTER_PATHS[ctx.game.ten_char]
-        pdf.image(str(card), CONCLUSION_CHAR_CARD_X, CONCLUSION_ROW1_IMAGE_Y, CONCLUSION_CARD_WIDTH)
+        pdf.image(str(card), CONCLUSION_CHAR_CARD_X,
+                  CONCLUSION_ROW1_IMAGE_Y, CONCLUSION_CARD_WIDTH)
 
         # Add clue card
         card = utils.CLUE_DIR / "10" / f"10-{ctx.game.picked_clues[10]}{utils.IMAGE_EXT}"
-        pdf.image(str(card), CONCLUSION_CLUE_CARD_X, CONCLUSION_ROW1_IMAGE_Y, CONCLUSION_CARD_WIDTH)
+        pdf.image(str(card), CONCLUSION_CLUE_CARD_X,
+                  CONCLUSION_ROW1_IMAGE_Y, CONCLUSION_CARD_WIDTH)
 
         # Add location card
         card = utils.MASTER_PATHS[ctx.game.locations_drawn[20]]
-        pdf.image(str(card), CONCLUSION_LOCATION_CARD_X, CONCLUSION_ROW1_IMAGE_Y, CONCLUSION_CARD_WIDTH)
+        pdf.image(str(card), CONCLUSION_LOCATION_CARD_X,
+                  CONCLUSION_ROW1_IMAGE_Y, CONCLUSION_CARD_WIDTH)
 
         # Add first suspect card
         card = utils.MASTER_PATHS[ctx.game.suspects_drawn[30]]
-        pdf.image(str(card), CONCLUSION_SUSPECT_CARD_X, CONCLUSION_ROW2_IMAGE_Y, CONCLUSION_CARD_WIDTH)
+        pdf.image(str(card), CONCLUSION_SUSPECT_CARD_X,
+                  CONCLUSION_ROW2_IMAGE_Y, CONCLUSION_CARD_WIDTH)
 
         # Add second suspect card
         if ctx.game.second_culprit:
             card = utils.MASTER_PATHS[ctx.game.second_culprit]
-            pdf.image(str(card), CONCLUSION_CLUE_CARD_X, CONCLUSION_ROW2_IMAGE_Y, CONCLUSION_CARD_WIDTH)
+            pdf.image(str(card), CONCLUSION_CLUE_CARD_X,
+                      CONCLUSION_ROW2_IMAGE_Y, CONCLUSION_CARD_WIDTH)
 
     def timeline(self, ctx, pdf):
         """Adds timeline pages to PDf"""
@@ -618,7 +659,8 @@ class Export(commands.Cog):
                 stamp = f"({utils.time_string(time)})"
                 line += f" {stamp}"
 
-            await loop.run_in_executor(None, pdf.multi_cell, *(0, MESSAGES_LINE_HEIGHT, line))
+            await loop.run_in_executor(None, pdf.multi_cell,
+                                       *(0, MESSAGES_LINE_HEIGHT, line))
 
     @commands.command(hidden=True)
     async def txt(self, ctx):

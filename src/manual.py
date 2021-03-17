@@ -37,7 +37,8 @@ class Manual(commands.Cog):
     )
     async def alice(self, ctx, choice: int = 0):
         """
-        Sends a specified Alice poster, or a random one if no argument is passed
+        Sends a specified Alice poster, or a random one if no argument is
+        passed
 
         This will also update the Alice value in the game data.
         """
@@ -163,10 +164,16 @@ class Manual(commands.Cog):
             if suspect in gamedata.SUSPECTS:
                 asyncio.create_task(channel.send(LOCALIZATION_DATA["messages"]["Culprit"]))
             elif suspect in gamedata.LOCATIONS:
-                asyncio.create_task(channel.send(LOCALIZATION_DATA["messages"]["AliceLocation"]))
+                asyncio.create_task(
+                    channel.send(
+                        LOCALIZATION_DATA["messages"]["AliceLocation"]
+                    )
+                )
             else:
                 print("Something has gone very very wrong.")
-                asyncio.create_task(channel.send(LOCALIZATION_DATA["errors"]["UnknownError"]))
+                asyncio.create_task(
+                    channel.send(LOCALIZATION_DATA["errors"]["UnknownError"])
+                )
         utils.send_image(channel, path)
 
         # Update next_clue unless at end
@@ -213,7 +220,9 @@ class Manual(commands.Cog):
         """(Re)shuffles the clue card piles"""
 
         if not ctx.game.automatic:
-            asyncio.create_task(ctx.send(loc["shuffle_clues"]["ShufflingClues"]))
+            asyncio.create_task(
+                ctx.send(loc["shuffle_clues"]["ShufflingClues"])
+            )
 
         for time in gamedata.CLUE_TIMES:
             ctx.game.picked_clues[time] = random.randint(1, 3)
@@ -245,7 +254,9 @@ class Manual(commands.Cog):
             return
 
         if not ctx.game.automatic:
-            asyncio.create_task(ctx.send(loc["assign_clues"]["AssigningClues"]))
+            asyncio.create_task(
+                ctx.send(loc["assign_clues"]["AssigningClues"])
+            )
 
         # Generate clues
         while True:
