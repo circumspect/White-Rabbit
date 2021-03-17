@@ -41,7 +41,11 @@ class Debug(commands.Cog):
             print("Shutting down!")
             quit()
 
-    @commands.command(aliases=loc["speed"]["aliases"], description=loc["speed"]["description"])
+    @commands.command(
+        name=loc["speed"]["name"],
+        aliases=loc["speed"]["aliases"],
+        description=loc["speed"]["description"]
+    )
     async def speed(self, ctx, speed: float = 1):
         """Changes the speed of the game - DEBUG USE ONLY"""
 
@@ -65,7 +69,11 @@ class Debug(commands.Cog):
         else:
             asyncio.create_task(ctx.send("Set the game speed!"))
 
-    @commands.command(aliases=loc["plugins"]["aliases"], description=loc["plugins"]["description"])
+    @commands.command(
+        name=loc["plugins"]["name"],
+        aliases=loc["plugins"]["aliases"],
+        description=loc["plugins"]["description"]
+    )
     async def plugins(self, ctx):
         """Lists all currently loaded plugins"""
 
@@ -74,7 +82,11 @@ class Debug(commands.Cog):
         message = utils.codeblock(message)
         await ctx.send(message)
 
-    @commands.command(aliases=loc["load"]["aliases"], description=loc["load"]["description"])
+    @commands.command(
+        name=loc["load"]["name"],
+        aliases=loc["load"]["aliases"],
+        description=loc["load"]["description"]
+    )
     async def load(self, ctx, extension_name: str = "all"):
         """(Re)loads a plugin"""
 
@@ -100,7 +112,11 @@ class Debug(commands.Cog):
         except commands.errors.ExtensionNotFound:
             await ctx.send(f"Couldn't find plugin: \"{extension_name}\"")
 
-    @commands.command(aliases=loc["unload"]["aliases"], description=loc["unload"]["description"])
+    @commands.command(
+        name=loc["unload"]["name"],
+        aliases=loc["unload"]["aliases"],
+        description=loc["unload"]["description"]
+    )
     async def unload(self, ctx, extension_name: str):
         """Unloads a plugin"""
         try:
@@ -112,7 +128,11 @@ class Debug(commands.Cog):
     # DO NOT MOVE TO admin.py!!! This command will shut down the bot across
     # ALL servers, and thus should only be able to be run by those listed
     # in the dev_ids file
-    @commands.command(aliases=loc["quit"]["aliases"], description=loc["quit"]["description"])
+    @commands.command(
+        name=loc["quit"]["name"],
+        aliases=loc["quit"]["aliases"],
+        description=loc["quit"]["description"]
+    )
     async def quit(self, ctx):
         """Shuts down the bot - AFFECTS ALL SERVERS"""
 

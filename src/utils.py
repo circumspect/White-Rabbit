@@ -76,14 +76,17 @@ for location in gamedata.LOCATIONS:
 def flip():
     return random.choice([LOCALIZATION_DATA["flip"]["heads"], LOCALIZATION_DATA["flip"]["tails"]])
 
+
 def codeblock(text: str):
     return f"```{text}```"
+
 
 def get_text_channels(guild):
     return {
         channel.name: channel
         for channel in guild.text_channels
     }
+
 
 def time_string(time):
     """Takes # of seconds and returns formatted string mm:ss"""
@@ -95,6 +98,7 @@ def time_string(time):
     seconds = pad(time % 60)
 
     return f"{minutes}:{seconds}"
+
 
 def send_image(channel, filepath, ctx=None):
     """Sends an image to a specified channel"""
@@ -111,6 +115,7 @@ def send_folder(channel, path, ctx=None):
 
     for image in sorted(path.glob("*")):
         send_image(channel, image, ctx)
+
 
 def is_command(message: str):
     """Checks if a string seems like an attempt to send a command"""
@@ -133,6 +138,7 @@ def is_command(message: str):
     # If it passes all the above checks it is probably a command attempt
     return True
 
+
 def remove_emojis(text: str):
     emojis = re.compile(pattern = "["
                         u"\U0001F170-\U0001F19A"  # more emojis
@@ -144,6 +150,7 @@ def remove_emojis(text: str):
                         "]+", flags = re.UNICODE)
 
     return emojis.sub(r'',text)
+
 
 def ooc_strip(ctx, text: str):
     """

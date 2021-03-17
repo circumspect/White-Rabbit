@@ -9,11 +9,16 @@ from localization import LOCALIZATION_DATA
 
 loc = LOCALIZATION_DATA["commands"]["settings"]
 
+
 class Settings(commands.Cog):
     def __init__(self, bot):
         self.bot = bot
 
-    @commands.command(name=loc["auto"]["name"], aliases=loc["auto"]["aliases"], description=loc["auto"]["description"])
+    @commands.command(
+        name=loc["auto"]["name"],
+        aliases=loc["auto"]["aliases"],
+        description=loc["auto"]["description"]
+    )
     async def auto(self, ctx, mode: str = ""):
         """
         Prints current mode or turn automatic on/off (on by default)
@@ -43,7 +48,11 @@ class Settings(commands.Cog):
         else:
             await ctx.send(LOCALIZATION_DATA["errors"]["UserInputError"])
 
-    @commands.command(hidden=True, name=loc["music"]["name"], aliases=loc["music"]["aliases"], description=loc["music"]["description"])
+    @commands.command(
+        hidden=True, name=loc["music"]["name"],
+        aliases=loc["music"]["aliases"],
+        description=loc["music"]["description"]
+    )
     async def music(self, ctx):
         """Enable/disable music stream when game starts"""
 
@@ -53,7 +62,11 @@ class Settings(commands.Cog):
         else:
             await ctx.send(loc["music"]["MusicDisabled"])
 
-    @commands.command(name=loc["show_timer"]["name"], aliases=loc["show_timer"]["aliases"], description=loc["show_timer"]["description"])
+    @commands.command(
+        name=loc["show_timer"]["name"],
+        aliases=loc["show_timer"]["aliases"],
+        description=loc["show_timer"]["description"]
+    )
     async def show_timer(self, ctx, gap: int = 0):
         """
         Show/hide bot timer
@@ -80,7 +93,11 @@ class Settings(commands.Cog):
         else:
             await ctx.send(loc["show_timer"]["HidingTimer"])
 
-    @commands.command(hidden=True, name=loc["endings"]["name"], aliases=loc["endings"]["aliases"], description=loc["endings"]["description"])
+    @commands.command(
+        hidden=True, name=loc["endings"]["name"],
+        aliases=loc["endings"]["aliases"],
+        description=loc["endings"]["description"]
+    )
     async def endings(self, ctx, index: int = 0):
         """Enables/disables an ending. See docs for details"""
 
@@ -93,6 +110,7 @@ class Settings(commands.Cog):
         else:
             # Toggle specified ending
             ctx.game.endings[index] = not ctx.game.endings[index]
+
 
 def setup(bot):
     bot.add_cog(Settings(bot))
