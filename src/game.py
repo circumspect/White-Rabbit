@@ -213,10 +213,14 @@ class Game(commands.Cog):
                 # Check if 10 min card has been assigned and send reminder if not
                 if minutes_remaining == gamedata.TEN_MIN_REMINDER_TIME and not ctx.game.ten_char:
                     channel = ctx.text_channels[LOCALIZATION_DATA["channels"]["resources"]]
-                    await channel.send(gamedata.TEN_MIN_REMINDER_TEXT)
+                    await channel.send("@everyone " + gamedata.TEN_MIN_REMINDER_TEXT)
 
                 # 10 min card
                 elif minutes_remaining == 10:
+                    # If not assigned, default to Charlie
+                    if not ctx.game.ten_char:
+                        ctx.game.ten_char = "charlie"
+
                     channel = LOCALIZATION_DATA["channels"]["clues"][ctx.game.ten_char]
                     ending = random.choice(list(i for i in ctx.game.endings if ctx.game.endings[i]))
                     clue = utils.CLUE_DIR / "10" / f"10-{ending}.png"
