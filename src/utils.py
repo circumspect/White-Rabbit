@@ -72,6 +72,7 @@ for suspect in gamedata.SUSPECTS:
 for location in gamedata.LOCATIONS:
     MASTER_PATHS[location] = (LOCATION_IMAGE_DIR / gamedata.LOCATIONS[location]).with_suffix(IMAGE_EXT)
 
+
 def flip():
     return random.choice([LOCALIZATION_DATA["flip"]["heads"], LOCALIZATION_DATA["flip"]["tails"]])
 
@@ -89,10 +90,10 @@ def time_string(time):
 
     def pad(num):
         return str(int(num)).zfill(2)
-    
+
     minutes = pad(math.floor(time / 60))
     seconds = pad(time % 60)
-    
+
     return f"{minutes}:{seconds}"
 
 def send_image(channel, filepath, ctx=None):
@@ -117,7 +118,7 @@ def is_command(message: str):
     # Check if message has ! prefix
     if not message.startswith("!"):
         return False
-    # If space after the !, not a command 
+    # If space after the !, not a command
     if message.startswith("! "):
         return False
 
@@ -126,21 +127,22 @@ def is_command(message: str):
 
     # If string contains non-alphanumeric characters (besides spaces)
     # then it is not a command
-    if not message.replace(' ','').isalnum():
+    if not message.replace(' ', '').isalnum():
         return False
-    
+
     # If it passes all the above checks it is probably a command attempt
     return True
 
 def remove_emojis(text: str):
     emojis = re.compile(pattern = "["
-        u"\U0001F170-\U0001F19A"  # more emojis
-        u"\U0001F1E0-\U0001F1FF"  # flags (iOS)
-        u"\U0001F300-\U0001F5FF"  # symbols & pictographs
-        u"\U0001F600-\U0001F64F"  # emoticons
-        u"\U0001F680-\U0001F6FF"  # transport & map symbols
-        u"\U0001F90C-\U0001F9FF"  # more emojis
-                           "]+", flags = re.UNICODE)
+                        u"\U0001F170-\U0001F19A"  # more emojis
+                        u"\U0001F1E0-\U0001F1FF"  # flags (iOS)
+                        u"\U0001F300-\U0001F5FF"  # symbols & pictographs
+                        u"\U0001F600-\U0001F64F"  # emoticons
+                        u"\U0001F680-\U0001F6FF"  # transport & map symbols
+                        u"\U0001F90C-\U0001F9FF"  # more emojis
+                        "]+", flags = re.UNICODE)
+
     return emojis.sub(r'',text)
 
 def ooc_strip(ctx, text: str):
@@ -154,10 +156,10 @@ def ooc_strip(ctx, text: str):
     if ctx.game.ooc_strip_level >= 1:
         if text.startswith("(") and text.endswith(")"):
             return ""
-    
-    # If using aggressive removal for OOC messages, greedy remove anything 
+
+    # If using aggressive removal for OOC messages, greedy remove anything
     # inside parentheses
     if ctx.game.ooc_strip_level >= 2:
         re.sub(r'\([^)]*\)', '', text)
-    
+
     return text

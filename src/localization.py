@@ -18,7 +18,7 @@ LOCALIZATIONS = {
 
 try:
     language_key = environ.get("LANGUAGE") or dotenv_values(".env")["LANGUAGE"]
-except:
+except KeyError:
     language_key = "en"
 
 localization_file = LOCALIZATION_DIR / LOCALIZATIONS[language_key]
