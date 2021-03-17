@@ -40,11 +40,6 @@ class Game(commands.Cog):
         )
         utils.send_image(
             LOCALIZATION_DATA["channels"]["resources"],
-            utils.MASTER_PATHS["character_sheet"],
-            ctx
-        )
-        utils.send_image(
-            LOCALIZATION_DATA["channels"]["resources"],
             utils.MASTER_PATHS["intro"],
             ctx
         )
@@ -127,6 +122,16 @@ class Game(commands.Cog):
         suspect = random.choice(list(gamedata.SUSPECTS.keys()))
         path = utils.MASTER_PATHS[suspect]
         utils.send_image(channel, path, ctx)
+
+    @commands.command(name=loc["char_sheet"]["name"], aliases=loc["char_sheet"]["aliases"], description=loc["char_sheet"]["description"])
+    async def char_sheet(self, ctx):
+        """Sends the character sheet to the resources channel"""
+
+        utils.send_image(
+            LOCALIZATION_DATA["channels"]["resources"],
+            utils.MASTER_PATHS["character_sheet"],
+            ctx
+        )
 
     @commands.command(name=loc["start"]["name"], aliases=loc["start"]["aliases"], description=loc["start"]["description"])
     async def start(self, ctx):
