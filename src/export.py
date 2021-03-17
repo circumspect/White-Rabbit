@@ -1,8 +1,6 @@
 # Built-in
 import asyncio
-import datetime
 import itertools
-import math
 from pathlib import Path
 import shutil
 from urllib.parse import urlparse
@@ -19,7 +17,7 @@ loc = LOCALIZATION_DATA["commands"]["export"]
 
 # PDF export constants - all measurements are in inches
 # Letter size paper
-PAGE_WIDTH = 8.5 
+PAGE_WIDTH = 8.5
 PAGE_HEIGHT = 11
 CARD_RATIO = 1057 / 757  # Card height to width ratio
 AUTO_BREAK = 1
@@ -125,7 +123,7 @@ CONCLUSION_ROW1_ROW2_GAP = 1
 CONCLUSION_ROW2_LABEL_Y = CONCLUSION_ROW1_IMAGE_Y + CONCLUSION_CARD_HEIGHT + CONCLUSION_ROW1_ROW2_GAP
 # Suspect cards
 CONCLUSION_CHAR_SUSPECT_GAP = 0.3
-CONCLUSION_SUSPECT_CARD_GAP = 0.3 # Gap between first and second suspect cards
+CONCLUSION_SUSPECT_CARD_GAP = 0.3   # Gap between first and second suspect cards
 CONCLUSION_SUSPECT_CARD_X = CONCLUSION_CHAR_CARD_X
 CONCLUSION_ROW2_IMAGE_Y = CONCLUSION_ROW2_LABEL_Y + CONCLUSION_LABEL_IMAGE_GAP
 
@@ -303,7 +301,7 @@ class Export(commands.Cog):
 
                         # Split in case of old filenames
                         choice = choice.split()[0]
-                        
+
                         time = int(time)
                         choice = int(choice)
 
@@ -318,7 +316,7 @@ class Export(commands.Cog):
                         # If still can't determine image type, log to console
                         # and ignore
                         print(filename)
-        
+
         # Look for coin flip
         channel = ctx.text_channels[LOCALIZATION_DATA["channels"]["clues"][ctx.game.ten_char]]
         async for message in channel.history(limit=5):
@@ -353,7 +351,7 @@ class Export(commands.Cog):
         if not ctx.game.start_time:
             asyncio.create_task(ctx.send(loc["pdf"]["MissingGameData"]))
             return
-            
+
         # Create pdf object
         pdf = PDF(format="letter", unit="in")
         await loop.run_in_executor(None, pdf.set_auto_page_break, *(True, 1))
@@ -381,7 +379,7 @@ class Export(commands.Cog):
         for i, character in enumerate(characters):
             # Create pages for each character
             await loop.run_in_executor(None, self.generate_char_page, *(ctx, pdf, character))
-            
+
             # Create list of character pairs
             for j in range(i+1, len(characters)):
                 pm_channels.append((character, characters[j]))
@@ -404,13 +402,13 @@ class Export(commands.Cog):
         for a, b in pm_channels:
             channel = LOCALIZATION_DATA["channels"]["texts"][f"{a}-{b}"]
             channel = ctx.text_channels[channel]
-            
+
             # Make sure channel has messages that will be counted
             empty = True
             async for message in channel.history(limit=None, oldest_first=True):
                 line = utils.remove_emojis(message.clean_content).strip()
                 line = utils.ooc_strip(ctx, line)
-                
+
                 if line:
                     empty = False
                     break
@@ -425,7 +423,7 @@ class Export(commands.Cog):
         # Output the file
         if not file_name:
             file_name = ctx.guild.name
-        
+
         out = (utils.PDF_EXPORT_DIR / file_name).with_suffix(".pdf")
         pdf.output(str(out))
         await ctx.send(loc["pdf"]["PDFCreated"])
@@ -488,11 +486,11 @@ class Export(commands.Cog):
             elif clue in ctx.game.locations_drawn:
                 location = gamedata.LOCATIONS[ctx.game.locations_drawn[clue]]
                 card = utils.LOCATION_IMAGE_DIR / f"{location}{utils.IMAGE_EXT}"
-            
+
             pdf.image(str(card), SUSPECT_CARD_LEFT, current_y, CLUE_CARD_WIDTH)
 
             current_y += CLUE_CARD_HEIGHT + CLUE_CLUE_GAP
-        
+
         # Voicemail
         pdf.set_font(*VOICEMAIL_TITLE_FONT)
         pdf.set_y(VOICEMAIL_TITLE_Y)
@@ -503,7 +501,7 @@ class Export(commands.Cog):
 
     def conclusion_page(self, ctx, pdf):
         """Create conclusions page based on 10 minute clue"""
-        
+
         # Add title
         pdf.add_page()
         pdf.set_y(CONCLUSION_TITLE_Y)
@@ -531,7 +529,7 @@ class Export(commands.Cog):
 
         # Row 2
         pdf.set_y(CONCLUSION_ROW2_LABEL_Y)
-        
+
         pdf.set_x(CONCLUSION_CHAR_CARD_X - CONCLUSION_LABEL_OFFSET)
         label = loc["pdf"]["culprit"]
         if ctx.game.second_culprit:
@@ -570,7 +568,7 @@ class Export(commands.Cog):
 
     def timeline(self, ctx, pdf):
         """Adds timeline pages to PDf"""
-        
+
         # TODO: Finish timeline
         pdf.add_page()
         pdf.set_y(TIMELINE_TITLE_Y)
@@ -579,7 +577,7 @@ class Export(commands.Cog):
 
     async def channel_export(self, ctx, pdf, channel):
         """
-        Takes all messages from a text channel and adds them 
+        Takes all messages from a text channel and adds them
         to the current page of the PDF object
         """
 
@@ -593,7 +591,7 @@ class Export(commands.Cog):
 
             # Remove emojis then strip whitespace at start/end
             line = utils.remove_emojis(message.clean_content).strip()
-            
+
             # If message looks like a command attempt, ignore it
             if utils.is_command(line):
                 continue

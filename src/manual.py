@@ -30,7 +30,7 @@ class Manual(commands.Cog):
         return not ctx.game.automatic
 
     @commands.command(name=loc["alice"]["name"], aliases=loc["alice"]["aliases"], description=loc["alice"]["description"])
-    async def alice(self, ctx, choice: int=0):
+    async def alice(self, ctx, choice: int = 0):
         """
         Sends a specified Alice poster, or a random one if no argument is passed
 
@@ -213,7 +213,7 @@ class Manual(commands.Cog):
         if player_count < 3:
             await ctx.send(loc["errors"]["NotEnoughPlayers"])
             return
-        
+
         # Can't play without Charlie
         elif "Charlie" not in ctx.game.char_roles():
             await ctx.send(loc["errors"]["MissingCharlie"])
@@ -290,7 +290,7 @@ class Manual(commands.Cog):
             # character page in the PDF export at 3
             if len(bucket) == 4 and 90 not in bucket:
                 return False
-            
+
             # If four players, make sure Charlie gets three clues so PDF export
             # doesn't look like Charlie has one and someone else has three
             if len(ctx.game.char_roles()) == 4 and 90 in bucket and len(bucket) == 2:

@@ -1,7 +1,6 @@
 # Built-in
 import asyncio
 import datetime
-import math
 import random
 import typing
 # 3rd-party
@@ -241,12 +240,12 @@ class Game(commands.Cog):
                 # Ending 3
                 elif minutes_remaining == 8 and ctx.game.second_culprit:
                     culprit = ctx.game.suspects_drawn[30]
-                    
+
                     remaining_suspects = []
                     for suspect in gamedata.SUSPECTS:
                         if suspect != culprit:
                             remaining_suspects.append(suspect)
-                    
+
                     second = random.choice(remaining_suspects)
 
                     # Send to clues channel
@@ -289,7 +288,7 @@ class Game(commands.Cog):
                 await asyncio.sleep((check_interval - gamedata.REMINDER_BUFFER) * 60 / ctx.game.game_speed)
 
             minutes_remaining -= check_interval
-        
+
         # End of game, send debrief
         utils.send_image(
             LOCALIZATION_DATA["channels"]["clues"]["charlie"],

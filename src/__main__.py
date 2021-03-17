@@ -85,6 +85,7 @@ async def on_command_error(ctx, error):
 
         # TODO: Check if running debug command without being in dev_ids.txt
 
+
         # Automatic/manual check
         if ctx.game.automatic:
             asyncio.create_task(ctx.send(LOCALIZATION_DATA["errors"]["ManualCommandInAuto"]))
