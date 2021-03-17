@@ -197,6 +197,12 @@
         },
 
         "manual": {
+            "alice": {
+                "name": "alice",
+                "aliases": ["poster"],
+                "description": "Sends a specified Alice poster, or a random one if no argument is passed"
+            },
+
             "shuffle_motives": {
                 "name": "shuffle_motives",
                 "aliases": [],
@@ -370,7 +376,7 @@
     "errors": {
         "MissingDotEnv": "No dotenv file found! Downloading sample .env and shutting down",
         "LoginFailure": "Couldn't log in! Was the token incorrect?",
-        "UserInputError": "Can't understand input!",
+        "UserInputError": "Bad input!",
         "CommandNotFound": "Command not found!",
         "CommandInWrongChannel": "You can only use commands in this channel!",
         "ManualCommandInAuto": "Can't do that, are you running a manual command in automatic mode?",
