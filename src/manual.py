@@ -29,7 +29,27 @@ class Manual(commands.Cog):
 
         return not ctx.game.automatic
 
-    @commands.command(aliases=loc["shuffle_motives"]["aliases"], description=loc["shuffle_motives"]["description"])
+    @commands.command(name=loc["alice"]["name"], aliases=loc["alice"]["aliases"], description=loc["alice"]["description"])
+    async def alice(self, ctx, choice: int=0):
+        """
+        Sends a specified Alice poster, or a random one if no argument is passed
+
+        This will also update the Alice value in the game data.
+        """
+
+        if choice < 0 or choice > 10:
+            await ctx.send(LOCALIZATION_DATA["errors"]["UserInputError"])
+            return
+
+        if not choice:
+            choice = random.randint(1, 10)
+
+        ctx.game.alice = choice
+
+        alice = utils.POSTER_DIR / ("Alice Briarwood " + str(ctx.game.alice) + utils.IMAGE_EXT)
+        utils.send_image(LOCALIZATION_DATA["channels"]["resources"], alice, ctx)
+
+    @commands.command(name=loc["shuffle_motives"]["name"], aliases=loc["shuffle_motives"]["aliases"], description=loc["shuffle_motives"]["description"])
     async def shuffle_motives(self, ctx):
         """Shuffle and assign motive cards"""
 
@@ -43,7 +63,7 @@ class Manual(commands.Cog):
             for motive, character in zip(motives, gamedata.CHARACTERS)
         }
 
-    @commands.command(aliases=loc["send_motives"]["aliases"], description=loc["send_motives"]["description"])
+    @commands.command(name=loc["send_motives"]["name"], aliases=loc["send_motives"]["aliases"], description=loc["send_motives"]["description"])
     async def send_motives(self, ctx):
         """Distributes motive cards"""
 
@@ -60,7 +80,7 @@ class Manual(commands.Cog):
                 ctx
             )
 
-    @commands.command(aliases=loc["clue"]["aliases"], description=loc["clue"]["description"])
+    @commands.command(name=loc["clue"]["name"], aliases=loc["clue"]["aliases"], description=loc["clue"]["description"])
     async def clue(self, ctx, time: int):
         """
         Draws a clue card given a time
@@ -167,7 +187,7 @@ class Manual(commands.Cog):
         else:
             raise ValueError("Unexpected clue type!")
 
-    @commands.command(aliases=loc["shuffle_clues"]["aliases"], description=loc["shuffle_clues"]["description"])
+    @commands.command(name=loc["shuffle_clues"]["name"], aliases=loc["shuffle_clues"]["aliases"], description=loc["shuffle_clues"]["description"])
     async def shuffle_clues(self, ctx):
         """(Re)shuffles the clue card piles"""
 
@@ -184,7 +204,7 @@ class Manual(commands.Cog):
         print("Shuffled clue piles!")
         print(ctx.game.picked_clues)
 
-    @commands.command(aliases=loc["assign_clues"]["aliases"], description=loc["assign_clues"]["description"])
+    @commands.command(name=loc["assign_clues"]["name"], aliases=loc["assign_clues"]["aliases"], description=loc["assign_clues"]["description"])
     async def assign_clues(self, ctx):
         """Randomizes and assigns clue times"""
 

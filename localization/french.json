@@ -197,6 +197,12 @@
         },
 
         "manual": {
+            "alice": {
+                "name": "alice",
+                "aliases": ["poster"],
+                "description": "Sends a specified Alice poster, or a random one if no argument is passed"
+            },
+
             "shuffle_motives": {
                 "name": "melange_motivations",
                 "aliases": [],
