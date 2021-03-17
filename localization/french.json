@@ -179,6 +179,12 @@
                 "description": "Sends a sample clue and suspect"
             },
 
+            "char_sheet": {
+                "name": "char_sheet",
+                "aliases": [],
+                "description": "Sends the character sheet to the resources channel"
+            },
+
             "search": {
                 "name": "cherche",
                 "aliases": [],
