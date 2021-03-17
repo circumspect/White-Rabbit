@@ -60,6 +60,7 @@ CLUE_TYPES = {
     35: "location", 30: "suspect-drawn", 20: "location-drawn"
 }
 
+
 class Data:
     def __init__(self, guild):
         self.guild = guild

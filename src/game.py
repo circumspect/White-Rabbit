@@ -13,6 +13,7 @@ from localization import LOCALIZATION_DATA
 
 loc = LOCALIZATION_DATA["commands"]["game"]
 
+
 class Game(commands.Cog):
     def __init__(self, bot):
         self.bot = bot
@@ -211,7 +212,7 @@ class Game(commands.Cog):
 
                         channel = ctx.text_channels[channel]
                         asyncio.create_task(channel.send(flip))
-                
+
                 # If 20 minutes left, make check run every minute
                 if minutes_remaining == 20:
                     check_interval = 1
