@@ -37,6 +37,10 @@ class Debug(commands.Cog):
         # Console logging
         print("Bot has logged in!")
 
+        if environ.get('SHUTDOWN'):
+            print("Shutting down!")
+            quit()
+
     @commands.command(aliases=loc["speed"]["aliases"], description=loc["speed"]["description"])
     async def speed(self, ctx, speed: float=1):
         """Changes the speed of the game - DEBUG USE ONLY"""
