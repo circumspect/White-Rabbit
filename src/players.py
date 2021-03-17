@@ -9,6 +9,7 @@ from localization import LOCALIZATION_DATA
 
 loc = LOCALIZATION_DATA["commands"]["players"]
 
+
 class Players(commands.Cog):
     def __init__(self, bot):
         self.bot = bot

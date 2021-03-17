@@ -10,6 +10,7 @@ from localization import LOCALIZATION_DATA
 loc = LOCALIZATION_DATA["commands"]["admin"]
 GROUP_CHAT = LOCALIZATION_DATA["channels"]["texts"]["group-chat"]
 
+
 class Admin(commands.Cog):
     def __init__(self, bot):
         self.bot = bot
@@ -18,7 +19,7 @@ class Admin(commands.Cog):
         """Commands for server admins only"""
 
         return ctx.author.guild_permissions.administrator
-    
+
     @commands.command(
         name=loc["show_all"]["name"],
         aliases=loc["show_all"]["aliases"],

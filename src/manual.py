@@ -10,6 +10,7 @@ from localization import LOCALIZATION_DATA
 
 loc = LOCALIZATION_DATA["commands"]["manual"]
 
+
 class Manual(commands.Cog):
     """
     A set of commands for running the game in manual mode
