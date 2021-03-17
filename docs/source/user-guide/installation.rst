@@ -39,7 +39,7 @@ Follow the Discord application setup above, don't worry about updating the .env 
 
 Deploy the Docker container as follows, replacing ``YOUR_TOKEN_GOES_HERE`` with the discord token obtained above
 
-A list of specific tags can be found `here <https://hub.docker.com/r/trainrex/whiterabbit>`_.
+A list of specific tags can be found `here <https://hub.docker.com/r/circumspect/white-rabbit/tags>`_.
 
 .. code::
 
@@ -62,3 +62,10 @@ Optionally, you can set additional environment variables through docker, they ar
 +---------------+--------------------------------------+-----------------------+
 | DEV_ID        | Gives debug command access to the ID | ``--env DEV_ID=1234`` |
 +---------------+--------------------------------------+-----------------------+
+
+Heroku Installation
+===================
+
+The bot can be installed as a Heroku app, however note that a free dyno will likely not be
+sufficient for the bot to run the game. The bot will log in and respond to the ``!help`` command,
+but will have trouble sending images. It should work with a paid dyno, but I have not tested it.
