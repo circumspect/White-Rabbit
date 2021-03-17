@@ -382,6 +382,7 @@
         "ManualCommandInAuto": "Tu ne peux pas faire ça, essaies-tu une commande manuelle en mode automatique ?",
         "SpectatorCommandAttempt": "Les spectateurs ne peuvent pas exécuter les commandes !",
         "GenericCheckFailure": "Tu ne peux pas faire ça !",
+        "MissingAlice": "Alice n'a pas été choisie !",
         "MissingCharlie": "Charlie est introuvable !",
         "NotEnoughPlayers": "Pas assez de joueurs !",
         "NeedToSetUp": "Il faut mettre le jeu en place !",

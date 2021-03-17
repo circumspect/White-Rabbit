@@ -49,9 +49,7 @@ class Game(commands.Cog):
             ctx
         )
 
-        ctx.game.alice = random.randint(1, 10)
-        alice = utils.POSTER_DIR / ("Alice Briarwood " + str(ctx.game.alice) + utils.IMAGE_EXT)
-        utils.send_image(LOCALIZATION_DATA["channels"]["resources"], alice, ctx)
+        asyncio.create_task(self.bot.cogs["Manual"].alice(ctx))
 
         # Send characters, suspects, and locations to appropriate channels
         utils.send_folder(LOCALIZATION_DATA["channels"]["cards"]["character-cards"], utils.CHARACTER_IMAGE_DIR, ctx)
@@ -135,6 +133,10 @@ class Game(commands.Cog):
         """Begins the game"""
 
         # Validity checks
+        if not ctx.game.alice:
+            await ctx.send(LOCALIZATION_DATA["errors"]["MissingAlice"])
+            return
+
         if not ctx.game.setup:
             await ctx.send(LOCALIZATION_DATA["errors"]["NeedToSetUp"])
             return

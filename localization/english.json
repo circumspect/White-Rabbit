@@ -382,6 +382,7 @@
         "ManualCommandInAuto": "Can't do that, are you running a manual command in automatic mode?",
         "SpectatorCommandAttempt": "Spectators can't run commands!",
         "GenericCheckFailure": "You can't do that!",
+        "MissingAlice": "Alice has not been chosen!",
         "MissingCharlie": "Can't find Charlie!",
         "NotEnoughPlayers": "Not enough players!",
         "NeedToSetUp": "Can't start before setting up!",
