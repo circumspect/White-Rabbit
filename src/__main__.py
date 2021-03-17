@@ -23,10 +23,13 @@ bot.games = {}
 BOT_CHANNEL = LOCALIZATION_DATA["channels"]["bot-channel"]
 SPECTATOR_ROLE = LOCALIZATION_DATA["spectator-role"]
 
+
 @bot.event
 async def on_ready():
     # Set custom status
-    await bot.change_presence(activity=discord.Game(LOCALIZATION_DATA["title"]))
+    await bot.change_presence(
+        activity=discord.Game(LOCALIZATION_DATA["title"])
+    )
 
 
 @bot.check
@@ -75,7 +78,12 @@ async def on_command_error(ctx, error):
     if isinstance(error, commands.errors.CheckFailure):
         # Check if user is spectator
         if SPECTATOR_ROLE in [role.name for role in ctx.author.roles]:
-            asyncio.create_task(ctx.send(LOCALIZATION_DATA["errors"]["SpectatorCommandAttempt"]))
+            asyncio.create_task(
+                ctx.send(
+                    LOCALIZATION_DATA["errors"]["SpectatorCommandAttempt"]
+                )
+            )
+
             return
 
         # Commands must be in bot-channel

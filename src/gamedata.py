@@ -140,8 +140,8 @@ class Data:
 
     def char_roles(self):
         """
-        Returns a dictionary mapping titlecase character names to their corresponding
-        roles for all characters currently being played
+        Returns a dictionary mapping titlecase character names to their
+        corresponding roles for all characters currently being played
         """
 
         unsorted = {
