@@ -1,5 +1,3 @@
-# Built-in
-import random
 # Local
 from localization import LOCALIZATION_DATA
 

@@ -1,8 +1,7 @@
 # Built-in
 import asyncio
 # 3rd-party
-import discord
-from discord.ext import commands, tasks
+from discord.ext import commands
 # Local
 import gamedata
 import utils
@@ -15,7 +14,7 @@ class Settings(commands.Cog):
         self.bot = bot
 
     @commands.command(name=loc["auto"]["name"], aliases=loc["auto"]["aliases"], description=loc["auto"]["description"])
-    async def auto(self, ctx, mode: str=""):
+    async def auto(self, ctx, mode: str = ""):
         """
         Prints current mode or turn automatic on/off (on by default)
 
@@ -69,7 +68,7 @@ class Settings(commands.Cog):
                     loc["show_timer"]["TimerGapTooSmall"]
                 ))
                 return
-                
+
             # If timer spacing between pings exists, enable timer
             ctx.game.show_timer = True
             ctx.game.timer_gap = gap
@@ -82,7 +81,7 @@ class Settings(commands.Cog):
             await ctx.send(loc["show_timer"]["HidingTimer"])
 
     @commands.command(hidden=True, name=loc["endings"]["name"], aliases=loc["endings"]["aliases"], description=loc["endings"]["description"])
-    async def endings(self, ctx, index: int=0):
+    async def endings(self, ctx, index: int = 0):
         """Enables/disables an ending. See docs for details"""
 
         if not index:
