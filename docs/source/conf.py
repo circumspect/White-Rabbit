@@ -18,7 +18,7 @@
 # -- Project information -----------------------------------------------------
 
 project = 'The White Rabbit'
-copyright = '2020, Chenkai Luo, Chendi Luo'
+copyright = '2020-2021, Chenkai Luo, Chendi Luo'
 author = 'Chenkai Luo, Chendi Luo'
 
 # The full version, including alpha/beta/rc tags
