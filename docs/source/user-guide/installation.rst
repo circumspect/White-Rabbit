@@ -44,10 +44,10 @@ A list of specific tags can be found `here <https://hub.docker.com/r/circumspect
 .. code::
 
   docker run -d \
-    --name=whiterabbit \
+    --name=white-rabbit \
     --env TOKEN=YOUR_TOKEN_GOES_HERE \
     --restart unless-stopped \
-    trainrex/whiterabbit
+    circumspect/white-rabbit
 
 
 Optional Environment Variables
