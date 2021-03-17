@@ -140,16 +140,16 @@ def is_command(message: str):
 
 
 def remove_emojis(text: str):
-    emojis = re.compile(pattern = "["
+    emojis = re.compile(pattern="["
                         u"\U0001F170-\U0001F19A"  # more emojis
                         u"\U0001F1E0-\U0001F1FF"  # flags (iOS)
                         u"\U0001F300-\U0001F5FF"  # symbols & pictographs
                         u"\U0001F600-\U0001F64F"  # emoticons
                         u"\U0001F680-\U0001F6FF"  # transport & map symbols
                         u"\U0001F90C-\U0001F9FF"  # more emojis
-                        "]+", flags = re.UNICODE)
+                        "]+", flags=re.UNICODE)
 
-    return emojis.sub(r'',text)
+    return emojis.sub(r'', text)
 
 
 def ooc_strip(ctx, text: str):

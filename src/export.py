@@ -432,7 +432,7 @@ class Export(commands.Cog):
         pdf.output(str(out))
         await ctx.send(loc["pdf"]["PDFCreated"])
 
-    def heading(self, ctx, pdf, title: str, font, align='', y=None, gap:float=0):
+    def heading(self, ctx, pdf, title: str, font, align='', y=None, gap: float = 0):
         """Add a heading to the current page"""
 
         pdf.set_font(*font)
