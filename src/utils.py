@@ -105,7 +105,9 @@ def send_image(channel, filepath, ctx=None):
 
     if isinstance(channel, str):
         if not ctx:
-            raise ValueError("Cannot send to channel without ctx.text_channels")
+            raise ValueError(
+                "Cannot send to channel without ctx.text_channels"
+            )
         channel = ctx.text_channels[channel]
     asyncio.create_task(channel.send(file=discord.File(filepath)))
 

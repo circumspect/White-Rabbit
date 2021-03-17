@@ -69,7 +69,11 @@ class Admin(commands.Cog):
         for channel in ctx.guild.text_channels:
             # Clues channels
             if channel.name in LOCALIZATION_DATA["channels"]["clues"].values():
-                await channel.set_permissions(everyone, view_channel=False, send_messages=False)
+                await channel.set_permissions(
+                    everyone,
+                    view_channel=False,
+                    send_messages=False
+                )
                 await channel.set_permissions(spectator, view_channel=True)
 
                 player = channel.name.split("-")[0].title()
