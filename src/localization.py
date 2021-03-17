@@ -16,7 +16,11 @@ LOCALIZATIONS = {
     "fr": "french.json",
 }
 
-language_key = environ.get("LANGUAGE") or dotenv_values(".env")["LANGUAGE"] or "en"
+try:
+    language_key = environ.get("LANGUAGE") or dotenv_values(".env")["LANGUAGE"]
+except:
+    language_key = "en"
+
 localization_file = LOCALIZATION_DIR / LOCALIZATIONS[language_key]
 
 LOCALIZATION_DATA = None
