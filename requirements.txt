@@ -1,2 +1,4 @@
 discord.py[voice]
 fpdf
+python-dotenv
+requests
