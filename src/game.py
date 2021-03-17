@@ -115,6 +115,21 @@ class Game(commands.Cog):
 
         ctx.game.setup = True
 
+    @commands.command(name=loc["sample"]["name"], aliases=loc["sample"]["aliases"], description=loc["sample"]["description"])
+    async def sample(self, ctx):
+        """Sends a sample clue and suspect"""
+
+        # Send random 80 minute clue card
+        channel = LOCALIZATION_DATA["channels"]["resources"]
+        choice = random.randint(1, 3)
+        path = utils.CLUE_DIR / "80" / f"80-{choice}.png"
+        utils.send_image(channel, path, ctx)
+
+        # Send suspect card
+        suspect = random.choice(list(gamedata.SUSPECTS.keys()))
+        path = utils.MASTER_PATHS[suspect]
+        utils.send_image(channel, path, ctx)
+
     @commands.command(name=loc["start"]["name"], aliases=loc["start"]["aliases"], description=loc["start"]["description"])
     async def start(self, ctx):
         """Begins the game"""

@@ -173,6 +173,12 @@
                 "description": "Commencer le jeu"
             },
 
+            "sample": {
+                "name": "sample",
+                "aliases": [],
+                "description": "Sends a sample clue and suspect"
+            },
+
             "search": {
                 "name": "cherche",
                 "aliases": [],
@@ -330,6 +336,7 @@
             "Parler des relations entre personnages",
             "Parler des suspects et des lieux",
             "!setup_clues",
+            "!sample",
             "Expliquer les cartes indice",
             "Expliquer les mécaniques de jeu",
             "Guide du jeu",
