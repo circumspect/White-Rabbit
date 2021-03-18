@@ -2,9 +2,15 @@
 Installation
 ************
 
-Download the source zip from Github `here <https://github.com/circumspect/White-Rabbit/releases/>`_ and extract the files to a directory of your choice. Install any missing libraries from ``requirements.txt`` using pip.
+Default Installation
+====================
 
-Create a new Discord server using the following template: https://discord.new/YD7aEUr8AdBQ and name it Alice is Missing.
+Download the source zip from Github `here <https://github.com/circumspect/White-Rabbit/releases/>`_
+and extract the files to a directory of your choice. Install any missing
+libraries from ``requirements.txt`` using pip.
+
+Create a new Discord server using the following template:
+https://discord.new/YD7aEUr8AdBQ and name it however you like.
 
 Next, create a new Discord bot as follows:
 
@@ -57,7 +63,6 @@ with the discord token obtained above
     --env TOKEN=YOUR_TOKEN_GOES_HERE \
     --restart unless-stopped \
     circumspect/white-rabbit
-
 
 Optional Environment Variables
 ------------------------------
