@@ -141,6 +141,15 @@ def is_command(message: str):
     return True
 
 
+def clean_message(ctx, text: str):
+    """Removes emojis and out of character parts of a string"""
+
+    text = remove_emojis(text).strip()
+    text = ooc_strip(ctx, text).strip()
+
+    return text
+
+
 def remove_emojis(text: str):
     emojis = re.compile(pattern="["
                         u"\U0001F170-\U0001F19A"  # more emojis
