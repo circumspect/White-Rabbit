@@ -6,7 +6,7 @@ The White Rabbit documentation
    :maxdepth: 2
 
    user-guide/installation
-   user-guide/quick-start
+   user-guide/quickstart
    user-guide/localization
    user-guide/settings
    user-guide/exports
