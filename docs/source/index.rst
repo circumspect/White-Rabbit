@@ -9,7 +9,7 @@ The White Rabbit documentation
    user-guide/quick-start
    user-guide/localization
    user-guide/settings
-   user-guide/manual-mode
    user-guide/exports
    user-guide/admin
+   user-guide/manual-mode
    dev-guide/debugging

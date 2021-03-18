@@ -246,11 +246,11 @@ class Manual(commands.Cog):
         print(ctx.game.picked_clues)
 
     @commands.command(
-        name=loc["assign_clues"]["name"],
-        aliases=loc["assign_clues"]["aliases"],
-        description=loc["assign_clues"]["description"]
+        name=loc["assign_times"]["name"],
+        aliases=loc["assign_times"]["aliases"],
+        description=loc["assign_times"]["description"]
     )
-    async def assign_clues(self, ctx):
+    async def assign_times(self, ctx):
         """Randomizes and assigns clue times"""
 
         player_count = len(ctx.game.char_roles())
@@ -294,8 +294,21 @@ class Manual(commands.Cog):
         for name in names:
             ctx.game.clue_assignments[name] = sorted(clue_buckets.pop(), reverse=True)
 
-        # Print in a code block
-        message = loc["assign_clues"]["ClueTimes"] + "\n"
+        # Console logging
+        print("Assigned clue cards!")
+        print(ctx.game.clue_assignments)
+
+    @commands.command(
+        name=loc["print_times"]["name"],
+        aliases=loc["print_times"]["aliases"],
+        description=loc["print_times"]["description"]
+    )
+    async def print_times(self, ctx):
+        """
+        Print out clue assignments in a code block
+        """
+
+        message = loc["print_times"]["ClueTimes"] + "\n"
         message += "\n".join([
             f"{player.title()}: {', '.join(str(x) for x in bucket)}"
             for player, bucket in ctx.game.clue_assignments.items()
@@ -304,10 +317,6 @@ class Manual(commands.Cog):
 
         channel = ctx.text_channels[LOCALIZATION_DATA["channels"]["resources"]]
         asyncio.create_task(channel.send(message))
-
-        # Console logging
-        print("Randomly assigned clue cards!")
-        print(ctx.game.clue_assignments)
 
     def _randomize_clues(self, player_count: int):
         """

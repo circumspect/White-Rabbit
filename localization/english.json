@@ -244,12 +244,19 @@
                 "ShufflingClues": "Shuffling clues!"
             },
 
-            "assign_clues": {
-                "name": "assign_clues",
+            "assign_times": {
+                "name": "assign_times",
                 "aliases": [],
                 "description": "Randomizes and assigns clue times",
 
-                "AssigningClues": "Assigning clue cards!",
+                "AssigningClues": "Assigning clue cards!"
+            },
+
+            "print_times": {
+                "name": "print_times",
+                "aliases": [],
+                "description": "Print out clue assignments",
+
                 "ClueTimes": "Clue times:"
             }
         },
@@ -382,7 +389,7 @@
     "errors": {
         "MissingDotEnv": "No dotenv file found! Downloading sample .env and shutting down",
         "LoginFailure": "Couldn't log in! Was the token incorrect?",
-        "UserInputError": "Bad input!",
+        "UserInputError": "Invalid input!",
         "CommandNotFound": "Command not found!",
         "CommandInWrongChannel": "You can only use commands in this channel!",
         "ManualCommandInAuto": "Can't do that, are you running a manual command in automatic mode?",
