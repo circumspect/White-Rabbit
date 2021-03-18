@@ -73,6 +73,10 @@ class Manual(commands.Cog):
             for motive, character in zip(motives, gamedata.CHARACTERS)
         }
 
+        # Console logging
+        print("Shuffled motives!")
+        print(ctx.game.motives)
+
     @commands.command(
         name=loc["send_motives"]["name"],
         aliases=loc["send_motives"]["aliases"],
@@ -121,10 +125,17 @@ class Manual(commands.Cog):
             asyncio.create_task(ctx.send(loc["clue"]["CluesNotShuffled"]))
             return
 
-        # Check that the person calling the command has the clue
-        if time not in ctx.game.clue_assignments[ctx.character]:
-            asyncio.create_task(ctx.send(loc["clue"]["NotYourClue"]))
-            return
+        # This check is disabled to allow more flexibility when running in
+        # manual mode if players want to decide who gets what clue. If you
+        # wish ensure that players cannot draw each other's clues, uncomment
+        # out the lines below
+        #
+        # # Check that the person calling the command has the clue
+        # # Ignores this check for the 10 minute clue because that one
+        # # is assigned manually anyway
+        # if time != 10 and time not in ctx.game.clue_assignments[ctx.character]:
+        #     asyncio.create_task(ctx.send(loc["clue"]["NotYourClue"]))
+        #     return
 
         # Send the clue
         self.send_clue(ctx, time)
