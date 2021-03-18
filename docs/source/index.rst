@@ -7,6 +7,7 @@ The White Rabbit documentation
 
    user-guide/installation
    user-guide/quick-start
+   user-guide/localization
    user-guide/settings
    user-guide/manual-mode
    user-guide/exports
