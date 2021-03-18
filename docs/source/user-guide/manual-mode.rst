@@ -2,9 +2,27 @@
 Manual Mode
 ***********
 
+.. note::
+   This section is for advanced users and debugging. Most users will find that
+   automatic mode covers their needs, and is much simpler. See the
+   :doc:`quickstart` for information on running a normal game of Alice is
+   Missing.
+
 Manual mode allows the facilitator finer control over how a game runs by
 waiting for the user to call certain functions instead of having the bot
-call them automatically. To display the current gameplay mode,
+call them automatically. The following features are enabled in manual mode:
+
+* Choosing which poster of Alice is sent out
+* Reshuffling the motive/clue cards
+* Reassigning clue times
+* Manual clue pulling, including allowing players to ignore the bot's clue
+  assignments and draw any clue at any time
+
+
+Enabling Manual Mode
+====================
+
+To display the current gameplay mode,
 run ``!auto`` with no arguments. To enable manual mode,
 run ``!auto off``. To turn automatic mode back on again, simply enter the
 command ``!auto on``. This should be done before running ``!init``.
