@@ -2,7 +2,7 @@
 Installation
 ************
 
-Download the source zip from github `here <https://github.com/circumspect/White-Rabbit/releases/>`_ and extract the files to a directory of your choice. Install any missing libraries from ``requirements.txt`` using pip.
+Download the source zip from Github `here <https://github.com/circumspect/White-Rabbit/releases/>`_ and extract the files to a directory of your choice. Install any missing libraries from ``requirements.txt`` using pip.
 
 Create a new Discord server using the following template: https://discord.new/YD7aEUr8AdBQ and name it Alice is Missing.
 
@@ -15,31 +15,39 @@ Next, create a new Discord bot as follows:
   - You may optionally add the bot icon here.
 
 - Copy the token using the button next to the icon.
-- Open the file named ``example.env`` in the bot's root directory and paste the token in.
+- Open the file named ``example.env`` in the bot's root directory and paste
+  the token in.
 - Rename this file to ``.env``.
 - Go to the Bot tab.
 
-  - Under "Privileged Gateway Intents", set the toggle for "Server Members Intent" to true and click "Save Changes".
+  - Under "Privileged Gateway Intents", set the toggle for "Server Members
+    Intent" to true and click "Save Changes".
 
 - Go to the OAuth2 tab and scroll to the bottom.
 
   - Under "Scopes", check the box labeled ``bot``.
-  - Scroll down to "Bot Permissions" and check the box labeled "Administrator".
-  - Scroll back up to "Scopes", copy the link at the bottom of the box and open it in a new tab.
-  - Follow the instructions to add the bot to the server you previously created.
+  - Scroll down to "Bot Permissions" and check the box labeled
+    "Administrator".
+  - Scroll back up to "Scopes", copy the link at the bottom of the box and
+    open it in a new tab.
+  - Follow the instructions to add the bot to the server you previously
+    created.
 
 - Finally, open the Discord app, find your server, and open the server role settings (click on the server name -> Server Settings -> Roles).
-- Click and drag the "The White Rabbit" role to the top of the list of roles and click "Save Changes".
+- Click and drag the "The White Rabbit" role to the top of the list of roles
+  and click "Save Changes".
 - Close the settings and you're done with setup!
 
 Docker Installation
 ===================
 
-Follow the Discord application setup above, don't worry about updating the .env file though
+Follow the Discord application setup above, don't worry about updating
+the .env file though
 
-Deploy the Docker container as follows, replacing ``YOUR_TOKEN_GOES_HERE`` with the discord token obtained above
+Deploy the Docker container as follows, replacing ``YOUR_TOKEN_GOES_HERE``
+with the discord token obtained above
 
-A list of specific tags can be found `here <https://hub.docker.com/r/circumspect/white-rabbit/tags>`_.
+`List of Docker tags <https://hub.docker.com/r/circumspect/white-rabbit/tags>`_ (version numbers are the same as Github releases).
 
 .. code::
 
@@ -53,7 +61,8 @@ A list of specific tags can be found `here <https://hub.docker.com/r/circumspect
 Optional Environment Variables
 ------------------------------
 
-Optionally, you can set additional environment variables through docker, they are listed below
+You may set additional optional environment variables through Docker,
+as listed below:
 
 +---------------+--------------------------------------+-----------------------+
 | Variable Name | Usage                                | Example               |
