@@ -13,6 +13,7 @@ command ``!auto on``. This should be done before running ``!init``.
    Manual mode commands are hidden from ``!help`` while in automatic mode.
    To see them in the list, run ``!help`` after calling ``!auto off``.
 
+
 Alice
 =====
 
@@ -22,6 +23,7 @@ and send it, call ``!alice``. To choose a specific poster to send, call it
 with a number from 1-10, e.g. ``!alice 4``. The posters can be found in
 ``White-Rabbit/resources/Images/Missing Person Posters/``. This command
 must be run before starting the game.
+
 
 Motives
 =======
@@ -33,6 +35,7 @@ You may run this as many times as you wish. When you are happy with the
 motives, send the cards to the players' clue channels by calling
 ``!send_motives``.
 
+
 Clue Setup
 ==========
 
@@ -42,6 +45,7 @@ To assign clue times, call ``!assign_clues``. To shuffle which clues get
 pulled at the specific times, call ``!shuffle_clues``. As with
 ``!shuffle_motives``, these commands can be run as many times as you like,
 and the output will be logged to console.
+
 
 Gameplay
 ========
