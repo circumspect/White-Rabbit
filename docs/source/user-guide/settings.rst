@@ -21,8 +21,12 @@ every 10 seconds, but you can modify this by specifying the number of seconds
 between messages after the command, e.g. ``!timer 30``. This value cannot be
 lower than 10, to avoid spam and Discord rate limiting.
 
+
 Endings
 =======
+
+You may wish to disable certain endings due to their content. The link below
+explains how to do so, should you so choose.
 
 .. warning::
    SPOILERS FOR ALICE IS MISSING. Only click on this link if you are sure you

@@ -38,6 +38,7 @@ Next, create a new Discord bot as follows:
   and click "Save Changes".
 - Close the settings and you're done with setup!
 
+
 Docker Installation
 ===================
 
@@ -71,6 +72,7 @@ as listed below:
 +---------------+--------------------------------------+-----------------------+
 | DEV_ID        | Gives debug command access to the ID | ``--env DEV_ID=1234`` |
 +---------------+--------------------------------------+-----------------------+
+
 
 Heroku Installation
 ===================
