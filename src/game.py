@@ -48,7 +48,8 @@ class Game(commands.Cog):
             ctx
         )
 
-        asyncio.create_task(self.bot.cogs["Manual"].alice(ctx))
+        if ctx.game.automatic:
+            asyncio.create_task(self.bot.cogs["Manual"].alice(ctx))
 
         # Send characters, suspects, and locations to appropriate channels
         utils.send_folder(LOCALIZATION_DATA["channels"]["cards"]["character-cards"], utils.CHARACTER_IMAGE_DIR, ctx)
@@ -288,7 +289,7 @@ class Game(commands.Cog):
 
                 await asyncio.sleep(check_interval * 60 / ctx.game.game_speed)
 
-            # Manual
+            # Manual mode
             else:
                 # Wait for the buffer before sending the reminder
                 await asyncio.sleep(gamedata.REMINDER_BUFFER * 60 / ctx.game.game_speed)
