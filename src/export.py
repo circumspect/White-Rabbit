@@ -259,8 +259,9 @@ class Export(commands.Cog):
             for image in image_list:
                 # Get the image name
                 filename = Path(urlparse(image.url).path).stem
+                suffix = Path(urlparse(image.url).path).suffix
 
-                # Replace underscore with space
+                # Replace Discord's automatically added underscores with spaces
                 filename = filename.replace("_", " ")
 
                 # Legacy check
@@ -320,7 +321,7 @@ class Export(commands.Cog):
                     except:
                         # If still can't determine image type, log to console
                         # and ignore
-                        print(filename)
+                        print(f"{utils.WARNING_PREFIX}Unknown image found during export: {filename}{suffix}")
 
         # Look for coin flip
         channel = ctx.text_channels[LOCALIZATION_DATA["channels"]["clues"][ctx.game.ten_char]]
@@ -338,7 +339,7 @@ class Export(commands.Cog):
 
             # Only grab first message from each player
             if not ctx.game.voicemails[character]:
-                voicemail = utils.remove_emojis(message.clean_content)
+                voicemail = utils.clean_message(ctx, message.clean_content)
                 ctx.game.voicemails[character] = voicemail.replace("|", "").replace("\n", "")
 
     @commands.command(
@@ -440,8 +441,7 @@ class Export(commands.Cog):
             # Make sure channel has messages that will be counted
             empty = True
             async for message in channel.history(limit=None, oldest_first=True):
-                line = utils.remove_emojis(message.clean_content).strip()
-                line = utils.ooc_strip(ctx, line)
+                line = utils.clean_message(ctx, message.clean_content)
 
                 if line:
                     empty = False
@@ -634,18 +634,15 @@ class Export(commands.Cog):
             # Name
             author = message.author.display_name.split()[0]
 
-            # Remove emojis then strip whitespace at start/end
-            line = utils.remove_emojis(message.clean_content).strip()
+            # Remove emojis and out of character parts
+            line = utils.clean_message(ctx, message.clean_content)
+
+            # If string is empty after cleaning, skip
+            if line == "":
+                continue
 
             # If message looks like a command attempt, ignore it
             if utils.is_command(line):
-                continue
-
-            # Remove out of character messages
-            line = utils.ooc_strip(ctx, line)
-
-            # If string is now empty, move to next message
-            if line == "":
                 continue
 
             line = f"{author}: {line}"
