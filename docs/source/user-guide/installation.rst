@@ -77,6 +77,8 @@ as listed below:
 Heroku Installation
 ===================
 
-The bot can be installed as a Heroku app, however note that a free dyno will likely not be
-sufficient for the bot to run the game. The bot will log in and respond to the ``!help`` command,
-but will have trouble sending images. It should work with a paid dyno, but I have not tested it.
+The bot can be installed as a Heroku app, however note that a free dyno will
+likely not be sufficient for the bot to run the game. The bot will log in
+and respond to the ``!help`` command, but will have trouble sending images.
+It should work with a paid dyno, but I have not tested it. To install,
+simply use the default Python buildpack.
