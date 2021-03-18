@@ -13,3 +13,6 @@ file will be created on the computer running the bot in the ``exports``
 folder in the bot's root directory. Note that because Discord limits file
 uploads to 8MB and the generated files are ~25MB in size, there is no way
 for the bot to send the PDF files directly via Discord.
+
+The bot will also remove all emojis from messages before adding them to the
+PDF, due to font limitations.
