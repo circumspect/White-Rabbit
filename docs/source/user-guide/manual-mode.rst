@@ -6,7 +6,7 @@ Manual Mode
    This section is for advanced users and debugging. Most users will find that
    automatic mode covers their needs, and is much simpler. See the
    :doc:`quickstart` for information on running a normal game of Alice is
-   Missing.
+   Missing in automatic mode.
 
 Manual mode allows the facilitator finer control over how a game runs by
 waiting for the user to call certain functions instead of having the bot
