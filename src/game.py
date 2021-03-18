@@ -113,7 +113,8 @@ class Game(commands.Cog):
         asyncio.create_task(ctx.send(LOCALIZATION_DATA["messages"]["DistributingClues"]))
 
         asyncio.create_task(self.bot.cogs["Manual"].shuffle_clues(ctx))
-        asyncio.create_task(self.bot.cogs["Manual"].assign_clues(ctx))
+        asyncio.create_task(self.bot.cogs["Manual"].assign_times(ctx))
+        asyncio.create_task(self.bot.cogs["Manual"].print_times(ctx))
 
         ctx.game.setup = True
 
