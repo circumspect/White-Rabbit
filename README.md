@@ -7,7 +7,8 @@ A Discord bot for Alice is Missing. [Click here for the server template](https:/
 This is a fan-made project which is not affiliated in any way with the creators of Alice is Missing.
 Game and all Alice is Missing images are property of
 [Hunters Entertainment](https://www.huntersentertainment.com/alice-is-missing).
-If you haven't already, please go buy a copy of the game to support them.
+If you haven't already, please go buy a copy of the game to support them. Code
+and documentation are licensed under the AGPLv3.
 
 Documentation can be found at <https://white-rabbit.readthedocs.io/>
 
