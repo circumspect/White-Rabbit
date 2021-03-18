@@ -41,10 +41,12 @@ Clue Setup
 
 Clue setup can be done in the same way as in automatic mode, by
 calling ``!setup_clues``, or you may manually shuffle the clue piles and times.
-To assign clue times, call ``!assign_clues``. To shuffle which clues get
+To assign clue times, call ``!assign_times``. To shuffle which clues get
 pulled at the specific times, call ``!shuffle_clues``. As with
 ``!shuffle_motives``, these commands can be run as many times as you like,
-and the output will be logged to console.
+and the output will be logged to console, and the bot will not send the
+assigned times for each character to ``#player-resources`` until you call
+``!print_times`` (the choices for the clues are never sent to the chat).
 
 
 Gameplay

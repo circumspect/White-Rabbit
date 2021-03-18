@@ -244,12 +244,19 @@
                 "ShufflingClues": "Shuffling clues!"
             },
 
-            "assign_clues": {
-                "name": "assign_clues",
+            "assign_times": {
+                "name": "assign_times",
                 "aliases": [],
                 "description": "Randomizes and assigns clue times",
 
-                "AssigningClues": "Assignation des indices !",
+                "AssigningClues": "Assignation des indices !"
+            },
+
+            "print_times": {
+                "name": "print_times",
+                "aliases": [],
+                "description": "Print out clue assignments",
+
                 "ClueTimes": "Clue times:"
             }
         },
