@@ -396,7 +396,7 @@ class Export(commands.Cog):
         )
 
         # Poster
-        poster = utils.POSTER_DIR / f"Alice Briarwood {ctx.game.alice}{utils.IMAGE_EXT}"
+        poster = utils.get_image(utils.POSTER_DIR, f"Alice Briarwood {ctx.game.alice}")
         await loop.run_in_executor(
             None, pdf.image,
             *(str(poster), COVER_POSTER_X,
@@ -495,11 +495,11 @@ class Export(commands.Cog):
 
         # Character and motive cards
         name = gamedata.CHARACTERS[character]
-        card = (utils.CHARACTER_IMAGE_DIR / name).with_suffix(utils.IMAGE_EXT)
+        card = utils.get_image(utils.CHARACTER_IMAGE_DIR, name)
         pdf.image(str(card), CHAR_CARD_LEFT, CHAR_CARD_TOP, CHAR_CARD_WIDTH)
 
         motive = ctx.game.motives[character]
-        card = utils.MOTIVE_DIR / (f"Motive {motive}{utils.IMAGE_EXT}")
+        card = utils.get_image(utils.MOTIVE_DIR, f"Motive {motive}")
         pdf.image(str(card), CHAR_CARD_LEFT, MOTIVE_CARD_TOP, CHAR_CARD_WIDTH)
 
         # Clues
@@ -520,17 +520,17 @@ class Export(commands.Cog):
 
             # Clue card
             choice = ctx.game.picked_clues[clue]
-            card = utils.CLUE_DIR / str(clue) / f"{clue}-{choice}{utils.IMAGE_EXT}"
+            card = utils.get_image(utils.CLUE_DIR / str(clue), f"{clue}-{choice}")
             pdf.image(str(card), CLUE_CARD_LEFT, current_y, CLUE_CARD_WIDTH)
 
 
             # Suspect card
             if clue in ctx.game.suspects_drawn:
                 suspect = gamedata.SUSPECTS[ctx.game.suspects_drawn[clue]]
-                card = utils.SUSPECT_IMAGE_DIR / f"{suspect}{utils.IMAGE_EXT}"
+                card = utils.get_image(utils.SUSPECT_IMAGE_DIR, suspect)
             elif clue in ctx.game.locations_drawn:
                 location = gamedata.LOCATIONS[ctx.game.locations_drawn[clue]]
-                card = utils.LOCATION_IMAGE_DIR / f"{location}{utils.IMAGE_EXT}"
+                card = utils.get_image(utils.LOCATION_IMAGE_DIR, location)
 
             pdf.image(str(card), SUSPECT_CARD_LEFT, current_y, CLUE_CARD_WIDTH)
 
@@ -597,7 +597,7 @@ class Export(commands.Cog):
                   CONCLUSION_ROW1_IMAGE_Y, CONCLUSION_CARD_WIDTH)
 
         # Add clue card
-        card = utils.CLUE_DIR / "10" / f"10-{ctx.game.picked_clues[10]}{utils.IMAGE_EXT}"
+        card = utils.get_image(utils.CLUE_DIR / "10", f"10-{ctx.game.picked_clues[10]}")
         pdf.image(str(card), CONCLUSION_CLUE_CARD_X,
                   CONCLUSION_ROW1_IMAGE_Y, CONCLUSION_CARD_WIDTH)
 
