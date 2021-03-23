@@ -29,7 +29,7 @@ class Admin(commands.Cog):
         """Reveal all channels and disable sending messages"""
 
         for channel in ctx.guild.text_channels:
-            await channel.edit(sync_permissions=True)
+            asyncio.create_task(channel.edit(sync_permissions=True))
         await ctx.send("All channels revealed!")
 
     @commands.command(
@@ -69,35 +69,35 @@ class Admin(commands.Cog):
         for channel in ctx.guild.text_channels:
             # Clues channels
             if channel.name in LOCALIZATION_DATA["channels"]["clues"].values():
-                await channel.set_permissions(
+                asyncio.create_task(channel.set_permissions(
                     everyone,
                     view_channel=False,
                     send_messages=False
-                )
-                await channel.set_permissions(spectator, view_channel=True)
+                ))
+                asyncio.create_task(channel.set_permissions(spectator, view_channel=True))
 
                 player = channel.name.split("-")[0].title()
                 for role in ctx.guild.roles:
                     if role.name == player:
-                        await channel.set_permissions(role, view_channel=True)
+                        asyncio.create_task(channel.set_permissions(role, view_channel=True))
 
             # Channels that all players can send messages
             elif channel.name == LOCALIZATION_DATA["channels"]["voicemails"] or channel.name == GROUP_CHAT:
-                await channel.set_permissions(everyone, send_messages=False)
+                asyncio.create_task(channel.set_permissions(everyone, send_messages=False))
                 for role in ctx.guild.roles:
                     if role.name.lower() in gamedata.CHARACTERS:
-                        await channel.set_permissions(role, send_messages=True)
+                        asyncio.create_task(channel.set_permissions(role, send_messages=True))
 
             # Private message channels
             elif channel.name in LOCALIZATION_DATA["channels"]["texts"].values() and channel.name != GROUP_CHAT:
-                await channel.set_permissions(everyone, view_channel=False, send_messages=None)
-                await channel.set_permissions(spectator, view_channel=True, send_messages=False)
+                asyncio.create_task(channel.set_permissions(everyone, view_channel=False, send_messages=None))
+                asyncio.create_task(channel.set_permissions(spectator, view_channel=True, send_messages=False))
                 split_name = channel.name.split("-")
                 player_a = split_name[0].title()
                 player_b = split_name[1].title()
                 for role in ctx.guild.roles:
                     if role.name == player_a or role.name == player_b:
-                        await channel.set_permissions(role, view_channel=True)
+                        asyncio.create_task(channel.set_permissions(role, view_channel=True))
 
     @commands.command(
         name=loc["reset"]["name"],
@@ -118,13 +118,10 @@ class Admin(commands.Cog):
         # the server owner
         for member in ctx.guild.members:
             if not member.bot and member is not ctx.guild.owner:
-                await member.edit(nick=None, roles=[])
+                asyncio.create_task(member.edit(nick=None, roles=[]))
 
-        # Erase all messages
-        await self.wipe(ctx)
-
-        # Reset channel permissions
-        await self.reset_perms(ctx)
+        # Erase all messages and reset channel permissions
+        await asyncio.gather(self.wipe(ctx), await self.reset_perms(ctx))
 
 
 def setup(bot):

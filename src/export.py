@@ -354,7 +354,7 @@ class Export(commands.Cog):
         loop = asyncio.get_running_loop()
 
         # Import game data
-        await ctx.send(loc["pdf"]["CollectingData"])
+        asyncio.create_task(ctx.send(loc["pdf"]["CollectingData"]))
         await self.import_data(ctx)
 
         # If data not found, tell user and quit
@@ -666,7 +666,7 @@ class Export(commands.Cog):
         # TODO: Make this cleaner
         # Hidden from users until then
 
-        await ctx.send("Downloading...")
+        asyncio.create_task(ctx.send("Downloading..."))
         # make folder for messages
         message_dir = utils.TEXT_EXPORT_DIR / ctx.guild.name
         message_dir.mkdir(parents=True, exist_ok=True)
@@ -691,7 +691,7 @@ class Export(commands.Cog):
             zip_file.with_suffix(""),
             "zip", message_dir,
         )
-        await ctx.send(file=discord.File(zip_file))
+        asyncio.create_task(ctx.send(file=discord.File(zip_file)))
 
         # Delete files
         shutil.rmtree(message_dir)

@@ -38,15 +38,15 @@ class Settings(commands.Cog):
                 message = loc["auto"]["CurrentlyManual"]
 
             message = utils.codeblock(message)
-            await ctx.send(message)
+            asyncio.create_task(ctx.send(message))
         elif mode == loc["auto"]["on"]:
             ctx.game.automatic = True
-            await ctx.send(loc["auto"]["AutoEnabled"])
+            asyncio.create_task(ctx.send(loc["auto"]["AutoEnabled"]))
         elif mode == loc["auto"]["off"]:
             ctx.game.automatic = False
-            await ctx.send(loc["auto"]["AutoDisabled"])
+            asyncio.create_task(ctx.send(loc["auto"]["AutoDisabled"]))
         else:
-            await ctx.send(LOCALIZATION_DATA["errors"]["UserInputError"])
+            asyncio.create_task(ctx.send(LOCALIZATION_DATA["errors"]["UserInputError"]))
 
     @commands.command(
         hidden=True, name=loc["music"]["name"],
@@ -58,9 +58,9 @@ class Settings(commands.Cog):
 
         ctx.game.stream_music = not ctx.game.stream_music
         if ctx.game.stream_music:
-            await ctx.send(loc["music"]["MusicEnabled"])
+            asyncio.create_task(ctx.send(loc["music"]["MusicEnabled"]))
         else:
-            await ctx.send(loc["music"]["MusicDisabled"])
+            asyncio.create_task(ctx.send(loc["music"]["MusicDisabled"]))
 
     @commands.command(
         name=loc["show_timer"]["name"],
@@ -89,9 +89,9 @@ class Settings(commands.Cog):
             ctx.game.show_timer = not ctx.game.show_timer
 
         if ctx.game.show_timer:
-            await ctx.send(loc["show_timer"]["ShowingTimer"])
+            asyncio.create_task(ctx.send(loc["show_timer"]["ShowingTimer"]))
         else:
-            await ctx.send(loc["show_timer"]["HidingTimer"])
+            asyncio.create_task(ctx.send(loc["show_timer"]["HidingTimer"]))
 
     @commands.command(
         hidden=True, name=loc["endings"]["name"],
@@ -106,7 +106,7 @@ class Settings(commands.Cog):
             message = loc["endings"]["EndingsEnabled"] + "\n"
             message += ", ".join([f"{end}" for end in ctx.game.endings if ctx.game.endings[end]])
             message = utils.codeblock(message)
-            await ctx.send(message)
+            asyncio.create_task(ctx.send(message))
         else:
             # Toggle specified ending
             ctx.game.endings[index] = not ctx.game.endings[index]
