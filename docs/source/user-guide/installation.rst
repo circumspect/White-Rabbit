@@ -39,7 +39,8 @@ Next, create a new Discord bot as follows:
   - Follow the instructions to add the bot to the server you previously
     created.
 
-- Finally, open the Discord app, find your server, and open the server role settings (click on the server name -> Server Settings -> Roles).
+- Finally, open the Discord app, find your server, and open the server role
+  settings (click on the server name -> Server Settings -> Roles).
 - Click and drag the "The White Rabbit" role to the top of the list of roles
   and click "Save Changes".
 - Close the settings and you're done with setup!
@@ -54,7 +55,8 @@ the .env file though
 Deploy the Docker container as follows, replacing ``YOUR_TOKEN_GOES_HERE``
 with the discord token obtained above
 
-`List of Docker tags <https://hub.docker.com/r/circumspect/white-rabbit/tags>`_ (version numbers are the same as Github releases).
+`List of Docker tags <https://hub.docker.com/r/circumspect/white-rabbit/tags>`_
+(version numbers are the same as Github releases).
 
 .. code::
 
