@@ -52,9 +52,15 @@ class Game(commands.Cog):
             asyncio.create_task(self.bot.cogs["Manual"].alice(ctx))
 
         # Send characters, suspects, and locations to appropriate channels
-        utils.send_folder(LOCALIZATION_DATA["channels"]["cards"]["character-cards"], utils.CHARACTER_IMAGE_DIR, ctx)
-        utils.send_folder(LOCALIZATION_DATA["channels"]["cards"]["suspect-cards"], utils.SUSPECT_IMAGE_DIR, ctx)
-        utils.send_folder(LOCALIZATION_DATA["channels"]["cards"]["location-cards"], utils.LOCATION_IMAGE_DIR, ctx)
+        utils.send_folder(
+            LOCALIZATION_DATA["channels"]["cards"]["character-cards"], utils.CHARACTER_IMAGE_DIR, ctx
+        )
+        utils.send_folder(
+            LOCALIZATION_DATA["channels"]["cards"]["suspect-cards"], utils.SUSPECT_IMAGE_DIR, ctx
+        )
+        utils.send_folder(
+            LOCALIZATION_DATA["channels"]["cards"]["location-cards"], utils.LOCATION_IMAGE_DIR, ctx
+        )
 
         # Instructions for Charlie Barnes
         channel = ctx.text_channels[LOCALIZATION_DATA["channels"]["clues"]["charlie"]]
@@ -129,7 +135,7 @@ class Game(commands.Cog):
         # Send random 80 minute clue card
         channel = LOCALIZATION_DATA["channels"]["resources"]
         choice = random.randint(1, 3)
-        path = utils.CLUE_DIR / "80" / f"80-{choice}.png"
+        path = utils.get_image(utils.CLUE_DIR / "80", f"80-{choice}")
         utils.send_image(channel, path, ctx)
 
         # Send suspect card
@@ -182,7 +188,7 @@ class Game(commands.Cog):
 
         # 90 minute card/message for Charlie Barnes
         channel = ctx.text_channels[LOCALIZATION_DATA["channels"]["clues"]["charlie"]]
-        await channel.send(file=discord.File(utils.CLUE_DIR / "90/90-1.png"))
+        await channel.send(file=discord.File(utils.get_image(utils.CLUE_DIR, "90/90-1")))
         first_message = LOCALIZATION_DATA["stuff-for-charlie"]["first-message"]
         await channel.send(first_message)
 
@@ -252,7 +258,7 @@ class Game(commands.Cog):
 
                     channel = LOCALIZATION_DATA["channels"]["clues"][ctx.game.ten_char]
                     ending = random.choice(list(i for i in ctx.game.endings if ctx.game.endings[i]))
-                    clue = utils.CLUE_DIR / "10" / f"10-{ending}.png"
+                    clue = utils.get_image(utils.CLUE_DIR / "10", f"10-{ending}")
                     utils.send_image(channel, clue, ctx)
 
                     if ending != 3:
@@ -272,7 +278,7 @@ class Game(commands.Cog):
                     second = random.choice(remaining_suspects)
 
                     # Send to clues channel
-                    path = utils.SUSPECT_IMAGE_DIR / (gamedata.SUSPECTS[second] + ".png")
+                    path = utils.get_image(utils.SUSPECT_IMAGE_DIR, gamedata.SUSPECTS[second])
                     channel = LOCALIZATION_DATA["channels"]["clues"][ctx.game.ten_char]
                     utils.send_image(channel, path, ctx)
 
@@ -339,7 +345,7 @@ class Game(commands.Cog):
         if ctx.game.search_cards:
             search = random.choice(ctx.game.search_cards)
             ctx.game.search_cards.remove(search)
-            image = utils.SEARCHING_DIR / (search + utils.IMAGE_EXT)
+            image = utils.get_image(utils.SEARCHING_DIR, search)
             asyncio.create_task(char_channel.send(file=discord.File(image)))
 
         else:
