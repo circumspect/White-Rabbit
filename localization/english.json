@@ -147,6 +147,7 @@
 
                 "CollectingData": "Gathering game data...",
                 "BuildingCharPages": "Building character pages...",
+                "FailedImport": "Failed to import game data, did someone leave the server?",
                 "MissingGameData": "Couldn't find game data to export!",
                 "RecreatingTimeline": "Recreating timeline...",
                 "CollectingMessages": "Collecting messages...",

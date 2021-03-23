@@ -355,7 +355,11 @@ class Export(commands.Cog):
 
         # Import game data
         asyncio.create_task(ctx.send(loc["pdf"]["CollectingData"]))
-        await self.import_data(ctx)
+        try:
+            await self.import_data(ctx)
+        except KeyError:
+            asyncio.create_task(ctx.send(loc["pdf"]["FailedImport"]))
+            return
 
         # If data not found, tell user and quit
         if not ctx.game.start_time:
