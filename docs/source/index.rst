@@ -1,5 +1,5 @@
 ******************************
-The White Rabbit documentation
+The White Rabbit Documentation
 ******************************
 
 .. toctree::
