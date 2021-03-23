@@ -303,6 +303,8 @@ class Export(commands.Cog):
                 # Clue cards
                 else:
                     try:
+                        # This will raise a ValueError if filename does not
+                        # contain "-", so we catch down below
                         time, choice = [num for num in filename.split("-", maxsplit=2)]
 
                         # Split in case of old filenames
