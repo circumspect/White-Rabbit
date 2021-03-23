@@ -6,6 +6,7 @@ from discord.ext import commands
 # Local
 import gamedata
 from localization import LOCALIZATION_DATA
+import utils
 
 loc = LOCALIZATION_DATA["commands"]["admin"]
 GROUP_CHAT = LOCALIZATION_DATA["channels"]["texts"]["group-chat"]
@@ -53,7 +54,7 @@ class Admin(commands.Cog):
         ctx.game.__init__(ctx.game.guild)
 
         # Console logging
-        print(f'Wiped messages from server: "{ctx.guild.name}" with ID: "{ctx.guild.id}"')
+        print(f'{utils.INFO_PREFIX}Wiped messages from server: "{ctx.guild.name}" (ID: {ctx.guild.id})')
 
     @commands.command(
         name=loc["reset_perms"]["name"],
@@ -112,7 +113,7 @@ class Admin(commands.Cog):
         await ctx.send(loc["reset"]["NoteAboutOwner"])
 
         # Console logging
-        print(f'Resetting server: "{ctx.guild.name}" with ID: "{ctx.guild.id}"')
+        print(f'{utils.INFO_PREFIX}Resetting server: "{ctx.guild.name}" (ID: {ctx.guild.id})')
 
         # Clear roles and nicknames from all users, skipping bots and
         # the server owner

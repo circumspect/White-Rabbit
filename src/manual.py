@@ -74,7 +74,7 @@ class Manual(commands.Cog):
         }
 
         # Console logging
-        print("Shuffled motives!")
+        print(f"{utils.INFO_PREFIX}Shuffled motives!")
         print(ctx.game.motives)
 
     @commands.command(
@@ -242,7 +242,7 @@ class Manual(commands.Cog):
         ctx.game.picked_clues[90] = 1
 
         # Console logging
-        print("Shuffled clue piles!")
+        print(f"{utils.INFO_PREFIX}Shuffled clue piles!")
         print(ctx.game.picked_clues)
 
     @commands.command(
@@ -295,7 +295,7 @@ class Manual(commands.Cog):
             ctx.game.clue_assignments[name] = sorted(clue_buckets.pop(), reverse=True)
 
         # Console logging
-        print("Assigned clue cards!")
+        print(f"{utils.INFO_PREFIX}Assigned clue cards!")
         print(ctx.game.clue_assignments)
 
     @commands.command(
