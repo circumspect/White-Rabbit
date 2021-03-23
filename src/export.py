@@ -318,7 +318,7 @@ class Export(commands.Cog):
 
                         ctx.game.clue_assignments[name].append(time)
                         ctx.game.picked_clues[time] = choice
-                    except:
+                    except ValueError:
                         # If still can't determine image type, log to console
                         # and ignore
                         print(f"{utils.WARNING_PREFIX}Unknown image found during export: {filename}{suffix}")
