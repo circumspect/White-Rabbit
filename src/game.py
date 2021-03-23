@@ -27,14 +27,14 @@ class Game(commands.Cog):
         """Initial setup before character selection"""
 
         if ctx.game.start_time:
-            await ctx.send(LOCALIZATION_DATA["errors"]["AlreadyStarted"])
+            asyncio.create_task(ctx.send(LOCALIZATION_DATA["errors"]["AlreadyStarted"]))
             return
         elif ctx.game.init and ctx.game.automatic:
             # Disallow another initialization attempt unless manual mode is enabled
-            await ctx.send(LOCALIZATION_DATA["errors"]["AlreadyInitialized"])
+            asyncio.create_task(ctx.send(LOCALIZATION_DATA["errors"]["AlreadyInitialized"]))
             return
 
-        await ctx.send(LOCALIZATION_DATA["messages"]["Initializing"])
+        asyncio.create_task(ctx.send(LOCALIZATION_DATA["messages"]["Initializing"]))
 
         # Introduction images
         utils.send_image(
@@ -94,20 +94,20 @@ class Game(commands.Cog):
 
         if (not ctx.game.init) and ctx.game.automatic:
             # Disallow if init hasn't been run yet and manual mode is off
-            await ctx.send(LOCALIZATION_DATA["errors"]["NotInitialized"])
+            asyncio.create_task(ctx.send(LOCALIZATION_DATA["errors"]["NotInitialized"]))
             return
         elif ctx.game.start_time:
-            await ctx.send(LOCALIZATION_DATA["errors"]["AlreadyStarted"])
+            asyncio.create_task(ctx.send(LOCALIZATION_DATA["errors"]["AlreadyStarted"]))
             return
 
         player_count = len(ctx.game.char_roles())
         # Can't set up if there aren't enough players to assign clues
         if player_count < 3:
-            await ctx.send(LOCALIZATION_DATA["errors"]["NotEnoughPlayers"])
+            asyncio.create_task(ctx.send(LOCALIZATION_DATA["errors"]["NotEnoughPlayers"]))
             return
         # Can't set up without Charlie Barnes
         elif "Charlie" not in ctx.game.char_roles():
-            await ctx.send(LOCALIZATION_DATA["errors"]["MissingCharlie"])
+            asyncio.create_task(ctx.send(LOCALIZATION_DATA["errors"]["MissingCharlie"]))
             return
 
         asyncio.create_task(ctx.send(LOCALIZATION_DATA["messages"]["DistributingClues"]))
@@ -161,23 +161,23 @@ class Game(commands.Cog):
 
         # Validity checks
         if not ctx.game.alice:
-            await ctx.send(LOCALIZATION_DATA["errors"]["MissingAlice"])
+            asyncio.create_task(ctx.send(LOCALIZATION_DATA["errors"]["MissingAlice"]))
             return
 
         if not ctx.game.setup:
-            await ctx.send(LOCALIZATION_DATA["errors"]["NeedToSetUp"])
+            asyncio.create_task(ctx.send(LOCALIZATION_DATA["errors"]["NeedToSetUp"]))
             return
 
         if ctx.game.start_time:
-            await ctx.send(LOCALIZATION_DATA["errors"]["AlreadyStarted"])
+            asyncio.create_task(ctx.send(LOCALIZATION_DATA["errors"]["AlreadyStarted"]))
             return
 
         if "Charlie" not in ctx.game.char_roles():
-            await ctx.send(LOCALIZATION_DATA["errors"]["MissingCharlie"])
+            asyncio.create_task(ctx.send(LOCALIZATION_DATA["errors"]["MissingCharlie"]))
             return
 
         if len(ctx.game.char_roles()) < 3:
-            await ctx.send(LOCALIZATION_DATA["errors"]["NotEnoughPlayers"])
+            asyncio.create_task(ctx.send(LOCALIZATION_DATA["errors"]["NotEnoughPlayers"]))
             return
 
         # 90 minute card/message for Charlie Barnes
@@ -199,7 +199,7 @@ class Game(commands.Cog):
         asyncio.create_task(ctx.send(LOCALIZATION_DATA["messages"]["StartingGame"]))
 
         # Start timer and clue_check tasks simultaneously
-        await (asyncio.gather(self.timer(ctx), self.clue_check(ctx)))
+        await asyncio.gather(self.timer(ctx), self.clue_check(ctx))
 
     async def timer(self, ctx):
         """Prints out the timer"""
@@ -210,7 +210,7 @@ class Game(commands.Cog):
 
             if ctx.game.show_timer:
                 time = utils.time_string(time_remaining)
-                await ctx.send(time)
+                asyncio.create_task(ctx.send(time))
             await asyncio.sleep(ctx.game.timer_gap / ctx.game.game_speed)
 
     async def clue_check(self, ctx):
@@ -242,7 +242,7 @@ class Game(commands.Cog):
                 # Check if 10 min card has been assigned and send reminder if not
                 if minutes_remaining == gamedata.TEN_MIN_REMINDER_TIME and not ctx.game.ten_char:
                     channel = ctx.text_channels[LOCALIZATION_DATA["channels"]["resources"]]
-                    await channel.send("@everyone " + gamedata.TEN_MIN_REMINDER_TEXT)
+                    asyncio.create_task(channel.send("@everyone " + gamedata.TEN_MIN_REMINDER_TEXT))
 
                 # 10 min card
                 elif minutes_remaining == 10:
@@ -305,7 +305,7 @@ class Game(commands.Cog):
 
                     channel = ctx.text_channels[LOCALIZATION_DATA["channels"]["clues"][character]]
                     message = LOCALIZATION_DATA["messages"]["NextClueReminder"]
-                    await channel.send(f"{message} ({ctx.game.next_clue})")
+                    asyncio.create_task(channel.send(f"{message} ({ctx.game.next_clue})"))
 
                 # Wait out the rest of the interval
                 await asyncio.sleep((check_interval - gamedata.REMINDER_BUFFER) * 60 / ctx.game.game_speed)
@@ -328,10 +328,10 @@ class Game(commands.Cog):
         """Draw a searching card"""
 
         if ctx.game.automatic and not ctx.game.start_time:
-            await ctx.send(LOCALIZATION_DATA["errors"]["GameNotStarted"])
+            asyncio.create_task(ctx.send(LOCALIZATION_DATA["errors"]["GameNotStarted"]))
             return
         if not ctx.character:
-            await ctx.send(LOCALIZATION_DATA["errors"]["NotACharacter"])
+            asyncio.create_task(ctx.send(LOCALIZATION_DATA["errors"]["NotACharacter"]))
             return
 
         char_channel = ctx.text_channels[LOCALIZATION_DATA["channels"]["clues"][ctx.character]]
@@ -362,12 +362,12 @@ class Game(commands.Cog):
             character = mention.name
 
         if character.title() not in ctx.game.char_roles():
-            await ctx.send(LOCALIZATION_DATA["errors"]["PlayerNotFound"])
+            asyncio.create_task(ctx.send(LOCALIZATION_DATA["errors"]["PlayerNotFound"]))
             return
 
         ctx.game.ten_char = character.lower()
 
-        await ctx.send(loc["ten_min_card"]["Assigned"])
+        asyncio.create_task(ctx.send(loc["ten_min_card"]["Assigned"]))
 
 
 def setup(bot):

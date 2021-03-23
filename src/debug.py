@@ -100,7 +100,7 @@ class Debug(commands.Cog):
             extensions = list(self.bot.extensions.keys())
             for extension in extensions:
                 self.bot.reload_extension(extension)
-            await ctx.send(f"Reloaded {', '.join(self.bot.extensions.keys())}")
+            asyncio.create_task(ctx.send(f"Reloaded {', '.join(self.bot.extensions.keys())}"))
             return
 
         # Load extension
@@ -109,10 +109,10 @@ class Debug(commands.Cog):
                 self.bot.reload_extension(extension_name)
             else:
                 self.bot.load_extension(extension_name)
-            await ctx.send(f"Loaded {extension_name}")
+            asyncio.create_task(ctx.send(f"Loaded {extension_name}"))
 
         except commands.errors.ExtensionNotFound:
-            await ctx.send(f"Couldn't find plugin: \"{extension_name}\"")
+            asyncio.create_task(ctx.send(f"Couldn't find plugin: \"{extension_name}\""))
 
     @commands.command(
         name=loc["unload"]["name"],
@@ -123,9 +123,9 @@ class Debug(commands.Cog):
         """Unloads a plugin"""
         try:
             self.bot.unload_extension(extension_name)
-            await ctx.send(f"Unloaded {extension_name}")
+            asyncio.create_task(ctx.send(f"Unloaded {extension_name}"))
         except commands.errors.ExtensionNotLoaded:
-            await ctx.send(f"{extension_name} was never loaded")
+            asyncio.create_task(ctx.send(f"{extension_name} was never loaded"))
 
     # DO NOT MOVE TO admin.py!!! This command will shut down the bot across
     # ALL servers, and thus should only be able to be run by those listed

@@ -44,7 +44,7 @@ class Manual(commands.Cog):
         """
 
         if choice < 0 or choice > 10:
-            await ctx.send(LOCALIZATION_DATA["errors"]["UserInputError"])
+            asyncio.create_task(ctx.send(LOCALIZATION_DATA["errors"]["UserInputError"]))
             return
 
         if not choice:
@@ -256,12 +256,12 @@ class Manual(commands.Cog):
         player_count = len(ctx.game.char_roles())
         # Stop if fewer than 3 player roles assigned
         if player_count < 3:
-            await ctx.send(loc["errors"]["NotEnoughPlayers"])
+            asyncio.create_task(ctx.send(loc["errors"]["NotEnoughPlayers"]))
             return
 
         # Can't play without Charlie
         elif "Charlie" not in ctx.game.char_roles():
-            await ctx.send(loc["errors"]["MissingCharlie"])
+            asyncio.create_task(ctx.send(loc["errors"]["MissingCharlie"]))
             return
 
         if not ctx.game.automatic:
