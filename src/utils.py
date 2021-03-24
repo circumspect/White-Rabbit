@@ -9,7 +9,7 @@ import re
 import discord
 # Local
 import gamedata
-from localization import LOCALIZATION_DATA, LOCALIZATION_RESOURCES
+from localization import LOCALIZATION_DATA, LOCALIZATION_RESOURCES, language_key
 
 # Links
 DOCS_URL = "https://white-rabbit.readthedocs.io/"
@@ -31,11 +31,12 @@ DEV_ID_FILE = WHITE_RABBIT_DIR / "dev_ids.txt"
 RESOURCE_DIR = WHITE_RABBIT_DIR / "resources"
 
 IMAGE_DIR = RESOURCE_DIR / "Images"
-PLAYER_RESOURCE_DIR = IMAGE_DIR / "Player Resources"
-POSTER_DIR = IMAGE_DIR / "Missing Person Posters"
+LOCALIZED_IMAGES_DIR = IMAGE_DIR / language_key
+PLAYER_RESOURCE_DIR = LOCALIZED_IMAGES_DIR / "Player Resources"
+POSTER_DIR = LOCALIZED_IMAGES_DIR / "Missing Person Posters"
 TIMER_AUDIO = WHITE_RABBIT_DIR / "Alice is Missing Playlist.mp3"
 
-CARD_DIR = IMAGE_DIR / "Cards"
+CARD_DIR = LOCALIZED_IMAGES_DIR / "Cards"
 CHARACTER_IMAGE_DIR = CARD_DIR / "Characters"
 MOTIVE_DIR = CARD_DIR / "Motives"
 SUSPECT_IMAGE_DIR = CARD_DIR / "Suspects"
