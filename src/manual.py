@@ -90,7 +90,7 @@ class Manual(commands.Cog):
             return
 
         for name in gamedata.CHARACTERS:
-            channel = ctx.text_channels[f"{name}-clues"]
+            channel = ctx.text_channels[LOCALIZATION_DATA["channels"]["clues"][name]]
             motive = ctx.game.motives[name]
             utils.send_image(
                 channel,
@@ -152,7 +152,7 @@ class Manual(commands.Cog):
             raise ValueError("Missing clue")
 
         # Send clue card
-        channel = utils.get_text_channels(ctx.game.guild)[f"{character}-clues"]
+        channel = utils.get_text_channels(ctx.game.guild)[LOCALIZATION_DATA["channels"]["clues"][name]]
         choice = ctx.game.picked_clues[time]
         path = utils.get_image(utils.CLUE_DIR / str(time), f"{time}-{choice}")
         utils.send_image(channel, path)
