@@ -188,7 +188,7 @@ class Game(commands.Cog):
 
         # 90 minute card/message for Charlie Barnes
         channel = ctx.text_channels[LOCALIZATION_DATA["channels"]["clues"]["charlie"]]
-        await channel.send(file=discord.File(utils.get_image(utils.CLUE_DIR, "90/90-1")))
+        await channel.send(file=discord.File(utils.get_image(utils.CLUE_DIR / "90", "90-1")))
         first_message = LOCALIZATION_DATA["stuff-for-charlie"]["first-message"]
         await channel.send(first_message)
 
