@@ -5,13 +5,14 @@ name: Python Test
 
 on:
   push:
-    branches: [ main ]
+    branches:
+      - '**'
   pull_request:
-    branches: [ main ]
+    branches:
+      - '**'
 
 jobs:
   build:
-
     runs-on: ubuntu-latest
 
     steps:
@@ -34,9 +35,3 @@ jobs:
     # - name: Test with pytest
     #   run: |
     #     pytest
-    - name: Test logging in
-      env:
-        SHUTDOWN: true
-        TOKEN: ${{ secrets.WHITE_RABBIT_TOKEN }}
-      run: |
-        python ./src
