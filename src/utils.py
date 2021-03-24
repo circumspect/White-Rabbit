@@ -9,7 +9,8 @@ import re
 import discord
 # Local
 import gamedata
-from localization import LOCALIZATION_DATA, LOCALIZATION_RESOURCES, language_key
+from localization import DEFAULT_LOCALIZATION, LOCALIZATION_DATA, language_key
+from resources import ImageResource
 
 # Links
 DOCS_URL = "https://white-rabbit.readthedocs.io/"
@@ -31,6 +32,7 @@ DEV_ID_FILE = WHITE_RABBIT_DIR / "dev_ids.txt"
 RESOURCE_DIR = WHITE_RABBIT_DIR / "resources"
 
 IMAGE_DIR = RESOURCE_DIR / "Images"
+DEFAULT_LOCALIZED_IMAGES_DIR = IMAGE_DIR / DEFAULT_LOCALIZATION
 LOCALIZED_IMAGES_DIR = IMAGE_DIR / language_key
 PLAYER_RESOURCE_DIR = LOCALIZED_IMAGES_DIR / "Player Resources"
 POSTER_DIR = LOCALIZED_IMAGES_DIR / "Missing Person Posters"
@@ -56,9 +58,18 @@ if not os.path.isdir(PDF_EXPORT_DIR):
 if not os.path.isdir(TEXT_EXPORT_DIR):
     os.mkdir(TEXT_EXPORT_DIR)
 
-
 def get_image(directory: Path, name: str) -> Path:
-    return LOCALIZATION_RESOURCES.get_image(directory, name)
+    img = ImageResource(ImageResource.ALLOWED_EXTENSIONS)
+    try:
+        return img.get(directory, name)
+    except FileNotFoundError:
+        parts = list(directory.parts)
+        for i in range(len(parts)):
+            if parts[i] == "White-Rabbit":
+                parts[i+3] = DEFAULT_LOCALIZATION
+                break
+
+        return img.get(Path("/".join(parts)), name)
 
 
 # Easy access filepaths
@@ -114,6 +125,7 @@ def send_image(channel, filepath, ctx=None):
                 "Cannot send to channel without ctx.text_channels"
             )
         channel = ctx.text_channels[channel]
+
     asyncio.create_task(channel.send(file=discord.File(filepath)))
 
 
@@ -121,7 +133,7 @@ def send_folder(channel, path, ctx=None):
     """Sends all images in a folder in alphabetical order"""
 
     for image in sorted(path.glob("*.*")):
-        filepath = LOCALIZATION_RESOURCES.get_file(path, image.name)
+        filepath = get_image(path, image.stem)
         send_image(channel, filepath, ctx)
 
 

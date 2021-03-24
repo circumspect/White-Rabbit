@@ -1,6 +1,6 @@
 {
     "title": "Alice a Disparu",
-    "template": "",
+    "template": "https://discord.new/U4pyXKHgQsW4",
     "bot-name": "Le Lapin Blanc",
 
     "spectator-role": "Spectateur",
@@ -16,8 +16,8 @@
             "character-cards": "cartes-personnages",
             "suspect-cards": "cartes-suspects",
             "location-cards": "cartes-lieux",
-            "suspects-drawn": "suspects-révélés",
-            "locations-drawn": "lieux-révélés"
+            "suspects-drawn": "suspects-reveles",
+            "locations-drawn": "lieux-reveles"
         },
 
         "clues": {
