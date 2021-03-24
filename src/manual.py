@@ -52,7 +52,7 @@ class Manual(commands.Cog):
 
         ctx.game.alice = choice
 
-        alice = utils.POSTER_DIR / ("Alice Briarwood " + str(ctx.game.alice) + utils.IMAGE_EXT)
+        alice = utils.get_image(utils.POSTER_DIR, f"Alice Briarwood {ctx.game.alice}")
         utils.send_image(LOCALIZATION_DATA["channels"]["resources"], alice, ctx)
 
     @commands.command(
@@ -94,7 +94,7 @@ class Manual(commands.Cog):
             motive = ctx.game.motives[name]
             utils.send_image(
                 channel,
-                utils.MOTIVE_DIR / f"Motive {motive}.png",
+                utils.get_image(utils.MOTIVE_DIR, f"Motive {motive}"),
                 ctx
             )
 
@@ -154,7 +154,7 @@ class Manual(commands.Cog):
         # Send clue card
         channel = utils.get_text_channels(ctx.game.guild)[f"{character}-clues"]
         choice = ctx.game.picked_clues[time]
-        path = utils.CLUE_DIR / str(time) / f"{time}-{choice}.png"
+        path = utils.get_image(utils.CLUE_DIR / str(time), f"{time}-{choice}")
         utils.send_image(channel, path)
 
         # Send suspect/location card to player's clues channel

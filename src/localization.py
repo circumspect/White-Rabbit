@@ -4,6 +4,7 @@ from os import environ
 from pathlib import Path
 # 3rd-party
 from dotenv import dotenv_values
+from resources import LocalizedResource
 
 # White-Rabbit/src/localization.py
 WHITE_RABBIT_DIR = Path(__file__).parent.parent
@@ -26,3 +27,5 @@ localization_file = LOCALIZATION_DIR / LOCALIZATIONS[language_key]
 LOCALIZATION_DATA = None
 with open(localization_file) as f:
     LOCALIZATION_DATA = json.loads(f.read())
+
+LOCALIZATION_RESOURCES = LocalizedResource(language_key)

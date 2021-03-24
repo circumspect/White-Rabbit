@@ -9,7 +9,7 @@ import re
 import discord
 # Local
 import gamedata
-from localization import LOCALIZATION_DATA
+from localization import LOCALIZATION_DATA, LOCALIZATION_RESOURCES
 
 # Links
 DOCS_URL = "https://white-rabbit.readthedocs.io/"
@@ -56,21 +56,25 @@ if not os.path.isdir(TEXT_EXPORT_DIR):
     os.mkdir(TEXT_EXPORT_DIR)
 
 
+def get_image(directory: Path, name: str) -> Path:
+    return LOCALIZATION_RESOURCES.get_image(directory, name)
+
+
 # Easy access filepaths
 MASTER_PATHS = {
-    "guide": (PLAYER_RESOURCE_DIR / "Alice is Missing - Guide.jpg"),
-    "character_sheet": (PLAYER_RESOURCE_DIR / "Alice is Missing - Character Sheet.jpg"),
-    "intro": (CARD_DIR / "Misc" / "Introduction.png"),
-    "debrief": (CARD_DIR / "Misc" / "Debrief.png"),
+    "guide": get_image(PLAYER_RESOURCE_DIR, "Alice is Missing - Guide"),
+    "character_sheet": get_image(PLAYER_RESOURCE_DIR, "Alice is Missing - Character Sheet"),
+    "intro": get_image(CARD_DIR / "Misc", "Introduction"),
+    "debrief": get_image(CARD_DIR / "Misc", "Debrief"),
 }
 
-IMAGE_EXT = ".png"
+
 for character in gamedata.CHARACTERS:
-    MASTER_PATHS[character] = (CHARACTER_IMAGE_DIR / gamedata.CHARACTERS[character]).with_suffix(IMAGE_EXT)
+    MASTER_PATHS[character] = get_image(CHARACTER_IMAGE_DIR, gamedata.CHARACTERS[character])
 for suspect in gamedata.SUSPECTS:
-    MASTER_PATHS[suspect] = (SUSPECT_IMAGE_DIR / gamedata.SUSPECTS[suspect]).with_suffix(IMAGE_EXT)
+    MASTER_PATHS[suspect] = get_image(SUSPECT_IMAGE_DIR, gamedata.SUSPECTS[suspect])
 for location in gamedata.LOCATIONS:
-    MASTER_PATHS[location] = (LOCATION_IMAGE_DIR / gamedata.LOCATIONS[location]).with_suffix(IMAGE_EXT)
+    MASTER_PATHS[location] = get_image(LOCATION_IMAGE_DIR, gamedata.LOCATIONS[location])
 
 
 def flip():
@@ -115,8 +119,9 @@ def send_image(channel, filepath, ctx=None):
 def send_folder(channel, path, ctx=None):
     """Sends all images in a folder in alphabetical order"""
 
-    for image in sorted(path.glob("*")):
-        send_image(channel, image, ctx)
+    for image in sorted(path.glob("*.*")):
+        filepath = LOCALIZATION_RESOURCES.get_file(path, image.name)
+        send_image(channel, filepath, ctx)
 
 
 def is_command(message: str):
