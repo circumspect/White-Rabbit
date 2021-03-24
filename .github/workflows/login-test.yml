@@ -1,0 +1,30 @@
+# Attempt to log the bot in using a dummy Discord bot's token
+
+name: Login Test
+
+on:
+  push:
+    branches:
+      - '**'
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v2
+    - name: Set up Python 3.9
+      uses: actions/setup-python@v2
+      with:
+        python-version: 3.9
+    - name: Install dependencies
+      run: |
+        python -m pip install --upgrade pip
+        pip install flake8 pytest
+        if [ -f requirements.txt ]; then pip install -r requirements.txt; fi
+    - name: Test logging in
+      env:
+        SHUTDOWN: true
+        TOKEN: ${{ secrets.WHITE_RABBIT_TOKEN }}
+      run: |
+        python ./src
