@@ -66,8 +66,9 @@ def get_image(directory: Path, name: str) -> Path:
         parts = list(directory.parts)
         for i in range(len(parts)):
             if parts[i] == "White-Rabbit":
-                parts[i+3] = DEFAULT_LOCALIZATION
-                break
+                if parts[i+3] != "shared":
+                    parts[i+3] = DEFAULT_LOCALIZATION
+                    break
 
         return img.get(Path("/".join(parts)), name)
 
