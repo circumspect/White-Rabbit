@@ -52,15 +52,15 @@ class Game(commands.Cog):
             asyncio.create_task(self.bot.cogs["Manual"].alice(ctx))
 
         # Send characters, suspects, and locations to appropriate channels
-        utils.send_folder(
-            LOCALIZATION_DATA["channels"]["cards"]["character-cards"], utils.CHARACTER_IMAGE_DIR, ctx
-        )
-        utils.send_folder(
-            LOCALIZATION_DATA["channels"]["cards"]["suspect-cards"], utils.SUSPECT_IMAGE_DIR, ctx
-        )
-        utils.send_folder(
-            LOCALIZATION_DATA["channels"]["cards"]["location-cards"], utils.LOCATION_IMAGE_DIR, ctx
-        )
+        for character in sorted(gamedata.CHARACTERS.values()):
+            filepath = utils.get_image(utils.CHARACTER_IMAGE_DIR, character)
+            utils.send_image(LOCALIZATION_DATA["channels"]["cards"]["character-cards"], filepath, ctx)
+        for suspect in sorted(gamedata.SUSPECTS.values()):
+            filepath = utils.get_image(utils.SUSPECT_IMAGE_DIR, suspect)
+            utils.send_image(LOCALIZATION_DATA["channels"]["cards"]["suspect-cards"], filepath, ctx)
+        for location in sorted(gamedata.LOCATIONS.values()):
+            filepath = utils.get_image(utils.LOCATION_IMAGE_DIR, location)
+            utils.send_image(LOCALIZATION_DATA["channels"]["cards"]["location-cards"], filepath, ctx)
 
         # Instructions for Charlie Barnes
         channel = ctx.text_channels[LOCALIZATION_DATA["channels"]["clues"]["charlie"]]
