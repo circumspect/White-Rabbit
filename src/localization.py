@@ -18,11 +18,11 @@ LOCALIZATIONS = {
 }
 
 try:
-    language_key = environ.get("LANGUAGE") or dotenv_values(".env")["LANGUAGE"]
+    LANGUAGE_KEY = environ.get("LANGUAGE") or dotenv_values(".env")["LANGUAGE"]
 except KeyError:
-    language_key = DEFAULT_LOCALIZATION
+    LANGUAGE_KEY = DEFAULT_LOCALIZATION
 
-localization_file = LOCALIZATION_DIR / LOCALIZATIONS[language_key]
+localization_file = LOCALIZATION_DIR / LOCALIZATIONS[LANGUAGE_KEY]
 
 LOCALIZATION_DATA = None
 with open(localization_file, encoding='utf-8') as f:
