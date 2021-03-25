@@ -3,7 +3,7 @@ from typing import Sequence
 
 
 class ImageResource:
-    ALLOWED_EXTENSIONS = ["png", "jpg", "jpeg"]
+    IMAGE_EXTENSIONS = ["png", "jpg", "jpeg"]
 
     def __init__(self, extensions: Sequence[str]) -> None:
         self.extensions = extensions
