@@ -8,6 +8,7 @@ from discord.ext import commands
 from dotenv import dotenv_values
 import requests
 # Local
+import constants
 import gamedata
 import utils
 from localization import LOCALIZATION_DATA
@@ -121,10 +122,10 @@ for plugin in PLUGINS:
 
 # Import bot token
 try:
-    bot.run(environ.get('TOKEN') or dotenv_values(utils.ENV_FILE)["TOKEN"])
+    bot.run(environ.get('TOKEN') or dotenv_values(constants.ENV_FILE)["TOKEN"])
 except FileNotFoundError:
-    r = requests.get(utils.BLANK_DOTENV_URL)
-    with open(utils.ENV_FILE, 'x') as env:
+    r = requests.get(constants.BLANK_DOTENV_URL)
+    with open(constants.ENV_FILE, 'x') as env:
         env.write(r.content)
     sys.exit(LOCALIZATION_DATA["errors"]["MissingDotEnv"])
 except discord.errors.LoginFailure:
