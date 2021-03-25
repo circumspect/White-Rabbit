@@ -5,11 +5,12 @@ import gamedata
 from localization import DEFAULT_LOCALIZATION, language_key
 import utils
 
-# Links
+# Links and bot info
+VERSION = "0.6.0"
 DOCS_URL = "https://white-rabbit.readthedocs.io/"
 DOCS_SHORT_URL = "https://white-rabbit.rtfd.io/"
 SOURCE_URL = "https://github.com/circumspect/White-Rabbit"
-BLANK_DOTENV_URL = "https://raw.githubusercontent.com/circumspect/White-Rabbit/main/example.env"
+BLANK_DOTENV_URL = f"https://raw.githubusercontent.com/circumspect/White-Rabbit/{VERSION}/example.env"
 
 # Console logging message stuff
 LOG_SEP = ": "
