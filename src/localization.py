@@ -25,5 +25,5 @@ except KeyError:
 localization_file = LOCALIZATION_DIR / LOCALIZATIONS[language_key]
 
 LOCALIZATION_DATA = None
-with open(localization_file) as f:
-    LOCALIZATION_DATA = json.loads(f.read())
+with open(localization_file, encoding='utf-8') as f:
+    LOCALIZATION_DATA = json.load(f)
