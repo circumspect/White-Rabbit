@@ -48,8 +48,8 @@ TEXT_EXPORT_DIR = EXPORT_DIR / "text"
 MASTER_PATHS = {
     "guide": utils.get_image(PLAYER_RESOURCE_DIR, "Guide"),
     "character_sheet": utils.get_image(PLAYER_RESOURCE_DIR, "Character-Sheet"),
-    "intro": utils.get_image(CARD_DIR / "Misc", "Introduction"),
-    "debrief": utils.get_image(CARD_DIR / "Misc", "Debrief"),
+    "intro": utils.get_image(CARD_DIR / "misc", "Introduction"),
+    "debrief": utils.get_image(CARD_DIR / "misc", "Debrief"),
 }
 
 for character in gamedata.CHARACTERS:
