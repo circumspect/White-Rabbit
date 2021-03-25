@@ -4,6 +4,7 @@ import asyncio
 import discord
 from discord.ext import commands
 # Local
+import constants
 import gamedata
 from localization import LOCALIZATION_DATA
 import utils
@@ -54,7 +55,7 @@ class Admin(commands.Cog):
         ctx.game.__init__(ctx.game.guild)
 
         # Console logging
-        print(f'{utils.INFO_PREFIX}Wiped messages from server: "{ctx.guild.name}" (ID: {ctx.guild.id})')
+        print(f'{constants.INFO_PREFIX}Wiped messages from server: "{ctx.guild.name}" (ID: {ctx.guild.id})')
 
     @commands.command(
         name=loc["reset_perms"]["name"],
@@ -113,7 +114,7 @@ class Admin(commands.Cog):
         await ctx.send(loc["reset"]["NoteAboutOwner"])
 
         # Console logging
-        print(f'{utils.INFO_PREFIX}Resetting server: "{ctx.guild.name}" (ID: {ctx.guild.id})')
+        print(f'{constants.INFO_PREFIX}Resetting server: "{ctx.guild.name}" (ID: {ctx.guild.id})')
 
         # Clear roles and nicknames from all users, skipping bots and
         # the server owner

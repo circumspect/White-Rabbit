@@ -4,6 +4,7 @@ import random
 # 3rd-party
 from discord.ext import commands
 # Local
+import constants
 import gamedata
 import utils
 from localization import LOCALIZATION_DATA
@@ -26,7 +27,7 @@ class Manual(commands.Cog):
         ctx.game = self.bot.games.setdefault(ctx.guild.id, gamedata.Data(ctx.guild))
         # Console logging
         if ctx.game.automatic:
-            print(f"{utils.WARNING_PREFIX}{ctx.author.name} tried to run {self.bot.command_prefix}{ctx.command.name} in automatic mode!")
+            print(f"{constants.WARNING_PREFIX}{ctx.author.name} tried to run {self.bot.command_prefix}{ctx.command.name} in automatic mode!")
 
         return not ctx.game.automatic
 
@@ -52,7 +53,7 @@ class Manual(commands.Cog):
 
         ctx.game.alice = choice
 
-        alice = utils.get_image(utils.POSTER_DIR, f"Alice Briarwood {ctx.game.alice}")
+        alice = utils.get_image(constants.POSTER_DIR, f"Alice Briarwood {ctx.game.alice}")
         utils.send_image(LOCALIZATION_DATA["channels"]["resources"], alice, ctx)
 
     @commands.command(
@@ -74,7 +75,7 @@ class Manual(commands.Cog):
         }
 
         # Console logging
-        print(f"{utils.INFO_PREFIX}Shuffled motives!")
+        print(f"{constants.INFO_PREFIX}Shuffled motives!")
         print(ctx.game.motives)
 
     @commands.command(
@@ -94,7 +95,7 @@ class Manual(commands.Cog):
             motive = ctx.game.motives[name]
             utils.send_image(
                 channel,
-                utils.get_image(utils.MOTIVE_DIR, f"Motive {motive}"),
+                utils.get_image(constants.MOTIVE_DIR, f"Motive {motive}"),
                 ctx
             )
 
@@ -152,14 +153,14 @@ class Manual(commands.Cog):
             raise ValueError("Missing clue")
 
         # Send clue card
-        channel = utils.get_text_channels(ctx.game.guild)[LOCALIZATION_DATA["channels"]["clues"][name]]
+        channel = utils.get_text_channels(ctx.game.guild)[LOCALIZATION_DATA["channels"]["clues"][character]]
         choice = ctx.game.picked_clues[time]
-        path = utils.get_image(utils.CLUE_DIR / str(time), f"{time}-{choice}")
+        path = utils.get_image(constants.CLUE_DIR / str(time), f"{time}-{choice}")
         utils.send_image(channel, path)
 
         # Send suspect/location card to player's clues channel
         suspect = self.draw_suspect(ctx, time)
-        path = utils.MASTER_PATHS[suspect]
+        path = constants.MASTER_PATHS[suspect]
         utils.send_image(channel, path)
 
         # Send suspect/location card to respective drawn cards channel
@@ -242,7 +243,7 @@ class Manual(commands.Cog):
         ctx.game.picked_clues[90] = 1
 
         # Console logging
-        print(f"{utils.INFO_PREFIX}Shuffled clue piles!")
+        print(f"{constants.INFO_PREFIX}Shuffled clue piles!")
         print(ctx.game.picked_clues)
 
     @commands.command(
@@ -295,7 +296,7 @@ class Manual(commands.Cog):
             ctx.game.clue_assignments[name] = sorted(clue_buckets.pop(), reverse=True)
 
         # Console logging
-        print(f"{utils.INFO_PREFIX}Assigned clue cards!")
+        print(f"{constants.INFO_PREFIX}Assigned clue cards!")
         print(ctx.game.clue_assignments)
 
     @commands.command(

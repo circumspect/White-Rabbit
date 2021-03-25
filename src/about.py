@@ -3,8 +3,9 @@ import asyncio
 # 3rd-party
 from discord.ext import commands
 # Local
-import utils
+import constants
 from localization import LOCALIZATION_DATA
+import utils
 
 loc = LOCALIZATION_DATA["commands"]["about"]
 
@@ -24,7 +25,7 @@ class About(commands.Cog):
         message = "\n".join([
             loc["credits"]["creators"],
             loc["credits"]["source"],
-            utils.SOURCE_URL,
+            constants.SOURCE_URL,
         ])
         message = utils.codeblock(message)
         asyncio.create_task(ctx.send(message))
@@ -39,7 +40,7 @@ class About(commands.Cog):
 
         message = "\n".join([
             loc["docs"]["documentation"],
-            utils.DOCS_SHORT_URL,
+            constants.DOCS_SHORT_URL,
         ])
         message = utils.codeblock(message)
         asyncio.create_task(ctx.send(message))
