@@ -28,8 +28,8 @@ RESOURCE_DIR = WHITE_RABBIT_DIR / "resources"
 IMAGE_DIR = RESOURCE_DIR / "Images"
 DEFAULT_LOCALIZED_IMAGES_DIR = IMAGE_DIR / DEFAULT_LOCALIZATION
 LOCALIZED_IMAGES_DIR = IMAGE_DIR / LANGUAGE_KEY
-PLAYER_RESOURCE_DIR = LOCALIZED_IMAGES_DIR / "Player Resources"
-POSTER_DIR = LOCALIZED_IMAGES_DIR / "Missing Person Posters"
+PLAYER_RESOURCE_DIR = LOCALIZED_IMAGES_DIR / "Player-Resources"
+POSTER_DIR = LOCALIZED_IMAGES_DIR / "Posters"
 TIMER_AUDIO = WHITE_RABBIT_DIR / "Alice is Missing Playlist.mp3"
 
 CARD_DIR = LOCALIZED_IMAGES_DIR / "Cards"
@@ -46,8 +46,8 @@ TEXT_EXPORT_DIR = EXPORT_DIR / "Text"
 
 # Easy access filepaths
 MASTER_PATHS = {
-    "guide": utils.get_image(PLAYER_RESOURCE_DIR, "Alice is Missing - Guide"),
-    "character_sheet": utils.get_image(PLAYER_RESOURCE_DIR, "Alice is Missing - Character Sheet"),
+    "guide": utils.get_image(PLAYER_RESOURCE_DIR, "Guide"),
+    "character_sheet": utils.get_image(PLAYER_RESOURCE_DIR, "Character-Sheet"),
     "intro": utils.get_image(CARD_DIR / "Misc", "Introduction"),
     "debrief": utils.get_image(CARD_DIR / "Misc", "Debrief"),
 }
