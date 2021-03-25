@@ -2,7 +2,7 @@ import os
 from pathlib import Path
 # Local
 import gamedata
-from localization import DEFAULT_LOCALIZATION, language_key
+from localization import DEFAULT_LOCALIZATION, LANGUAGE_KEY
 import utils
 
 # Links and bot info
@@ -27,7 +27,7 @@ RESOURCE_DIR = WHITE_RABBIT_DIR / "resources"
 
 IMAGE_DIR = RESOURCE_DIR / "Images"
 DEFAULT_LOCALIZED_IMAGES_DIR = IMAGE_DIR / DEFAULT_LOCALIZATION
-LOCALIZED_IMAGES_DIR = IMAGE_DIR / language_key
+LOCALIZED_IMAGES_DIR = IMAGE_DIR / LANGUAGE_KEY
 PLAYER_RESOURCE_DIR = LOCALIZED_IMAGES_DIR / "Player Resources"
 POSTER_DIR = LOCALIZED_IMAGES_DIR / "Missing Person Posters"
 TIMER_AUDIO = WHITE_RABBIT_DIR / "Alice is Missing Playlist.mp3"
