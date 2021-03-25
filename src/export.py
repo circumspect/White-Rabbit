@@ -242,8 +242,8 @@ class Export(commands.Cog):
             # Replace Discord's automatically added underscores with spaces
             filename = filename.replace("_", " ")
 
-            if filename.startswith("Alice Briarwood"):
-                ctx.game.alice = int(filename.split()[-1])
+            if filename.startswith("Alice-Briarwood"):
+                ctx.game.alice = int(filename.split("-")[-1])
                 break
 
         # Clues
@@ -271,35 +271,26 @@ class Export(commands.Cog):
                     continue
 
                 # Ignore character cards
-                if filename in gamedata.CHARACTERS.values():
+                if filename in gamedata.CHARACTERS.keys():
                     continue
 
                 # Motives
-                elif filename.split()[0] == "Motive":
-                    ctx.game.motives[name] = filename.split()[1]
+                elif filename.split("-")[0] == "Motive":
+                    ctx.game.motives[name] = filename.split("-")[1]
 
                 # Suspects
-                elif filename in gamedata.SUSPECTS.values():
-                    for suspect in gamedata.SUSPECTS:
-                        if filename == gamedata.SUSPECTS[suspect]:
-                            ctx.game.suspects_drawn[current_clue] = suspect
-                            if current_clue == 10:
-                                ctx.game.second_culprit = suspect
-                            break
+                elif filename in gamedata.SUSPECTS.keys():
+                    ctx.game.suspects_drawn[current_clue] = filename
+                    if current_clue == 10:
+                        ctx.game.second_culprit = filename
 
                 # Locations
-                elif filename in gamedata.LOCATIONS.values():
-                    for location in gamedata.LOCATIONS:
-                        if filename == gamedata.LOCATIONS[location]:
-                            ctx.game.locations_drawn[current_clue] = location
-                            break
+                elif filename in gamedata.LOCATIONS.keys():
+                    ctx.game.locations_drawn[current_clue] = filename
 
                 # Searching cards
-                elif filename in gamedata.SEARCHING.values():
-                    for item in gamedata.SEARCHING:
-                        if filename == gamedata.SEARCHING[item]:
-                            ctx.game.searching[name].append(item)
-                            break
+                elif filename in gamedata.SEARCHING.keys():
+                    ctx.game.searching[name].append(filename)
 
                 # Clue cards
                 else:
@@ -397,7 +388,7 @@ class Export(commands.Cog):
         )
 
         # Poster
-        poster = utils.get_image(constants.POSTER_DIR, f"Alice Briarwood {ctx.game.alice}")
+        poster = utils.get_image(constants.POSTER_DIR, f"Alice-Briarwood-{ctx.game.alice}")
         await loop.run_in_executor(
             None, pdf.image,
             *(str(poster), COVER_POSTER_X,
@@ -496,11 +487,11 @@ class Export(commands.Cog):
 
         # Character and motive cards
         name = gamedata.CHARACTERS[character]
-        card = utils.get_image(constants.CHARACTER_IMAGE_DIR, name)
+        card = utils.get_image(constants.CHARACTER_IMAGE_DIR, name.split()[0].lower())
         pdf.image(str(card), CHAR_CARD_LEFT, CHAR_CARD_TOP, CHAR_CARD_WIDTH)
 
         motive = ctx.game.motives[character]
-        card = utils.get_image(constants.MOTIVE_DIR, f"Motive {motive}")
+        card = utils.get_image(constants.MOTIVE_DIR, f"Motive-{motive}")
         pdf.image(str(card), CHAR_CARD_LEFT, MOTIVE_CARD_TOP, CHAR_CARD_WIDTH)
 
         # Clues
@@ -527,10 +518,10 @@ class Export(commands.Cog):
 
             # Suspect card
             if clue in ctx.game.suspects_drawn:
-                suspect = gamedata.SUSPECTS[ctx.game.suspects_drawn[clue]]
+                suspect = ctx.game.suspects_drawn[clue]
                 card = utils.get_image(constants.SUSPECT_IMAGE_DIR, suspect)
             elif clue in ctx.game.locations_drawn:
-                location = gamedata.LOCATIONS[ctx.game.locations_drawn[clue]]
+                location = ctx.game.locations_drawn[clue]
                 card = utils.get_image(constants.LOCATION_IMAGE_DIR, location)
 
             pdf.image(str(card), SUSPECT_CARD_LEFT, current_y, CLUE_CARD_WIDTH)

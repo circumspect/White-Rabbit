@@ -115,7 +115,7 @@ class Data:
         for character in CHARACTERS:
             self.searching[character] = []
 
-        self.search_cards = list(SEARCHING.values())
+        self.search_cards = list(SEARCHING.keys())
 
         # Voicemails
         self.voicemails = {}
