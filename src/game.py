@@ -279,7 +279,7 @@ class Game(commands.Cog):
                     second = random.choice(remaining_suspects)
 
                     # Send to clues channel
-                    path = utils.get_image(constants.SUSPECT_IMAGE_DIR, gamedata.SUSPECTS[second])
+                    path = utils.get_image(constants.SUSPECT_IMAGE_DIR, second)
                     channel = LOCALIZATION_DATA["channels"]["clues"][ctx.game.ten_char]
                     utils.send_image(channel, path, ctx)
 
