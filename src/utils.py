@@ -8,7 +8,7 @@ import re
 import discord
 # Local
 import gamedata
-from localization import DEFAULT_LOCALIZATION, LOCALIZATION_DATA, language_key
+from localization import DEFAULT_LOCALIZATION, LOCALIZATION_DATA, LANGUAGE_KEY
 from resources import ImageResource
 
 
@@ -47,7 +47,7 @@ def get_image(directory: Path, name: str) -> Path:
         parts = list(directory.parts)
         for i in range(len(parts)):
             if parts[i] == "White-Rabbit":
-                if parts[i+3] == language_key:
+                if parts[i+3] == LANGUAGE_KEY:
                     parts[i+3] = DEFAULT_LOCALIZATION
                     break
 
