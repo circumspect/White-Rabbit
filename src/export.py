@@ -251,7 +251,7 @@ class Export(commands.Cog):
             # Create blank values to fill out
             ctx.game.clue_assignments[name] = []
 
-            channel = ctx.text_channels[f"{name}-clues"]
+            channel = ctx.text_channels[LOCALIZATION_DATA["channels"]["clues"][name]]
             current_clue = 90
             image_list = list(itertools.chain.from_iterable([
                 message.attachments
