@@ -271,12 +271,12 @@ class Export(commands.Cog):
                     continue
 
                 # Ignore character cards
-                if filename in gamedata.CHARACTERS.values():
+                if filename in gamedata.CHARACTERS.keys():
                     continue
 
                 # Motives
                 elif filename.split("-")[0] == "Motive":
-                    ctx.game.motives[name] = filename.split()[1]
+                    ctx.game.motives[name] = filename.split("-")[1]
 
                 # Suspects
                 elif filename in gamedata.SUSPECTS.keys():
@@ -487,7 +487,7 @@ class Export(commands.Cog):
 
         # Character and motive cards
         name = gamedata.CHARACTERS[character]
-        card = utils.get_image(constants.CHARACTER_IMAGE_DIR, name)
+        card = utils.get_image(constants.CHARACTER_IMAGE_DIR, name.split()[0].lower())
         pdf.image(str(card), CHAR_CARD_LEFT, CHAR_CARD_TOP, CHAR_CARD_WIDTH)
 
         motive = ctx.game.motives[character]
@@ -518,10 +518,10 @@ class Export(commands.Cog):
 
             # Suspect card
             if clue in ctx.game.suspects_drawn:
-                suspect = gamedata.SUSPECTS[ctx.game.suspects_drawn[clue]]
+                suspect = ctx.game.suspects_drawn[clue]
                 card = utils.get_image(constants.SUSPECT_IMAGE_DIR, suspect)
             elif clue in ctx.game.locations_drawn:
-                location = gamedata.LOCATIONS[ctx.game.locations_drawn[clue]]
+                location = ctx.game.locations_drawn[clue]
                 card = utils.get_image(constants.LOCATION_IMAGE_DIR, location)
 
             pdf.image(str(card), SUSPECT_CARD_LEFT, current_y, CLUE_CARD_WIDTH)
