@@ -53,11 +53,11 @@ MASTER_PATHS = {
 }
 
 for character in gamedata.CHARACTERS:
-    MASTER_PATHS[character] = utils.get_image(CHARACTER_IMAGE_DIR, gamedata.CHARACTERS[character])
+    MASTER_PATHS[character] = utils.get_image(CHARACTER_IMAGE_DIR, character)
 for suspect in gamedata.SUSPECTS:
-    MASTER_PATHS[suspect] = utils.get_image(SUSPECT_IMAGE_DIR, gamedata.SUSPECTS[suspect])
+    MASTER_PATHS[suspect] = utils.get_image(SUSPECT_IMAGE_DIR, suspect)
 for location in gamedata.LOCATIONS:
-    MASTER_PATHS[location] = utils.get_image(LOCATION_IMAGE_DIR, gamedata.LOCATIONS[location])
+    MASTER_PATHS[location] = utils.get_image(LOCATION_IMAGE_DIR, location)
 
 # Make export folders if they don't exist
 if not os.path.isdir(EXPORT_DIR):
