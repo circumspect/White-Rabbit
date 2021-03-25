@@ -242,8 +242,8 @@ class Export(commands.Cog):
             # Replace Discord's automatically added underscores with spaces
             filename = filename.replace("_", " ")
 
-            if filename.startswith("Alice Briarwood"):
-                ctx.game.alice = int(filename.split()[-1])
+            if filename.startswith("Alice-Briarwood"):
+                ctx.game.alice = int(filename.split("-")[-1])
                 break
 
         # Clues
@@ -275,7 +275,7 @@ class Export(commands.Cog):
                     continue
 
                 # Motives
-                elif filename.split("_")[0] == "Motive":
+                elif filename.split("-")[0] == "Motive":
                     ctx.game.motives[name] = filename.split()[1]
 
                 # Suspects
@@ -388,7 +388,7 @@ class Export(commands.Cog):
         )
 
         # Poster
-        poster = utils.get_image(constants.POSTER_DIR, f"Alice Briarwood {ctx.game.alice}")
+        poster = utils.get_image(constants.POSTER_DIR, f"Alice-Briarwood-{ctx.game.alice}")
         await loop.run_in_executor(
             None, pdf.image,
             *(str(poster), COVER_POSTER_X,
@@ -491,7 +491,7 @@ class Export(commands.Cog):
         pdf.image(str(card), CHAR_CARD_LEFT, CHAR_CARD_TOP, CHAR_CARD_WIDTH)
 
         motive = ctx.game.motives[character]
-        card = utils.get_image(constants.MOTIVE_DIR, f"Motive_{motive}")
+        card = utils.get_image(constants.MOTIVE_DIR, f"Motive-{motive}")
         pdf.image(str(card), CHAR_CARD_LEFT, MOTIVE_CARD_TOP, CHAR_CARD_WIDTH)
 
         # Clues
