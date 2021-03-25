@@ -6,7 +6,7 @@ from localization import DEFAULT_LOCALIZATION, LANGUAGE_KEY
 import utils
 
 # Links and bot info
-VERSION = "0.8.0"
+VERSION = "0.8.1"
 DOCS_URL = "https://white-rabbit.readthedocs.io/"
 DOCS_SHORT_URL = "https://white-rabbit.rtfd.io/"
 SOURCE_URL = "https://github.com/circumspect/White-Rabbit"
@@ -28,28 +28,28 @@ RESOURCE_DIR = WHITE_RABBIT_DIR / "resources"
 IMAGE_DIR = RESOURCE_DIR / "images"
 DEFAULT_LOCALIZED_IMAGES_DIR = IMAGE_DIR / DEFAULT_LOCALIZATION
 LOCALIZED_IMAGES_DIR = IMAGE_DIR / LANGUAGE_KEY
-PLAYER_RESOURCE_DIR = LOCALIZED_IMAGES_DIR / "Player-Resources"
-POSTER_DIR = LOCALIZED_IMAGES_DIR / "Posters"
+PLAYER_RESOURCE_DIR = LOCALIZED_IMAGES_DIR / "player-resources"
+POSTER_DIR = LOCALIZED_IMAGES_DIR / "posters"
 TIMER_AUDIO = WHITE_RABBIT_DIR / "Alice is Missing Playlist.mp3"
 
-CARD_DIR = LOCALIZED_IMAGES_DIR / "Cards"
-CHARACTER_IMAGE_DIR = CARD_DIR / "Characters"
-MOTIVE_DIR = CARD_DIR / "Motives"
-SUSPECT_IMAGE_DIR = CARD_DIR / "Suspects"
-LOCATION_IMAGE_DIR = CARD_DIR / "Locations"
-CLUE_DIR = CARD_DIR / "Clues"
-SEARCHING_DIR = CARD_DIR / "Searching"
+CARD_DIR = LOCALIZED_IMAGES_DIR / "cards"
+CHARACTER_IMAGE_DIR = CARD_DIR / "characters"
+MOTIVE_DIR = CARD_DIR / "motives"
+SUSPECT_IMAGE_DIR = CARD_DIR / "suspects"
+LOCATION_IMAGE_DIR = CARD_DIR / "locations"
+CLUE_DIR = CARD_DIR / "clues"
+SEARCHING_DIR = CARD_DIR / "searching"
 
 EXPORT_DIR = WHITE_RABBIT_DIR / "exports"
-PDF_EXPORT_DIR = EXPORT_DIR / "PDFs"
-TEXT_EXPORT_DIR = EXPORT_DIR / "Text"
+PDF_EXPORT_DIR = EXPORT_DIR / "pdfs"
+TEXT_EXPORT_DIR = EXPORT_DIR / "text"
 
 # Easy access filepaths
 MASTER_PATHS = {
     "guide": utils.get_image(PLAYER_RESOURCE_DIR, "Guide"),
     "character_sheet": utils.get_image(PLAYER_RESOURCE_DIR, "Character-Sheet"),
-    "intro": utils.get_image(CARD_DIR / "Misc", "Introduction"),
-    "debrief": utils.get_image(CARD_DIR / "Misc", "Debrief"),
+    "intro": utils.get_image(CARD_DIR / "misc", "Introduction"),
+    "debrief": utils.get_image(CARD_DIR / "misc", "Debrief"),
 }
 
 for character in gamedata.CHARACTERS:
