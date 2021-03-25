@@ -53,7 +53,7 @@ class Manual(commands.Cog):
 
         ctx.game.alice = choice
 
-        alice = utils.get_image(constants.POSTER_DIR, f"Alice Briarwood {ctx.game.alice}")
+        alice = utils.get_image(constants.POSTER_DIR, f"Alice-Briarwood-{ctx.game.alice}")
         utils.send_image(LOCALIZATION_DATA["channels"]["resources"], alice, ctx)
 
     @commands.command(
@@ -95,7 +95,7 @@ class Manual(commands.Cog):
             motive = ctx.game.motives[name]
             utils.send_image(
                 channel,
-                utils.get_image(constants.MOTIVE_DIR, f"Motive_{motive}"),
+                utils.get_image(constants.MOTIVE_DIR, f"Motive-{motive}"),
                 ctx
             )
 
