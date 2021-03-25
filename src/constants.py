@@ -6,7 +6,7 @@ from localization import DEFAULT_LOCALIZATION, LANGUAGE_KEY
 import utils
 
 # Links and bot info
-VERSION = "0.6.0"
+VERSION = "0.7.0"
 DOCS_URL = "https://white-rabbit.readthedocs.io/"
 DOCS_SHORT_URL = "https://white-rabbit.rtfd.io/"
 SOURCE_URL = "https://github.com/circumspect/White-Rabbit"
