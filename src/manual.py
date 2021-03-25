@@ -95,7 +95,7 @@ class Manual(commands.Cog):
             motive = ctx.game.motives[name]
             utils.send_image(
                 channel,
-                utils.get_image(constants.MOTIVE_DIR, f"Motive {motive}"),
+                utils.get_image(constants.MOTIVE_DIR, f"Motive_{motive}"),
                 ctx
             )
 

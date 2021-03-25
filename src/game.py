@@ -54,13 +54,13 @@ class Game(commands.Cog):
 
         # Send characters, suspects, and locations to appropriate channels
         for character in sorted(gamedata.CHARACTERS.keys()):
-            filepath = utils.get_image(constants.CHARACTER_IMAGE_DIR, gamedata.CHARACTERS[character])
+            filepath = utils.get_image(constants.CHARACTER_IMAGE_DIR, character)
             utils.send_image(LOCALIZATION_DATA["channels"]["cards"]["character-cards"], filepath, ctx)
         for suspect in sorted(gamedata.SUSPECTS.keys()):
-            filepath = utils.get_image(constants.SUSPECT_IMAGE_DIR, gamedata.SUSPECTS[suspect])
+            filepath = utils.get_image(constants.SUSPECT_IMAGE_DIR, suspect)
             utils.send_image(LOCALIZATION_DATA["channels"]["cards"]["suspect-cards"], filepath, ctx)
         for location in sorted(gamedata.LOCATIONS.keys()):
-            filepath = utils.get_image(constants.LOCATION_IMAGE_DIR, gamedata.LOCATIONS[location])
+            filepath = utils.get_image(constants.LOCATION_IMAGE_DIR, location)
             utils.send_image(LOCALIZATION_DATA["channels"]["cards"]["location-cards"], filepath, ctx)
 
         # Instructions for Charlie Barnes
