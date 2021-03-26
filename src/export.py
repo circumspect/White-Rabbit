@@ -169,7 +169,7 @@ PAGE_NUMBER_FONT = WATERMARK_FONTS[1]
 
 
 # Font paths
-FONT_DIR = constants.RESOURCE_DIR / "Fonts"
+FONT_DIR = constants.RESOURCE_DIR / "fonts"
 
 BUILT_DIR = FONT_DIR / "built_titling"
 BUILT_TITLING_RG = BUILT_DIR / "built titling rg.ttf"
