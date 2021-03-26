@@ -176,7 +176,7 @@ BUILT_TITLING_RG = BUILT_DIR / "built titling rg.ttf"
 BUILT_TITLING_SB = BUILT_DIR / "built titling sb.ttf"
 BUILT_TITLING_BD = BUILT_DIR / "built titling bd.ttf"
 
-ABEL_DIR = FONT_DIR / "Abel"
+ABEL_DIR = FONT_DIR / "abel"
 ABEL_REGULAR = ABEL_DIR / "Abel-Regular.ttf"
 
 
