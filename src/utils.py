@@ -3,6 +3,7 @@ import asyncio
 import math
 import random
 from pathlib import Path
+from os.path import join
 import re
 # 3rd-party
 import discord
@@ -43,15 +44,14 @@ def get_image(directory: Path, name: str) -> Path:
     img = ImageResource(ImageResource.IMAGE_EXTENSIONS)
     try:
         return img.get(directory, name)
-    except FileNotFoundError:
+    except FileNotFoundError as err:
         parts = list(directory.parts)
-        for i in range(len(parts)):
-            if parts[i] == "White-Rabbit":
-                if parts[i+3] == LANGUAGE_KEY:
-                    parts[i+3] = DEFAULT_LOCALIZATION
-                    break
-
-        return img.get(Path("/".join(parts)), name)
+        try:
+            idx = parts.index(LANGUAGE_KEY)
+            parts[idx] = DEFAULT_LOCALIZATION
+            return img.get(Path(join(*parts)), name)
+        except ValueError:
+            raise err
 
 
 def send_image(channel, filepath, ctx=None):
