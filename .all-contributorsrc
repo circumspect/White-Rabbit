@@ -47,22 +47,13 @@
       ]
     },
     {
-      "login": "skylerberg",
-      "name": "Skyler Berg",
-      "avatar_url": "https://avatars.githubusercontent.com/u/4156131?v=4",
-      "profile": "http://skylerberg.com",
+      "login": "Ylkhana",
+      "name": "Ylkhana",
+      "avatar_url": "https://avatars.githubusercontent.com/u/48254532?v=4",
+      "profile": "https://github.com/Ylkhana",
       "contributions": [
         "code",
-        "doc"
-      ]
-    },
-    {
-      "login": "Creonalia",
-      "name": "Creonalia",
-      "avatar_url": "https://avatars.githubusercontent.com/u/52385967?v=4",
-      "profile": "https://github.com/Creonalia",
-      "contributions": [
-        "code"
+        "translation"
       ]
     }
   ],
