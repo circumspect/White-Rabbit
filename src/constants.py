@@ -34,6 +34,7 @@ TIMER_AUDIO = WHITE_RABBIT_DIR / "Alice is Missing Playlist.mp3"
 
 CARD_DIR = LOCALIZED_IMAGES_DIR / "cards"
 CHARACTER_IMAGE_DIR = CARD_DIR / "characters"
+INTCHAR_IMAGE_DIR = CARD_DIR / "intchar"
 MOTIVE_DIR = CARD_DIR / "motives"
 SUSPECT_IMAGE_DIR = CARD_DIR / "suspects"
 LOCATION_IMAGE_DIR = CARD_DIR / "locations"
