@@ -54,7 +54,7 @@ class Game(commands.Cog):
 
         # Send characters, suspects, and locations to appropriate channels
         for character in sorted(gamedata.CHARACTERS.keys()):
-            filepath = utils.get_image(constants.CHARACTER_IMAGE_DIR, character)
+            filepath = utils.get_image(constants.INTCHAR_IMAGE_DIR, character)
             utils.send_image(LOCALIZATION_DATA["channels"]["cards"]["character-cards"], filepath, ctx)
         for suspect in sorted(gamedata.SUSPECTS.keys()):
             filepath = utils.get_image(constants.SUSPECT_IMAGE_DIR, suspect)
