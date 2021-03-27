@@ -15,9 +15,11 @@ not be accepted, as they break the bot.
 
 ### Manual Testing
 
-Before submitting a pull request, do a test run of Alice is Missing as follows:
+Before submitting a pull request which changes the code, do a test run of
+Alice is Missing as follows:
 
-- Start the bot (for instructions on how to do so, see the documentation [here](https://white-rabbit.readthedocs.io/en/stable/user-guide/installation.html)).
+- Start the bot (for instructions on how to do so, see the documentation
+  [here](https://white-rabbit.readthedocs.io/en/stable/user-guide/installation.html)).
 - Add two more accounts to the server (in order for the bot to see enough
   players) and assign yourself and the others character roles. You can also do
   this with only one extra account by assigning a role to the bot. Make sure
