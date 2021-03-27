@@ -1,7 +1,6 @@
 # Built-in
 import asyncio
 import sys
-from os import environ
 # 3rd-party
 import discord
 from discord.ext import commands
@@ -9,6 +8,7 @@ from dotenv import dotenv_values
 import requests
 # Local
 import constants
+import envvars
 import gamedata
 import utils
 from localization import LOCALIZATION_DATA
@@ -122,7 +122,7 @@ for plugin in PLUGINS:
 
 # Import bot token
 try:
-    token = environ.get('TOKEN') or dotenv_values(constants.ENV_FILE)["TOKEN"]
+    token = envvars.get_env_var("TOKEN")
     print("Logging in...")
     bot.run(token)
 except FileNotFoundError:
