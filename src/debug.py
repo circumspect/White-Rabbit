@@ -20,7 +20,10 @@ class Debug(commands.Cog):
 
         try:
             with open(constants.DEV_ID_FILE) as f:
-                self.dev_ids += [int(line.strip()) for line in f.readlines()]
+                for line in f.readlines():
+                    line = line.strip()
+                    if line:
+                        self.dev_ids.append(int(line))
         except FileNotFoundError:
             # Create file if it doesn't exist
             print("No " + constants.DEV_ID_FILE.name + " found, making empty file")
