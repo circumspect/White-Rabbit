@@ -16,6 +16,56 @@
         "design",
         "maintenance"
       ]
+    },
+    {
+      "login": "Creonalia",
+      "name": "Creonalia",
+      "avatar_url": "https://avatars.githubusercontent.com/u/52385967?v=4",
+      "profile": "https://github.com/Creonalia",
+      "contributions": [
+        "code"
+      ]
+    },
+    {
+      "login": "skylerberg",
+      "name": "Skyler Berg",
+      "avatar_url": "https://avatars.githubusercontent.com/u/4156131?v=4",
+      "profile": "http://skylerberg.com",
+      "contributions": [
+        "code",
+        "doc"
+      ]
+    },
+    {
+      "login": "tannerstephens",
+      "name": "Tanner Stephens",
+      "avatar_url": "https://avatars.githubusercontent.com/u/8868033?v=4",
+      "profile": "http://0x99.net",
+      "contributions": [
+        "code",
+        "doc"
+      ]
+    },
+    {
+      "login": "Ylkhana",
+      "name": "Ylkhana",
+      "avatar_url": "https://avatars.githubusercontent.com/u/48254532?v=4",
+      "profile": "https://github.com/Ylkhana",
+      "contributions": [
+        "code",
+        "translation",
+        "bug"
+      ]
+    },
+    {
+      "login": "theo-ardouin",
+      "name": "Théo Ardouin",
+      "avatar_url": "https://avatars.githubusercontent.com/u/13322753?v=4",
+      "profile": "https://github.com/theo-ardouin",
+      "contributions": [
+        "code",
+        "bug"
+      ]
     }
   ],
   "contributorsPerLine": 7,
