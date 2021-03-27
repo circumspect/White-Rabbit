@@ -55,6 +55,16 @@
         "translation",
         "bug"
       ]
+    },
+    {
+      "login": "theo-ardouin",
+      "name": "Théo Ardouin",
+      "avatar_url": "https://avatars.githubusercontent.com/u/13322753?v=4",
+      "profile": "https://github.com/theo-ardouin",
+      "contributions": [
+        "code",
+        "bug"
+      ]
     }
   ],
   "contributorsPerLine": 7,
