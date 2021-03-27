@@ -20,7 +20,9 @@ Resetting the server
 You can wipe all messages from the server using ``!wipe``. This is useful
 if, for example, you called ``!init`` twice and now have two copies of each
 character and motive card in the clues channels. Note that after running this
-you will have to start setup again from the beginning.
+you will have to start setup again from the beginning. If you wish to only
+wipe specific channels, tag them when calling ``!wipe``, e.g.
+``!wipe #discussion #bot-channel``.
 
 ``!reset_perms`` sets the permissions for each channel back to the default.
 This is mainly used if ``!show_all`` was called by accident.
