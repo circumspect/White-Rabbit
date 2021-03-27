@@ -44,6 +44,16 @@
         "code",
         "doc"
       ]
+    },
+    {
+      "login": "Ylkhana",
+      "name": "Ylkhana",
+      "avatar_url": "https://avatars.githubusercontent.com/u/48254532?v=4",
+      "profile": "https://github.com/Ylkhana",
+      "contributions": [
+        "code",
+        "translation"
+      ]
     }
   ],
   "contributorsPerLine": 7,
