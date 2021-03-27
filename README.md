@@ -1,6 +1,6 @@
 # The White Rabbit
 <!-- ALL-CONTRIBUTORS-BADGE:START - Do not remove or modify this section -->
-[![All Contributors](https://img.shields.io/badge/all_contributors-1-orange.svg?style=flat-square)](#contributors-)
+[![All Contributors](https://img.shields.io/badge/all_contributors-2-orange.svg?style=flat-square)](#contributors-)
 <!-- ALL-CONTRIBUTORS-BADGE:END -->
 
 ![GitHub](https://img.shields.io/github/license/circumspect/White-Rabbit)
@@ -34,6 +34,7 @@ Thanks goes to these wonderful people ([emoji key](https://allcontributors.org/d
 <table>
   <tr>
     <td align="center"><a href="https://github.com/circumspect"><img src="https://avatars.githubusercontent.com/u/40770208?v=4?s=100" width="100px;" alt=""/><br /><sub><b>circumspect</b></sub></a><br /><a href="https://github.com/circumspect/White-Rabbit/commits?author=circumspect" title="Code">💻</a> <a href="https://github.com/circumspect/White-Rabbit/commits?author=circumspect" title="Documentation">📖</a> <a href="#design-circumspect" title="Design">🎨</a></td>
+    <td align="center"><a href="http://skylerberg.com"><img src="https://avatars.githubusercontent.com/u/4156131?v=4?s=100" width="100px;" alt=""/><br /><sub><b>Skyler Berg</b></sub></a><br /><a href="https://github.com/circumspect/White-Rabbit/commits?author=skylerberg" title="Code">💻</a> <a href="https://github.com/circumspect/White-Rabbit/commits?author=skylerberg" title="Documentation">📖</a></td>
   </tr>
 </table>
 
