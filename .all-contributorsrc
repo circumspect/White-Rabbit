@@ -15,6 +15,15 @@
         "doc",
         "design"
       ]
+    },
+    {
+      "login": "Creonalia",
+      "name": "Creonalia",
+      "avatar_url": "https://avatars.githubusercontent.com/u/52385967?v=4",
+      "profile": "https://github.com/Creonalia",
+      "contributions": [
+        "code"
+      ]
     }
   ],
   "contributorsPerLine": 7,
