@@ -55,7 +55,8 @@
       "contributions": [
         "code",
         "translation",
-        "bug"
+        "bug",
+        "design"
       ]
     },
     {
@@ -74,5 +75,6 @@
   "projectOwner": "circumspect",
   "repoType": "github",
   "repoHost": "https://github.com",
-  "skipCi": true
+  "skipCi": true,
+  "commitConvention": "none"
 }
