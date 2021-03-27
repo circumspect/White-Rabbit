@@ -6,7 +6,7 @@ from localization import DEFAULT_LOCALIZATION, LANGUAGE_KEY
 import utils
 
 # Links and bot info
-VERSION = "0.8.3"
+VERSION = "0.8.4"
 DOCS_URL = "https://white-rabbit.readthedocs.io/"
 DOCS_SHORT_URL = "https://white-rabbit.rtfd.io/"
 SOURCE_URL = "https://github.com/circumspect/White-Rabbit"
@@ -51,6 +51,17 @@ MASTER_PATHS = {
     "character_sheet": utils.get_image(PLAYER_RESOURCE_DIR, "Character-Sheet"),
     "intro": utils.get_image(CARD_DIR / "misc", "Introduction"),
     "debrief": utils.get_image(CARD_DIR / "misc", "Debrief"),
+}
+
+LEGACY_FILENAMES = {
+    "mr. halvert": "halvert",
+    "train-station": "station",
+    # Searching cards
+    "10000-dollars": "10k",
+    "bottle-of-alcohol": "alcohol",
+    "broken-switchblade": "blade",
+    "drops-of-blood": "blood",
+    "white-van": "van",
 }
 
 for character in gamedata.CHARACTERS:
