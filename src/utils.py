@@ -48,7 +48,7 @@ def rabbit_path(path: Path):
     parts = list(path.parts)
     start = 1
     for i in range(len(parts)):
-        if parts[i] == "White-Rabbit":
+        if parts[len(parts) - i - 1] == "White-Rabbit":
             start = i + 1
             break
     outpath = Path("/".join(parts[start:]))
