@@ -52,7 +52,6 @@ def rabbit_path(path: Path):
             start = i + 1
 
     outpath = Path("/".join(parts[start:]))
-    print(outpath)
     return outpath
 
 
@@ -98,7 +97,6 @@ def get_image(directory: Path, name: str) -> Union[Path, str]:
         try:
             return find_url(localized_url, ImageResource.IMAGE_EXTENSIONS)
         except FileNotFoundError:
-            print(parts)
             if parts[2] == LANGUAGE_KEY:
                 fallback = list(parts)
                 fallback[2] = DEFAULT_LOCALIZATION
