@@ -236,13 +236,12 @@ class Export(commands.Cog):
                 message.attachments
                 async for message in channel.history(limit=None)
             ]))
+
         for image in image_list:
             # Get the image name
-            filename = Path(urlparse(image.url).path).stem
-            # Replace Discord's automatically added underscores with spaces
-            filename = filename.replace("_", " ")
+            filename = self.parse_filename(image.url)
 
-            if filename.startswith("Alice-Briarwood"):
+            if filename.startswith("alice-briarwood"):
                 ctx.game.alice = int(filename.split("-")[-1])
                 break
 
@@ -257,25 +256,16 @@ class Export(commands.Cog):
                 message.attachments
                 async for message in channel.history(limit=None, oldest_first=True)
             ]))
+
             for image in image_list:
-                # Get the image name
-                filename = Path(urlparse(image.url).path).stem
-                suffix = Path(urlparse(image.url).path).suffix
-
-                # Replace Discord's automatically added underscores with spaces
-                filename = filename.replace("_", " ")
-
-                # Legacy check
-                if filename == "Mr. Halvert":
-                    ctx.game.suspects_drawn[current_clue] = "halvert"
-                    continue
+                filename = self.parse_filename(image.url)
 
                 # Ignore character cards
                 if filename in gamedata.CHARACTERS.keys():
                     continue
 
                 # Motives
-                elif filename.split("-")[0] == "Motive":
+                elif filename.split("-")[0] == "motive":
                     ctx.game.motives[name] = filename.split("-")[1]
 
                 # Suspects
@@ -315,7 +305,7 @@ class Export(commands.Cog):
                     except ValueError:
                         # If still can't determine image type, log to console
                         # and ignore
-                        print(f"{constants.WARNING_PREFIX}Unknown image found during export: {filename}{suffix}")
+                        print(f"{constants.WARNING_PREFIX}Unknown image found during export: {filename}")
 
         # Look for coin flip
         channel = ctx.text_channels[LOCALIZATION_DATA["channels"]["clues"][ctx.game.ten_char]]
@@ -335,6 +325,19 @@ class Export(commands.Cog):
             if not ctx.game.voicemails[character]:
                 voicemail = utils.clean_message(ctx, message.clean_content)
                 ctx.game.voicemails[character] = voicemail.replace("|", "").replace("\n", "")
+
+    @staticmethod
+    def parse_filename(url: str) -> str:
+        filename = Path(urlparse(url).path).stem.replace("_", "-").lower()
+        # Fallback from older versions
+        if filename == "mr. halvert":
+            return "halvert"
+        tmp = filename.split("-")
+        if tmp[0] in gamedata.SUSPECTS.keys():
+            return tmp[0]
+        if tmp[0] in gamedata.CHARACTERS.keys():
+            return tmp[0]
+        return filename
 
     @commands.command(
         name=loc["pdf"]["name"],
@@ -433,8 +436,11 @@ class Export(commands.Cog):
 
         # Chat message exports
         for a, b in pm_channels:
-            channel = LOCALIZATION_DATA["channels"]["texts"][f"{a}-{b}"]
-            channel = ctx.text_channels[channel]
+            try:
+                channel = ctx.text_channels[LOCALIZATION_DATA["channels"]["texts"][f"{a}-{b}"]]
+            except KeyError:
+                # Fallback from older versions
+                channel = ctx.text_channels[LOCALIZATION_DATA["channels"]["texts"][f"pm-{a}-{b}"]]
 
             # Make sure channel has messages that will be counted
             empty = True
