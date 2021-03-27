@@ -44,7 +44,8 @@
       "profile": "http://0x99.net",
       "contributions": [
         "code",
-        "doc"
+        "doc",
+        "bug"
       ]
     },
     {
