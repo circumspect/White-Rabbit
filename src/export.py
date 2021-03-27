@@ -3,6 +3,7 @@ import asyncio
 import itertools
 from pathlib import Path
 import shutil
+from timeit import default_timer as timer
 from urllib.parse import urlparse
 # 3rd-party
 import discord
@@ -227,6 +228,21 @@ class Export(commands.Cog):
 
         return url_list
 
+    @staticmethod
+    def parse_filename(url: str) -> str:
+        filename = Path(urlparse(url).path).stem.replace("_", "-").lower()
+
+        try:
+            # Checks for filenames from older versions
+            return filepaths.LEGACY_FILENAMES[filename]
+        except KeyError:
+            tmp = filename.split("-")
+            if tmp[0] in gamedata.SUSPECTS.keys():
+                return tmp[0]
+            if tmp[0] in gamedata.CHARACTERS.keys():
+                return tmp[0]
+            return filename
+
     async def import_data(self, ctx):
         """imports data from message history"""
 
@@ -332,21 +348,6 @@ class Export(commands.Cog):
                 voicemail = utils.clean_message(ctx, message.clean_content)
                 ctx.game.voicemails[character] = voicemail.replace("|", "").replace("\n", "")
 
-    @staticmethod
-    def parse_filename(url: str) -> str:
-        filename = Path(urlparse(url).path).stem.replace("_", "-").lower()
-
-        try:
-            # Checks for filenames from older versions
-            return filepaths.LEGACY_FILENAMES[filename]
-        except KeyError:
-            tmp = filename.split("-")
-            if tmp[0] in gamedata.SUSPECTS.keys():
-                return tmp[0]
-            if tmp[0] in gamedata.CHARACTERS.keys():
-                return tmp[0]
-            return filename
-
     @commands.command(
         name=loc["pdf"]["name"],
         aliases=loc["pdf"]["aliases"],
@@ -354,6 +355,9 @@ class Export(commands.Cog):
     )
     async def pdf(self, ctx, file_name=""):
         """Exports the game to a PDF"""
+
+        # Start timer
+        start_time = timer()
 
         # Get event loop
         loop = asyncio.get_running_loop()
@@ -476,6 +480,11 @@ class Export(commands.Cog):
 
         out = (filepaths.PDF_EXPORT_DIR / file_name).with_suffix(".pdf")
         pdf.output(str(out))
+
+        end_time = timer()
+        time = constants.TIMER_FORMAT%(end_time - start_time)
+        print(f"PDF generated in {time} seconds.")
+
         await ctx.send(loc["pdf"]["PDFCreated"])
 
     def heading(self, ctx, pdf, title: str, font,
