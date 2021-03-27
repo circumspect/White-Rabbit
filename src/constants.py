@@ -52,6 +52,17 @@ MASTER_PATHS = {
     "debrief": utils.get_image(CARD_DIR / "misc", "Debrief"),
 }
 
+LEGACY_FILENAMES = {
+    "mr. halvert": "halvert",
+    "train-station": "station",
+    # Searching cards
+    "10000-dollars": "10k",
+    "bottle-of-alcohol": "alcohol",
+    "broken-switchblade": "blade",
+    "drops-of-blood": "blood",
+    "white-van": "van",
+}
+
 for character in gamedata.CHARACTERS:
     MASTER_PATHS[character] = utils.get_image(CHARACTER_IMAGE_DIR, character)
 for suspect in gamedata.SUSPECTS:
