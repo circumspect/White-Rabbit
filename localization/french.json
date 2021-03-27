@@ -85,13 +85,20 @@
                 "description": "Réinitialise les permissions de tous les salons (annule !révèle)"
             },
 
+            "reset_roles": {
+                "name": "reset_roles",
+                "aliases": [],
+                "description": "Removes character roles and nicknames from all players",
+
+                "NoteAboutOwner": "Note : cette action n'impacte pas le propriétaire du serveur."
+            },
+
             "reset": {
                 "name": "reset",
                 "aliases": [],
                 "description": "Reset intégral du serveur",
 
-                "ResettingServer": "Reset du serveur en cours !",
-                "NoteAboutOwner": "Note: cette action n'impacte pas le propriétaire du serveur."
+                "ResettingServer": "Reset du serveur en cours !"
             }
         },
 

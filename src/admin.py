@@ -102,6 +102,26 @@ class Admin(commands.Cog):
                         asyncio.create_task(channel.set_permissions(role, view_channel=True))
 
     @commands.command(
+        name=loc["reset_roles"]["name"],
+        aliases=loc["reset_roles"]["aliases"],
+        description=loc["reset_roles"]["description"]
+    )
+    async def reset_roles(self, ctx):
+        # Removes character roles from everyone
+        for member in ctx.guild.members:
+            is_player = False
+            if not member.bot:
+                for role in member.roles:
+                    if role.name.lower() in gamedata.CHARACTERS.keys():
+                        await member.remove_roles(role)
+                        is_player = True
+                if is_player:
+                    if member is ctx.guild.owner:
+                        await ctx.send(loc["reset_roles"]["NoteAboutOwner"])
+                    else:
+                        await member.edit(nick=None)
+
+    @commands.command(
         name=loc["reset"]["name"],
         aliases=loc["reset"]["aliases"],
         description=loc["reset"]["description"]
@@ -111,19 +131,12 @@ class Admin(commands.Cog):
 
         # Confirm command to user
         await ctx.send(loc["reset"]["ResettingServer"])
-        await ctx.send(loc["reset"]["NoteAboutOwner"])
 
         # Console logging
         print(f'{constants.INFO_PREFIX}Resetting server: "{ctx.guild.name}" (ID: {ctx.guild.id})')
 
-        # Clear roles and nicknames from all users, skipping bots and
-        # the server owner
-        for member in ctx.guild.members:
-            if not member.bot and member is not ctx.guild.owner:
-                asyncio.create_task(member.edit(nick=None, roles=[]))
-
         # Erase all messages and reset channel permissions
-        await asyncio.gather(self.wipe(ctx), await self.reset_perms(ctx))
+        await asyncio.gather(self.wipe(ctx), self.reset_perms(ctx), self.reset_roles(ctx))
 
 
 def setup(bot):
