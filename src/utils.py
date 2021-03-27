@@ -1,9 +1,9 @@
 # Built-in
 import asyncio
 import math
-import random
 from os.path import join
 from pathlib import Path
+import random
 import re
 from typing import Union
 # 3rd-party

@@ -5,6 +5,7 @@ from os import environ
 from discord.ext import commands
 # Local
 import constants
+import filepaths
 import gamedata
 import utils
 from localization import LOCALIZATION_DATA
@@ -19,15 +20,15 @@ class Debug(commands.Cog):
         self.dev_ids = []
 
         try:
-            with open(constants.DEV_ID_FILE) as f:
+            with open(filepaths.DEV_ID_FILE) as f:
                 for line in f.readlines():
                     line = line.strip()
                     if line:
                         self.dev_ids.append(int(line))
         except FileNotFoundError:
             # Create file if it doesn't exist
-            print("No " + constants.DEV_ID_FILE.name + " found, making empty file")
-            with open(constants.DEV_ID_FILE, 'x') as f:
+            print("No " + filepaths.DEV_ID_FILE.name + " found, making empty file")
+            with open(filepaths.DEV_ID_FILE, 'x') as f:
                 pass
 
         if environ.get("DEV_ID"):

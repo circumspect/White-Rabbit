@@ -10,6 +10,7 @@ from discord.ext import commands
 from fpdf import FPDF
 # Local
 import constants
+import filepaths
 import gamedata
 import utils
 from localization import LOCALIZATION_DATA
@@ -169,7 +170,7 @@ PAGE_NUMBER_FONT = WATERMARK_FONTS[1]
 
 
 # Font paths
-FONT_DIR = constants.RESOURCE_DIR / "fonts"
+FONT_DIR = filepaths.RESOURCE_DIR / "fonts"
 
 BUILT_DIR = FONT_DIR / "built_titling"
 BUILT_TITLING_RG = BUILT_DIR / "built titling rg.ttf"
@@ -332,7 +333,7 @@ class Export(commands.Cog):
 
         try:
             # Checks for filenames from older versions
-            return constants.LEGACY_FILENAMES[filename]
+            return filepaths.LEGACY_FILENAMES[filename]
         except KeyError:
             tmp = filename.split("-")
             if tmp[0] in gamedata.SUSPECTS.keys():
@@ -393,7 +394,7 @@ class Export(commands.Cog):
         )
 
         # Poster
-        poster = utils.get_image(constants.POSTER_DIR, f"Alice-Briarwood-{ctx.game.alice}")
+        poster = utils.get_image(filepaths.POSTER_DIR, f"Alice-Briarwood-{ctx.game.alice}")
         await loop.run_in_executor(
             None, pdf.image,
             *(str(poster), COVER_POSTER_X,
@@ -468,7 +469,7 @@ class Export(commands.Cog):
         if not file_name:
             file_name = ctx.guild.name
 
-        out = (constants.PDF_EXPORT_DIR / file_name).with_suffix(".pdf")
+        out = (filepaths.PDF_EXPORT_DIR / file_name).with_suffix(".pdf")
         pdf.output(str(out))
         await ctx.send(loc["pdf"]["PDFCreated"])
 
@@ -495,11 +496,11 @@ class Export(commands.Cog):
 
         # Character and motive cards
         name = gamedata.CHARACTERS[character]
-        card = utils.get_image(constants.CHARACTER_IMAGE_DIR, name.split()[0].lower())
+        card = utils.get_image(filepaths.CHARACTER_IMAGE_DIR, name.split()[0].lower())
         pdf.image(str(card), CHAR_CARD_LEFT, CHAR_CARD_TOP, CHAR_CARD_WIDTH)
 
         motive = ctx.game.motives[character]
-        card = utils.get_image(constants.MOTIVE_DIR, f"Motive-{motive}")
+        card = utils.get_image(filepaths.MOTIVE_DIR, f"Motive-{motive}")
         pdf.image(str(card), CHAR_CARD_LEFT, MOTIVE_CARD_TOP, CHAR_CARD_WIDTH)
 
         # Clues
@@ -520,17 +521,17 @@ class Export(commands.Cog):
 
             # Clue card
             choice = ctx.game.picked_clues[clue]
-            card = utils.get_image(constants.CLUE_DIR / str(clue), f"{clue}-{choice}")
+            card = utils.get_image(filepaths.CLUE_DIR / str(clue), f"{clue}-{choice}")
             pdf.image(str(card), CLUE_CARD_LEFT, current_y, CLUE_CARD_WIDTH)
 
 
             # Suspect card
             if clue in ctx.game.suspects_drawn:
                 suspect = ctx.game.suspects_drawn[clue]
-                card = utils.get_image(constants.SUSPECT_IMAGE_DIR, suspect)
+                card = utils.get_image(filepaths.SUSPECT_IMAGE_DIR, suspect)
             elif clue in ctx.game.locations_drawn:
                 location = ctx.game.locations_drawn[clue]
-                card = utils.get_image(constants.LOCATION_IMAGE_DIR, location)
+                card = utils.get_image(filepaths.LOCATION_IMAGE_DIR, location)
 
             pdf.image(str(card), SUSPECT_CARD_LEFT, current_y, CLUE_CARD_WIDTH)
 
@@ -592,28 +593,28 @@ class Export(commands.Cog):
 
         # Images
         # Add character card
-        card = constants.MASTER_PATHS[ctx.game.ten_char]
+        card = filepaths.MASTER_PATHS[ctx.game.ten_char]
         pdf.image(str(card), CONCLUSION_CHAR_CARD_X,
                   CONCLUSION_ROW1_IMAGE_Y, CONCLUSION_CARD_WIDTH)
 
         # Add clue card
-        card = utils.get_image(constants.CLUE_DIR / "10", f"10-{ctx.game.picked_clues[10]}")
+        card = utils.get_image(filepaths.CLUE_DIR / "10", f"10-{ctx.game.picked_clues[10]}")
         pdf.image(str(card), CONCLUSION_CLUE_CARD_X,
                   CONCLUSION_ROW1_IMAGE_Y, CONCLUSION_CARD_WIDTH)
 
         # Add location card
-        card = constants.MASTER_PATHS[ctx.game.locations_drawn[20]]
+        card = filepaths.MASTER_PATHS[ctx.game.locations_drawn[20]]
         pdf.image(str(card), CONCLUSION_LOCATION_CARD_X,
                   CONCLUSION_ROW1_IMAGE_Y, CONCLUSION_CARD_WIDTH)
 
         # Add first suspect card
-        card = constants.MASTER_PATHS[ctx.game.suspects_drawn[30]]
+        card = filepaths.MASTER_PATHS[ctx.game.suspects_drawn[30]]
         pdf.image(str(card), CONCLUSION_SUSPECT_CARD_X,
                   CONCLUSION_ROW2_IMAGE_Y, CONCLUSION_CARD_WIDTH)
 
         # Add second suspect card
         if ctx.game.second_culprit:
-            card = constants.MASTER_PATHS[ctx.game.second_culprit]
+            card = filepaths.MASTER_PATHS[ctx.game.second_culprit]
             pdf.image(str(card), CONCLUSION_CLUE_CARD_X,
                       CONCLUSION_ROW2_IMAGE_Y, CONCLUSION_CARD_WIDTH)
 
@@ -674,7 +675,7 @@ class Export(commands.Cog):
 
         asyncio.create_task(ctx.send("Downloading..."))
         # make folder for messages
-        message_dir = constants.TEXT_EXPORT_DIR / ctx.guild.name
+        message_dir = filepaths.TEXT_EXPORT_DIR / ctx.guild.name
         message_dir.mkdir(parents=True, exist_ok=True)
 
         # Download messages
@@ -692,7 +693,7 @@ class Export(commands.Cog):
                 message_file.write("\n".join(messages))
 
         # Send zip
-        zip_file = constants.WHITE_RABBIT_DIR / f"{ctx.guild.name} Messages.zip"
+        zip_file = filepaths.WHITE_RABBIT_DIR / f"{ctx.guild.name} Messages.zip"
         shutil.make_archive(
             zip_file.with_suffix(""),
             "zip", message_dir,
