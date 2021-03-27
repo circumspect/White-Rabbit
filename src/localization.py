@@ -1,9 +1,8 @@
 # Built-in
 import json
-from os import environ
 from pathlib import Path
-# 3rd-party
-from dotenv import dotenv_values
+# Local
+import envvars
 
 # White-Rabbit/src/localization.py
 WHITE_RABBIT_DIR = Path(__file__).parent.parent
@@ -18,7 +17,7 @@ LOCALIZATIONS = {
 }
 
 try:
-    LANGUAGE_KEY = environ.get("LANGUAGE") or dotenv_values(".env")["LANGUAGE"]
+    LANGUAGE_KEY = envvars.get_env_var("LANGUAGE")
 except KeyError:
     LANGUAGE_KEY = DEFAULT_LOCALIZATION
 
