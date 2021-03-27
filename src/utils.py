@@ -5,6 +5,7 @@ import random
 from os.path import join
 from pathlib import Path
 import re
+from typing import Union
 # 3rd-party
 import discord
 # Local
@@ -54,7 +55,8 @@ def get_image(directory: Path, name: str) -> Path:
             raise err
 
 
-def send_image(channel, filepath, ctx=None):
+# pylint: disable=unsubscriptable-object   # https://github.com/PyCQA/pylint/issues/3637#issuecomment-720097674
+def send_image(channel, filepath: Union[Path, str], ctx=None):
     """Sends an image to a specified channel"""
 
     if isinstance(channel, str):
@@ -64,7 +66,12 @@ def send_image(channel, filepath, ctx=None):
             )
         channel = ctx.text_channels[channel]
 
-    asyncio.create_task(channel.send(file=discord.File(filepath)))
+    if isinstance(filepath, Path):
+        # If sending image as a file, attach it
+        asyncio.create_task(channel.send(file=discord.File(filepath)))
+    else:
+        # Otherwise send the link directly
+        asyncio.create_task(channel.send(filepath))
 
 
 def send_folder(channel, path, ctx=None):
