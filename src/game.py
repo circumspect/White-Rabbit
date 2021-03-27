@@ -338,7 +338,7 @@ class Game(commands.Cog):
             asyncio.create_task(ctx.send(LOCALIZATION_DATA["errors"]["GameNotStarted"]))
             return
         if not ctx.character:
-            asyncio.create_task(ctx.send(LOCALIZATION_DATA["errors"]["NotACharacter"]))
+            asyncio.create_task(ctx.send(LOCALIZATION_DATA["errors"]["NoCharacterRoles"]))
             return
 
         char_channel = ctx.text_channels[LOCALIZATION_DATA["channels"]["clues"][ctx.character]]

@@ -400,13 +400,12 @@
         "MissingCharlie": "Charlie est introuvable !",
         "NotEnoughPlayers": "Pas assez de joueurs !",
         "NeedToSetUp": "Il faut mettre le jeu en place !",
-        "NotACharacter": "Tu n'as pas un rôle de personnage !",
+        "NoCharacterRoles": "Tu n'as pas un rôle de personnage !",
         "GameNotStarted": "La partie n'a pas encore commencé!",
         "NotInitialized": "Tu dois d'abord initialiser la partie !",
         "AlreadyStarted": "La partie a déjà commencé !",
         "AlreadyInitialized": "L'initialisation est déjà faite !",
         "ServerOwnerNicknameChange": "Ton nom n'a pas pu être mis à jour car tu es l'admin !",
-        "NoCharacterRoles": "Tu n'as pas de rôle personnage !",
         "PlayerNotFound": "Ce joueur est introuvable !",
         "UnknownError": "Erreur inconnue : regardez les logs !"
     }

@@ -400,13 +400,12 @@
         "MissingCharlie": "Can't find Charlie!",
         "NotEnoughPlayers": "Not enough players!",
         "NeedToSetUp": "Can't start before setting up!",
-        "NotACharacter": "You don't have a character role!",
+        "NoCharacterRoles": "You don't have a character role!",
         "GameNotStarted": "Game hasn't started yet!",
         "NotInitialized": "Need to initialize first!",
         "AlreadyStarted": "Game has already begun!",
         "AlreadyInitialized": "Initialization already run!",
         "ServerOwnerNicknameChange": "Couldn't update nickname because you are server owner!",
-        "NoCharacterRoles": "You don't have any character roles!",
         "PlayerNotFound": "Couldn't find that player!",
         "UnknownError": "Unknown error: check console!"
     }
