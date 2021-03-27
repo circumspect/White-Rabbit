@@ -10,7 +10,8 @@ VERSION = "0.8.5"
 DOCS_URL = "https://white-rabbit.readthedocs.io/"
 DOCS_SHORT_URL = "https://white-rabbit.rtfd.io/"
 SOURCE_URL = "https://github.com/circumspect/White-Rabbit"
-BLANK_DOTENV_URL = f"https://raw.githubusercontent.com/circumspect/White-Rabbit/{VERSION}/example.env"
+RAW_FILES_URL = f"https://raw.githubusercontent.com/circumspect/White-Rabbit/{VERSION}/"
+BLANK_DOTENV_URL = f"{RAW_FILES_URL}/example.env"
 
 # Console logging message stuff
 LOG_SEP = ": "
