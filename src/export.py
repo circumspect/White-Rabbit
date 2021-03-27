@@ -329,15 +329,17 @@ class Export(commands.Cog):
     @staticmethod
     def parse_filename(url: str) -> str:
         filename = Path(urlparse(url).path).stem.replace("_", "-").lower()
-        # Fallback from older versions
-        if filename == "mr. halvert":
-            return "halvert"
-        tmp = filename.split("-")
-        if tmp[0] in gamedata.SUSPECTS.keys():
-            return tmp[0]
-        if tmp[0] in gamedata.CHARACTERS.keys():
-            return tmp[0]
-        return filename
+
+        try:
+            # Checks for filenames from older versions
+            return constants.LEGACY_FILENAMES[filename]
+        except KeyError:
+            tmp = filename.split("-")
+            if tmp[0] in gamedata.SUSPECTS.keys():
+                return tmp[0]
+            if tmp[0] in gamedata.CHARACTERS.keys():
+                return tmp[0]
+            return filename
 
     @commands.command(
         name=loc["pdf"]["name"],
