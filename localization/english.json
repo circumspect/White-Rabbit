@@ -85,13 +85,20 @@
                 "description": "Resets channel permissions to the default (undoes !show_all)"
             },
 
+            "reset_roles": {
+                "name": "reset_roles",
+                "aliases": [],
+                "description": "Removes character roles and nicknames from all players",
+
+                "NoteAboutOwner": "Note: the bot cannot update the server owner's nickname"
+            },
+
             "reset": {
                 "name": "reset",
                 "aliases": [],
                 "description": "Complete server reset",
 
-                "ResettingServer": "Resetting the server!",
-                "NoteAboutOwner": "Note: This action will not affect the server owner"
+                "ResettingServer": "Resetting the server!"
             }
         },
 
