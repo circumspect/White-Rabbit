@@ -1,6 +1,6 @@
 # The White Rabbit
 <!-- ALL-CONTRIBUTORS-BADGE:START - Do not remove or modify this section -->
-[![All Contributors](https://img.shields.io/badge/all_contributors-2-orange.svg?style=flat-square)](#contributors-)
+[![All Contributors](https://img.shields.io/badge/all_contributors-5-orange.svg?style=flat-square)](#contributors-)
 <!-- ALL-CONTRIBUTORS-BADGE:END -->
 
 ![GitHub](https://img.shields.io/github/license/circumspect/White-Rabbit)
@@ -35,6 +35,9 @@ Thanks goes to these wonderful people ([emoji key](https://allcontributors.org/d
   <tr>
     <td align="center"><a href="https://github.com/circumspect"><img src="https://avatars.githubusercontent.com/u/40770208?v=4?s=100" width="100px;" alt=""/><br /><sub><b>circumspect</b></sub></a><br /><a href="https://github.com/circumspect/White-Rabbit/commits?author=circumspect" title="Code">💻</a> <a href="https://github.com/circumspect/White-Rabbit/commits?author=circumspect" title="Documentation">📖</a> <a href="#design-circumspect" title="Design">🎨</a></td>
     <td align="center"><a href="https://github.com/Creonalia"><img src="https://avatars.githubusercontent.com/u/52385967?v=4?s=100" width="100px;" alt=""/><br /><sub><b>Creonalia</b></sub></a><br /><a href="https://github.com/circumspect/White-Rabbit/commits?author=Creonalia" title="Code">💻</a></td>
+    <td align="center"><a href="http://skylerberg.com"><img src="https://avatars.githubusercontent.com/u/4156131?v=4?s=100" width="100px;" alt=""/><br /><sub><b>Skyler Berg</b></sub></a><br /><a href="https://github.com/circumspect/White-Rabbit/commits?author=skylerberg" title="Code">💻</a> <a href="https://github.com/circumspect/White-Rabbit/commits?author=skylerberg" title="Documentation">📖</a></td>
+    <td align="center"><a href="http://0x99.net"><img src="https://avatars.githubusercontent.com/u/8868033?v=4?s=100" width="100px;" alt=""/><br /><sub><b>Tanner Stephens</b></sub></a><br /><a href="https://github.com/circumspect/White-Rabbit/commits?author=tannerstephens" title="Code">💻</a> <a href="https://github.com/circumspect/White-Rabbit/commits?author=tannerstephens" title="Documentation">📖</a></td>
+    <td align="center"><a href="https://github.com/Ylkhana"><img src="https://avatars.githubusercontent.com/u/48254532?v=4?s=100" width="100px;" alt=""/><br /><sub><b>Ylkhana</b></sub></a><br /><a href="https://github.com/circumspect/White-Rabbit/commits?author=Ylkhana" title="Code">💻</a> <a href="#translation-Ylkhana" title="Translation">🌍</a></td>
   </tr>
 </table>
 
