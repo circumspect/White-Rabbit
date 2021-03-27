@@ -5,6 +5,7 @@ import random
 from discord.ext import commands
 # Local
 import constants
+import filepaths
 import gamedata
 import utils
 from localization import LOCALIZATION_DATA
@@ -53,7 +54,7 @@ class Manual(commands.Cog):
 
         ctx.game.alice = choice
 
-        alice = utils.get_image(constants.POSTER_DIR, f"Alice-Briarwood-{ctx.game.alice}")
+        alice = utils.get_image(filepaths.POSTER_DIR, f"Alice-Briarwood-{ctx.game.alice}")
         utils.send_image(LOCALIZATION_DATA["channels"]["resources"], alice, ctx)
 
     @commands.command(
@@ -95,7 +96,7 @@ class Manual(commands.Cog):
             motive = ctx.game.motives[name]
             utils.send_image(
                 channel,
-                utils.get_image(constants.MOTIVE_DIR, f"Motive-{motive}"),
+                utils.get_image(filepaths.MOTIVE_DIR, f"Motive-{motive}"),
                 ctx
             )
 
@@ -155,12 +156,12 @@ class Manual(commands.Cog):
         # Send clue card
         channel = utils.get_text_channels(ctx.game.guild)[LOCALIZATION_DATA["channels"]["clues"][character]]
         choice = ctx.game.picked_clues[time]
-        path = utils.get_image(constants.CLUE_DIR / str(time), f"{time}-{choice}")
+        path = utils.get_image(filepaths.CLUE_DIR / str(time), f"{time}-{choice}")
         utils.send_image(channel, path)
 
         # Send suspect/location card to player's clues channel
         suspect = self.draw_suspect(ctx, time)
-        path = constants.MASTER_PATHS[suspect]
+        path = filepaths.MASTER_PATHS[suspect]
         utils.send_image(channel, path)
 
         # Send suspect/location card to respective drawn cards channel
