@@ -30,7 +30,8 @@ Game setup
 For setup, join the voice channel and have players join you.
 
 .. note::
-   All bot commands should be entered into ``#bot-channel``. The bot will not respond to commands in other channels.
+   All bot commands should be entered into ``#bot-channel``. The bot will not
+   respond to commands in other channels.
 
 To begin setting up the game, type ``!init`` into the channel titled
 ``#bot-channel`` in your server. The bot should begin sending cards out to

@@ -12,6 +12,11 @@ libraries from ``requirements.txt`` using pip.
 Create a new Discord server using the following template:
 https://discord.new/YD7aEUr8AdBQ and name it however you like.
 
+.. note::
+   If you wish to use the bot in a different language, you must use the server
+   template corresponding to that language. See :doc:`localization` for a list
+   of supported languages and Discord server templates.
+
 Next, create a new Discord bot as follows:
 
 - Log in to the `Discord Developer portal <https://discord.com/developers/applications>`_.
