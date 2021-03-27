@@ -190,7 +190,7 @@ class Game(commands.Cog):
 
         # 90 minute card/message for Charlie Barnes
         channel = ctx.text_channels[LOCALIZATION_DATA["channels"]["clues"]["charlie"]]
-        await channel.send(file=discord.File(utils.get_image(filepaths.CLUE_DIR / "90", "90-1")))
+        utils.send_image(channel, utils.get_image(filepaths.CLUE_DIR / "90", "90-1"), ctx)
         first_message = LOCALIZATION_DATA["stuff-for-charlie"]["first-message"]
         await channel.send(first_message)
 
@@ -348,7 +348,7 @@ class Game(commands.Cog):
             search = random.choice(ctx.game.search_cards)
             ctx.game.search_cards.remove(search)
             image = utils.get_image(filepaths.SEARCHING_DIR, search)
-            asyncio.create_task(char_channel.send(file=discord.File(image)))
+            utils.send_image(char_channel, image, ctx)
 
         else:
             # out of unique cards
