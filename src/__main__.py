@@ -122,7 +122,9 @@ for plugin in PLUGINS:
 
 # Import bot token
 try:
-    bot.run(environ.get('TOKEN') or dotenv_values(constants.ENV_FILE)["TOKEN"])
+    token = environ.get('TOKEN') or dotenv_values(constants.ENV_FILE)["TOKEN"]
+    print("Logging in...")
+    bot.run(token)
 except FileNotFoundError:
     r = requests.get(constants.BLANK_DOTENV_URL)
     with open(constants.ENV_FILE, 'x') as env:

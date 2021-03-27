@@ -24,6 +24,10 @@ except KeyError:
 
 localization_file = LOCALIZATION_DIR / LOCALIZATIONS[LANGUAGE_KEY]
 
+print(f"Loading localization data ({LANGUAGE_KEY})... ", end="")
+
 LOCALIZATION_DATA = None
 with open(localization_file, encoding='utf-8') as f:
     LOCALIZATION_DATA = json.load(f)
+
+print("Done!")
