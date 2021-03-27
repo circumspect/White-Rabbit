@@ -8,7 +8,7 @@ import envvars
 WHITE_RABBIT_DIR = Path(__file__).parent.parent
 
 # Localization
-DEFAULT_LOCALIZATION = "en"
+DEFAULT_LOCALIZATION = envvars.DEFAULTS["LANGUAGE"]
 LOCALIZATION_DIR = WHITE_RABBIT_DIR / "localization"
 
 LOCALIZATIONS = {
@@ -16,10 +16,7 @@ LOCALIZATIONS = {
     "fr": "french.json",
 }
 
-try:
-    LANGUAGE_KEY = envvars.get_env_var("LANGUAGE")
-except KeyError:
-    LANGUAGE_KEY = DEFAULT_LOCALIZATION
+LANGUAGE_KEY = envvars.get_env_var("LANGUAGE")
 
 localization_file = LOCALIZATION_DIR / LOCALIZATIONS[LANGUAGE_KEY]
 
