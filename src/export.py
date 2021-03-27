@@ -215,6 +215,18 @@ class Export(commands.Cog):
     def __init__(self, bot):
         self.bot = bot
 
+    async def channel_attachments(self, channel, oldest_first: bool=False):
+        url_list = []
+        async for message in channel.history(limit=None, oldest_first=oldest_first):
+            text = message.clean_content.strip()
+            if text.__contains__("raw.githubusercontent.com/"):
+                url_list.append(text)
+
+            for attachment in message.attachments:
+                url_list.append(attachment.url)
+
+        return url_list
+
     async def import_data(self, ctx):
         """imports data from message history"""
 
@@ -233,14 +245,10 @@ class Export(commands.Cog):
 
         # Alice
         channel = ctx.text_channels[LOCALIZATION_DATA["channels"]["resources"]]
-        image_list = list(itertools.chain.from_iterable([
-                message.attachments
-                async for message in channel.history(limit=None)
-            ]))
+        url_list = await self.channel_attachments(channel)
 
-        for image in image_list:
-            # Get the image name
-            filename = self.parse_filename(image.url)
+        for url in url_list:
+            filename = self.parse_filename(url)
 
             if filename.startswith("alice-briarwood"):
                 ctx.game.alice = int(filename.split("-")[-1])
@@ -253,13 +261,10 @@ class Export(commands.Cog):
 
             channel = ctx.text_channels[LOCALIZATION_DATA["channels"]["clues"][name]]
             current_clue = 90
-            image_list = list(itertools.chain.from_iterable([
-                message.attachments
-                async for message in channel.history(limit=None, oldest_first=True)
-            ]))
+            url_list = await self.channel_attachments(channel, True)
 
-            for image in image_list:
-                filename = self.parse_filename(image.url)
+            for url in url_list:
+                filename = self.parse_filename(url)
 
                 # Ignore character cards
                 if filename in gamedata.CHARACTERS.keys():
