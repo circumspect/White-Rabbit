@@ -8,7 +8,10 @@ import re
 from typing import Union
 # 3rd-party
 import discord
+import requests
 # Local
+import constants
+import envvars
 import gamedata
 from localization import DEFAULT_LOCALIZATION, LOCALIZATION_DATA, LANGUAGE_KEY
 from resources import ImageResource
@@ -41,18 +44,65 @@ def time_string(time):
     return f"{minutes}:{seconds}"
 
 
-def get_image(directory: Path, name: str) -> Path:
-    img = ImageResource(ImageResource.IMAGE_EXTENSIONS)
-    try:
-        return img.get(directory, name)
-    except FileNotFoundError as err:
-        parts = list(directory.parts)
+def rabbit_path(path: Path):
+    parts = list(path.parts)
+    start = 1
+    for i in range(len(parts)):
+        if parts[i] == "White-Rabbit":
+            start = i + 1
+
+    outpath = Path("/".join(parts[start:]))
+    return outpath
+
+
+def url_is_good(url: str):
+    r = requests.get(url)
+    if r.status_code == 200:
+        return True
+    else:
+        return False
+
+
+def find_url(url: str, extensions):
+    for extension in extensions:
+        image_url = f"{url}.{extension}"
+        if url_is_good(image_url):
+            return image_url
+
+    raise FileNotFoundError(url)
+
+
+# pylint: disable=unsubscriptable-object   # https://github.com/PyCQA/pylint/issues/3637#issuecomment-720097674
+def get_image(directory: Path, name: str) -> Union[Path, str]:
+    if envvars.get_env_var("USE_LOCAL_IMAGES"):
+        img = ImageResource(ImageResource.IMAGE_EXTENSIONS)
         try:
-            idx = parts.index(LANGUAGE_KEY)
-            parts[idx] = DEFAULT_LOCALIZATION
-            return img.get(Path(join(*parts)), name)
-        except ValueError:
-            raise err
+            return img.get(directory, name)
+        except FileNotFoundError:
+            parts = list(directory.parts)
+            for i in range(len(parts)):
+                if parts[i] == "White-Rabbit":
+                    if parts[i+3] == LANGUAGE_KEY:
+                        parts[i+3] = DEFAULT_LOCALIZATION
+                        break
+
+            return img.get(Path("/".join(parts)), name)
+
+    else:
+        path = rabbit_path(directory)
+        parts = path.parts
+        url = constants.RAW_FILES_URL
+
+        localized_url = f"{url}{'/'.join(parts)}/{name}"
+        try:
+            return find_url(localized_url, ImageResource.IMAGE_EXTENSIONS)
+        except FileNotFoundError:
+            if parts[2] == LANGUAGE_KEY:
+                fallback = list(parts)
+                fallback[2] = DEFAULT_LOCALIZATION
+
+            fallback_url = f"{url}{'/'.join(fallback)}/{name}"
+            return find_url(fallback_url, ImageResource.IMAGE_EXTENSIONS)
 
 
 # pylint: disable=unsubscriptable-object   # https://github.com/PyCQA/pylint/issues/3637#issuecomment-720097674
