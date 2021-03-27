@@ -17,6 +17,15 @@
       ]
     },
     {
+      "login": "Creonalia",
+      "name": "Creonalia",
+      "avatar_url": "https://avatars.githubusercontent.com/u/52385967?v=4",
+      "profile": "https://github.com/Creonalia",
+      "contributions": [
+        "code"
+      ]
+    },
+    {
       "login": "skylerberg",
       "name": "Skyler Berg",
       "avatar_url": "https://avatars.githubusercontent.com/u/4156131?v=4",
@@ -24,7 +33,6 @@
       "contributions": [
         "code",
         "doc"
-      ]
     }
   ],
   "contributorsPerLine": 7,
