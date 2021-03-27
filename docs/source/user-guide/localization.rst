@@ -5,13 +5,17 @@ Localization
 To change the language the bot runs in, modify the ``LANGUAGE`` key in the
 ``.env`` file. A table of languages with their key values is show below:
 
-+---------------+--------+--------------------------------------+--------------+
-| LANGUAGE      | Code   | Discord Server Template              | Status       |
-+===============+========+======================================+==============+
-| English       | en     | https://discord.new/YD7aEUr8AdBQ     | Complete     |
-+---------------+--------+--------------------------------------+--------------+
-| French        | fr     |                                      | Incomplete   |
-+---------------+--------+--------------------------------------+--------------+
++---------------+--------+--------------------------------------+--------------+--------------------------------------------+
+| LANGUAGE      | Code   | Discord Server Template              | Status       | Translation by:                            |
++===============+========+======================================+==============+============================================+
+| English       | en     | https://discord.new/YD7aEUr8AdBQ     | Complete     | `circumspect`_                             |
++---------------+--------+--------------------------------------+--------------+--------------------------------------------+
+| French        | fr     | https://discord.new/Pz84Jq6Jxw4x     | Complete     | `Ylkhana`_                                 |
++---------------+--------+--------------------------------------+--------------+--------------------------------------------+
+
+.. _circumspect: https://github.com/circumspect
+.. _Ylkhana: https://github.com/Ylkhana
+
 
 If you would like to contribute translations, fork the repository, copy
 ``english.json`` in the ``localization`` folder, translate the values
