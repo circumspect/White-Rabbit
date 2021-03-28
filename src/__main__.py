@@ -128,7 +128,7 @@ try:
     bot.run(token)
 except FileNotFoundError:
     r = requests.get(constants.BLANK_DOTENV_URL)
-    with open(filepaths.ENV_FILE, 'x') as env:
+    with open(envvars.ENV_FILE, 'x') as env:
         env.write(r.content)
     sys.exit(LOCALIZATION_DATA["errors"]["MissingDotEnv"])
 except discord.errors.LoginFailure:
