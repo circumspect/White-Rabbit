@@ -16,8 +16,8 @@
             "character-cards": "cartes-personnages",
             "suspect-cards": "cartes-suspects",
             "location-cards": "cartes-lieux",
-            "suspects-drawn": "suspects-reveles",
-            "locations-drawn": "lieux-reveles"
+            "suspects-drawn": "suspects-révélés",
+            "locations-drawn": "lieux-révélés"
         },
 
         "clues": {
