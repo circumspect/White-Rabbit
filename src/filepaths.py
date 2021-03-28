@@ -8,7 +8,6 @@ import utils
 # Image paths
 # White-Rabbit/src/constants.py
 WHITE_RABBIT_DIR = Path(__file__).parent.parent
-ENV_FILE = WHITE_RABBIT_DIR / ".env"
 DEV_ID_FILE = WHITE_RABBIT_DIR / "dev_ids.txt"
 RESOURCE_DIR = WHITE_RABBIT_DIR / "resources"
 
