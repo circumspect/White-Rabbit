@@ -1,3 +1,5 @@
+# pylint: disable=unsubscriptable-object   # https://github.com/PyCQA/pylint/issues/3637#issuecomment-720097674
+
 # Built-in
 import asyncio
 import datetime
@@ -360,7 +362,6 @@ class Game(commands.Cog):
         description=loc["ten_min_card"]["description"]
     )
     async def ten_min_card(
-        # pylint: disable=unsubscriptable-object   # https://github.com/PyCQA/pylint/issues/3637#issuecomment-720097674
         self, ctx, mention: typing.Union[discord.Member, discord.Role]
     ):
         """Assign the 10 minute card to another player"""
