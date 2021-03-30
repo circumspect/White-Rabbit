@@ -1,3 +1,5 @@
+# pylint: disable=unsubscriptable-object   # https://github.com/PyCQA/pylint/issues/3637#issuecomment-720097674
+
 # Built-in
 import asyncio
 import math
@@ -72,7 +74,6 @@ def find_url(url: str, extensions):
     raise FileNotFoundError(url)
 
 
-# pylint: disable=unsubscriptable-object   # https://github.com/PyCQA/pylint/issues/3637#issuecomment-720097674
 def get_image(directory: Path, name: str) -> Union[Path, str]:
     if envvars.get_env_var("USE_LOCAL_IMAGES"):
         img = ImageResource(ImageResource.IMAGE_EXTENSIONS)
@@ -105,7 +106,6 @@ def get_image(directory: Path, name: str) -> Union[Path, str]:
             return find_url(fallback_url, ImageResource.IMAGE_EXTENSIONS)
 
 
-# pylint: disable=unsubscriptable-object   # https://github.com/PyCQA/pylint/issues/3637#issuecomment-720097674
 def send_image(channel, filepath: Union[Path, str], ctx=None):
     """Sends an image to a specified channel"""
 
