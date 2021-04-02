@@ -4,6 +4,9 @@ token.txt
 *.mp3
 exports/
 
+# PyCharm
+.idea/
+
 # VSCode .rst live preview
 docs/source/_build
 
