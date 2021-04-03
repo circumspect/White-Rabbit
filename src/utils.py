@@ -3,7 +3,6 @@
 # Built-in
 import asyncio
 import math
-from os.path import join
 from pathlib import Path
 import random
 import re

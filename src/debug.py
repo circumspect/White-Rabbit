@@ -36,10 +36,6 @@ class Debug(commands.Cog):
     async def cog_check(self, ctx):
         """Only people with access to the code"""
 
-        info = await self.bot.application_info()
-        if ctx.author.id == info.owner.id:
-            return True
-
         return ctx.author.id in self.dev_ids
 
     @commands.Cog.listener()
