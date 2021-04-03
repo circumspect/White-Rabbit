@@ -7,7 +7,6 @@ from discord.ext import commands
 import constants
 import gamedata
 from localization import LOCALIZATION_DATA
-import utils
 
 loc = LOCALIZATION_DATA["commands"]["admin"]
 GROUP_CHAT = LOCALIZATION_DATA["channels"]["texts"]["group-chat"]
