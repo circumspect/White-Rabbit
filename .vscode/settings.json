@@ -11,5 +11,6 @@
         "skylerberg",
         "tannerstephens",
         "ylkhana"
-    ]
+    ],
+    "python.analysis.typeCheckingMode": "off"
 }
