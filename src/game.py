@@ -9,7 +9,6 @@ import typing
 import discord
 from discord.ext import commands
 # Local
-import constants
 import filepaths
 import gamedata
 import utils

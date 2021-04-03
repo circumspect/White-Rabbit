@@ -14,7 +14,6 @@ import requests
 # Local
 import constants
 import envvars
-import gamedata
 from localization import DEFAULT_LOCALIZATION, LOCALIZATION_DATA, LANGUAGE_KEY
 from resources import ImageResource
 
