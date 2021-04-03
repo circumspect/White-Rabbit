@@ -1,6 +1,5 @@
 # Built-in
 import asyncio
-import itertools
 from pathlib import Path
 import shutil
 from timeit import default_timer as timer

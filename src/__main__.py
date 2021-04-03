@@ -4,12 +4,10 @@ import sys
 # 3rd-party
 import discord
 from discord.ext import commands
-from dotenv import dotenv_values
 import requests
 # Local
 import constants
 import envvars
-import filepaths
 import gamedata
 import utils
 from localization import LOCALIZATION_DATA
