@@ -1,7 +1,7 @@
 # Contributing
 
 Thanks for contributing to the project! Before submitting a pull request,
-please make sure you read through the following guidelines.
+please read through the following guidelines.
 
 ## Testing
 
