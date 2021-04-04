@@ -67,13 +67,13 @@
         "admin": {
             "show_all": {
                 "name": "révèle",
-                "aliases": [],
+                "aliases": ["show_all"],
                 "description": "Rends les salons de jeux accessibles à tous et empêche l'envoi de nouveaux messages"
             },
 
             "wipe": {
                 "name": "efface",
-                "aliases": [],
+                "aliases": ["wipe"],
                 "description": "Efface tous les messages",
 
                 "DeletingMessages": "Effacement des messages !"
@@ -105,7 +105,7 @@
         "debug": {
             "speed": {
                 "name": "vitesse",
-                "aliases": [],
+                "aliases": ["speed"],
                 "description": "Change la vitesse du jeu"
             },
 
@@ -171,31 +171,31 @@
 
             "setup_clues": {
                 "name": "indices",
-                "aliases": [],
+                "aliases": ["setup_clues"],
                 "description": "Attribuer les indices"
             },
 
             "start": {
                 "name": "commence",
-                "aliases": [],
+                "aliases": ["start"],
                 "description": "Commencer le jeu"
             },
 
             "example": {
                 "name": "exemple",
-                "aliases": [],
+                "aliases": ["example"],
                 "description": "Envoyer une carte indice et suspect pour l'exemple"
             },
 
             "char_sheet": {
                 "name": "fiche_perso",
-                "aliases": [],
+                "aliases": ["char_sheet"],
                 "description": "Envoie la fiche de personnage dans le salon Ressources"
             },
 
             "search": {
                 "name": "cherche",
-                "aliases": [],
+                "aliases": ["search", "searching"],
                 "description": "Tirer une carte Recherche",
 
                 "NothingFound": "Tu n'as rien trouvé."
@@ -219,7 +219,7 @@
 
             "shuffle_motives": {
                 "name": "melange_motivations",
-                "aliases": [],
+                "aliases": ["shuffle_motives"],
                 "description": "Mélanger les cartes Motivations.",
 
                 "Shuffling": "Mélange des motivations !"
@@ -227,7 +227,7 @@
 
             "send_motives": {
                 "name": "envoie_motivations",
-                "aliases": [],
+                "aliases": ["send_motives"],
                 "description": "Distribuer les cartes Motivations.",
 
                 "NeedToShuffle": "Les cartes doivent être mélangées d'abord !"
@@ -235,7 +235,7 @@
 
             "clue": {
                 "name": "indice",
-                "aliases": [],
+                "aliases": ["clue"],
                 "description": "Tirer une carte indice pour le timer indiqué.",
 
                 "ClueNotFound": "Pas d'indice trouvé cette fois !",
@@ -246,7 +246,7 @@
 
             "shuffle_clues": {
                 "name": "melange_indices",
-                "aliases": [],
+                "aliases": ["shuffle_clues"],
                 "description": "(Re)mélange la pile des cartes Indices.",
 
                 "ShufflingClues": "Mélange des indices !"
@@ -284,7 +284,7 @@
 
             "unclaim": {
                 "name": "retirer",
-                "aliases": [],
+                "aliases": ["unclaim"],
                 "description": "Retirer tes rôles"
             },
 
@@ -298,7 +298,7 @@
 
             "users": {
                 "name": "utilisateurs",
-                "aliases": ["énumère"],
+                "aliases": ["users", "énumère"],
                 "description": "Énumère les joueurs et les spectateurs",
 
                 "spectators": "Spectateurs :",
@@ -324,7 +324,7 @@
 
             "music": {
                 "name": "musique",
-                "aliases": [],
+                "aliases": ["music"],
                 "description": "Active ou désactive le stream de musique pendant la partie.",
 
                 "MusicEnabled": "Stream de la musique activé !",
@@ -344,7 +344,7 @@
 
             "endings": {
                 "name": "fins",
-                "aliases": [],
+                "aliases": ["endings"],
                 "description": "Active ou désactive la fin indiquée. Voir la documentation pour plus d'informations.",
 
                 "EndingsEnabled": "Fins possibles :"
