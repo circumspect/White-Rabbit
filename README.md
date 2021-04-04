@@ -23,6 +23,14 @@ the keys intact), and open a pull request. For an example, see the French
 translation in `french.json`. Note that changing the names of the channels
 will require making a new Discord template.
 
+You can also submit translations of the cards used in the game by copying the
+`templates` folder in `resources/images` and matching the new folder name to
+the key used for the language, then editing the `.kra` file and exporting the
+translated cards. The bot will default to the English versions of any cards it
+can't find. To edit the files, you will need [Krita](https://krita.org/en/),
+an open source tool for creating and modifying images. Not all of the cards
+currently have templates, so feel free to submit those as well!
+
 ## Contributors ✨
 
 This project follows the [all-contributors](https://github.com/all-contributors/all-contributors)
