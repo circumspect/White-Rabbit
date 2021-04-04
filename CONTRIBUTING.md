@@ -42,3 +42,8 @@ pull request, and thanks again for the help.
 When adding or updating a localization file, use the appropriate Discord
 server template to create a new server, then run the bot using the matching
 language key. Test the bot as described above, then submit the pull request.
+
+If adding a new localization file, please add the English names for commands
+as an alias when changing the command names, as this both makes testing the
+bot easier and allows users to follow the documentation (which is currently
+all written in English) even when running the bot in another language.
