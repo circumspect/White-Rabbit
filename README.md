@@ -1,7 +1,8 @@
 # The White Rabbit
 
-![GitHub](https://img.shields.io/github/license/circumspect/White-Rabbit)
+![GitHub Workflow Status](https://img.shields.io/github/workflow/status/circumspect/White-Rabbit/Login%20Test)
 [![Documentation Status](https://readthedocs.org/projects/white-rabbit/badge/?version=latest)](https://white-rabbit.readthedocs.io/en/latest/?badge=latest)
+![GitHub](https://img.shields.io/github/license/circumspect/White-Rabbit)
 [![Language grade: Python](https://img.shields.io/lgtm/grade/python/g/circumspect/White-Rabbit.svg?logo=lgtm&logoWidth=18)](https://lgtm.com/projects/g/circumspect/White-Rabbit/context:python)
 
 A Discord bot for Alice is Missing. Server template: <https://discord.new/YD7aEUr8AdBQ>.
