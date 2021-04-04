@@ -5,6 +5,10 @@ Installation
 Default Installation
 ====================
 
+.. note::
+  Make sure you are using at least Python 3.6. The bot will not be able to run
+  otherwise.
+
 Download the source zip from Github `here <https://github.com/circumspect/White-Rabbit/releases/>`_
 and extract the files to a directory of your choice. Install any missing
 libraries from ``requirements.txt`` using pip.

@@ -9,8 +9,14 @@ import requests
 import constants
 import envvars
 import gamedata
+import sys
 import utils
 from localization import LOCALIZATION_DATA
+
+
+# Minimum Python version check
+if sys.version_info < (3, 6):
+    sys.exit("The White Rabbit does not support Python versions below 3.6. Please install a newer version")
 
 # Enable Server Members gateway intent to find all users
 intents = discord.Intents.default()
