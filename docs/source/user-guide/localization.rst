@@ -12,9 +12,12 @@ To change the language the bot runs in, modify the ``LANGUAGE`` key in the
 +---------------+--------+--------------------------------------+--------------+--------------------------------------------+
 | French        | fr     | https://discord.new/Pz84Jq6Jxw4x     | Complete     | `Ylkhana`_                                 |
 +---------------+--------+--------------------------------------+--------------+--------------------------------------------+
+| German        | de     | https://discord.new/VnWxBSqFpQdq     | Complete     | `Hati`_                                    |
++---------------+--------+--------------------------------------+--------------+--------------------------------------------+
 
 .. _circumspect: https://github.com/circumspect
 .. _Ylkhana: https://github.com/Ylkhana
+.. _Hati: https://github.com/Gabbalo
 
 
 If you would like to contribute translations, fork the repository, copy
