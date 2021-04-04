@@ -6,7 +6,7 @@ To change the language the bot runs in, modify the ``LANGUAGE`` key in the
 ``.env`` file. A table of languages with their key values is show below:
 
 +---------------+--------+--------------------------------------+-------+--------+--------------------------------------------+
-| LANGUAGE      | Code   | Discord Server Template              | Bot   | Cards   | Translations by:                          |
+| LANGUAGE      | Code   | Discord Server Template              | Bot   | Cards  | Translations by:                           |
 +===============+========+======================================+=======+========+============================================+
 | English       | en     | https://discord.new/YD7aEUr8AdBQ     | ✔️    | ✔️     | `circumspect`_                             |
 +---------------+--------+--------------------------------------+-------+--------+--------------------------------------------+
