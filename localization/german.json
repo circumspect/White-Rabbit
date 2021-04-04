@@ -6,11 +6,11 @@
     "spectator-role": "Zuhörer",
 
     "channels": {
-        "discussion": "Diskussion",
+        "discussion": "diskussion",
         "bot-channel": "bot-channel",
-        "call": "Anruf",
+        "call": "anruf",
 
-        "resources": "Spieler-Ressourcen",
+        "resources": "spieler-ressourcen",
 
         "cards": {
             "character-cards": "charakterkarten",
@@ -28,10 +28,10 @@
             "julia": "julia-hinweise"
         },
 
-        "voicemails": "voicemails",
+        "voicemails": "sprachnachrichten",
 
         "texts": {
-            "group-chat": "gruppen-chat",
+            "group-chat": "gruppenchat",
             "charlie-dakota": "charlie-dakota-pn",
             "charlie-evan": "charlie-evan-pn",
             "charlie-jack": "charlie-jack-pn",
