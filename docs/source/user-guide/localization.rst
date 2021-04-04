@@ -12,7 +12,7 @@ To change the language the bot runs in, modify the ``LANGUAGE`` key in the
 +---------------+--------+--------------------------------------+-------+--------+--------------------------------------------+
 | French        | fr     | https://discord.new/Pz84Jq6Jxw4x     | ✔️    | ✔️     | `Ylkhana`_                                 |
 +---------------+--------+--------------------------------------+-------+--------+--------------------------------------------+
-| German        | de     | https://discord.new/gQN7EpNTe9Wr     | ✔️    | ❌     | `Gabbalo`_                                 |
+| German        | de     | https://discord.new/VnWxBSqFpQdq     | ✔️    | ❌     | `Gabbalo`_                                 |
 +---------------+--------+--------------------------------------+-------+--------+--------------------------------------------+
 
 .. _circumspect: https://github.com/circumspect
