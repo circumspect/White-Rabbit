@@ -1,16 +1,16 @@
 {
     "title": "Alice is Missing",
-    "template": "https://discord.new/YD7aEUr8AdBQ",
+    "template": "https://discord.new/gQN7EpNTe9Wr",
     "bot-name": "The White Rabbit",
 
     "spectator-role": "Zuhörer",
 
     "channels": {
-        "discussion": "Diskussion",
+        "discussion": "diskussion",
         "bot-channel": "bot-channel",
-        "call": "Anruf",
+        "call": "anruf",
 
-        "resources": "Spieler-Ressourcen",
+        "resources": "spieler-ressourcen",
 
         "cards": {
             "character-cards": "charakterkarten",
@@ -373,7 +373,7 @@
             "Erste Nachricht schicken"
         ],
 
-        "background": "CHARLEI BARNES ist am Ende des letzten Schuljahres mit seiner Mutter aus Silent Falls weggezogen, nachdem sich seine Eltern geschieden haben. Er ist nun zurückgekehrt, um die Weihnachtsferien bei seinem Vater zu verbringen, und hofft, dass er Alice und die anderen der Clique treffen kann, während er hier ist. Seit wenigen Tagen antwortet Alice nicht mehr auf seine Nachrichten. Er hat seit dem nichts mehr von ihr gehört.",
+        "background": "CHARLIE BARNES ist am Ende des letzten Schuljahres mit seiner Mutter aus Silent Falls weggezogen, nachdem sich seine Eltern geschieden haben. Er ist nun zurückgekehrt, um die Weihnachtsferien bei seinem Vater zu verbringen, und hofft, dass er Alice und die anderen der Clique treffen kann, während er hier ist. Seit wenigen Tagen antwortet Alice nicht mehr auf seine Nachrichten. Er hat seit dem nichts mehr von ihr gehört.",
 
         "first-message": "Hey! Sorry für den Gruppenchat, aber ich bin gerade für die Weihnachtsferien zurück und hab Alice noch nicht erreichen können. Hat einer von euch mit ihr gesprochen?"
     },

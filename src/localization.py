@@ -14,6 +14,8 @@ LOCALIZATION_DIR = WHITE_RABBIT_DIR / "localization"
 LOCALIZATIONS = {
     "en": "english.json",
     "fr": "french.json",
+    "fr-2": "french-2.json",
+    "de": "german.json",
 }
 
 LANGUAGE_KEY = envvars.get_env_var("LANGUAGE")
