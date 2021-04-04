@@ -15,8 +15,7 @@ not be accepted, as they break the bot.
 
 ### Manual Testing
 
-Before submitting a pull request which changes the code, do a test run of
-Alice is Missing as follows:
+Before submitting a pull request, do a test run of Alice is Missing as follows:
 
 - Start the bot (for instructions on how to do so, see the documentation
   [here](https://white-rabbit.readthedocs.io/en/stable/user-guide/installation.html)).
@@ -36,6 +35,13 @@ Alice is Missing as follows:
 
 If you've reached this point and nothing looks amiss, you're done! Submit the
 pull request, and thanks again for the help.
+
+You can also use the debug commands to run the bot at a higher speed to avoid
+having to wait the full 90 minutes for each run to complete. However this may
+not reflect the bot's behavior when run normally, so please test it once at
+normal speed before submitting a pull request. Documentation on the bot's
+debug commands can be found
+[here](https://white-rabbit.readthedocs.io/en/stable/dev-guide/debugging.html).
 
 ## Changes to Localization
 
