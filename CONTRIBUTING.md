@@ -36,3 +36,9 @@ Alice is Missing as follows:
 
 If you've reached this point and nothing looks amiss, you're done! Submit the
 pull request, and thanks again for the help.
+
+## Changes to Localization
+
+When adding or updating a localization file, use the appropriate Discord
+server template to create a new server, then run the bot using the matching
+language key. Test the bot as described above, then submit the pull request.
