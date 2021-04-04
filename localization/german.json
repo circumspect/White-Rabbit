@@ -28,10 +28,10 @@
             "julia": "julia-hinweise"
         },
 
-        "voicemails": "voicemails",
+        "voicemails": "sprachnachrichten",
 
         "texts": {
-            "group-chat": "gruppen-chat",
+            "group-chat": "gruppenchat",
             "charlie-dakota": "charlie-dakota-pn",
             "charlie-evan": "charlie-evan-pn",
             "charlie-jack": "charlie-jack-pn",
