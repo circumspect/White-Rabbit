@@ -6,11 +6,13 @@
         "bria",
         "creonalia",
         "déso",
+        "gabbalo",
         "holwell",
         "isalnum",
         "skylerberg",
         "tannerstephens",
         "ylkhana"
     ],
-    "python.analysis.typeCheckingMode": "off"
+    "python.analysis.typeCheckingMode": "off",
+    "cSpell.language": "en,fr,de"
 }
