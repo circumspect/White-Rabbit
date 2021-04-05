@@ -13,6 +13,7 @@ DEFAULTS = {
     "USE_LOCAL_IMAGES": False,
 }
 
+
 def get_env_var(key: str):
     try:
         var = environ.get(key) or dotenv_values(ENV_FILE)[key]
