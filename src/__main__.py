@@ -9,7 +9,6 @@ import requests
 import constants
 import envvars
 import gamedata
-import sys
 import utils
 from localization import LOCALIZATION_DATA
 

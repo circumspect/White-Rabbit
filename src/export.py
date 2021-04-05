@@ -215,7 +215,7 @@ class Export(commands.Cog):
     def __init__(self, bot):
         self.bot = bot
 
-    async def channel_attachments(self, channel, oldest_first: bool=False):
+    async def channel_attachments(self, channel, oldest_first: bool = False):
         url_list = []
         async for message in channel.history(limit=None, oldest_first=oldest_first):
             text = message.clean_content.strip()
@@ -481,7 +481,7 @@ class Export(commands.Cog):
         pdf.output(str(out))
 
         end_time = timer()
-        time = constants.TIMER_FORMAT%(end_time - start_time)
+        time = constants.TIMER_FORMAT % (end_time - start_time)
         print(f"PDF generated in {time} seconds.")
 
         await ctx.send(loc["pdf"]["PDFCreated"])
