@@ -537,7 +537,6 @@ class Export(commands.Cog):
             card = utils.get_image(filepaths.CLUE_DIR / str(clue), f"{clue}-{choice}")
             pdf.image(str(card), CLUE_CARD_LEFT, current_y, CLUE_CARD_WIDTH)
 
-
             # Suspect card
             if clue in ctx.game.suspects_drawn:
                 suspect = ctx.game.suspects_drawn[clue]
@@ -602,7 +601,6 @@ class Export(commands.Cog):
             label = loc["pdf"]["culprit2"]
             width = pdf.get_string_width(label)
             pdf.cell(width, 0, label)
-
 
         # Images
         # Add character card
