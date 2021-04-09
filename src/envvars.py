@@ -1,10 +1,9 @@
 # Built-in
 from os import environ
-from pathlib import Path
 # 3rd-party
 from dotenv import dotenv_values
+from rabbit import WHITE_RABBIT_DIR
 
-WHITE_RABBIT_DIR = Path(__file__).parent.parent
 ENV_FILE = WHITE_RABBIT_DIR / ".env"
 
 DEFAULTS = {
