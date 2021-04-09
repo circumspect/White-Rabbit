@@ -14,6 +14,7 @@ import requests
 import constants
 import envvars
 from localization import DEFAULT_LOCALIZATION, LOCALIZATION_DATA, LANGUAGE_KEY
+from rabbit import WHITE_RABBIT_DIR
 from resources import ImageResource
 
 
@@ -48,7 +49,7 @@ def rabbit_path(path: Path):
     parts = list(path.parts)
     start = 1
     for i in range(len(parts)):
-        if parts[i] == "White-Rabbit":
+        if parts[i] == WHITE_RABBIT_DIR.name:
             start = i + 1
 
     outpath = Path("/".join(parts[start:]))
