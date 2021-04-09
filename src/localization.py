@@ -1,11 +1,10 @@
 # Built-in
 import json
-from pathlib import Path
 # Local
 import envvars
 
 # White-Rabbit/src/localization.py
-WHITE_RABBIT_DIR = Path(__file__).parent.parent
+from rabbit import WHITE_RABBIT_DIR
 
 # Localization
 DEFAULT_LOCALIZATION = envvars.DEFAULTS["LANGUAGE"]
