@@ -3,6 +3,7 @@
 # Built-in
 import asyncio
 import math
+import os
 from pathlib import Path
 import random
 import re
@@ -43,6 +44,13 @@ def time_string(time):
     seconds = pad(time % 60)
 
     return f"{minutes}:{seconds}"
+
+
+def delete_files(dir, ext):
+    for root, _, files in os.walk(dir, topdown=False):
+        for name in files:
+            if name.split(".")[-1] == ext:
+                os.remove(os.path.join(root, name))
 
 
 def rabbit_path(path: Path):

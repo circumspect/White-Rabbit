@@ -9,6 +9,7 @@ import utils
 # White-Rabbit/src/constants.py
 DEV_ID_FILE = WHITE_RABBIT_DIR / "dev_ids.txt"
 RESOURCE_DIR = WHITE_RABBIT_DIR / "resources"
+FONT_DIR = RESOURCE_DIR / "fonts"
 
 IMAGE_DIR = RESOURCE_DIR / "images"
 DEFAULT_LOCALIZED_IMAGES_DIR = IMAGE_DIR / DEFAULT_LOCALIZATION
