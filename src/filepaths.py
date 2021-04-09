@@ -1,13 +1,12 @@
 import os
-from pathlib import Path
 # Local
 import gamedata
 from localization import DEFAULT_LOCALIZATION, LANGUAGE_KEY
+from rabbit import WHITE_RABBIT_DIR
 import utils
 
 # Image paths
 # White-Rabbit/src/constants.py
-WHITE_RABBIT_DIR = Path(__file__).parent.parent
 DEV_ID_FILE = WHITE_RABBIT_DIR / "dev_ids.txt"
 RESOURCE_DIR = WHITE_RABBIT_DIR / "resources"
 
