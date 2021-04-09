@@ -12,6 +12,7 @@ from fpdf import FPDF
 import constants
 import filepaths
 import gamedata
+from rabbit import WHITE_RABBIT_DIR
 import utils
 from localization import LOCALIZATION_DATA
 
@@ -704,7 +705,7 @@ class Export(commands.Cog):
                 message_file.write("\n".join(messages))
 
         # Send zip
-        zip_file = filepaths.WHITE_RABBIT_DIR / f"{ctx.guild.name} Messages.zip"
+        zip_file = WHITE_RABBIT_DIR / f"{ctx.guild.name} Messages.zip"
         shutil.make_archive(
             zip_file.with_suffix(""),
             "zip", message_dir,
