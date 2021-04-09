@@ -51,6 +51,9 @@ Built with help from these wonderful people ([emoji key](https://allcontributors
     <td align="center"><a href="https://github.com/theo-ardouin"><img src="https://avatars.githubusercontent.com/u/13322753?v=4?s=100" width="100px;" alt=""/><br /><sub><b>Théo Ardouin</b></sub></a><br /><a href="https://github.com/circumspect/White-Rabbit/commits?author=theo-ardouin" title="Code">💻</a> <a href="https://github.com/circumspect/White-Rabbit/issues?q=author%3Atheo-ardouin" title="Bug reports">🐛</a></td>
     <td align="center"><a href="https://loh.re"><img src="https://avatars.githubusercontent.com/u/5897819?v=4?s=100" width="100px;" alt=""/><br /><sub><b>Gabriel</b></sub></a><br /><a href="#translation-Gabbalo" title="Translation">🌍</a> <a href="#userTesting-Gabbalo" title="User Testing">📓</a></td>
   </tr>
+  <tr>
+    <td align="center"><a href="https://github.com/Zanaku"><img src="https://avatars.githubusercontent.com/u/1145197?v=4?s=100" width="100px;" alt=""/><br /><sub><b>Tom Whiteley</b></sub></a><br /><a href="https://github.com/circumspect/White-Rabbit/issues?q=author%3AZanaku" title="Bug reports">🐛</a></td>
+  </tr>
 </table>
 
 <!-- markdownlint-restore -->
