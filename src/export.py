@@ -11,6 +11,7 @@ from fpdf import FPDF
 # Local
 import constants
 import filepaths
+from filepaths import FONT_DIR
 import gamedata
 from rabbit import WHITE_RABBIT_DIR
 import utils
@@ -171,8 +172,6 @@ PAGE_NUMBER_FONT = WATERMARK_FONTS[1]
 
 
 # Font paths
-FONT_DIR = filepaths.RESOURCE_DIR / "fonts"
-
 BUILT_DIR = FONT_DIR / "built_titling"
 BUILT_TITLING_RG = BUILT_DIR / "built titling rg.ttf"
 BUILT_TITLING_SB = BUILT_DIR / "built titling sb.ttf"
