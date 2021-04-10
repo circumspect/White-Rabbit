@@ -9,6 +9,7 @@ import typing
 import discord
 from discord.ext import commands
 # Local
+import dirs
 import filepaths
 import gamedata
 import utils
@@ -56,13 +57,13 @@ class Game(commands.Cog):
 
         # Send characters, suspects, and locations to appropriate channels
         for character in sorted(gamedata.CHARACTERS.keys()):
-            filepath = utils.get_image(filepaths.CHARACTER_INTRODUCTIONS_DIR, character)
+            filepath = utils.get_image(dirs.CHARACTER_INTRODUCTIONS_DIR, character)
             utils.send_image(LOCALIZATION_DATA["channels"]["cards"]["character-cards"], filepath, ctx)
         for suspect in sorted(gamedata.SUSPECTS.keys()):
-            filepath = utils.get_image(filepaths.SUSPECT_IMAGE_DIR, suspect)
+            filepath = utils.get_image(dirs.SUSPECT_IMAGE_DIR, suspect)
             utils.send_image(LOCALIZATION_DATA["channels"]["cards"]["suspect-cards"], filepath, ctx)
         for location in sorted(gamedata.LOCATIONS.keys()):
-            filepath = utils.get_image(filepaths.LOCATION_IMAGE_DIR, location)
+            filepath = utils.get_image(dirs.LOCATION_IMAGE_DIR, location)
             utils.send_image(LOCALIZATION_DATA["channels"]["cards"]["location-cards"], filepath, ctx)
 
         # Instructions for Charlie Barnes
@@ -138,7 +139,7 @@ class Game(commands.Cog):
         # Send random 80 minute clue card
         channel = LOCALIZATION_DATA["channels"]["resources"]
         choice = random.randint(1, 3)
-        path = utils.get_image(filepaths.CLUE_DIR / "80", f"80-{choice}")
+        path = utils.get_image(dirs.CLUE_DIR / "80", f"80-{choice}")
         utils.send_image(channel, path, ctx)
 
         # Send suspect card
@@ -191,7 +192,7 @@ class Game(commands.Cog):
 
         # 90 minute card/message for Charlie Barnes
         channel = ctx.text_channels[LOCALIZATION_DATA["channels"]["clues"]["charlie"]]
-        utils.send_image(channel, utils.get_image(filepaths.CLUE_DIR / "90", "90-1"), ctx)
+        utils.send_image(channel, utils.get_image(dirs.CLUE_DIR / "90", "90-1"), ctx)
         first_message = LOCALIZATION_DATA["stuff-for-charlie"]["first-message"]
         await channel.send(first_message)
 
@@ -261,7 +262,7 @@ class Game(commands.Cog):
 
                     channel = LOCALIZATION_DATA["channels"]["clues"][ctx.game.ten_char]
                     ending = random.choice(list(i for i in ctx.game.endings if ctx.game.endings[i]))
-                    clue = utils.get_image(filepaths.CLUE_DIR / "10", f"10-{ending}")
+                    clue = utils.get_image(dirs.CLUE_DIR / "10", f"10-{ending}")
                     utils.send_image(channel, clue, ctx)
 
                     if ending != 3:
@@ -281,7 +282,7 @@ class Game(commands.Cog):
                     second = random.choice(remaining_suspects)
 
                     # Send to clues channel
-                    path = utils.get_image(filepaths.SUSPECT_IMAGE_DIR, second)
+                    path = utils.get_image(dirs.SUSPECT_IMAGE_DIR, second)
                     channel = LOCALIZATION_DATA["channels"]["clues"][ctx.game.ten_char]
                     utils.send_image(channel, path, ctx)
 
@@ -348,7 +349,7 @@ class Game(commands.Cog):
         if ctx.game.search_cards:
             search = random.choice(ctx.game.search_cards)
             ctx.game.search_cards.remove(search)
-            image = utils.get_image(filepaths.SEARCHING_DIR, search)
+            image = utils.get_image(dirs.SEARCHING_DIR, search)
             utils.send_image(char_channel, image, ctx)
 
         else:
