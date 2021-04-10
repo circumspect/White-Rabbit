@@ -2,6 +2,9 @@
 Exports
 *******
 
+PDF Exports
+===========
+
 The White Rabbit supports exporting game data to a PDF file.
 To do so, simply run ``!pdf`` at any point after the game has ended.
 This feature works even if the bot was not present during the game and
@@ -16,3 +19,11 @@ for the bot to send the PDF files directly via Discord.
 
 The bot will also remove all emojis from messages before adding them to the
 PDF, due to font limitations.
+
+
+Sharing Files
+=============
+
+The ``!upload`` command will upload your PDF file to a temporary file hosting
+site and reply with a link to download the file. The file hosting service is
+unaffiliated with the White Rabbit and may or may not be secure.

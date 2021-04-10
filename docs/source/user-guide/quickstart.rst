@@ -92,4 +92,5 @@ command is only available to those with admin permissions on the server.)
 
 You can also export the game content to a PDF using ``!pdf``. This will create
 a folder titled "exports" in the bot's root directory, where you can find the
-.pdf file.
+.pdf file. The bot can upload this file and send you a download link. For more
+information, see :doc:`exports`.
