@@ -159,6 +159,12 @@
                 "RecreatingTimeline": "Recréation de la timeline...",
                 "CollectingMessages": "Collecte des messages...",
                 "PDFCreated": "Le PDF a été créé !"
+            },
+
+            "upload": {
+                "name": "télécharger",
+                "aliases": ["upload", "telecharger"],
+                "description": "Uploads a file and prints out the download url"
             }
         },
 

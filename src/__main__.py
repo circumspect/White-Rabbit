@@ -7,8 +7,8 @@ from discord.ext import commands
 import requests
 # Local
 import constants
+import dirs
 import envvars
-import filepaths
 import gamedata
 import utils
 from localization import LOCALIZATION_DATA
@@ -18,7 +18,7 @@ from localization import LOCALIZATION_DATA
 if sys.version_info < (3, 6):
     sys.exit("The White Rabbit does not support Python versions below 3.6. Please install a newer version")
 
-utils.delete_files(filepaths.FONT_DIR, "pkl")
+utils.delete_files(dirs.FONT_DIR, "pkl")
 
 # Enable Server Members gateway intent to find all users
 intents = discord.Intents.default()

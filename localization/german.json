@@ -159,6 +159,12 @@
                 "RecreatingTimeline": "Erstelle Zeitlinie...",
                 "CollectingMessages": "Sammle Nachrichten...",
                 "PDFCreated": "PDF erstellt!"
+            },
+
+            "upload": {
+                "name": "upload",
+                "aliases": [],
+                "description": "Uploads a file and prints out the download url"
             }
         },
 
