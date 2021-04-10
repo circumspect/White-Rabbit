@@ -5,6 +5,7 @@ import random
 from discord.ext import commands
 # Local
 import constants
+import dirs
 import filepaths
 import gamedata
 import utils
@@ -54,7 +55,7 @@ class Manual(commands.Cog):
 
         ctx.game.alice = choice
 
-        alice = utils.get_image(filepaths.POSTER_DIR, f"Alice-Briarwood-{ctx.game.alice}")
+        alice = utils.get_image(dirs.POSTER_DIR, f"Alice-Briarwood-{ctx.game.alice}")
         utils.send_image(LOCALIZATION_DATA["channels"]["resources"], alice, ctx)
 
     @commands.command(
@@ -96,7 +97,7 @@ class Manual(commands.Cog):
             motive = ctx.game.motives[name]
             utils.send_image(
                 channel,
-                utils.get_image(filepaths.MOTIVE_DIR, f"Motive-{motive}"),
+                utils.get_image(dirs.MOTIVE_DIR, f"Motive-{motive}"),
                 ctx
             )
 
@@ -156,7 +157,7 @@ class Manual(commands.Cog):
         # Send clue card
         channel = utils.get_text_channels(ctx.game.guild)[LOCALIZATION_DATA["channels"]["clues"][character]]
         choice = ctx.game.picked_clues[time]
-        path = utils.get_image(filepaths.CLUE_DIR / str(time), f"{time}-{choice}")
+        path = utils.get_image(dirs.CLUE_DIR / str(time), f"{time}-{choice}")
         utils.send_image(channel, path)
 
         # Send suspect/location card to player's clues channel

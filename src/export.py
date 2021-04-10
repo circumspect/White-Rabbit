@@ -10,8 +10,9 @@ from discord.ext import commands
 from fpdf import FPDF
 # Local
 import constants
+import dirs
+from dirs import FONT_DIR
 import filepaths
-from filepaths import FONT_DIR
 import gamedata
 from rabbit import WHITE_RABBIT_DIR
 import utils
@@ -402,7 +403,7 @@ class Export(commands.Cog):
         )
 
         # Poster
-        poster = utils.get_image(filepaths.POSTER_DIR, f"Alice-Briarwood-{ctx.game.alice}")
+        poster = utils.get_image(dirs.POSTER_DIR, f"Alice-Briarwood-{ctx.game.alice}")
         await loop.run_in_executor(
             None, pdf.image,
             *(str(poster), COVER_POSTER_X,
@@ -477,7 +478,7 @@ class Export(commands.Cog):
         if not file_name:
             file_name = ctx.guild.name
 
-        out = (filepaths.PDF_EXPORT_DIR / file_name).with_suffix(".pdf")
+        out = (dirs.PDF_EXPORT_DIR / file_name).with_suffix(".pdf")
         pdf.output(str(out))
 
         end_time = timer()
@@ -509,11 +510,11 @@ class Export(commands.Cog):
 
         # Character and motive cards
         name = gamedata.CHARACTERS[character]
-        card = utils.get_image(filepaths.CHARACTER_IMAGE_DIR, name.split()[0].lower())
+        card = utils.get_image(dirs.CHARACTER_IMAGE_DIR, name.split()[0].lower())
         pdf.image(str(card), CHAR_CARD_LEFT, CHAR_CARD_TOP, CHAR_CARD_WIDTH)
 
         motive = ctx.game.motives[character]
-        card = utils.get_image(filepaths.MOTIVE_DIR, f"Motive-{motive}")
+        card = utils.get_image(dirs.MOTIVE_DIR, f"Motive-{motive}")
         pdf.image(str(card), CHAR_CARD_LEFT, MOTIVE_CARD_TOP, CHAR_CARD_WIDTH)
 
         # Clues
@@ -534,16 +535,16 @@ class Export(commands.Cog):
 
             # Clue card
             choice = ctx.game.picked_clues[clue]
-            card = utils.get_image(filepaths.CLUE_DIR / str(clue), f"{clue}-{choice}")
+            card = utils.get_image(dirs.CLUE_DIR / str(clue), f"{clue}-{choice}")
             pdf.image(str(card), CLUE_CARD_LEFT, current_y, CLUE_CARD_WIDTH)
 
             # Suspect card
             if clue in ctx.game.suspects_drawn:
                 suspect = ctx.game.suspects_drawn[clue]
-                card = utils.get_image(filepaths.SUSPECT_IMAGE_DIR, suspect)
+                card = utils.get_image(dirs.SUSPECT_IMAGE_DIR, suspect)
             elif clue in ctx.game.locations_drawn:
                 location = ctx.game.locations_drawn[clue]
-                card = utils.get_image(filepaths.LOCATION_IMAGE_DIR, location)
+                card = utils.get_image(dirs.LOCATION_IMAGE_DIR, location)
 
             pdf.image(str(card), SUSPECT_CARD_LEFT, current_y, CLUE_CARD_WIDTH)
 
@@ -609,7 +610,7 @@ class Export(commands.Cog):
                   CONCLUSION_ROW1_IMAGE_Y, CONCLUSION_CARD_WIDTH)
 
         # Add clue card
-        card = utils.get_image(filepaths.CLUE_DIR / "10", f"10-{ctx.game.picked_clues[10]}")
+        card = utils.get_image(dirs.CLUE_DIR / "10", f"10-{ctx.game.picked_clues[10]}")
         pdf.image(str(card), CONCLUSION_CLUE_CARD_X,
                   CONCLUSION_ROW1_IMAGE_Y, CONCLUSION_CARD_WIDTH)
 
@@ -677,6 +678,20 @@ class Export(commands.Cog):
             await loop.run_in_executor(None, pdf.multi_cell,
                                        *(0, MESSAGES_LINE_HEIGHT, line))
 
+    @commands.command(
+        name=loc["upload"]["name"],
+        aliases=loc["upload"]["aliases"],
+        description=loc["upload"]["description"]
+    )
+    async def upload(self, ctx, file_name=""):
+        """Uploads a file and prints out the download url"""
+
+        if not file_name:
+            file_name = ctx.guild.name
+        path = (dirs.PDF_EXPORT_DIR / file_name).with_suffix(".pdf")
+        url = utils.upload_file(path)
+        await ctx.send(url)
+
     @commands.command(hidden=True)
     async def txt(self, ctx):
         """Gets all messages from a guild and writes to a .txt file"""
@@ -686,7 +701,7 @@ class Export(commands.Cog):
 
         asyncio.create_task(ctx.send("Downloading..."))
         # make folder for messages
-        message_dir = filepaths.TEXT_EXPORT_DIR / ctx.guild.name
+        message_dir = dirs.TEXT_EXPORT_DIR / ctx.guild.name
         message_dir.mkdir(parents=True, exist_ok=True)
 
         # Download messages

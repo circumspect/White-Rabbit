@@ -7,12 +7,14 @@ import os
 from pathlib import Path
 import random
 import re
+import subprocess
 from typing import Union
 # 3rd-party
 import discord
 import requests
 # Local
 import constants
+from dirs import TEMP_DIR
 import envvars
 from localization import DEFAULT_LOCALIZATION, LOCALIZATION_DATA, LANGUAGE_KEY
 from rabbit import WHITE_RABBIT_DIR
@@ -201,3 +203,10 @@ def ooc_strip(ctx, text: str):
         re.sub(r'\([^)]*\)', '', text)
 
     return text
+
+def upload_file(path):
+    url_file = str(TEMP_DIR / "url.txt")
+
+    subprocess.run(["curl", "-T", path, "temp.sh", ">", url_file], shell=True)
+    with open(url_file) as f:
+        return f.readline().strip()
