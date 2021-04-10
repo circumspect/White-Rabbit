@@ -205,6 +205,8 @@ def ooc_strip(ctx, text: str):
     return text
 
 def upload_file(path):
+    """Uploads a file and returns the download URL"""
+
     url_file = str(TEMP_DIR / "url.txt")
 
     subprocess.run(["curl", "-T", path, "temp.sh", ">", url_file], shell=True)
