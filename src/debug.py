@@ -29,7 +29,13 @@ class Debug(commands.Cog):
                 for line in f.readlines():
                     line = line.strip()
                     if line:
-                        self.bot.dev_ids.append(int(line))
+                        try:
+                            # Ignore any lines that can't be read as numbers
+                            # This is mostly helpful for commenting out ids
+                            # when testing so you don't need to delete lines
+                            self.bot.dev_ids.append(int(line))
+                        except ValueError:
+                            pass
         except FileNotFoundError:
             # Create file if it doesn't exist
             print("No " + filepaths.DEV_ID_FILE.name + " found, making empty file")
