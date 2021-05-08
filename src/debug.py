@@ -10,20 +10,26 @@ import utils
 from localization import LOCALIZATION_DATA
 
 loc = LOCALIZATION_DATA["commands"]["debug"]
-
+DEBUG_COMMAND_LIST = (
+    "speed",
+    "plugins",
+    "load",
+    "unload",
+    "quit",
+)
 
 class Debug(commands.Cog):
     def __init__(self, bot):
         self.bot = bot
 
-        self.dev_ids = []
+        self.bot.dev_ids = []
 
         try:
             with open(filepaths.DEV_ID_FILE) as f:
                 for line in f.readlines():
                     line = line.strip()
                     if line:
-                        self.dev_ids.append(int(line))
+                        self.bot.dev_ids.append(int(line))
         except FileNotFoundError:
             # Create file if it doesn't exist
             print("No " + filepaths.DEV_ID_FILE.name + " found, making empty file")
@@ -31,12 +37,12 @@ class Debug(commands.Cog):
                 pass
 
         if environ.get("DEV_ID"):
-            self.dev_ids.append(int(environ.get("DEV_ID")))
+            self.bot.dev_ids.append(int(environ.get("DEV_ID")))
 
     async def cog_check(self, ctx):
         """Only people with access to the code"""
 
-        return ctx.author.id in self.dev_ids
+        return ctx.author.id in self.bot.dev_ids
 
     @commands.Cog.listener()
     async def on_ready(self):

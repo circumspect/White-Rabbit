@@ -7,6 +7,7 @@ from discord.ext import commands
 import requests
 # Local
 import constants
+from debug import DEBUG_COMMAND_LIST
 import dirs
 import envvars
 import gamedata
@@ -25,7 +26,7 @@ utils.delete_files(dirs.FONT_DIR, "pkl")
 intents = discord.Intents.default()
 intents.members = True
 
-bot = commands.Bot(command_prefix="!", intents=intents)
+bot = commands.Bot(command_prefix=constants.COMMAND_PREFIX, intents=intents)
 bot.games = {}
 
 # Localization
@@ -100,7 +101,17 @@ async def on_command_error(ctx, error):
             asyncio.create_task(bot_channel.send(f"{ctx.author.mention} " + LOCALIZATION_DATA["errors"]["CommandInWrongChannel"]))
             return
 
-        # TODO: Check if running debug command without being in dev_ids.txt
+        # Check if running debug command without being listed as developer
+        # TODO: is there a better way to check this than testing against every command/alias?
+        if not ctx.author.id in bot.dev_ids:
+            message = ctx.message.clean_content
+            for command in DEBUG_COMMAND_LIST:
+                aliases: list = LOCALIZATION_DATA["commands"]["debug"][command]["aliases"]
+                aliases.append(LOCALIZATION_DATA["commands"]["debug"][command]["name"])
+                for alias in aliases:
+                    if message.startswith(constants.COMMAND_PREFIX + alias):
+                        asyncio.create_task(ctx.send(LOCALIZATION_DATA["errors"]["MissingDeveloperPermissions"]))
+                        return
 
 
         # Automatic/manual check
@@ -108,6 +119,7 @@ async def on_command_error(ctx, error):
             asyncio.create_task(ctx.send(LOCALIZATION_DATA["errors"]["ManualCommandInAuto"]))
             return
 
+        # Couldn't determine a specific error; tell user to check console
         asyncio.create_task(ctx.send(LOCALIZATION_DATA["errors"]["GenericCheckFailure"]))
 
     # Bad input

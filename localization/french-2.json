@@ -406,6 +406,7 @@
         "UserInputError": "L'intrant est incompréhensible !",
         "CommandNotFound": "Commande inconnue !",
         "CommandInWrongChannel": "Tu ne peux utiliser les commandes que dans ce canal !",
+        "MissingDeveloperPermissions": "That command is for developers only!",
         "ManualCommandInAuto": "Tu ne peux pas faire ça, essaies-tu une commande manuelle en mode automatique ?",
         "SpectatorCommandAttempt": "Les spectateurs ne peuvent pas exécuter les commandes !",
         "GenericCheckFailure": "Tu ne peux pas faire ça !",

@@ -1,3 +1,8 @@
+# This file should not import any local modules! Doing so will likely cause
+# circular imports
+
+COMMAND_PREFIX = "!"
+
 # Links and bot info
 VERSION = "0.10.1"
 DOCS_URL = "https://white-rabbit.readthedocs.io/"
