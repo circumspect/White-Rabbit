@@ -406,6 +406,7 @@
         "UserInputError": "Fehlerhafte Eingabe!",
         "CommandNotFound": "Befehl nicht gefunden!",
         "CommandInWrongChannel": "Du kannst Befehle nur in diesem Kanal nutzen!",
+        "MissingDeveloperPermissions": "That command is for developers only!",
         "ManualCommandInAuto": "Nicht ausführbar. Versuchst du einen manuellen Befehl im Automatik-Modus ausführen?",
         "SpectatorCommandAttempt": "Zuhörer können keine Befehle ausführen!",
         "GenericCheckFailure": "Du kannst das nicht machen!",
