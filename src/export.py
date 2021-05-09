@@ -304,6 +304,10 @@ class Export(commands.Cog):
                 elif filename in gamedata.SEARCHING.keys():
                     ctx.game.searching[name].append(filename)
 
+                # Ignore debrief card
+                elif filename == "debrief":
+                    pass
+
                 # Clue cards
                 else:
                     try:
@@ -327,7 +331,7 @@ class Export(commands.Cog):
                     except ValueError:
                         # If still can't determine image type, log to console
                         # and ignore
-                        print(f"{constants.WARNING_PREFIX}Unknown image found during export: {filename}")
+                        print(f"{constants.WARNING_PREFIX}Unknown image found in {name.title()}'s clues during export: {filename}")
 
         # Look for coin flip
         channel = ctx.text_channels[LOCALIZATION_DATA["channels"]["clues"][ctx.game.ten_char]]
