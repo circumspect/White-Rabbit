@@ -1,6 +1,7 @@
 # Set the default behavior, in case people don't have core.autocrlf set.
-* text=auto
-* text eol=lf
+*.py text
+*.md text
+*.rst text
 
 # Binary files
 *.png binary
