@@ -23,8 +23,7 @@ if sys.version_info < (3, 6):
 utils.delete_files(dirs.FONT_DIR, "pkl")
 
 # Enable Server Members gateway intent to find all users
-intents = discord.Intents.default()
-intents.members = True
+intents = discord.Intents.all()
 
 bot = commands.Bot(command_prefix=constants.COMMAND_PREFIX, intents=intents)
 bot.games = {}

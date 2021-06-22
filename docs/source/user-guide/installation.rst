@@ -35,8 +35,8 @@ Next, create a new Discord bot as follows:
 - Rename this file to ``.env``.
 - Go to the Bot tab.
 
-  - Under "Privileged Gateway Intents", set the toggle for "Server Members
-    Intent" to true and click "Save Changes".
+  - Under "Privileged Gateway Intents", set the toggles for "Server Members
+    Intent" and "Presence Intent" to true and click "Save Changes".
 
 - Go to the OAuth2 tab and scroll to the bottom.
 
