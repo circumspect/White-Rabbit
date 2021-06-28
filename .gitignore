@@ -5,6 +5,8 @@ token.txt
 exports/
 temp/
 
+.vscode/
+
 # PyCharm
 .idea/
 
