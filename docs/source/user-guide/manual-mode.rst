@@ -38,10 +38,10 @@ Alice
 In automatic mode, the bot will send a random poster during initialization.
 However, it will not choose one in manual mode. To choose a random poster
 and send it, call ``!alice``. To choose a specific poster to send, call it
-with a number from 1-10, e.g. ``!alice 4``. The posters can be found in
+with a number from 1-10, e.g., ``!alice 4``. The posters can be found in
 ``[White-Rabbit]/resources/images/[LANGUAGE]/posters/``, where
 ``[White-Rabbit]`` is the bot's root directory, and ``[LANGUAGE]`` is the key
-for the desired language, e.g. ``en`` for English. This command must be run
+for the desired language, e.g., ``en`` for English. This command must be run
 before starting the game.
 
 

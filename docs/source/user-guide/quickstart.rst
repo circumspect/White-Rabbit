@@ -41,7 +41,7 @@ Now, have players navigate to ``#character-cards`` and introduce the five
 characters with their brief taglines (directly underneath their names on the
 cards). Tell players you will be playing as Charlie Barnes, and have them
 pick the characters they would like to play amongst themselves. To claim a
-character role, use ``!claim <Player>``, e.g. ``!claim Charlie``.
+character role, use ``!claim <Player>``, e.g., ``!claim Charlie``.
 
 
 .. note::
@@ -55,6 +55,12 @@ of ``#charlie-clues`` to explain the mechanics of the game to the players.
 Remember to keep Charlie's background (also at the top of ``#charlie-clues``)
 in mind when describing your character.
 
+Finally, have each player type their voicemails into the ``#voicemails``
+channel, with spoiler bars on each side, e.g., ``||Hey Alice, ...||``.
+This will keep the voicemails hidden until players click on them, which
+should happen at the end of the game, and allow the bot to find the voicemails
+when exporting the PDF.
+
 
 Starting the game
 -----------------
@@ -63,7 +69,7 @@ To start the game, run ``!start``. The bot will automatically send clues to
 the appropriate clues channel along with the corresponding suspect/location.
 The only other command that needs to be run after the game has begun is using
 the 10 command to assign the 10 minute clue card to the player who is going
-to Alice's location near the end of the game, e.g. ``!10 Dakota``. Should a
+to Alice's location near the end of the game, e.g., ``!10 Dakota``. Should a
 player need to draw a searching card, have them run ``!search``.
 
 .. note::
@@ -86,7 +92,11 @@ timer and running in manual mode. For more information on these, see
 End of game
 -----------
 
-At the end of the game, you may wish to allow your players to see the other
+At the end of the game, each player should read their voicemail out loud to
+the group, and the other players can follow along by reading the messages
+from the channel directly.
+
+You may also wish to allow your players to see the other
 characters' clues and messages. To do this, run ``!show_all``. (Note that this
 command is only available to those with admin permissions on the server.)
 
