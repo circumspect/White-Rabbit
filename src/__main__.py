@@ -25,7 +25,7 @@ utils.delete_files(dirs.FONT_DIR, "pkl")
 # Enable Server Members gateway intent to find all users
 intents = discord.Intents.all()
 
-bot = commands.Bot(command_prefix=constants.COMMAND_PREFIX, intents=intents)
+bot = commands.Bot(command_prefix=commands.when_mentioned_or(constants.COMMAND_PREFIX), intents=intents)
 bot.games = {}
 
 # Localization
