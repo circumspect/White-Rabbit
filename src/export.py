@@ -350,7 +350,7 @@ class Export(commands.Cog):
             # Only grab first message from each player
             if not ctx.game.voicemails[character]:
                 voicemail = utils.clean_message(ctx, message.clean_content)
-                ctx.game.voicemails[character] = voicemail.replace("|", "").replace("\n", "")
+                ctx.game.voicemails[character] = voicemail.replace("||", "").replace("\n", "")
 
     @commands.command(
         name=loc["pdf"]["name"],
