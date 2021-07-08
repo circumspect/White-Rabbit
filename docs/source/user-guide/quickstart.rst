@@ -34,8 +34,9 @@ For setup, join the voice channel and have players join you.
    respond to commands in other channels.
 
 To begin setting up the game, type ``!init`` into the channel titled
-``#bot-channel`` in your server. The bot should begin sending cards out to
-their respective channels. Have players navigate to ``player-resources``.
+``#bot-channel`` in your server. This will distribute the various
+character, suspect, and location cards to their respective channels.
+Have players navigate to ``player-resources``.
 Read the introduction card out loud, and introduce Alice from the poster.
 Now, have players navigate to ``#character-cards`` and introduce the five
 characters with their brief taglines (directly underneath their names on the
@@ -66,9 +67,10 @@ Starting the game
 -----------------
 
 To start the game, run ``!start``. The bot will automatically send clues to
-the appropriate clues channel along with the corresponding suspect/location.
-The only other command that needs to be run after the game has begun is using
-the 10 command to assign the 10 minute clue card to the player who is going
+the appropriate clues channel along with the corresponding suspect/location
+at the times previously assigned. The only command that needs to be run
+after the game has begun is the ``!10`` command, which is used
+to assign the 10 minute clue card to the player who is going
 to Alice's location near the end of the game, e.g., ``!10 Dakota``. Should a
 player need to draw a searching card, have them run ``!search``.
 
