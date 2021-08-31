@@ -62,16 +62,12 @@ def rabbit_path(path: Path):
         if parts[i] == WHITE_RABBIT_DIR.name:
             start = i + 1
 
-    outpath = Path("/".join(parts[start:]))
-    return outpath
+    return Path("/".join(parts[start:]))
 
 
 def url_is_good(url: str):
     r = requests.get(url)
-    if r.status_code == 200:
-        return True
-    else:
-        return False
+    return r.status_code == 200
 
 
 def find_url(url: str, extensions):
@@ -91,10 +87,9 @@ def get_image(directory: Path, name: str) -> Union[Path, str]:
         except FileNotFoundError:
             parts = list(directory.parts)
             for i in range(len(parts)):
-                if parts[i] == "White-Rabbit":
-                    if parts[i+3] == LANGUAGE_KEY:
-                        parts[i+3] = DEFAULT_LOCALIZATION
-                        break
+                if parts[i] == "White-Rabbit" and parts[i + 3] == LANGUAGE_KEY:
+                    parts[i+3] = DEFAULT_LOCALIZATION
+                    break
 
             return img.get(Path("/".join(parts)), name)
 
