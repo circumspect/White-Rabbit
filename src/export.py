@@ -531,7 +531,7 @@ class Export(commands.Cog):
         current_y = CLUE_CARDS_TOP
         for clue in ctx.game.clue_assignments[character]:
             # Skip 90 and 10 clues
-            if clue == 90 or clue == 10:
+            if clue in (90, 10):
                 continue
 
             # Clue label
@@ -574,9 +574,9 @@ class Export(commands.Cog):
 
         # Add title
         pdf.add_page()
-        pdf.set_y(CONCLUSION_TITLE_Y)
-        pdf.set_font(*CONCLUSION_TITLE_FONT)
-        pdf.cell(0, 0, CONCLUSION_TITLE)
+        self.page_title(
+            pdf, CONCLUSION_TITLE_Y, CONCLUSION_TITLE_FONT, CONCLUSION_TITLE
+        )
 
         # Labels
         pdf.set_font(*CONCLUSION_LABEL_FONT)
@@ -643,11 +643,18 @@ class Export(commands.Cog):
     def timeline(self, ctx, pdf):
         """Adds timeline pages to PDf"""
 
-        # TODO: Finish timeline
         pdf.add_page()
-        pdf.set_y(TIMELINE_TITLE_Y)
-        pdf.set_font(*TIMELINE_TITLE_FONT)
-        pdf.cell(0, 0, TIMELINE_TITLE)
+        self.page_title(
+            pdf, TIMELINE_TITLE_Y, TIMELINE_TITLE_FONT, TIMELINE_TITLE
+        )
+
+
+    def page_title(self, pdf, y, font, text):
+        """Add title to current page"""
+
+        pdf.set_y(y)
+        pdf.set_font(*font)
+        pdf.cell(0, 0, text)
 
     async def channel_export(self, ctx, pdf, channel):
         """
