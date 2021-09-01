@@ -102,7 +102,7 @@ class Players(commands.Cog):
             message += loc["users"]["players"]
             message += "\n"
             message += ', '.join(member.name for member in ctx.game.char_roles().values())
-        await ctx.send(message if message else loc["users"]["NoneFound"])
+        await ctx.send(message or loc["users"]["NoneFound"])
 
 
 def setup(bot):
