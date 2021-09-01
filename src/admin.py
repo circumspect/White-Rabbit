@@ -83,7 +83,7 @@ class Admin(commands.Cog):
                         asyncio.create_task(channel.set_permissions(role, view_channel=True))
 
             # Channels that all players can send messages
-            elif channel.name == LOCALIZATION_DATA["channels"]["voicemails"] or channel.name == GROUP_CHAT:
+            elif channel.name in [GROUP_CHAT, LOCALIZATION_DATA["channels"]["voicemails"]]:
                 asyncio.create_task(channel.set_permissions(everyone, send_messages=False))
                 for role in ctx.guild.roles:
                     if role.name.lower() in gamedata.CHARACTERS:
@@ -97,7 +97,7 @@ class Admin(commands.Cog):
                 player_a = split_name[0].title()
                 player_b = split_name[1].title()
                 for role in ctx.guild.roles:
-                    if role.name == player_a or role.name == player_b:
+                    if role.name in [player_a, player_b]:
                         asyncio.create_task(channel.set_permissions(role, view_channel=True))
 
     @commands.command(

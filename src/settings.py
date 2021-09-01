@@ -104,7 +104,10 @@ class Settings(commands.Cog):
         if not index:
             # Print out currently enabled endings
             message = loc["endings"]["EndingsEnabled"] + "\n"
-            message += ", ".join([f"{end}" for end in ctx.game.endings if ctx.game.endings[end]])
+            message += ", ".join(
+                f"{end}" for end in ctx.game.endings if ctx.game.endings[end]
+            )
+
             message = utils.codeblock(message)
             asyncio.create_task(ctx.send(message))
         else:
