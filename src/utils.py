@@ -136,7 +136,7 @@ def send_folder(channel, path, ctx=None):
         send_image(channel, filepath, ctx)
 
 
-def is_command(message: str):
+def is_command(message: str):  # sourcery skip: return-identity
     """Checks if a string seems like an attempt to send a command"""
 
     # Check if message has ! prefix

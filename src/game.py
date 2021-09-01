@@ -261,7 +261,7 @@ class Game(commands.Cog):
                         ctx.game.ten_char = "charlie"
 
                     channel = LOCALIZATION_DATA["channels"]["clues"][ctx.game.ten_char]
-                    ending = random.choice(list(i for i in ctx.game.endings if ctx.game.endings[i]))
+                    ending = random.choice([i for i in ctx.game.endings if ctx.game.endings[i]])
                     clue = utils.get_image(dirs.CLUE_DIR / "10", f"10-{ending}")
                     utils.send_image(channel, clue, ctx)
 
@@ -273,12 +273,7 @@ class Game(commands.Cog):
                 # Ending 3
                 elif minutes_remaining == 8 and ctx.game.second_culprit:
                     culprit = ctx.game.suspects_drawn[30]
-
-                    remaining_suspects = []
-                    for suspect in gamedata.SUSPECTS:
-                        if suspect != culprit:
-                            remaining_suspects.append(suspect)
-
+                    remaining_suspects = [suspect for suspect in gamedata.SUSPECTS if suspect != culprit]
                     second = random.choice(remaining_suspects)
 
                     # Send to clues channel

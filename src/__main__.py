@@ -102,7 +102,7 @@ async def on_command_error(ctx, error):
 
         # Check if running debug command without being listed as developer
         # TODO: is there a better way to check this than testing against every command/alias?
-        if not ctx.author.id in bot.dev_ids:
+        if ctx.author.id not in bot.dev_ids:
             message = ctx.message.clean_content
             for command in DEBUG_COMMAND_LIST:
                 aliases: list = LOCALIZATION_DATA["commands"]["debug"][command]["aliases"]
