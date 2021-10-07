@@ -18,8 +18,8 @@
 # -- Project information -----------------------------------------------------
 
 project = 'The White Rabbit'
-copyright = '2020-2021, Chenkai Luo, Chendi Luo'
-author = 'Chenkai Luo, Chendi Luo'
+copyright = '2020-2021, @circumspect on Github'
+author = 'circumspect'
 
 # The full version, including alpha/beta/rc tags
 release = '1.0.0'
