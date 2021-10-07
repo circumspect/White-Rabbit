@@ -35,3 +35,11 @@ change this, simply set the timer frequency using ``!timer`` after running
 the ``bot-commands`` channel may lag behind the bot's internal timer (and
 thus the clues), so the best way to ensure the bot behaves as expected after
 making changes is to do a test run at normal speed.
+
+
+Shutting Down the Bot
+=====================
+
+You can shut down the bot through Discord using the ``!quit`` command. Note
+that this will cancel all in progress games on all servers the bot is
+currently running in, and will not save progress.
