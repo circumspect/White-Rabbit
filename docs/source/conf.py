@@ -18,7 +18,7 @@
 # -- Project information -----------------------------------------------------
 
 project = 'The White Rabbit'
-copyright = ''
+copyright = '2020-2021, @circumspect on Github'
 author = 'circumspect'
 
 # The full version, including alpha/beta/rc tags
