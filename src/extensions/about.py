@@ -1,9 +1,8 @@
 import lightbulb
 from lightbulb import commands
 
-import constants
-from localization import LOCALIZATION_DATA
-import utils
+from utils.localization import LOCALIZATION_DATA
+from utils import constants, miscutils
 
 loc = LOCALIZATION_DATA["commands"]["about"]
 
@@ -18,7 +17,7 @@ async def credits(ctx: lightbulb.Context) -> None:
         loc["credits"]["source"],
         constants.SOURCE_URL,
     ])
-    message = utils.codeblock(message)
+    message = miscutils.codeblock(message)
     await ctx.respond(message)
 
 
@@ -30,7 +29,7 @@ async def credits(ctx: lightbulb.Context) -> None:
         loc["docs"]["documentation"],
         constants.DOCS_SHORT_URL,
     ])
-    message = utils.codeblock(message)
+    message = miscutils.codeblock(message)
     await ctx.respond(message)
 
 

@@ -1,10 +1,10 @@
 # Built-in
 import json
 # Local
-import envvars
+from utils import envvars
 
 # White-Rabbit/src/localization.py
-from rabbit import WHITE_RABBIT_DIR
+from utils.rabbit import WHITE_RABBIT_DIR
 
 # Localization
 DEFAULT_LOCALIZATION = envvars.DEFAULTS["LANGUAGE"]

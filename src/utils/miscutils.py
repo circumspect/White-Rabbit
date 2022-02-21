@@ -10,15 +10,13 @@ import re
 import subprocess
 from typing import Union
 # 3rd-party
-import discord
 import requests
 # Local
-import constants
-from dirs import TEMP_DIR
-import envvars
-from localization import DEFAULT_LOCALIZATION, LOCALIZATION_DATA, LANGUAGE_KEY
-from rabbit import WHITE_RABBIT_DIR
-from resources import ImageResource
+from utils.dirs import TEMP_DIR
+from utils import envvars, constants
+from utils.localization import DEFAULT_LOCALIZATION, LOCALIZATION_DATA, LANGUAGE_KEY
+from utils.rabbit import WHITE_RABBIT_DIR
+from utils.resources import ImageResource
 
 
 def flip():
@@ -122,7 +120,7 @@ def send_image(channel, filepath: Union[Path, str], ctx=None):
 
     if isinstance(filepath, Path):
         # If sending image as a file, attach it
-        asyncio.create_task(channel.send(file=discord.File(filepath)))
+        asyncio.create_task(channel.send(filepath))
     else:
         # Otherwise send the link directly
         asyncio.create_task(channel.send(filepath))

@@ -1,5 +1,5 @@
 # Local
-from localization import LOCALIZATION_DATA
+from utils.localization import LOCALIZATION_DATA
 
 CHARACTERS = {
     "charlie": "Charlie Barnes",

@@ -1,8 +1,8 @@
 # Built-in
 import os
 # Local
-from localization import DEFAULT_LOCALIZATION, LANGUAGE_KEY
-from rabbit import WHITE_RABBIT_DIR
+from utils.localization import DEFAULT_LOCALIZATION, LANGUAGE_KEY
+from utils.rabbit import WHITE_RABBIT_DIR
 
 # Temp files
 TEMP_DIR = WHITE_RABBIT_DIR / "temp"

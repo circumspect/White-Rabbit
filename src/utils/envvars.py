@@ -2,7 +2,7 @@
 from os import environ
 # 3rd-party
 from dotenv import dotenv_values
-from rabbit import WHITE_RABBIT_DIR
+from utils.rabbit import WHITE_RABBIT_DIR
 
 ENV_FILE = WHITE_RABBIT_DIR / ".env"
 
