@@ -1,6 +1,7 @@
 # Built-in
 import asyncio
 
+import hikari
 import lightbulb
 from lightbulb import commands
 
@@ -13,46 +14,48 @@ plugin = lightbulb.Plugin("Players")
 
 # Commands for players to claim character roles
 @plugin.command()
+@lightbulb.option("role", "role to claim", type=hikari.Role)
 @lightbulb.command(
     loc["claim"]["name"], loc["claim"]["description"], aliases=loc["claim"]["aliases"]
 )
 @lightbulb.implements(lightbulb.PrefixCommand)
 async def claim(ctx: lightbulb.Context) -> None:
     """Claim a character/spectator role"""
-
     # Check if role can be claimed
-    role = None
-    if role in ctx.author.roles:
+    if ctx.options.role.id in ctx.member.role_ids:
         await ctx.respond(loc["claim"]["AlreadyHaveThisRole"])
         return
-    elif role.name.lower() not in [
+    elif ctx.options.role.name.lower() not in [
         *gamedata.CHARACTERS,
         LOCALIZATION_DATA["spectator-role"],
     ]:
-        asyncio.create_task(ctx.respond(loc["claim"]["UnclaimableRole"]))
+        await ctx.respond(loc["claim"]["UnclaimableRole"])
         return
-    elif role.members and role.name.lower() in gamedata.CHARACTERS:
-        asyncio.create_task(ctx.respond(loc["claim"]["RoleIsTaken"]))
+    elif (
+        any(
+            ctx.options.role.id in member.role_ids
+            for member in ctx.get_guild().get_members().values()
+        )
+        and ctx.options.role.name.lower() in gamedata.CHARACTERS
+    ):
+        await ctx.respond(loc["claim"]["RoleIsTaken"])
         return
 
     # Check if player already has a character role
-    for member_role in ctx.author.roles:
-        if member_role.name.lower() in gamedata.CHARACTERS:
-            asyncio.create_task(ctx.respond(loc["claim"]["AlreadyHaveOtherRole"]))
+    for role_id in ctx.member.role_ids:
+        if ctx.get_guild().get_role(role_id).name.lower() in gamedata.CHARACTERS:
+            await ctx.respond(loc["claim"]["AlreadyHaveOtherRole"])
             return
 
     # Give role and update player's nickname
-    await ctx.author.add_roles(role)
+    await ctx.member.add_role(ctx.options.role)
     await ctx.respond(loc["claim"]["UpdatedRoles"])
-    if ctx.author == ctx.guild.owner:
+    if ctx.member.id == ctx.get_guild().owner_id:
         # Can't update nickname for server owner
-        asyncio.create_task(
-            ctx.respond(LOCALIZATION_DATA["errors"]["ServerOwnerNicknameChange"])
-        )
-    elif role.name.lower() in gamedata.CHARACTERS:
-        asyncio.create_task(
-            ctx.author.edit(nick=gamedata.CHARACTERS[role.name.lower()])
-        )
+        await ctx.respond(LOCALIZATION_DATA["errors"]["ServerOwnerNicknameChange"])
+
+    elif ctx.options.role.name.lower() in gamedata.CHARACTERS:
+        await ctx.member.edit(nick=gamedata.CHARACTERS[ctx.options.role.name.lower()])
 
 
 @plugin.command()
@@ -64,21 +67,19 @@ async def claim(ctx: lightbulb.Context) -> None:
 @lightbulb.implements(lightbulb.PrefixCommand)
 async def unclaim(ctx: lightbulb.Context) -> None:
     """Remove character roles"""
-
-    # Keep @everyone
-    for role in ctx.author.roles:
+    for role_id in ctx.member.role_ids:
+        role = ctx.get_guild().get_role(role_id)
         if role.name.lower() in gamedata.CHARACTERS:
-            await ctx.author.remove_roles(role)
-            asyncio.create_task(ctx.respond(f"Removed role {role.name}"))
-            if ctx.author == ctx.guild.owner:
+            await ctx.member.remove_role(role)
+            await ctx.respond(f"Removed role {role.name}")
+            if ctx.author.id == ctx.get_guild().owner_id:
                 # Can't update nickname for server owner
-                asyncio.create_task(
-                    ctx.respond(
-                        LOCALIZATION_DATA["errors"]["ServerOwnerNicknameChange"]
-                    )
+                await ctx.respond(
+                    LOCALIZATION_DATA["errors"]["ServerOwnerNicknameChange"]
                 )
+
             else:
-                asyncio.create_task(ctx.author.edit(nick=None))
+                await ctx.author.edit(nick=None)
             return
     await ctx.respond(LOCALIZATION_DATA["errors"]["NoCharacterRoles"])
 
