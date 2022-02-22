@@ -211,18 +211,18 @@ class PDF(FPDF):
 
 async def channel_attachments(channel, oldest_first: bool = False):
     url_list = []
-    async for message in channel.history(limit=None, oldest_first=oldest_first):
-        text = message.clean_content.strip()
+    async for message in channel.fetch_history():
+        text = message.content.strip()
         if text.__contains__("raw.githubusercontent.com/"):
             url_list.append(text)
 
         for attachment in message.attachments:
             url_list.append(attachment.url)
-
+    if oldest_first:
+        url_list = list(reversed(url_list))
     return url_list
 
 
-@staticmethod
 def parse_filename(url: str) -> str:
     filename = Path(urlparse(url).path).stem.replace("_", "-").lower()
 
@@ -260,7 +260,6 @@ async def import_data(game):
     else:
         first_message = all_messages[0]
         game.start_time = first_message.created_at
-
     # Alice
     channel = text_channels[LOCALIZATION_DATA["channels"]["resources"]]
     url_list = await channel_attachments(channel)
@@ -338,8 +337,8 @@ async def import_data(game):
 
     # Look for coin flip
     channel = text_channels[LOCALIZATION_DATA["channels"]["clues"][game.ten_char]]
-    async for message in channel.history(limit=5):
-        text = message.clean_content.strip().title()
+    async for message in channel.fetch_history().limit(5):
+        text = message.content.strip().title()
         if text in (
             LOCALIZATION_DATA["flip"]["heads"],
             LOCALIZATION_DATA["flip"]["tails"],
@@ -352,11 +351,11 @@ async def import_data(game):
     all_messages = reversed(await channel.fetch_history())
     for message in all_messages:
         # Name
-        character = message.member.display_name.lower().split()[0]
+        character = game.guild.get_member(message.author).display_name.lower().split()[0]
 
         # Only grab first message from each player
         if not game.voicemails[character]:
-            voicemail = miscutils.clean_message(game, message.clean_content)
+            voicemail = miscutils.clean_message(game, message.content)
             game.voicemails[character] = voicemail.replace("||", "").replace("\n", "")
 
 
@@ -523,14 +522,12 @@ def conclusion_page(game, pdf):
 
 def timeline(game, pdf):
     """Adds timeline pages to PDf"""
-
     pdf.add_page()
     page_title(pdf, TIMELINE_TITLE_Y, TIMELINE_TITLE_FONT, TIMELINE_TITLE)
 
 
 def page_title(pdf, y, font, text):
     """Add title to current page"""
-
     pdf.set_y(y)
     pdf.set_font(*font)
     pdf.cell(0, 0, text)
@@ -546,12 +543,13 @@ async def channel_export(game, pdf, channel):
     loop = asyncio.get_running_loop()
 
     pdf.set_font(*PM_FONT)
-    async for message in channel.history(limit=None, oldest_first=True):
+    all_messages = reversed(await channel.fetch_history())
+    for message in all_messages:
         # Name
-        author = message.author.display_name.split()[0]
+        author = game.guild.get_member(message.author).display_name.lower().split()[0]
 
         # Remove emojis and out of character parts
-        line = miscutils.clean_message(game, message.clean_content)
+        line = miscutils.clean_message(game, message.content)
 
         # If string is empty after cleaning, skip
         if line == "":
@@ -594,7 +592,7 @@ async def upload(ctx: lightbulb.Context) -> None:
     if ctx.options.file_name:
         file_name = ctx.options.file_name
     else:
-        file_name = ctx.guild.name
+        file_name = ctx.get_guild().name
     path = (dirs.PDF_EXPORT_DIR / file_name).with_suffix(".pdf")
     url = miscutils.upload_file(path)
     await ctx.respond(url)
@@ -740,7 +738,7 @@ async def pdf(ctx: lightbulb.Context) -> None:
     if ctx.options.file_name:
         file_name = ctx.options.file_name
     else:
-        file_name = ctx.get_guild.name()
+        file_name = ctx.get_guild().name
 
     out = (dirs.PDF_EXPORT_DIR / file_name).with_suffix(".pdf")
     pdf.output(str(out))
@@ -774,12 +772,12 @@ async def txt(ctx):
             " ".join(
                 (
                     message.created_at.strftime("%Y-%m-%d %H:%M"),
-                    message.author.member.display_name + ":",
+                    message.member.display_name + ":",
                     message.content,
                     ", ".join(attachment.url for attachment in message.attachments),
                 )
             )
-            async for message in reversed(await channel.fetch_history())
+            for message in reversed(await channel.fetch_history())
         ]
         with open(message_dir / f"{channel.name}.txt", mode="w") as message_file:
             message_file.write("\n".join(messages))
