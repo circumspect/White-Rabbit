@@ -349,13 +349,16 @@ async def search(ctx: lightbulb.Context) -> None:
     if game.automatic and not game.start_time:
         await ctx.respond(LOCALIZATION_DATA["errors"]["GameNotStarted"])
         return
-    if not ctx.character:
+    for role_id, role in game.char_roles().items():
+        if role_id in ctx.member.role_ids:
+            character = role.name
+            break
+    else:
         await ctx.respond(LOCALIZATION_DATA["errors"]["NoCharacterRoles"])
-
         return
 
     char_channel = miscutils.get_text_channels(game.guild)[
-        LOCALIZATION_DATA["channels"]["clues"][ctx.character]
+        LOCALIZATION_DATA["channels"]["clues"][character]
     ]
 
     if game.search_cards:
@@ -370,6 +373,7 @@ async def search(ctx: lightbulb.Context) -> None:
 
 
 @plugin.command()
+@lightbulb.option("character_role", "the role of the character who gets the card", type=hikari.Role)
 @lightbulb.command(
     loc["ten_min_card"]["name"],
     loc["ten_min_card"]["description"],
@@ -379,11 +383,7 @@ async def search(ctx: lightbulb.Context) -> None:
 async def ten_min_card(ctx: lightbulb.Context) -> None:
     """Assign the 10 minute card to another player"""
     game = ctx.bot.d.games[ctx.guild_id]
-    mention = None
-    if isinstance(mention, hikari.Member):
-        character = mention.nick.split()[0]
-    else:
-        character = mention.name
+    character = ctx.options.character_role.name
 
     if character.title() not in game.char_roles():
         await ctx.respond(LOCALIZATION_DATA["errors"]["PlayerNotFound"])

@@ -101,10 +101,16 @@ async def clue(ctx: lightbulb.Context) -> None:
     # wish ensure that players cannot draw each other's clues, uncomment
     # out the lines below
     #
-    # # Check that the person calling the command has the clue
-    # # Ignores this check for the 10 minute clue because that one
-    # # is assigned manually anyway
-    # if time != 10 and time not in game.clue_assignments[ctx.character]:
+    # Check that the person calling the command has the clue
+    # Ignores this check for the 10 minute clue because that one
+    # is assigned manually anyway
+    # for role_id, role in game.char_roles().items():
+    #     if role_id in ctx.member.role_ids:
+    #         character = role.name
+    #         break
+    # else:
+    #     await ctx.respond(LOCALIZATION_DATA["errors"]["NoCharacterRoles"])
+    # if ctx.options.time != 10 and ctx.options.time not in game.clue_assignments[character]:
     #     await ctx.respond(loc["clue"]["NotYourClue"])
     #     return
 
