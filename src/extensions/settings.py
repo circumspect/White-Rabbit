@@ -65,6 +65,7 @@ async def music(ctx: lightbulb.Context) -> None:
 
 
 @plugin.command()
+@lightbulb.option("gap", "gap between timer messages", type=int, default=0)
 @lightbulb.command(
     loc["show_timer"]["name"],
     loc["show_timer"]["description"],
@@ -78,26 +79,26 @@ async def show_timer(ctx: lightbulb.Context) -> None:
     Takes optional argument of how often to
     send timer messages (in seconds)
     """
-    gap = 0
-
-    if gap:
-        if gap < gamedata.MIN_TIMER_GAP:
+    game = ctx.bot.d.games[ctx.guild_id]
+    if ctx.options.gap:
+        if ctx.options.gap < gamedata.MIN_TIMER_GAP:
             asyncio.create_task(ctx.respond(loc["show_timer"]["TimerGapTooSmall"]))
             return
 
         # If timer spacing between pings exists, enable timer
-        ctx.game.show_timer = True
-        ctx.game.timer_gap = gap
+        game.show_timer = True
+        game.timer_gap = ctx.options.gap
     else:
-        ctx.game.show_timer = not ctx.game.show_timer
+        game.show_timer = not game.show_timer
 
-    if ctx.game.show_timer:
+    if game.show_timer:
         asyncio.create_task(ctx.respond(loc["show_timer"]["ShowingTimer"]))
     else:
         asyncio.create_task(ctx.respond(loc["show_timer"]["HidingTimer"]))
 
 
 @plugin.command()
+@lightbulb.option("index", "index of ending to toggle", type=int, default=0)
 @lightbulb.command(
     loc["endings"]["name"],
     loc["endings"]["description"],
@@ -106,19 +107,19 @@ async def show_timer(ctx: lightbulb.Context) -> None:
 @lightbulb.implements(lightbulb.PrefixCommand)
 async def endings(ctx: lightbulb.Context) -> None:
     """Enables/disables an ending. See docs for details"""
-    index = 0
-    if not index:
+    game = ctx.bot.d.games[ctx.guild_id]
+    if not ctx.options.index:
         # Print out currently enabled endings
         message = loc["endings"]["EndingsEnabled"] + "\n"
         message += ", ".join(
-            f"{end}" for end in ctx.game.endings if ctx.game.endings[end]
+            f"{end}" for end in game.endings if game.endings[end]
         )
 
         message = miscutils.codeblock(message)
         asyncio.create_task(ctx.respond(message))
     else:
         # Toggle specified ending
-        ctx.game.endings[index] = not ctx.game.endings[index]
+        game.endings[ctx.options.index] = not game.endings[ctx.options.index]
 
 
 def load(bot):
