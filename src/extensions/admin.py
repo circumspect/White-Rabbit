@@ -104,13 +104,11 @@ async def reset_perms(ctx: lightbulb.Context) -> None:
 @lightbulb.implements(lightbulb.PrefixCommand)
 async def reset_roles(ctx: lightbulb.Context) -> None:
     # Removes character roles from everyone
-    print(ctx.bot.intents)
     for member in ctx.get_guild().get_members().values():
         is_player = False
         if member.is_bot:
             continue
         for role in member.role_ids:
-            print(ctx.get_guild().get_role(role).name.lower())
             if ctx.get_guild().get_role(role).name.lower() in gamedata.CHARACTERS:
                 await member.remove_role(role)
                 is_player = True
@@ -130,7 +128,7 @@ async def reset(ctx: lightbulb.Context) -> None:
     await ctx.respond(loc["reset"]["ResettingServer"])
 
     # Console logging
-    print(f'{constants.INFO_PREFIX}Resetting server: "{ctx.guild.name}" (ID: {ctx.guild.id})')
+    print(f'{constants.INFO_PREFIX}Resetting server: "{ctx.get_guild().name}" (ID: {ctx.guild_id})')
 
     # Erase all messages and reset channel permissions
     await asyncio.gather(wipe(ctx), reset_perms(ctx), reset_roles(ctx))
