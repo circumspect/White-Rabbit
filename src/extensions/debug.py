@@ -29,7 +29,7 @@ async def on_ready(event: hikari.StartedEvent):
         quit()
 
 @plugin.command()
-@lightbulb.option("speed", "changes game run speed", type=float)
+@lightbulb.option("speed", "speed to run the game at", type=float)
 @lightbulb.command(loc["speed"]["name"], loc["speed"]["description"], aliases=loc["speed"]["aliases"])
 @lightbulb.implements(lightbulb.PrefixCommand)
 async def speed(ctx: lightbulb.Context) -> None:
@@ -70,11 +70,29 @@ async def plugins(ctx: lightbulb.Context) -> None:
 
 
 @plugin.command()
+@lightbulb.option("extension", "name of the extension to load", type=str, default="all")
 @lightbulb.command(loc["load"]["name"], loc["load"]["description"], aliases=loc["load"]["aliases"])
 @lightbulb.implements(lightbulb.PrefixCommand)
 async def load(ctx: lightbulb.Context) -> None:
-    ctx.bot.reload_extensions(*ctx.bot.extensions)
-    await ctx.respond("Reloaded")
+    extension_name = ctx.options.extension.lower()
+
+    # Reload all
+    if ctx.options.extension.lower() == "all":
+        ctx.bot.reload_extensions(*ctx.bot.extensions)
+        await ctx.respond(f"Reloaded {', '.join(ctx.bot.extensions)}")
+    # Load extension
+    else:
+        try:
+            for extension in ctx.bot.extensions:
+                if extension_name == extension.split(".")[-1]:
+                    ctx.bot.reload_extensions(extension)
+                    break
+            else:
+                ctx.bot.load_extensions(extension_name)
+            asyncio.create_task(ctx.respond(f"Loaded {extension_name}"))
+
+        except lightbulb.ExtensionNotFound:
+            asyncio.create_task(ctx.respond(f"Couldn't find extension: \"{extension_name}"))
 
 
 @plugin.command()
