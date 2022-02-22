@@ -80,6 +80,9 @@ def is_not_spectator(ctx):
         raise errors.Spectator()
     return True
 
+@bot.listen()
+async def on_guild_message(event: hikari.GuildMessageCreateEvent):
+    bot.d.games.setdefault(event.guild_id, gamedata.Data(event.get_guild()))
 
 @bot.listen(lightbulb.CommandErrorEvent)
 async def on_error(event: lightbulb.CommandErrorEvent) -> None:
@@ -115,7 +118,7 @@ async def on_error(event: lightbulb.CommandErrorEvent) -> None:
 
     # Everything else
     else:
-        await event.content.send(LOCALIZATION_DATA["errors"]["UnknownError"])
+        await event.context.respond(LOCALIZATION_DATA["errors"]["UnknownError"])
         raise event.exception
 
 

@@ -1,8 +1,8 @@
 import lightbulb
 from lightbulb import commands
 
-from utils.localization import LOCALIZATION_DATA
 from utils import constants, miscutils
+from utils.localization import LOCALIZATION_DATA
 
 loc = LOCALIZATION_DATA["commands"]["about"]
 

@@ -1,15 +1,16 @@
 import asyncio
 
-import lightbulb
-from lightbulb import commands, converters
 import hikari
+import lightbulb
 from hikari import permissions
+from lightbulb import commands, converters
 
+from utils import constants, gamedata, miscutils
 from utils.localization import LOCALIZATION_DATA
-from utils import gamedata, constants
 
 plugin = lightbulb.Plugin("Admin")
 plugin.add_checks(lightbulb.has_guild_permissions(permissions.Permissions.ADMINISTRATOR))
+
 loc = LOCALIZATION_DATA["commands"]["admin"]
 GROUP_CHAT = LOCALIZATION_DATA["channels"]["texts"]["group-chat"]
 
@@ -18,33 +19,36 @@ GROUP_CHAT = LOCALIZATION_DATA["channels"]["texts"]["group-chat"]
 @lightbulb.command(loc["show_all"]["name"], loc["show_all"]["description"], aliases=loc["show_all"]["aliases"])
 @lightbulb.implements(lightbulb.PrefixCommand)
 async def show_all(ctx: lightbulb.Context) -> None:
+    """Reveal all channels and disable sending messages"""
     for channel in ctx.get_guild().get_channels():
         if channel.type != hikari.ChannelType.GUILD_TEXT or not channel.parent_id:
             continue
         parent = ctx.get_guild().get_channel(channel.parent_id)
         await channel.edit(permission_overwrites=parent.permission_overwrites.values())
 
+
 @plugin.command()
-@lightbulb.option("text_channels", "channels to wipe", modifier=commands.OptionModifier.GREEDY)
+@lightbulb.option("text_channels", "channels to wipe", type=hikari.TextableGuildChannel, modifier=commands.OptionModifier.GREEDY, required=False)
 @lightbulb.command(loc["wipe"]["name"], loc["wipe"]["description"], aliases=loc["wipe"]["aliases"])
 @lightbulb.implements(lightbulb.PrefixCommand)
 async def wipe(ctx: lightbulb.Context) -> None:
     """Erases all messages and clears game data"""
-
     # Confirm command to user
     await ctx.respond(loc["wipe"]["DeletingMessages"])
 
     # Wipe messages
+    text_channels = ctx.options.text_channels
     if not text_channels:
-        text_channels = ctx.guild.text_channels
+        text_channels = miscutils.get_text_channels(ctx.get_guild()).values()
     for text_channel in text_channels:
-        asyncio.create_task(text_channel.purge(limit=None))
+        await ctx.bot.rest.delete_messages(text_channel.id, await ctx.bot.rest.fetch_messages(text_channel.id))
 
     # Reset game data
-    ctx.game.__init__(ctx.game.guild)
+    game = ctx.bot.d.games[ctx.guild_id]
+    game.__init__(game.guild)
 
     # Console logging
-    print(f'{constants.INFO_PREFIX}Wiped messages from server: "{ctx.guild.name}" (ID: {ctx.guild.id})')
+    print(f'{constants.INFO_PREFIX}Wiped messages from server: "{ctx.get_guild().name}" (ID: {ctx.guild_id})')
 
 @plugin.command()
 @lightbulb.command(loc["reset_perms"]["name"], loc["reset_perms"]["description"], aliases=loc["reset_perms"]["aliases"])
