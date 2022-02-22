@@ -56,9 +56,9 @@ async def auto(ctx: lightbulb.Context) -> None:
 @lightbulb.implements(lightbulb.PrefixCommand)
 async def music(ctx: lightbulb.Context) -> None:
     """Enable/disable music stream when game starts"""
-
-    ctx.game.stream_music = not ctx.game.stream_music
-    if ctx.game.stream_music:
+    game = ctx.bot.d.games[ctx.guild_id]
+    game.stream_music = not game.stream_music
+    if game.stream_music:
         asyncio.create_task(ctx.respond(loc["music"]["MusicEnabled"]))
     else:
         asyncio.create_task(ctx.respond(loc["music"]["MusicDisabled"]))
