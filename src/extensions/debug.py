@@ -1,61 +1,57 @@
 from os import environ
 import asyncio
 
+import hikari
 import lightbulb
 from lightbulb import commands
 
 from utils.localization import LOCALIZATION_DATA
-from utils import constants, filepaths, gamedata, miscutils, errors
+from utils import gamedata, miscutils, errors
 
 plugin = lightbulb.Plugin("Debug")
 loc = LOCALIZATION_DATA["commands"]["debug"]
 
-
-DEBUG_COMMAND_LIST = (
-    "speed",
-    "plugins",
-    "load",
-    "unload",
-    "quit",
-)
-async def cog_check(self, ctx):
+@lightbulb.Check
+def is_dev(ctx: lightbulb.Context):
     """Only people with access to the code"""
-    if not ctx.author.id in self.bot.d.dev_ids:
+    if not ctx.author.id in ctx.bot.d.dev_ids:
         raise errors.DevOnly()
     return True
 
-@plugin.command()
-@lightbulb.command(loc["load"]["name"], loc["load"]["description"], aliases=loc["load"]["aliases"])
-@lightbulb.implements(lightbulb.PrefixCommand)
-async def load(ctx: lightbulb.Context) -> None:
-    ctx.app.reload_extensions(*ctx.app.extensions)
-    await ctx.respond("Reloaded")
+plugin.add_checks(is_dev)
 
+async def on_ready(event: hikari.StartedEvent):
+    # Console logging
+    print("Bot has logged in!")
+
+    if environ.get('SHUTDOWN'):
+        print("Shutting down!")
+        quit()
 
 @plugin.command()
-@lightbulb.option("speed", "changes game run speed")
+@lightbulb.option("speed", "changes game run speed", type=float)
 @lightbulb.command(loc["speed"]["name"], loc["speed"]["description"], aliases=loc["speed"]["aliases"])
 @lightbulb.implements(lightbulb.PrefixCommand)
 async def speed(ctx: lightbulb.Context) -> None:
     """Changes the speed of the game - DEBUG USE ONLY"""
 
-    ctx.game.game_speed = speed
-
-    # Set timer to only ping once every minute to avoid
-    # hitting discord api limits
-    ctx.game.timer_gap = 60
-
     # Cap the top speed
-    if speed > gamedata.MAX_SPEED:
+    if ctx.options.speed > gamedata.MAX_SPEED:
         asyncio.create_task(ctx.respond(f"Too fast! Max is {gamedata.MAX_SPEED}"))
         return
-
     # Speed must be at least 1
-    if speed < 1:
+    elif ctx.options.speed < 1:
         asyncio.create_task(ctx.respond("Too slow! Speed must be at least 1"))
         return
 
-    if speed == 1:
+    game = ctx.bot.d.games[ctx.guild_id]
+    game.game_speed = ctx.options.speed
+
+    # Set timer to only ping once every minute to avoid
+    # hitting discord api limits
+    game.timer_gap = 60
+
+    if ctx.options.speed == 1:
         asyncio.create_task(ctx.respond("Reset the game speed!"))
     else:
         asyncio.create_task(ctx.respond("Set the game speed!"))
@@ -71,6 +67,14 @@ async def plugins(ctx: lightbulb.Context) -> None:
     message += "\n".join(ctx.bot.cogs.keys())
     message = miscutils.codeblock(message)
     await ctx.respond(message)
+
+
+@plugin.command()
+@lightbulb.command(loc["load"]["name"], loc["load"]["description"], aliases=loc["load"]["aliases"])
+@lightbulb.implements(lightbulb.PrefixCommand)
+async def load(ctx: lightbulb.Context) -> None:
+    ctx.app.reload_extensions(*ctx.app.extensions)
+    await ctx.respond("Reloaded")
 
 
 @plugin.command()
@@ -101,6 +105,8 @@ async def quit(ctx: lightbulb.Context) -> None:
 
 def load(bot):
     bot.add_plugin(plugin)
+    bot.subscribe(hikari.StartedEvent, on_ready)
 
 def unload(bot):
     bot.remove_plugin(plugin)
+    bot.unsubscribe(hikari.StartedEvent, on_ready)

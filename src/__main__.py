@@ -51,10 +51,8 @@ else:
     print(f"No {filepaths.DEV_ID_FILE.name} found, making empty file")
     with open(filepaths.DEV_ID_FILE, 'x') as f:
         pass
-
 if environ.get("DEV_ID"):
     bot.d.dev_ids.append(int(environ.get("DEV_ID")))
-
 
 @bot.listen()
 async def on_ready(event: hikari.StartedEvent):
