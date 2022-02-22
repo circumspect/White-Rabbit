@@ -84,7 +84,7 @@ async def load(ctx: lightbulb.Context) -> None:
     else:
         try:
             for extension in ctx.bot.extensions:
-                if extension_name == extension.split(".")[-1]:
+                if extension_name == extension.split(".")[-1] or extension_name == extension:
                     ctx.bot.reload_extensions(extension)
                     break
             else:
@@ -92,31 +92,33 @@ async def load(ctx: lightbulb.Context) -> None:
             asyncio.create_task(ctx.respond(f"Loaded {extension_name}"))
 
         except lightbulb.ExtensionNotFound:
-            asyncio.create_task(ctx.respond(f"Couldn't find extension: \"{extension_name}"))
+            asyncio.create_task(ctx.respond(f"Couldn't find extension: {extension_name}, did you mean extensions.{extension_name}?"))
 
 
 @plugin.command()
+@lightbulb.option("extension", "name of the extension to unload", type=str)
 @lightbulb.command(loc["unload"]["name"], loc["unload"]["description"], aliases=loc["unload"]["aliases"])
 @lightbulb.implements(lightbulb.PrefixCommand)
 async def unload(ctx: lightbulb.Context) -> None:
     """Unloads a plugin"""
-    extension_name = ""
+    extension_name = ctx.options.extension
     try:
-        ctx.bot.unload_extension(extension_name)
-        asyncio.create_task(ctx.respond(f"Unloaded {extension_name}"))
-    except commands.errors.ExtensionNotLoaded:
-        asyncio.create_task(ctx.respond(f"{extension_name} was never loaded"))
+        for extension in ctx.bot.extensions:
+            if extension_name == extension.split(".")[-1] or extension_name == extension:
+                ctx.bot.unload_extensions(extension)
+                break
+        await ctx.respond(f"Unloaded {ctx.options.extension}")
+    except lightbulb.errors.ExtensionNotLoaded:
+        asyncio.create_task(ctx.respond(f"{ctx.options.extension} was never loaded"))
 
-# DO NOT MOVE TO admin.py!!! This command will shut down the bot across
-# ALL servers, and thus should only be able to be run by those listed
-# in the dev_ids file
-
+# DO NOT MOVE TO admin.py!
+# This command will shut down the bot across ALL servers,
+# and thus should only be able to be run by those listed in the dev_ids file
 @plugin.command()
 @lightbulb.command(loc["quit"]["name"], loc["quit"]["description"], aliases=loc["quit"]["aliases"])
 @lightbulb.implements(lightbulb.PrefixCommand)
 async def quit(ctx: lightbulb.Context) -> None:
     """Shuts down the bot - AFFECTS ALL SERVERS"""
-
     await ctx.respond("Shutting down, thanks for playing!")
     await ctx.bot.close()
 
