@@ -111,9 +111,7 @@ async def endings(ctx: lightbulb.Context) -> None:
     if not ctx.options.index:
         # Print out currently enabled endings
         message = loc["endings"]["EndingsEnabled"] + "\n"
-        message += ", ".join(
-            f"{end}" for end in game.endings if game.endings[end]
-        )
+        message += ", ".join(f"{end}" for end in game.endings if game.endings[end])
 
         message = miscutils.codeblock(message)
         asyncio.create_task(ctx.respond(message))

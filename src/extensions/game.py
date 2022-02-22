@@ -35,10 +35,14 @@ async def init(ctx: lightbulb.Context) -> None:
 
     # Introduction images
     miscutils.send_image(
-        LOCALIZATION_DATA["channels"]["resources"], filepaths.MASTER_PATHS["guide"], ctx
+        LOCALIZATION_DATA["channels"]["resources"],
+        filepaths.MASTER_PATHS["guide"],
+        ctx.get_guild(),
     )
     miscutils.send_image(
-        LOCALIZATION_DATA["channels"]["resources"], filepaths.MASTER_PATHS["intro"], ctx
+        LOCALIZATION_DATA["channels"]["resources"],
+        filepaths.MASTER_PATHS["intro"],
+        ctx.get_guild(),
     )
 
     if ctx.game.automatic:
@@ -48,17 +52,23 @@ async def init(ctx: lightbulb.Context) -> None:
     for character in sorted(gamedata.CHARACTERS.keys()):
         filepath = miscutils.get_image(dirs.CHARACTER_INTRODUCTIONS_DIR, character)
         miscutils.send_image(
-            LOCALIZATION_DATA["channels"]["cards"]["character-cards"], filepath, ctx
+            LOCALIZATION_DATA["channels"]["cards"]["character-cards"],
+            filepath,
+            ctx.get_guild(),
         )
     for suspect in sorted(gamedata.SUSPECTS.keys()):
         filepath = miscutils.get_image(dirs.SUSPECT_IMAGE_DIR, suspect)
         miscutils.send_image(
-            LOCALIZATION_DATA["channels"]["cards"]["suspect-cards"], filepath, ctx
+            LOCALIZATION_DATA["channels"]["cards"]["suspect-cards"],
+            filepath,
+            ctx.get_guild(),
         )
     for location in sorted(gamedata.LOCATIONS.keys()):
         filepath = miscutils.get_image(dirs.LOCATION_IMAGE_DIR, location)
         miscutils.send_image(
-            LOCALIZATION_DATA["channels"]["cards"]["location-cards"], filepath, ctx
+            LOCALIZATION_DATA["channels"]["cards"]["location-cards"],
+            filepath,
+            ctx.get_guild(),
         )
 
     # Instructions for Charlie Barnes
@@ -76,7 +86,7 @@ async def init(ctx: lightbulb.Context) -> None:
     # Character and motive cards in clues channels
     for name in gamedata.CHARACTERS:
         channel = ctx.text_channels[LOCALIZATION_DATA["channels"]["clues"][name]]
-        miscutils.send_image(channel, filepaths.MASTER_PATHS[name], ctx)
+        miscutils.send_image(channel, filepaths.MASTER_PATHS[name], ctx.get_guild())
 
     # Shuffle and send motives if in automatic mode
     if ctx.game.automatic:
@@ -139,12 +149,12 @@ async def example(ctx: lightbulb.Context) -> None:
     channel = LOCALIZATION_DATA["channels"]["resources"]
     choice = random.randint(1, 3)
     path = miscutils.get_image(dirs.CLUE_DIR / "80", f"80-{choice}")
-    miscutils.send_image(channel, path, ctx)
+    miscutils.send_image(channel, path, ctx.get_guild())
 
     # Send suspect card
     suspect = random.choice(list(gamedata.SUSPECTS.keys()))
     path = filepaths.MASTER_PATHS[suspect]
-    miscutils.send_image(channel, path, ctx)
+    miscutils.send_image(channel, path, ctx.get_guild())
 
 
 @plugin.command()
@@ -160,7 +170,7 @@ async def char_sheet(ctx: lightbulb.Context) -> None:
     miscutils.send_image(
         LOCALIZATION_DATA["channels"]["resources"],
         filepaths.MASTER_PATHS["character_sheet"],
-        ctx,
+        ctx.get_guild(),
     )
 
 
@@ -198,7 +208,7 @@ async def start(ctx: lightbulb.Context) -> None:
     # 90 minute card/message for Charlie Barnes
     channel = ctx.text_channels[LOCALIZATION_DATA["channels"]["clues"]["charlie"]]
     miscutils.send_image(
-        channel, miscutils.get_image(dirs.CLUE_DIR / "90", "90-1"), ctx
+        channel, miscutils.get_image(dirs.CLUE_DIR / "90", "90-1"), ctx.get_guild()
     )
     first_message = LOCALIZATION_DATA["stuff-for-charlie"]["first-message"]
     await channel.send(first_message)
@@ -279,7 +289,7 @@ async def clue_check(self, ctx):
                     [i for i in ctx.game.endings if ctx.game.endings[i]]
                 )
                 clue = miscutils.get_image(dirs.CLUE_DIR / "10", f"10-{ending}")
-                miscutils.send_image(channel, clue, ctx)
+                miscutils.send_image(channel, clue, ctx.get_guild())
 
                 if ending != 3:
                     ctx.game.three_flip = True
@@ -297,7 +307,7 @@ async def clue_check(self, ctx):
                 # Send to clues channel
                 path = miscutils.get_image(dirs.SUSPECT_IMAGE_DIR, second)
                 channel = LOCALIZATION_DATA["channels"]["clues"][ctx.game.ten_char]
-                miscutils.send_image(channel, path, ctx)
+                miscutils.send_image(channel, path, ctx.get_guild())
 
                 # Send to suspects-drawn channel
                 channel = ctx.text_channels[
@@ -306,7 +316,7 @@ async def clue_check(self, ctx):
                 asyncio.create_task(
                     channel.send(LOCALIZATION_DATA["messages"]["SecondCulprit"])
                 )
-                miscutils.send_image(channel, path, ctx)
+                miscutils.send_image(channel, path,  ctx.get_guild())
 
             # Endings 1 and 2
             elif minutes_remaining == 3 and ctx.game.three_flip:
@@ -347,7 +357,7 @@ async def clue_check(self, ctx):
     miscutils.send_image(
         LOCALIZATION_DATA["channels"]["clues"]["charlie"],
         filepaths.MASTER_PATHS["debrief"],
-        ctx,
+         ctx.get_guild(),
     )
 
 
@@ -378,7 +388,7 @@ async def search(ctx: lightbulb.Context) -> None:
         search = random.choice(ctx.game.search_cards)
         ctx.game.search_cards.remove(search)
         image = miscutils.get_image(dirs.SEARCHING_DIR, search)
-        miscutils.send_image(char_channel, image, ctx)
+        miscutils.send_image(char_channel, image, ctx.get_guild())
 
     else:
         # out of unique cards

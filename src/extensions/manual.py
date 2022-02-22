@@ -45,7 +45,7 @@ async def alice(ctx: lightbulb.Context) -> None:
     ctx.game.alice = choice
 
     alice = miscutils.get_image(dirs.POSTER_DIR, f"Alice-Briarwood-{ctx.game.alice}")
-    miscutils.send_image(LOCALIZATION_DATA["channels"]["resources"], alice, ctx)
+    miscutils.send_image(LOCALIZATION_DATA["channels"]["resources"], alice,  ctx.get_guild())
 
 
 @plugin.command()
@@ -90,7 +90,7 @@ async def send_motives(ctx: lightbulb.Context) -> None:
         channel = ctx.text_channels[LOCALIZATION_DATA["channels"]["clues"][name]]
         motive = ctx.game.motives[name]
         miscutils.send_image(
-            channel, miscutils.get_image(dirs.MOTIVE_DIR, f"Motive-{motive}"), ctx
+            channel, miscutils.get_image(dirs.MOTIVE_DIR, f"Motive-{motive}"),  ctx.get_guild()
         )
 
 

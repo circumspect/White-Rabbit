@@ -111,38 +111,30 @@ def get_image(directory: Path, name: str) -> Union[Path, str]:
             return find_url(fallback_url, ImageResource.IMAGE_EXTENSIONS)
 
 
-def send_image(channel, filepath: Union[Path, str], ctx=None):
+def send_image(channel, filepath: Union[Path, str], guild=None):
     """Sends an image to a specified channel"""
 
     if isinstance(channel, str):
-        if not ctx:
-            raise ValueError("Cannot send to channel without ctx.text_channels")
-        channel = ctx.text_channels[channel]
+        if not guild:
+            raise ValueError("If channel is a string guild must be specified")
+        channel = get_text_channels(guild)[channel]
 
     if isinstance(filepath, Path):
         # If sending image as a file, attach it
-        asyncio.create_task(channel.send(filepath))
+        asyncio.create_task(channel.send(attachment=filepath))
     else:
         # Otherwise send the link directly
         asyncio.create_task(channel.send(filepath))
-
-
-def send_folder(channel, path, ctx=None):
-    """Sends all images in a folder in alphabetical order"""
-
-    for image in sorted(path.glob("*.*")):
-        filepath = get_image(path, image.stem)
-        send_image(channel, filepath, ctx)
 
 
 def is_command(message: str):  # sourcery skip: return-identity
     """Checks if a string seems like an attempt to send a command"""
 
     # Check if message has ! prefix
-    if not message.startswith("!"):
+    if not message.startswith(constants.COMMAND_PREFIX):
         return False
     # If space after the !, not a command
-    if message.startswith("! "):
+    if message.startswith(constants.COMMAND_PREFIX + " "):
         return False
 
     # Remove ! from start of string
