@@ -157,11 +157,11 @@ def is_command(message: str):  # sourcery skip: return-identity
     return True
 
 
-def clean_message(ctx, text: str):
+def clean_message(game, text: str):
     """Removes emojis and out of character parts of a string"""
 
     text = remove_emojis(text).strip()
-    text = ooc_strip(ctx, text).strip()
+    text = ooc_strip(game, text).strip()
 
     return text
 
@@ -179,7 +179,7 @@ def remove_emojis(text: str):
     return emojis.sub(r'', text)
 
 
-def ooc_strip(ctx, text: str):
+def ooc_strip(game, text: str):
     """
     Takes a string and removes out of context portions
 
@@ -187,13 +187,13 @@ def ooc_strip(ctx, text: str):
     """
 
     # If entire message is out of character, ignore
-    if ctx.game.ooc_strip_level >= 1:
+    if game.ooc_strip_level >= 1:
         if text.startswith("(") and text.endswith(")"):
             return ""
 
     # If using aggressive removal for OOC messages, greedy remove anything
     # inside parentheses
-    if ctx.game.ooc_strip_level >= 2:
+    if game.ooc_strip_level >= 2:
         re.sub(r'\([^)]*\)', '', text)
 
     return text

@@ -8,12 +8,12 @@ from urllib.parse import urlparse
 import lightbulb
 from lightbulb import commands
 from fpdf import FPDF
+
 from utils import constants, dirs, filepaths, gamedata, miscutils
 from utils.dirs import FONT_DIR
 from utils.localization import LOCALIZATION_DATA
 from utils.rabbit import WHITE_RABBIT_DIR
 
-plugin = lightbulb.Plugin("Export")
 loc = LOCALIZATION_DATA["commands"]["export"]
 
 # PDF export constants - all measurements are in inches
@@ -208,7 +208,7 @@ class PDF(FPDF):
             self.cell(0, 0, page_number_text, 0, 0, 'R')
 
 
-async def channel_attachments(self, channel, oldest_first: bool = False):
+async def channel_attachments(channel, oldest_first: bool = False):
     url_list = []
     async for message in channel.history(limit=None, oldest_first=oldest_first):
         text = message.clean_content.strip()
@@ -235,50 +235,48 @@ def parse_filename(url: str) -> str:
             return tmp[0]
         return filename
 
-async def import_data(self, ctx):
+async def import_data(game):
     """imports data from message history"""
-
+    text_channels = miscutils.get_text_channels(game.guild)
     # Find game start
-    channel = ctx.text_channels[LOCALIZATION_DATA["channels"]["texts"]["group-chat"]]
-    ctx.game.start_time = None
-    async for message in channel.history(limit=None, oldest_first=True):
+    channel = text_channels[LOCALIZATION_DATA["channels"]["texts"]["group-chat"]]
+    game.start_time = None
+    all_messages = list(reversed(await channel.fetch_history()))
+    for message in all_messages:
         # Check if first message matches
-        if LOCALIZATION_DATA["stuff-for-charlie"]["first-message"][0:20] in message.clean_content:
-            ctx.game.start_time = message.created_at
+        if LOCALIZATION_DATA["stuff-for-charlie"]["first-message"][0:20] in message.content:
+            game.start_time = message.created_at
             break
 
-    # Couldn't find exact match, use first message in channel
-    first_message = await channel.history(limit=1, oldest_first=True).flatten()
-
-    if not first_message:
+    if not all_messages:
         # Channel is empty, so we quit
         return
     else:
-        first_message = first_message[0]
-        ctx.game.start_time = first_message.created_at
+        first_message = all_messages[0]
+        game.start_time = first_message.created_at
 
     # Alice
-    channel = ctx.text_channels[LOCALIZATION_DATA["channels"]["resources"]]
-    url_list = await self.channel_attachments(channel)
+    channel = text_channels[LOCALIZATION_DATA["channels"]["resources"]]
+    url_list = await channel_attachments(channel)
 
     for url in url_list:
-        filename = self.parse_filename(url)
+        filename = parse_filename(url)
 
         if filename.startswith("alice-briarwood"):
-            ctx.game.alice = int(filename.split("-")[-1])
+            game.alice = int(filename.split("-")[-1])
             break
 
     # Clues
     for name in gamedata.CHARACTERS:
         # Create blank values to fill out
-        ctx.game.clue_assignments[name] = []
+        game.clue_assignments[name] = []
 
-        channel = ctx.text_channels[LOCALIZATION_DATA["channels"]["clues"][name]]
+        channel = text_channels[LOCALIZATION_DATA["channels"]["clues"][name]]
         current_clue = 90
-        url_list = await self.channel_attachments(channel, True)
+        url_list = await channel_attachments(channel, True)
 
         for url in url_list:
-            filename = self.parse_filename(url)
+            filename = parse_filename(url)
 
             # Ignore character cards
             if filename in gamedata.CHARACTERS.keys():
@@ -286,21 +284,21 @@ async def import_data(self, ctx):
 
             # Motives
             elif filename.split("-")[0] == "motive":
-                ctx.game.motives[name] = filename.split("-")[1]
+                game.motives[name] = filename.split("-")[1]
 
             # Suspects
             elif filename in gamedata.SUSPECTS.keys():
-                ctx.game.suspects_drawn[current_clue] = filename
+                game.suspects_drawn[current_clue] = filename
                 if current_clue == 10:
-                    ctx.game.second_culprit = filename
+                    game.second_culprit = filename
 
             # Locations
             elif filename in gamedata.LOCATIONS.keys():
-                ctx.game.locations_drawn[current_clue] = filename
+                game.locations_drawn[current_clue] = filename
 
             # Searching cards
             elif filename in gamedata.SEARCHING.keys():
-                ctx.game.searching[name].append(filename)
+                game.searching[name].append(filename)
 
             # Ignore debrief card
             elif filename == "debrief":
@@ -322,45 +320,43 @@ async def import_data(self, ctx):
                     current_clue = time
                     # If 10 minute clue card, mark ten_char
                     if time == 10:
-                        ctx.game.ten_char = name
-
-                    ctx.game.clue_assignments[name].append(time)
-                    ctx.game.picked_clues[time] = choice
+                        game.ten_char = name
+                    game.clue_assignments[name].append(time)
+                    game.picked_clues[time] = choice
                 except ValueError:
                     # If still can't determine image type, log to console
                     # and ignore
                     print(f"{constants.WARNING_PREFIX}Unknown image found in {name.title()}'s clues during export: {filename}")
 
     # Look for coin flip
-    channel = ctx.text_channels[LOCALIZATION_DATA["channels"]["clues"][ctx.game.ten_char]]
+    channel = text_channels[LOCALIZATION_DATA["channels"]["clues"][game.ten_char]]
     async for message in channel.history(limit=5):
         text = message.clean_content.strip().title()
         if text in (LOCALIZATION_DATA["flip"]["heads"], LOCALIZATION_DATA["flip"]["tails"]):
-            ctx.game.ending_flip = text
+            game.ending_flip = text
             break
 
     # Voicemails
-    channel = ctx.text_channels[LOCALIZATION_DATA["channels"]["voicemails"]]
-    async for message in channel.history(limit=None, oldest_first=True):
+    channel = text_channels[LOCALIZATION_DATA["channels"]["voicemails"]]
+    all_messages = reversed(await channel.fetch_history())
+    for message in all_messages:
         # Name
-        character = message.author.display_name.lower().split()[0]
+        character = message.member.display_name.lower().split()[0]
 
         # Only grab first message from each player
-        if not ctx.game.voicemails[character]:
-            voicemail = miscutils.clean_message(ctx, message.clean_content)
-            ctx.game.voicemails[character] = voicemail.replace("||", "").replace("\n", "")
+        if not game.voicemails[character]:
+            voicemail = miscutils.clean_message(game, message.clean_content)
+            game.voicemails[character] = voicemail.replace("||", "").replace("\n", "")
 
-def heading(self, ctx, pdf, title: str, font,
-            align='', y=None, gap: float = 0):
+def heading(pdf, title: str, font, align='', y=None, gap: float = 0):
     """Add a heading to the current page"""
-
     pdf.set_font(*font)
     if y is not None:
         pdf.set_y(y)
     pdf.cell(0, 0, title, align=align)
     pdf.ln(gap)
 
-def generate_char_page(self, ctx, pdf, character):
+def generate_char_page(game, pdf, character):
     """Creates a character page"""
 
     pdf.add_page()
@@ -376,13 +372,13 @@ def generate_char_page(self, ctx, pdf, character):
     card = miscutils.get_image(dirs.CHARACTER_IMAGE_DIR, name.split()[0].lower())
     pdf.image(str(card), CHAR_CARD_LEFT, CHAR_CARD_TOP, CHAR_CARD_WIDTH)
 
-    motive = ctx.game.motives[character]
+    motive = game.motives[character]
     card = miscutils.get_image(dirs.MOTIVE_DIR, f"Motive-{motive}")
     pdf.image(str(card), CHAR_CARD_LEFT, MOTIVE_CARD_TOP, CHAR_CARD_WIDTH)
 
     # Clues
     current_y = CLUE_CARDS_TOP
-    for clue in ctx.game.clue_assignments[character]:
+    for clue in game.clue_assignments[character]:
         # Skip 90 and 10 clues
         if clue in (90, 10):
             continue
@@ -397,16 +393,16 @@ def generate_char_page(self, ctx, pdf, character):
         pdf.cell(label_width, 0, label)
 
         # Clue card
-        choice = ctx.game.picked_clues[clue]
+        choice = game.picked_clues[clue]
         card = miscutils.get_image(dirs.CLUE_DIR / str(clue), f"{clue}-{choice}")
         pdf.image(str(card), CLUE_CARD_LEFT, current_y, CLUE_CARD_WIDTH)
 
         # Suspect card
-        if clue in ctx.game.suspects_drawn:
-            suspect = ctx.game.suspects_drawn[clue]
+        if clue in game.suspects_drawn:
+            suspect = game.suspects_drawn[clue]
             card = miscutils.get_image(dirs.SUSPECT_IMAGE_DIR, suspect)
-        elif clue in ctx.game.locations_drawn:
-            location = ctx.game.locations_drawn[clue]
+        elif clue in game.locations_drawn:
+            location = game.locations_drawn[clue]
             card = miscutils.get_image(dirs.LOCATION_IMAGE_DIR, location)
 
         pdf.image(str(card), SUSPECT_CARD_LEFT, current_y, CLUE_CARD_WIDTH)
@@ -419,15 +415,14 @@ def generate_char_page(self, ctx, pdf, character):
     pdf.cell(0, 0, VOICEMAIL_TITLE)
     pdf.set_font(*VOICEMAIL_FONT)
     pdf.set_y(VOICEMAIL_Y)
-    pdf.multi_cell(0, VOICEMAIL_TEXT_LINE_HEIGHT,
-                    ctx.game.voicemails[character])
+    pdf.multi_cell(0, VOICEMAIL_TEXT_LINE_HEIGHT, game.voicemails[character])
 
-def conclusion_page(self, ctx, pdf):
+def conclusion_page(game, pdf):
     """Create conclusions page based on 10 minute clue"""
 
     # Add title
     pdf.add_page()
-    self.page_title(
+    page_title(
         pdf, CONCLUSION_TITLE_Y, CONCLUSION_TITLE_FONT, CONCLUSION_TITLE
     )
 
@@ -455,12 +450,12 @@ def conclusion_page(self, ctx, pdf):
 
     pdf.set_x(CONCLUSION_CHAR_CARD_X - CONCLUSION_LABEL_OFFSET)
     label = loc["pdf"]["culprit"]
-    if ctx.game.second_culprit:
+    if game.second_culprit:
         label = loc["pdf"]["culprit1"]
     width = pdf.get_string_width(label)
     pdf.cell(width, 0, label)
 
-    if ctx.game.second_culprit:
+    if game.second_culprit:
         pdf.set_x(CONCLUSION_CLUE_CARD_X - CONCLUSION_LABEL_OFFSET)
         label = loc["pdf"]["culprit2"]
         width = pdf.get_string_width(label)
@@ -468,48 +463,48 @@ def conclusion_page(self, ctx, pdf):
 
     # Images
     # Add character card
-    card = filepaths.MASTER_PATHS[ctx.game.ten_char]
+    card = filepaths.MASTER_PATHS[game.ten_char]
     pdf.image(str(card), CONCLUSION_CHAR_CARD_X,
                 CONCLUSION_ROW1_IMAGE_Y, CONCLUSION_CARD_WIDTH)
 
     # Add clue card
-    card = miscutils.get_image(dirs.CLUE_DIR / "10", f"10-{ctx.game.picked_clues[10]}")
+    card = miscutils.get_image(dirs.CLUE_DIR / "10", f"10-{game.picked_clues[10]}")
     pdf.image(str(card), CONCLUSION_CLUE_CARD_X,
                 CONCLUSION_ROW1_IMAGE_Y, CONCLUSION_CARD_WIDTH)
 
     # Add location card
-    card = filepaths.MASTER_PATHS[ctx.game.locations_drawn[20]]
+    card = filepaths.MASTER_PATHS[game.locations_drawn[20]]
     pdf.image(str(card), CONCLUSION_LOCATION_CARD_X,
                 CONCLUSION_ROW1_IMAGE_Y, CONCLUSION_CARD_WIDTH)
 
     # Add first suspect card
-    card = filepaths.MASTER_PATHS[ctx.game.suspects_drawn[30]]
+    card = filepaths.MASTER_PATHS[game.suspects_drawn[30]]
     pdf.image(str(card), CONCLUSION_SUSPECT_CARD_X,
                 CONCLUSION_ROW2_IMAGE_Y, CONCLUSION_CARD_WIDTH)
 
     # Add second suspect card
-    if ctx.game.second_culprit:
-        card = filepaths.MASTER_PATHS[ctx.game.second_culprit]
+    if game.second_culprit:
+        card = filepaths.MASTER_PATHS[game.second_culprit]
         pdf.image(str(card), CONCLUSION_CLUE_CARD_X,
                     CONCLUSION_ROW2_IMAGE_Y, CONCLUSION_CARD_WIDTH)
 
-def timeline(self, ctx, pdf):
+def timeline(game, pdf):
     """Adds timeline pages to PDf"""
 
     pdf.add_page()
-    self.page_title(
+    page_title(
         pdf, TIMELINE_TITLE_Y, TIMELINE_TITLE_FONT, TIMELINE_TITLE
     )
 
 
-def page_title(self, pdf, y, font, text):
+def page_title(pdf, y, font, text):
     """Add title to current page"""
 
     pdf.set_y(y)
     pdf.set_font(*font)
     pdf.cell(0, 0, text)
 
-async def channel_export(self, ctx, pdf, channel):
+async def channel_export(ctx, pdf, channel):
     """
     Takes all messages from a text channel and adds them
     to the current page of the PDF object
@@ -524,7 +519,7 @@ async def channel_export(self, ctx, pdf, channel):
         author = message.author.display_name.split()[0]
 
         # Remove emojis and out of character parts
-        line = miscutils.clean_message(ctx, message.clean_content)
+        line = miscutils.clean_message(ctx.game, message.clean_content)
 
         # If string is empty after cleaning, skip
         if line == "":
@@ -548,13 +543,20 @@ async def channel_export(self, ctx, pdf, channel):
         await loop.run_in_executor(None, pdf.multi_cell,
                                     *(0, MESSAGES_LINE_HEIGHT, line))
 
+
+plugin = lightbulb.Plugin("Export")
+
+
 @plugin.command()
+@lightbulb.option("file_name", "name of the file", type=str, default="")
 @lightbulb.command(loc["upload"]["name"], loc["upload"]["description"], aliases=loc["upload"]["aliases"])
 @lightbulb.implements(lightbulb.PrefixCommand)
 async def upload(ctx: lightbulb.Context) -> None:
     """Uploads a file and prints out the download url"""
 
-    if not file_name:
+    if ctx.options.file_name:
+        file_name = ctx.options.file_name
+    else:
         file_name = ctx.guild.name
     path = (dirs.PDF_EXPORT_DIR / file_name).with_suffix(".pdf")
     url = miscutils.upload_file(path)
@@ -562,11 +564,12 @@ async def upload(ctx: lightbulb.Context) -> None:
 
 
 @plugin.command()
+@lightbulb.option("file_name", "name of the file", type=str, default="")
 @lightbulb.command(loc["pdf"]["name"], loc["pdf"]["description"], aliases=loc["pdf"]["aliases"])
 @lightbulb.implements(lightbulb.PrefixCommand)
 async def pdf(ctx: lightbulb.Context) -> None:
     """Exports the game to a PDF"""
-
+    game = ctx.bot.d.games[ctx.guild_id]
     # Start timer
     start_time = timer()
 
@@ -574,16 +577,16 @@ async def pdf(ctx: lightbulb.Context) -> None:
     loop = asyncio.get_running_loop()
 
     # Import game data
-    asyncio.create_task(ctx.respond(loc["pdf"]["CollectingData"]))
+    await ctx.respond(loc["pdf"]["CollectingData"])
     try:
-        await import_data(ctx)
+        await import_data(game)
     except KeyError:
-        asyncio.create_task(ctx.respond(loc["pdf"]["FailedImport"]))
+        await ctx.respond(loc["pdf"]["FailedImport"])
         return
 
     # If data not found, tell user and quit
-    if not ctx.game.start_time:
-        asyncio.create_task(ctx.respond(loc["pdf"]["MissingGameData"]))
+    if not game.start_time:
+        await ctx.respond(loc["pdf"]["MissingGameData"])
         return
 
     # Create pdf object
@@ -609,12 +612,12 @@ async def pdf(ctx: lightbulb.Context) -> None:
     # Heading
     await loop.run_in_executor(
         None, heading,
-        *(ctx, pdf, LOCALIZATION_DATA["title"],
+        *(pdf, LOCALIZATION_DATA["title"],
             COVER_TITLE_FONT, "C", COVER_TITLE_Y)
     )
 
     # Poster
-    poster = miscutils.get_image(dirs.POSTER_DIR, f"Alice-Briarwood-{ctx.game.alice}")
+    poster = miscutils.get_image(dirs.POSTER_DIR, f"Alice-Briarwood-{game.alice}")
     await loop.run_in_executor(
         None, pdf.image,
         *(str(poster), COVER_POSTER_X,
@@ -622,7 +625,7 @@ async def pdf(ctx: lightbulb.Context) -> None:
     )
 
     # Create list of player characters
-    characters = [character.lower() for character in ctx.game.char_roles()]
+    characters = [character.lower() for character in game.char_roles()]
 
     await ctx.respond(loc["pdf"]["BuildingCharPages"])
 
@@ -630,7 +633,7 @@ async def pdf(ctx: lightbulb.Context) -> None:
     for i, character in enumerate(characters):
         # Create pages for each character
         await loop.run_in_executor(
-            None, generate_char_page, *(ctx, pdf, character)
+            None, generate_char_page, *(game, pdf, character)
         )
 
         # Create list of character pairs
@@ -643,51 +646,52 @@ async def pdf(ctx: lightbulb.Context) -> None:
     # TODO: either timeline will have to be async or it will also need
     # to be wrapped in loop.run_in_executor
     #
-    # self.timeline(ctx, pdf)
-    await loop.run_in_executor(None, conclusion_page, *(ctx, pdf))
+    # timeline(game, pdf)
+    await loop.run_in_executor(None, conclusion_page, *(game, pdf))
 
     await ctx.respond(loc["pdf"]["CollectingMessages"])
 
     # Group chat export
     pdf.add_page()
     await loop.run_in_executor(
-        None, self.heading,
-        *(ctx, pdf, loc["pdf"]["group-chat"], PM_TITLE_FONT, '',
+        None, heading,
+        *(pdf, loc["pdf"]["group-chat"], PM_TITLE_FONT, '',
             MESSAGES_TITLE_Y, MESSAGES_TITLE_TEXT_GAP)
     )
-    await channel_export(ctx, pdf, ctx.text_channels[LOCALIZATION_DATA["channels"]["texts"]["group-chat"]])
+    text_channels = miscutils.get_text_channels(ctx.get_guild())
+    await channel_export(ctx, pdf, text_channels[LOCALIZATION_DATA["channels"]["texts"]["group-chat"]])
 
     # Chat message exports
     for a, b in pm_channels:
         try:
-            channel = ctx.text_channels[LOCALIZATION_DATA["channels"]["texts"][f"{a}-{b}"]]
+            channel = text_channels[LOCALIZATION_DATA["channels"]["texts"][f"{a}-{b}"]]
         except KeyError:
             # Fallback from older versions
-            channel = ctx.text_channels[LOCALIZATION_DATA["channels"]["texts"][f"pm-{a}-{b}"]]
+            channel = text_channels[LOCALIZATION_DATA["channels"]["texts"][f"pm-{a}-{b}"]]
 
         # Make sure channel has messages that will be counted
         empty = True
-        async for message in channel.history(limit=None, oldest_first=True):
-            line = miscutils.clean_message(ctx, message.clean_content)
+        async for message in channel.fetch_history():
+            line = miscutils.clean_message(game, message.content)
 
             if line:
-                empty = False
                 break
+        else:
+            continue
+        title = f"{a.title()}/{b.title()}"
+        pdf.add_page()
+        await loop.run_in_executor(
+            None, heading,
+            *(pdf, title, PM_TITLE_FONT, '', MESSAGES_TITLE_Y, MESSAGES_TITLE_TEXT_GAP)
+        )
 
-        if not empty:
-            title = f"{a.title()}/{b.title()}"
-            pdf.add_page()
-            await loop.run_in_executor(
-                None, heading,
-                *(ctx, pdf, title, PM_TITLE_FONT, '',
-                    MESSAGES_TITLE_Y, MESSAGES_TITLE_TEXT_GAP)
-            )
-
-            await channel_export(ctx, pdf, channel)
+        await channel_export(ctx, pdf, channel)
 
     # Output the file
-    if not file_name:
-        file_name = ctx.guild.name
+    if ctx.options.file_name:
+        file_name = ctx.options.file_name
+    else:
+        file_name = ctx.get_guild.name()
 
     out = (dirs.PDF_EXPORT_DIR / file_name).with_suffix(".pdf")
     pdf.output(str(out))
@@ -697,6 +701,47 @@ async def pdf(ctx: lightbulb.Context) -> None:
     print(f"PDF generated in {time} seconds.")
 
     await ctx.respond(loc["pdf"]["PDFCreated"])
+
+
+@plugin.command()
+@lightbulb.command("txt", "gets all messages from a guild and writes to a txt file", hidden=True)
+@lightbulb.implements(lightbulb.PrefixCommand)
+async def txt(ctx):
+    """Gets all messages from a guild and writes to a .txt file"""
+
+    # TODO: Make this cleaner
+    # Hidden from users until then
+
+    ctx.respond("Downloading...")
+    # make folder for messages
+    message_dir = dirs.TEXT_EXPORT_DIR / ctx.get_guild().name
+    message_dir.mkdir(parents=True, exist_ok=True)
+
+    # Download messages
+    for channel in miscutils.get_text_channels(ctx.get_guild()):
+        messages = [
+            " ".join((
+                message.created_at.strftime('%Y-%m-%d %H:%M'),
+                message.author.member.display_name + ":",
+                message.content,
+                ", ".join(attachment.url for attachment in message.attachments)
+            ))
+            async for message in reversed(await channel.fetch_history())
+        ]
+        with open(message_dir / f"{channel.name}.txt", mode="w") as message_file:
+            message_file.write("\n".join(messages))
+
+    # Send zip
+    zip_file = WHITE_RABBIT_DIR / f"{ctx.get_guild().name} Messages.zip"
+    shutil.make_archive(
+        zip_file.with_suffix(""),
+        "zip", message_dir,
+    )
+    await ctx.send(attachment=zip_file)
+
+    # Delete files
+    shutil.rmtree(message_dir)
+    zip_file.unlink()
 
 
 def load(bot):
