@@ -10,7 +10,7 @@ loc = LOCALIZATION_DATA["commands"]["manual"]
 
 plugin = lightbulb.Plugin("Manual")
 async def cog_check(self, ctx):
-    ctx.game = self.bot.games.setdefault(ctx.guild.id, gamedata.Data(ctx.guild))
+    ctx.game = self.bot.d.games.setdefault(ctx.guild.id, gamedata.Data(ctx.guild))
     # Console logging
     if ctx.game.automatic:
         print(f"{constants.WARNING_PREFIX}{ctx.author.name} tried to run {self.bot.command_prefix}{ctx.command.name} in automatic mode!")
