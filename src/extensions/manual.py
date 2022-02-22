@@ -145,9 +145,10 @@ async def shuffle_clues(ctx: lightbulb.Context) -> None:
 async def assign_times(ctx: lightbulb.Context) -> None:
     """Randomizes and assigns clue times"""
     game = ctx.bot.d.games[ctx.guild_id]
-    await ctx.respond(loc["assign_clues"]["AssigningClues"])
+    await ctx.respond(loc["assign_times"]["AssigningClues"])
 
     game.assign_clues()
+    game.setup = True
     # Console logging
     print(f"{constants.INFO_PREFIX}Assigned clue cards!")
     print(game.clue_assignments)

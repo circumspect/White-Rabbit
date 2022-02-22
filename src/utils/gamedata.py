@@ -359,7 +359,7 @@ class Data:
     def shuffle_motives(self):
         motives = list(range(1, 6))
         random.shuffle(motives)
-        self.motives = dict(zip(motives, CHARACTERS))
+        self.motives = dict(zip(CHARACTERS, motives))
 
     async def send_motives(self):
         if not self.motives:

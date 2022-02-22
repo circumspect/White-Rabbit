@@ -43,6 +43,7 @@ async def init(ctx: lightbulb.Context) -> None:
     )
 
     if game.automatic:
+        game.alice = random.randint(1, 10)
         await game.send_alice()
 
     # Send characters, suspects, and locations to appropriate channels
@@ -87,7 +88,7 @@ async def init(ctx: lightbulb.Context) -> None:
 
     # Shuffle and send motives if in automatic mode
     if game.automatic:
-        await game.shuffle_motives()
+        game.shuffle_motives()
         await game.send_motives()
 
     game.init = True
@@ -311,7 +312,7 @@ async def clue_check(game):
             if minutes_remaining <= game.next_clue:
                 # Find character who owns the clue
                 for name in game.clue_assignments:
-                    if minutes_remaining in game.clue_assignments[name]:
+                    if game.next_clue in game.clue_assignments[name]:
                         character = name
                         break
 
@@ -349,16 +350,15 @@ async def search(ctx: lightbulb.Context) -> None:
     if game.automatic and not game.start_time:
         await ctx.respond(LOCALIZATION_DATA["errors"]["GameNotStarted"])
         return
-    for role_id, role in game.char_roles().items():
-        if role_id in ctx.member.role_ids:
-            character = role.name
+    for character, role in game.char_roles().items():
+        if role.id in ctx.member.role_ids:
             break
     else:
         await ctx.respond(LOCALIZATION_DATA["errors"]["NoCharacterRoles"])
         return
 
     char_channel = miscutils.get_text_channels(game.guild)[
-        LOCALIZATION_DATA["channels"]["clues"][character]
+        LOCALIZATION_DATA["channels"]["clues"][character.lower()]
     ]
 
     if game.search_cards:
