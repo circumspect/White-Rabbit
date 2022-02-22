@@ -32,7 +32,7 @@ except FileNotFoundError:
         env.write(r.content)
     sys.exit(LOCALIZATION_DATA["errors"]["MissingDotEnv"])
 
-bot = lightbulb.BotApp(token=token, prefix=constants.COMMAND_PREFIX)
+bot = lightbulb.BotApp(token=token, prefix=constants.COMMAND_PREFIX, intents=hikari.Intents.ALL)
 
 bot.d.games = {}
 bot.d.dev_ids = []

@@ -104,18 +104,21 @@ async def reset_perms(ctx: lightbulb.Context) -> None:
 @lightbulb.implements(lightbulb.PrefixCommand)
 async def reset_roles(ctx: lightbulb.Context) -> None:
     # Removes character roles from everyone
-    for member in ctx.guild.members:
+    print(ctx.bot.intents)
+    for member in ctx.get_guild().get_members().values():
         is_player = False
-        if not member.bot:
-            for role in member.roles:
-                if role.name.lower() in gamedata.CHARACTERS.keys():
-                    await member.remove_roles(role)
-                    is_player = True
-            if is_player:
-                if member is ctx.guild.owner:
-                    await ctx.respond(loc["reset_roles"]["NoteAboutOwner"])
-                else:
-                    await member.edit(nick=None)
+        if member.is_bot:
+            continue
+        for role in member.role_ids:
+            print(ctx.get_guild().get_role(role).name.lower())
+            if ctx.get_guild().get_role(role).name.lower() in gamedata.CHARACTERS:
+                await member.remove_role(role)
+                is_player = True
+        if is_player:
+            if member.id == ctx.get_guild().owner_id:
+                await ctx.respond(loc["reset_roles"]["NoteAboutOwner"])
+            else:
+                await member.edit(nick=None)
 
 @plugin.command()
 @lightbulb.command(loc["reset"]["name"], loc["reset"]["description"], aliases=loc["reset"]["aliases"])
