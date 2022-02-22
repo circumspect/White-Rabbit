@@ -1,4 +1,6 @@
-# Local
+import random
+
+from utils import miscutils, dirs, errors
 from utils.localization import LOCALIZATION_DATA
 
 CHARACTERS = {
@@ -65,6 +67,35 @@ CLUE_TYPES = {
     30: "suspect-drawn",
     20: "location-drawn",
 }
+
+
+TIMER_AUDIO = dirs.RESOURCE_DIR / "Alice.mp3"
+
+# Easy access filepaths
+MASTER_PATHS = {
+    "guide": miscutils.get_image(dirs.PLAYER_RESOURCE_DIR, "Guide"),
+    "character_sheet": miscutils.get_image(dirs.PLAYER_RESOURCE_DIR, "Character-Sheet"),
+    "intro": miscutils.get_image(dirs.CARD_DIR / "misc", "Introduction"),
+    "debrief": miscutils.get_image(dirs.CARD_DIR / "misc", "Debrief"),
+}
+
+LEGACY_FILENAMES = {
+    "mr. halvert": "halvert",
+    "train-station": "station",
+    # Searching cards
+    "10000-dollars": "10k",
+    "bottle-of-alcohol": "alcohol",
+    "broken-switchblade": "blade",
+    "drops-of-blood": "blood",
+    "white-van": "van",
+}
+
+for character in CHARACTERS:
+    MASTER_PATHS[character] = miscutils.get_image(dirs.CHARACTER_IMAGE_DIR, character)
+for suspect in SUSPECTS:
+    MASTER_PATHS[suspect] = miscutils.get_image(dirs.SUSPECT_IMAGE_DIR, suspect)
+for location in LOCATIONS:
+    MASTER_PATHS[location] = miscutils.get_image(dirs.LOCATION_IMAGE_DIR, location)
 
 
 class Data:
@@ -158,3 +189,214 @@ class Data:
         }
 
         return dict(sorted(unsorted.items(), key=lambda item: item[0]))
+
+    def draw_suspect(self, time: int):
+        """Picks a suspect given the clue time"""
+
+        clue_type = CLUE_TYPES[time]
+
+        # Check if is tuple and pull the correct type from it
+        if isinstance(clue_type, tuple):
+            clue_type = clue_type[self.picked_clues[time] - 1]
+
+        if clue_type == "suspect":
+            index = random.randint(0, len(self.suspect_pile) - 1)
+            self.suspects_drawn[time] = self.suspect_pile.pop(index)
+            return self.suspects_drawn[time]
+        elif clue_type == "location":
+            index = random.randint(0, len(self.location_pile) - 1)
+            self.locations_drawn[time] = self.location_pile.pop(index)
+            return self.locations_drawn[time]
+        elif clue_type == "suspect-drawn":
+            culprit = random.choice(list(self.suspects_drawn.values()))
+            self.suspects_drawn[time] = culprit
+            return culprit
+        elif clue_type == "location-drawn":
+            final_location = random.choice(list(self.locations_drawn.values()))
+            self.locations_drawn[time] = final_location
+            return final_location
+        else:
+            raise ValueError("Unexpected clue type!")
+
+    def assign_clues(self):
+        # Stop if fewer than 3 player roles assigned
+        if len(self.char_roles()) < 3:
+            raise errors.NotEnoughPlayers()
+        elif "Charlie" not in self.char_roles():
+            raise errors.MissingCharlie()
+
+        clue_buckets = self.generate_clue_buckets(len(self.char_roles()))
+        random.shuffle(clue_buckets)
+
+        # Empty buckets
+        self.clue_assignments = {}
+
+        # Give bucket with 90 minute card to Charlie Barnes
+        for bucket in clue_buckets:
+            if 90 in bucket:
+                # Charlie's bucket! Willy Wonka sends his regards
+                self.clue_assignments["charlie"] = sorted(bucket, reverse=True)
+                clue_buckets.remove(bucket)
+                break
+
+        # Assign the rest of the buckets randomly
+        names = [name.lower() for name in self.char_roles()]
+        names.remove("charlie")  # Already assigned
+        for name in names:
+            self.clue_assignments[name] = sorted(clue_buckets.pop(), reverse=True)
+
+    def generate_clue_buckets(self, player_count: int):
+        def _randomize_clues(player_count: int):
+            """
+            Assigns clues to random buckets
+            """
+
+            shuffled_clues = list(CLUE_TIMES)
+            random.shuffle(shuffled_clues)
+
+            clue_buckets = [list() for _ in range(player_count)]
+            bucket_sizes = BUCKET_SIZES[player_count]
+            for i in range(len(bucket_sizes)):
+                for _ in range(bucket_sizes[i]):
+                    clue_buckets[i].append(shuffled_clues.pop())
+
+            return clue_buckets
+
+        def _test_clue_buckets(player_count: int, clue_buckets):
+            """
+            Checks clue buckets and returns False if any checks fail
+            """
+
+            for bucket in clue_buckets:
+                # If three players, make sure Charlie gets the 4 clue bucket
+                # This both ensures that each player has the same number of clues
+                # (not counting the 90 minute card) and caps the clues on each
+                # character page in the PDF export at 3
+                if len(bucket) == 4 and 90 not in bucket:
+                    return False
+
+                # If four players, make sure Charlie gets three clues so PDF export
+                # doesn't look like Charlie has one and someone else has three
+                if player_count == 4 and 90 in bucket and len(bucket) == 2:
+                    return False
+
+                # Make sure no bucket has clues within 10 minutes of each other
+                for i in range(len(bucket)):
+                    for j in range(i + 1, len(bucket)):
+                        diff = abs(bucket[i] - bucket[j])
+                        if diff <= 10:
+                            return False
+
+            return True
+
+        while True:
+            clue_buckets = _randomize_clues(player_count)
+            if _test_clue_buckets(player_count, clue_buckets):
+                return clue_buckets
+
+    def shuffle_clues(self):
+        for time in CLUE_TIMES:
+            self.picked_clues[time] = random.randint(1, 3)
+
+        # Only one card for the 90 minute clue
+        self.picked_clues[90] = 1
+
+    async def send_clue(self, time: int):
+        # Find character who the clue has been assigned to:
+        if not self.picked_clues:
+            raise errors.CluesNotShuffled()
+        # Check that clues have been assigned
+        if not self.clue_assignments:
+            raise errors.CluesNotAssigned()
+
+        for name in self.clue_assignments:
+            if time in self.clue_assignments[name]:
+                character = name
+                break
+        else:
+            raise ValueError("Missing clue")
+
+        # Send clue card
+        channel = miscutils.get_text_channels(self.guild)[
+            LOCALIZATION_DATA["channels"]["clues"][character]
+        ]
+        choice = self.picked_clues[time]
+        path = miscutils.get_image(dirs.CLUE_DIR / str(time), f"{time}-{choice}")
+        miscutils.send_image(channel, path)
+
+        # Send suspect/location card to player's clues channel
+        suspect = self.draw_suspect(time)
+        path = MASTER_PATHS[suspect]
+        miscutils.send_image(channel, path)
+
+        # Send suspect/location card to respective drawn cards channel
+        if suspect in SUSPECTS:
+            channel = LOCALIZATION_DATA["channels"]["cards"]["suspects-drawn"]
+        elif suspect in LOCATIONS:
+            channel = LOCALIZATION_DATA["channels"]["cards"]["locations-drawn"]
+        else:
+            channel = LOCALIZATION_DATA["channels"]["bot-channel"]
+        channel = miscutils.get_text_channels(self.guild)[channel]
+        # Confirmed culprit/location
+        if time <= 30:
+            if suspect in SUSPECTS:
+                await channel.send(LOCALIZATION_DATA["messages"]["Culprit"])
+            elif suspect in LOCATIONS:
+                await channel.send(LOCALIZATION_DATA["messages"]["AliceLocation"])
+
+            else:
+                print("Something has gone very very wrong.")
+                await channel.send(LOCALIZATION_DATA["errors"]["UnknownError"])
+        miscutils.send_image(channel, path)
+
+        # Update next_clue unless at end
+        if self.next_clue != 20:
+            for i in range(len(CLUE_TIMES)):
+                if CLUE_TIMES[i] == self.next_clue:
+                    self.next_clue = CLUE_TIMES[i + 1]
+                    break
+
+    def shuffle_motives(self):
+        motives = list(range(1, 6))
+        random.shuffle(motives)
+        self.motives = dict(zip(motives, CHARACTERS))
+
+    async def send_motives(self):
+        if not self.motives:
+            raise errors.MotivesUnshuffled()
+        for name in CHARACTERS:
+            channel = miscutils.get_text_channels(self.guild)[
+                LOCALIZATION_DATA["channels"]["clues"][name]
+            ]
+            motive = self.motives[name]
+            miscutils.send_image(
+                channel,
+                miscutils.get_image(dirs.MOTIVE_DIR, f"Motive-{motive}"),
+                self.guild,
+            )
+
+    async def send_times(self):
+        if not self.clue_assignments:
+            raise errors.CluesNotAssigned()
+        message = (
+            LOCALIZATION_DATA["commands"]["manual"]["print_times"]["ClueTimes"] + "\n"
+        )
+        message += "\n".join(
+            [
+                f"{player.title()}: {', '.join(str(x) for x in bucket)}"
+                for player, bucket in self.clue_assignments.items()
+            ]
+        )
+        message = miscutils.codeblock(message)
+
+        channel = miscutils.get_text_channels(self.guild)[
+            LOCALIZATION_DATA["channels"]["resources"]
+        ]
+        await channel.send(message)
+
+    async def send_alice(self):
+        miscutils.send_image(
+            LOCALIZATION_DATA["channels"]["resources"],
+            miscutils.get_image(dirs.POSTER_DIR, f"Alice-Briarwood-{self.alice}"),
+            self.guild,
+        )

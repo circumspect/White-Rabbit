@@ -3,7 +3,6 @@ import asyncio
 
 import hikari
 import lightbulb
-from lightbulb import commands
 
 from utils import constants, gamedata
 from utils.localization import LOCALIZATION_DATA

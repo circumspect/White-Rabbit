@@ -1,9 +1,8 @@
 import asyncio
 
 import lightbulb
-from lightbulb import commands
 from utils.localization import LOCALIZATION_DATA
-from utils import gamedata, miscutils
+from utils import gamedata, miscutils, errors
 
 loc = LOCALIZATION_DATA["commands"]["settings"]
 
@@ -46,7 +45,7 @@ async def auto(ctx: lightbulb.Context) -> None:
         await ctx.respond(loc["auto"]["AutoDisabled"])
 
     else:
-        await ctx.respond(LOCALIZATION_DATA["errors"]["UserInputError"])
+        raise errors.BadInput()
 
 
 @plugin.command()
@@ -56,12 +55,14 @@ async def auto(ctx: lightbulb.Context) -> None:
 @lightbulb.implements(lightbulb.PrefixCommand)
 async def music(ctx: lightbulb.Context) -> None:
     """Enable/disable music stream when game starts"""
+    await ctx.respond("Music streaming is currently broken")
+    return
     game = ctx.bot.d.games[ctx.guild_id]
     game.stream_music = not game.stream_music
     if game.stream_music:
-        asyncio.create_task(ctx.respond(loc["music"]["MusicEnabled"]))
+        await ctx.respond(loc["music"]["MusicEnabled"])
     else:
-        asyncio.create_task(ctx.respond(loc["music"]["MusicDisabled"]))
+        await ctx.respond(loc["music"]["MusicDisabled"])
 
 
 @plugin.command()

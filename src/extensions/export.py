@@ -6,10 +6,9 @@ from timeit import default_timer as timer
 from urllib.parse import urlparse
 
 import lightbulb
-from lightbulb import commands
 from fpdf import FPDF
 
-from utils import constants, dirs, filepaths, gamedata, miscutils
+from utils import constants, dirs, gamedata, miscutils
 from utils.dirs import FONT_DIR
 from utils.localization import LOCALIZATION_DATA
 from utils.rabbit import WHITE_RABBIT_DIR
@@ -229,7 +228,7 @@ def parse_filename(url: str) -> str:
 
     try:
         # Checks for filenames from older versions
-        return filepaths.LEGACY_FILENAMES[filename]
+        return gamedata.LEGACY_FILENAMES[filename]
     except KeyError:
         tmp = filename.split("-")
         if tmp[0] in gamedata.SUSPECTS.keys():
@@ -476,7 +475,7 @@ def conclusion_page(game, pdf):
 
     # Images
     # Add character card
-    card = filepaths.MASTER_PATHS[game.ten_char]
+    card = gamedata.MASTER_PATHS[game.ten_char]
     pdf.image(
         str(card),
         CONCLUSION_CHAR_CARD_X,
@@ -494,7 +493,7 @@ def conclusion_page(game, pdf):
     )
 
     # Add location card
-    card = filepaths.MASTER_PATHS[game.locations_drawn[20]]
+    card = gamedata.MASTER_PATHS[game.locations_drawn[20]]
     pdf.image(
         str(card),
         CONCLUSION_LOCATION_CARD_X,
@@ -503,7 +502,7 @@ def conclusion_page(game, pdf):
     )
 
     # Add first suspect card
-    card = filepaths.MASTER_PATHS[game.suspects_drawn[30]]
+    card = gamedata.MASTER_PATHS[game.suspects_drawn[30]]
     pdf.image(
         str(card),
         CONCLUSION_SUSPECT_CARD_X,
@@ -513,7 +512,7 @@ def conclusion_page(game, pdf):
 
     # Add second suspect card
     if game.second_culprit:
-        card = filepaths.MASTER_PATHS[game.second_culprit]
+        card = gamedata.MASTER_PATHS[game.second_culprit]
         pdf.image(
             str(card),
             CONCLUSION_CLUE_CARD_X,
@@ -537,7 +536,7 @@ def page_title(pdf, y, font, text):
     pdf.cell(0, 0, text)
 
 
-async def channel_export(ctx, pdf, channel):
+async def channel_export(game, pdf, channel):
     """
     Takes all messages from a text channel and adds them
     to the current page of the PDF object
@@ -552,7 +551,7 @@ async def channel_export(ctx, pdf, channel):
         author = message.author.display_name.split()[0]
 
         # Remove emojis and out of character parts
-        line = miscutils.clean_message(ctx.game, message.clean_content)
+        line = miscutils.clean_message(game, message.clean_content)
 
         # If string is empty after cleaning, skip
         if line == "":
@@ -565,7 +564,7 @@ async def channel_export(ctx, pdf, channel):
         line = f"{author}: {line}"
 
         # Time remaining
-        delta = message.created_at - ctx.game.start_time
+        delta = message.created_at - game.start_time
         change = delta.seconds
         time = gamedata.GAME_LENGTH - change
         if time >= 0:
@@ -705,7 +704,7 @@ async def pdf(ctx: lightbulb.Context) -> None:
     )
     text_channels = miscutils.get_text_channels(ctx.get_guild())
     await channel_export(
-        ctx, pdf, text_channels[LOCALIZATION_DATA["channels"]["texts"]["group-chat"]]
+        game, pdf, text_channels[LOCALIZATION_DATA["channels"]["texts"]["group-chat"]]
     )
 
     # Chat message exports
@@ -735,7 +734,7 @@ async def pdf(ctx: lightbulb.Context) -> None:
             *(pdf, title, PM_TITLE_FONT, "", MESSAGES_TITLE_Y, MESSAGES_TITLE_TEXT_GAP),
         )
 
-        await channel_export(ctx, pdf, channel)
+        await channel_export(game, pdf, channel)
 
     # Output the file
     if ctx.options.file_name:

@@ -3,7 +3,6 @@ import asyncio
 
 import hikari
 import lightbulb
-from lightbulb import commands
 
 from utils.localization import LOCALIZATION_DATA
 from utils import gamedata, miscutils, errors

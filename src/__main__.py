@@ -11,7 +11,6 @@ from utils import (
     constants,
     dirs,
     envvars,
-    filepaths,
     rabbit,
     miscutils,
     errors,
@@ -51,8 +50,8 @@ bot = lightbulb.BotApp(
 bot.d.games = {}
 bot.d.dev_ids = []
 
-if filepaths.DEV_ID_FILE.exists():
-    with open(filepaths.DEV_ID_FILE) as f:
+if dirs.DEV_ID_FILE.exists():
+    with open(dirs.DEV_ID_FILE) as f:
         for line in f.readlines():
             line = line.strip()
             if line and line.isdigit():
@@ -62,8 +61,8 @@ if filepaths.DEV_ID_FILE.exists():
                 bot.d.dev_ids.append(int(line))
 else:
     # Create file if it doesn't exist
-    print(f"No {filepaths.DEV_ID_FILE.name} found, making empty file")
-    with open(filepaths.DEV_ID_FILE, "x") as f:
+    print(f"No {dirs.DEV_ID_FILE.name} found, making empty file")
+    with open(dirs.DEV_ID_FILE, "x") as f:
         pass
 if environ.get("DEV_ID"):
     bot.d.dev_ids.append(int(environ.get("DEV_ID")))
@@ -134,19 +133,53 @@ async def on_error(event: lightbulb.CommandErrorEvent) -> None:
             await event.context.respond(
                 LOCALIZATION_DATA["errors"]["GenericCheckFailure"]
             )
+        return
+
+    elif isinstance(event.exception, lightbulb.errors.CommandInvocationError):
+        if isinstance(event.exception.original, errors.MotivesUnshuffled):
+            await event.context.respond(
+                LOCALIZATION_DATA["commands"]["manual"]["send_motives"]["NeedToShuffle"]
+            )
+            return
+        elif isinstance(event.exception.original, errors.CluesNotShuffled):
+            await event.context.respond(
+                LOCALIZATION_DATA["commands"]["manual"]["clue"]["CluesNotShuffled"]
+            )
+            return
+        elif isinstance(event.exception.original, errors.CluesNotAssigned):
+            await event.context.respond(
+                LOCALIZATION_DATA["commands"]["manual"]["clue"]["CluesNotAssigned"]
+            )
+            return
+        elif isinstance(event.exception.original, errors.CluesNotAssigned):
+            await event.context.respond(LOCALIZATION_DATA["errors"]["NotEnoughPlayers"])
+            return
+        elif isinstance(event.exception.original, errors.MissingCharlie):
+            await event.context.respond(LOCALIZATION_DATA["errors"]["MissingCharlie"])
+            return
+        elif isinstance(event.exception.original, errors.BadInput):
+            await event.context.respond(LOCALIZATION_DATA["errors"]["UserInputError"])
+            return
+        elif isinstance(event.exception.original, errors.GameAlreadyStarted):
+            await event.context.respond(LOCALIZATION_DATA["errors"]["AlreadyStarted"])
+            return
+        elif isinstance(event.exception.original, errors.GameAlreadyInitialized):
+            await event.context.respond(LOCALIZATION_DATA["errors"]["AlreadyInitialized"])
+            return
 
     # Bad input
     elif isinstance(event.exception, lightbulb.errors.ConverterFailure):
         await event.context.respond(LOCALIZATION_DATA["errors"]["UserInputError"])
+        return
 
     # Can't find command
     elif isinstance(event.exception, lightbulb.errors.CommandNotFound):
         await event.context.respond(LOCALIZATION_DATA["errors"]["CommandNotFound"])
+        return
 
     # Everything else
-    else:
-        await event.context.respond(LOCALIZATION_DATA["errors"]["UnknownError"])
-        raise event.exception
+    await event.context.respond(LOCALIZATION_DATA["errors"]["UnknownError"])
+    raise event.exception
 
 
 for extension in (rabbit.WHITE_RABBIT_DIR / "src" / "extensions").iterdir():

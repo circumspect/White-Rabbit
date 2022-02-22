@@ -32,6 +32,8 @@ EXPORT_DIR = WHITE_RABBIT_DIR / "exports"
 PDF_EXPORT_DIR = EXPORT_DIR / "pdfs"
 TEXT_EXPORT_DIR = EXPORT_DIR / "text"
 
+DEV_ID_FILE = WHITE_RABBIT_DIR / "dev_ids.txt"
+
 # Make export folders if they don't exist
 if not os.path.isdir(EXPORT_DIR):
     os.mkdir(EXPORT_DIR)

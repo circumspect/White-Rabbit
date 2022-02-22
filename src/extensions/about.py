@@ -1,5 +1,4 @@
 import lightbulb
-from lightbulb import commands
 
 from utils import constants, miscutils
 from utils.localization import LOCALIZATION_DATA
