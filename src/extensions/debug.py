@@ -63,8 +63,8 @@ async def speed(ctx: lightbulb.Context) -> None:
 async def plugins(ctx: lightbulb.Context) -> None:
     """Lists all currently loaded plugins"""
 
-    message = "Plugins loaded:"
-    message += "\n".join(ctx.bot.cogs.keys())
+    message = "Plugins loaded:\n"
+    message += "\n".join(ctx.bot.extensions)
     message = miscutils.codeblock(message)
     await ctx.respond(message)
 
@@ -73,7 +73,7 @@ async def plugins(ctx: lightbulb.Context) -> None:
 @lightbulb.command(loc["load"]["name"], loc["load"]["description"], aliases=loc["load"]["aliases"])
 @lightbulb.implements(lightbulb.PrefixCommand)
 async def load(ctx: lightbulb.Context) -> None:
-    ctx.app.reload_extensions(*ctx.app.extensions)
+    ctx.bot.reload_extensions(*ctx.bot.extensions)
     await ctx.respond("Reloaded")
 
 
