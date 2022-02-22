@@ -5,7 +5,7 @@ import lightbulb
 from lightbulb import commands
 
 from utils.localization import LOCALIZATION_DATA
-from utils import constants, filepaths, gamedata, miscutils
+from utils import constants, filepaths, gamedata, miscutils, errors
 
 plugin = lightbulb.Plugin("Debug")
 loc = LOCALIZATION_DATA["commands"]["debug"]
@@ -20,8 +20,9 @@ DEBUG_COMMAND_LIST = (
 )
 async def cog_check(self, ctx):
     """Only people with access to the code"""
-
-    return ctx.author.id in self.bot.d.dev_ids
+    if not ctx.author.id in self.bot.d.dev_ids:
+        raise errors.DevOnly()
+    return True
 
 @plugin.command()
 @lightbulb.command(loc["load"]["name"], loc["load"]["description"], aliases=loc["load"]["aliases"])
@@ -46,18 +47,18 @@ async def speed(ctx: lightbulb.Context) -> None:
 
     # Cap the top speed
     if speed > gamedata.MAX_SPEED:
-        asyncio.create_task(ctx.send(f"Too fast! Max is {gamedata.MAX_SPEED}"))
+        asyncio.create_task(ctx.respond(f"Too fast! Max is {gamedata.MAX_SPEED}"))
         return
 
     # Speed must be at least 1
     if speed < 1:
-        asyncio.create_task(ctx.send("Too slow! Speed must be at least 1"))
+        asyncio.create_task(ctx.respond("Too slow! Speed must be at least 1"))
         return
 
     if speed == 1:
-        asyncio.create_task(ctx.send("Reset the game speed!"))
+        asyncio.create_task(ctx.respond("Reset the game speed!"))
     else:
-        asyncio.create_task(ctx.send("Set the game speed!"))
+        asyncio.create_task(ctx.respond("Set the game speed!"))
 
 
 @plugin.command()
@@ -69,7 +70,7 @@ async def plugins(ctx: lightbulb.Context) -> None:
     message = "Plugins loaded:"
     message += "\n".join(ctx.bot.cogs.keys())
     message = miscutils.codeblock(message)
-    await ctx.send(message)
+    await ctx.respond(message)
 
 
 @plugin.command()
@@ -80,9 +81,9 @@ async def unload(ctx: lightbulb.Context) -> None:
     extension_name = ""
     try:
         ctx.bot.unload_extension(extension_name)
-        asyncio.create_task(ctx.send(f"Unloaded {extension_name}"))
+        asyncio.create_task(ctx.respond(f"Unloaded {extension_name}"))
     except commands.errors.ExtensionNotLoaded:
-        asyncio.create_task(ctx.send(f"{extension_name} was never loaded"))
+        asyncio.create_task(ctx.respond(f"{extension_name} was never loaded"))
 
 # DO NOT MOVE TO admin.py!!! This command will shut down the bot across
 # ALL servers, and thus should only be able to be run by those listed
@@ -94,7 +95,7 @@ async def unload(ctx: lightbulb.Context) -> None:
 async def quit(ctx: lightbulb.Context) -> None:
     """Shuts down the bot - AFFECTS ALL SERVERS"""
 
-    await ctx.send("Shutting down, thanks for playing!")
+    await ctx.respond("Shutting down, thanks for playing!")
     await ctx.bot.close()
 
 

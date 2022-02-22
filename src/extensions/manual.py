@@ -30,7 +30,7 @@ async def alice(ctx: lightbulb.Context) -> None:
     """
 
     if choice < 0 or choice > 10:
-        asyncio.create_task(ctx.send(LOCALIZATION_DATA["errors"]["UserInputError"]))
+        asyncio.create_task(ctx.respond(LOCALIZATION_DATA["errors"]["UserInputError"]))
         return
 
     if not choice:
@@ -48,7 +48,7 @@ async def shuffle_motives(ctx: lightbulb.Context) -> None:
     """Shuffle and assign motive cards"""
 
     if not ctx.game.automatic:
-        asyncio.create_task(ctx.send(loc["shuffle_motives"]["Shuffling"]))
+        asyncio.create_task(ctx.respond(loc["shuffle_motives"]["Shuffling"]))
 
     motives = list(range(1, 6))
     random.shuffle(motives)
@@ -68,7 +68,7 @@ async def send_motives(ctx: lightbulb.Context) -> None:
     """Distributes motive cards"""
 
     if not ctx.game.motives:
-        asyncio.create_task(ctx.send(loc["send_motives"]["NeedToShuffle"]))
+        asyncio.create_task(ctx.respond(loc["send_motives"]["NeedToShuffle"]))
         return
 
     for name in gamedata.CHARACTERS:
@@ -93,17 +93,17 @@ async def clue(ctx: lightbulb.Context) -> None:
 
     # Check that clue exists at specified time
     if time not in gamedata.CLUE_TIMES:
-        asyncio.create_task(ctx.send(loc["clue"]["ClueNotFound"]))
+        asyncio.create_task(ctx.respond(loc["clue"]["ClueNotFound"]))
         return
 
     # Check that clues have been assigned
     if not ctx.game.clue_assignments:
-        asyncio.create_task(ctx.send(loc["clue"]["CluesNotAssigned"]))
+        asyncio.create_task(ctx.respond(loc["clue"]["CluesNotAssigned"]))
         return
 
     # Check if clues have been shuffled:
     if not ctx.game.picked_clues:
-        asyncio.create_task(ctx.send(loc["clue"]["CluesNotShuffled"]))
+        asyncio.create_task(ctx.respond(loc["clue"]["CluesNotShuffled"]))
         return
 
     # This check is disabled to allow more flexibility when running in
@@ -115,7 +115,7 @@ async def clue(ctx: lightbulb.Context) -> None:
     # # Ignores this check for the 10 minute clue because that one
     # # is assigned manually anyway
     # if time != 10 and time not in ctx.game.clue_assignments[ctx.character]:
-    #     asyncio.create_task(ctx.send(loc["clue"]["NotYourClue"]))
+    #     asyncio.create_task(ctx.respond(loc["clue"]["NotYourClue"]))
     #     return
 
     # Send the clue
@@ -212,7 +212,7 @@ async def shuffle_clues(ctx: lightbulb.Context) -> None:
 
     if not ctx.game.automatic:
         asyncio.create_task(
-            ctx.send(loc["shuffle_clues"]["ShufflingClues"])
+            ctx.respond(loc["shuffle_clues"]["ShufflingClues"])
         )
 
     for time in gamedata.CLUE_TIMES:
@@ -235,17 +235,17 @@ async def assign_times(ctx: lightbulb.Context) -> None:
     player_count = len(ctx.game.char_roles())
     # Stop if fewer than 3 player roles assigned
     if player_count < 3:
-        asyncio.create_task(ctx.send(loc["errors"]["NotEnoughPlayers"]))
+        asyncio.create_task(ctx.respond(loc["errors"]["NotEnoughPlayers"]))
         return
 
     # Can't play without Charlie
     elif "Charlie" not in ctx.game.char_roles():
-        asyncio.create_task(ctx.send(loc["errors"]["MissingCharlie"]))
+        asyncio.create_task(ctx.respond(loc["errors"]["MissingCharlie"]))
         return
 
     if not ctx.game.automatic:
         asyncio.create_task(
-            ctx.send(loc["assign_clues"]["AssigningClues"])
+            ctx.respond(loc["assign_clues"]["AssigningClues"])
         )
 
     # Generate clues

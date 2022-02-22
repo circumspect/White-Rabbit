@@ -1,20 +1,20 @@
 # pylint: disable=unsubscriptable-object   # https://github.com/PyCQA/pylint/issues/3637#issuecomment-720097674
 
-# Built-in
 import asyncio
 import math
 import os
-from pathlib import Path
 import random
 import re
 import subprocess
+from pathlib import Path
 from typing import Union
-# 3rd-party
+
+import hikari
 import requests
-# Local
+
+from utils import constants, envvars
 from utils.dirs import TEMP_DIR
-from utils import envvars, constants
-from utils.localization import DEFAULT_LOCALIZATION, LOCALIZATION_DATA, LANGUAGE_KEY
+from utils.localization import DEFAULT_LOCALIZATION, LANGUAGE_KEY, LOCALIZATION_DATA
 from utils.rabbit import WHITE_RABBIT_DIR
 from utils.resources import ImageResource
 
@@ -27,10 +27,11 @@ def codeblock(text: str):
     return f"```{text}```"
 
 
-def get_text_channels(guild):
+def get_text_channels(guild: hikari.Guild):
     return {
         channel.name: channel
-        for channel in guild.text_channels
+        for channel in guild.get_channels().values()
+        if channel.type == hikari.ChannelType.GUILD_TEXT
     }
 
 

@@ -558,7 +558,7 @@ async def upload(ctx: lightbulb.Context) -> None:
         file_name = ctx.guild.name
     path = (dirs.PDF_EXPORT_DIR / file_name).with_suffix(".pdf")
     url = miscutils.upload_file(path)
-    await ctx.send(url)
+    await ctx.respond(url)
 
 
 @plugin.command()
@@ -574,16 +574,16 @@ async def pdf(ctx: lightbulb.Context) -> None:
     loop = asyncio.get_running_loop()
 
     # Import game data
-    asyncio.create_task(ctx.send(loc["pdf"]["CollectingData"]))
+    asyncio.create_task(ctx.respond(loc["pdf"]["CollectingData"]))
     try:
         await import_data(ctx)
     except KeyError:
-        asyncio.create_task(ctx.send(loc["pdf"]["FailedImport"]))
+        asyncio.create_task(ctx.respond(loc["pdf"]["FailedImport"]))
         return
 
     # If data not found, tell user and quit
     if not ctx.game.start_time:
-        asyncio.create_task(ctx.send(loc["pdf"]["MissingGameData"]))
+        asyncio.create_task(ctx.respond(loc["pdf"]["MissingGameData"]))
         return
 
     # Create pdf object
@@ -624,7 +624,7 @@ async def pdf(ctx: lightbulb.Context) -> None:
     # Create list of player characters
     characters = [character.lower() for character in ctx.game.char_roles()]
 
-    await ctx.send(loc["pdf"]["BuildingCharPages"])
+    await ctx.respond(loc["pdf"]["BuildingCharPages"])
 
     pm_channels = []
     for i, character in enumerate(characters):
@@ -637,7 +637,7 @@ async def pdf(ctx: lightbulb.Context) -> None:
         for j in range(i+1, len(characters)):
             pm_channels.append((character, characters[j]))
 
-    await ctx.send(loc["pdf"]["RecreatingTimeline"])
+    await ctx.respond(loc["pdf"]["RecreatingTimeline"])
 
     # Conclusions/timeline
     # TODO: either timeline will have to be async or it will also need
@@ -646,7 +646,7 @@ async def pdf(ctx: lightbulb.Context) -> None:
     # self.timeline(ctx, pdf)
     await loop.run_in_executor(None, conclusion_page, *(ctx, pdf))
 
-    await ctx.send(loc["pdf"]["CollectingMessages"])
+    await ctx.respond(loc["pdf"]["CollectingMessages"])
 
     # Group chat export
     pdf.add_page()
@@ -696,7 +696,7 @@ async def pdf(ctx: lightbulb.Context) -> None:
     time = constants.TIMER_FORMAT % (end_time - start_time)
     print(f"PDF generated in {time} seconds.")
 
-    await ctx.send(loc["pdf"]["PDFCreated"])
+    await ctx.respond(loc["pdf"]["PDFCreated"])
 
 
 def load(bot):

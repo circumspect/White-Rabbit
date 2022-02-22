@@ -32,7 +32,7 @@ async def wipe(ctx: lightbulb.Context) -> None:
     """Erases all messages and clears game data"""
 
     # Confirm command to user
-    await ctx.send(loc["wipe"]["DeletingMessages"])
+    await ctx.respond(loc["wipe"]["DeletingMessages"])
 
     # Wipe messages
     if not text_channels:
@@ -66,14 +66,14 @@ async def reset_perms(ctx: lightbulb.Context) -> None:
             asyncio.create_task(channel.set_permissions(spectator, view_channel=True))
 
             player = channel.name.split("-")[0].title()
-            for role in ctx.guild.roles:
+            for role in ctx.get_guild().get_roles():
                 if role.name == player:
                     asyncio.create_task(channel.set_permissions(role, view_channel=True))
 
         # Channels that all players can send messages
         elif channel.name in [GROUP_CHAT, LOCALIZATION_DATA["channels"]["voicemails"]]:
             asyncio.create_task(channel.set_permissions(everyone, send_messages=False))
-            for role in ctx.guild.roles:
+            for role in ctx.get_guild().get_roles():
                 if role.name.lower() in gamedata.CHARACTERS:
                     asyncio.create_task(channel.set_permissions(role, send_messages=True))
 
@@ -84,7 +84,7 @@ async def reset_perms(ctx: lightbulb.Context) -> None:
             split_name = channel.name.split("-")
             player_a = split_name[0].title()
             player_b = split_name[1].title()
-            for role in ctx.guild.roles:
+            for role in ctx.get_guild().get_roles():
                 if role.name in [player_a, player_b]:
                     asyncio.create_task(channel.set_permissions(role, view_channel=True))
 
@@ -102,7 +102,7 @@ async def reset_roles(ctx: lightbulb.Context) -> None:
                     is_player = True
             if is_player:
                 if member is ctx.guild.owner:
-                    await ctx.send(loc["reset_roles"]["NoteAboutOwner"])
+                    await ctx.respond(loc["reset_roles"]["NoteAboutOwner"])
                 else:
                     await member.edit(nick=None)
 
@@ -113,7 +113,7 @@ async def reset(ctx: lightbulb.Context) -> None:
     """Complete server reset"""
 
     # Confirm command to user
-    await ctx.send(loc["reset"]["ResettingServer"])
+    await ctx.respond(loc["reset"]["ResettingServer"])
 
     # Console logging
     print(f'{constants.INFO_PREFIX}Resetting server: "{ctx.guild.name}" (ID: {ctx.guild.id})')

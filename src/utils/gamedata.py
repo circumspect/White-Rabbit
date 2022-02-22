@@ -133,7 +133,7 @@ class Data:
         self.game_speed = 1
 
         # Find the spectator role
-        for role in self.guild.roles:
+        for role in self.guild.get_roles().values():
             if role.name.title() == LOCALIZATION_DATA["spectator-role"]:
                 self.spectator_role = role
                 break
@@ -147,7 +147,7 @@ class Data:
 
         unsorted = {
             role.name: role
-            for role in self.guild.roles
+            for role in self.guild.get_roles()
             if role.name.lower() in CHARACTERS and role.members
         }
 

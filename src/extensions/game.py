@@ -22,14 +22,14 @@ async def init(ctx: lightbulb.Context) -> None:
     """Initial setup before character selection"""
 
     if ctx.game.start_time:
-        asyncio.create_task(ctx.send(LOCALIZATION_DATA["errors"]["AlreadyStarted"]))
+        asyncio.create_task(ctx.respond(LOCALIZATION_DATA["errors"]["AlreadyStarted"]))
         return
     elif ctx.game.init and ctx.game.automatic:
         # Disallow another initialization attempt unless manual mode is enabled
-        asyncio.create_task(ctx.send(LOCALIZATION_DATA["errors"]["AlreadyInitialized"]))
+        asyncio.create_task(ctx.respond(LOCALIZATION_DATA["errors"]["AlreadyInitialized"]))
         return
 
-    asyncio.create_task(ctx.send(LOCALIZATION_DATA["messages"]["Initializing"]))
+    asyncio.create_task(ctx.respond(LOCALIZATION_DATA["messages"]["Initializing"]))
 
     # Introduction images
     miscutils.send_image(
@@ -93,23 +93,23 @@ async def setup_clues(ctx: lightbulb.Context) -> None:
 
     if (not ctx.game.init) and ctx.game.automatic:
         # Disallow if init hasn't been run yet and manual mode is off
-        asyncio.create_task(ctx.send(LOCALIZATION_DATA["errors"]["NotInitialized"]))
+        asyncio.create_task(ctx.respond(LOCALIZATION_DATA["errors"]["NotInitialized"]))
         return
     elif ctx.game.start_time:
-        asyncio.create_task(ctx.send(LOCALIZATION_DATA["errors"]["AlreadyStarted"]))
+        asyncio.create_task(ctx.respond(LOCALIZATION_DATA["errors"]["AlreadyStarted"]))
         return
 
     player_count = len(ctx.game.char_roles())
     # Can't set up if there aren't enough players to assign clues
     if player_count < 3:
-        asyncio.create_task(ctx.send(LOCALIZATION_DATA["errors"]["NotEnoughPlayers"]))
+        asyncio.create_task(ctx.respond(LOCALIZATION_DATA["errors"]["NotEnoughPlayers"]))
         return
     # Can't set up without Charlie Barnes
     elif "Charlie" not in ctx.game.char_roles():
-        asyncio.create_task(ctx.send(LOCALIZATION_DATA["errors"]["MissingCharlie"]))
+        asyncio.create_task(ctx.respond(LOCALIZATION_DATA["errors"]["MissingCharlie"]))
         return
 
-    asyncio.create_task(ctx.send(LOCALIZATION_DATA["messages"]["DistributingClues"]))
+    asyncio.create_task(ctx.respond(LOCALIZATION_DATA["messages"]["DistributingClues"]))
 
     asyncio.create_task(ctx.bot.cogs["Manual"].shuffle_clues(ctx))
     asyncio.create_task(ctx.bot.cogs["Manual"].assign_times(ctx))
@@ -154,23 +154,23 @@ async def start(ctx: lightbulb.Context) -> None:
 
     # Validity checks
     if not ctx.game.alice:
-        asyncio.create_task(ctx.send(LOCALIZATION_DATA["errors"]["MissingAlice"]))
+        asyncio.create_task(ctx.respond(LOCALIZATION_DATA["errors"]["MissingAlice"]))
         return
 
     if not ctx.game.setup:
-        asyncio.create_task(ctx.send(LOCALIZATION_DATA["errors"]["NeedToSetUp"]))
+        asyncio.create_task(ctx.respond(LOCALIZATION_DATA["errors"]["NeedToSetUp"]))
         return
 
     if ctx.game.start_time:
-        asyncio.create_task(ctx.send(LOCALIZATION_DATA["errors"]["AlreadyStarted"]))
+        asyncio.create_task(ctx.respond(LOCALIZATION_DATA["errors"]["AlreadyStarted"]))
         return
 
     if "Charlie" not in ctx.game.char_roles():
-        asyncio.create_task(ctx.send(LOCALIZATION_DATA["errors"]["MissingCharlie"]))
+        asyncio.create_task(ctx.respond(LOCALIZATION_DATA["errors"]["MissingCharlie"]))
         return
 
     if len(ctx.game.char_roles()) < 3:
-        asyncio.create_task(ctx.send(LOCALIZATION_DATA["errors"]["NotEnoughPlayers"]))
+        asyncio.create_task(ctx.respond(LOCALIZATION_DATA["errors"]["NotEnoughPlayers"]))
         return
 
     # 90 minute card/message for Charlie Barnes
@@ -183,7 +183,7 @@ async def start(ctx: lightbulb.Context) -> None:
         pass
 
     ctx.game.start_time = datetime.datetime.now()
-    asyncio.create_task(ctx.send(LOCALIZATION_DATA["messages"]["StartingGame"]))
+    asyncio.create_task(ctx.respond(LOCALIZATION_DATA["messages"]["StartingGame"]))
 
     # Start timer and clue_check tasks simultaneously
     await asyncio.gather(timer(ctx), clue_check(ctx))
@@ -197,7 +197,7 @@ async def timer(self, ctx):
 
         if ctx.game.show_timer:
             time = miscutils.time_string(time_remaining)
-            asyncio.create_task(ctx.send(time))
+            asyncio.create_task(ctx.respond(time))
         await asyncio.sleep(ctx.game.timer_gap / ctx.game.game_speed)
 
 async def clue_check(self, ctx):
@@ -308,10 +308,10 @@ async def search(ctx: lightbulb.Context) -> None:
     """Draw a searching card"""
 
     if ctx.game.automatic and not ctx.game.start_time:
-        asyncio.create_task(ctx.send(LOCALIZATION_DATA["errors"]["GameNotStarted"]))
+        asyncio.create_task(ctx.respond(LOCALIZATION_DATA["errors"]["GameNotStarted"]))
         return
     if not ctx.character:
-        asyncio.create_task(ctx.send(LOCALIZATION_DATA["errors"]["NoCharacterRoles"]))
+        asyncio.create_task(ctx.respond(LOCALIZATION_DATA["errors"]["NoCharacterRoles"]))
         return
 
     char_channel = ctx.text_channels[LOCALIZATION_DATA["channels"]["clues"][ctx.character]]
@@ -338,12 +338,12 @@ async def ten_min_card(ctx: lightbulb.Context) -> None:
         character = mention.name
 
     if character.title() not in ctx.game.char_roles():
-        asyncio.create_task(ctx.send(LOCALIZATION_DATA["errors"]["PlayerNotFound"]))
+        asyncio.create_task(ctx.respond(LOCALIZATION_DATA["errors"]["PlayerNotFound"]))
         return
 
     ctx.game.ten_char = character.lower()
 
-    asyncio.create_task(ctx.send(loc["ten_min_card"]["Assigned"]))
+    asyncio.create_task(ctx.respond(loc["ten_min_card"]["Assigned"]))
 
 
 

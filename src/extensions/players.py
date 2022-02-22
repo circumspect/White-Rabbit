@@ -21,27 +21,27 @@ async def claim(ctx: lightbulb.Context) -> None:
     # Check if role can be claimed
     role = None
     if role in ctx.author.roles:
-        await ctx.send(loc["claim"]["AlreadyHaveThisRole"])
+        await ctx.respond(loc["claim"]["AlreadyHaveThisRole"])
         return
     elif role.name.lower() not in [*gamedata.CHARACTERS, LOCALIZATION_DATA["spectator-role"]]:
-        asyncio.create_task(ctx.send(loc["claim"]["UnclaimableRole"]))
+        asyncio.create_task(ctx.respond(loc["claim"]["UnclaimableRole"]))
         return
     elif role.members and role.name.lower() in gamedata.CHARACTERS:
-        asyncio.create_task(ctx.send(loc["claim"]["RoleIsTaken"]))
+        asyncio.create_task(ctx.respond(loc["claim"]["RoleIsTaken"]))
         return
 
     # Check if player already has a character role
     for member_role in ctx.author.roles:
         if member_role.name.lower() in gamedata.CHARACTERS:
-            asyncio.create_task(ctx.send(loc["claim"]["AlreadyHaveOtherRole"]))
+            asyncio.create_task(ctx.respond(loc["claim"]["AlreadyHaveOtherRole"]))
             return
 
     # Give role and update player's nickname
     await ctx.author.add_roles(role)
-    await ctx.send(loc["claim"]["UpdatedRoles"])
+    await ctx.respond(loc["claim"]["UpdatedRoles"])
     if ctx.author == ctx.guild.owner:
         # Can't update nickname for server owner
-        asyncio.create_task(ctx.send(LOCALIZATION_DATA["errors"]["ServerOwnerNicknameChange"]))
+        asyncio.create_task(ctx.respond(LOCALIZATION_DATA["errors"]["ServerOwnerNicknameChange"]))
     elif role.name.lower() in gamedata.CHARACTERS:
         asyncio.create_task(
             ctx.author.edit(nick=gamedata.CHARACTERS[role.name.lower()])
@@ -58,14 +58,14 @@ async def unclaim(ctx: lightbulb.Context) -> None:
     for role in ctx.author.roles:
         if role.name.lower() in gamedata.CHARACTERS:
             await ctx.author.remove_roles(role)
-            asyncio.create_task(ctx.send(f"Removed role {role.name}"))
+            asyncio.create_task(ctx.respond(f"Removed role {role.name}"))
             if ctx.author == ctx.guild.owner:
                 # Can't update nickname for server owner
-                asyncio.create_task(ctx.send(LOCALIZATION_DATA["errors"]["ServerOwnerNicknameChange"]))
+                asyncio.create_task(ctx.respond(LOCALIZATION_DATA["errors"]["ServerOwnerNicknameChange"]))
             else:
                 asyncio.create_task(ctx.author.edit(nick=None))
             return
-    await ctx.send(LOCALIZATION_DATA["errors"]["NoCharacterRoles"])
+    await ctx.respond(LOCALIZATION_DATA["errors"]["NoCharacterRoles"])
 
 @plugin.command()
 @lightbulb.command(loc["roles"]["name"], loc["roles"]["description"], aliases=loc["roles"]["aliases"])
@@ -75,7 +75,7 @@ async def roles(ctx: lightbulb.Context) -> None:
 
     message = loc["roles"]["YourRoles"] + "\n"
     message += f"{', '.join(role.name for role in ctx.author.roles[1:])}"
-    await ctx.send(message)
+    await ctx.respond(message)
 
 @plugin.command()
 @lightbulb.command(loc["users"]["name"], loc["users"]["description"], aliases=loc["users"]["aliases"])
@@ -93,7 +93,7 @@ async def users(ctx: lightbulb.Context) -> None:
         message += loc["users"]["players"]
         message += "\n"
         message += ', '.join(member.name for member in ctx.game.char_roles().values())
-    await ctx.send(message or loc["users"]["NoneFound"])
+    await ctx.respond(message or loc["users"]["NoneFound"])
 
 def load(bot):
     bot.add_plugin(plugin)
