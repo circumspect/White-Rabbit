@@ -12,6 +12,7 @@ plugin = lightbulb.Plugin("Settings")
 
 
 @plugin.command()
+@lightbulb.option("mode", "what to set auto to (on/off)", type=str, default="")
 @lightbulb.command(
     loc["auto"]["name"], loc["auto"]["description"], aliases=loc["auto"]["aliases"]
 )
@@ -26,24 +27,26 @@ async def auto(ctx: lightbulb.Context) -> None:
     !auto off will switch to manual mode
     Automatic mode will disable manual card draw commands
     """
-    mode = ""
-    if not mode:
+    game = ctx.bot.d.games[ctx.guild_id]
+    if not ctx.options.mode:
         # Print current mode
-        if ctx.game.automatic:
+        if game.automatic:
             message = loc["auto"]["CurrentlyAuto"]
         else:
             message = loc["auto"]["CurrentlyManual"]
-
         message = miscutils.codeblock(message)
-        asyncio.create_task(ctx.respond(message))
-    elif mode == loc["auto"]["on"]:
-        ctx.game.automatic = True
-        asyncio.create_task(ctx.respond(loc["auto"]["AutoEnabled"]))
-    elif mode == loc["auto"]["off"]:
-        ctx.game.automatic = False
-        asyncio.create_task(ctx.respond(loc["auto"]["AutoDisabled"]))
+        await ctx.respond(message)
+
+    elif ctx.options.mode == loc["auto"]["on"]:
+        game.automatic = True
+        await ctx.respond(loc["auto"]["AutoEnabled"])
+
+    elif ctx.options.mode == loc["auto"]["off"]:
+        game.automatic = False
+        await ctx.respond(loc["auto"]["AutoDisabled"])
+
     else:
-        asyncio.create_task(ctx.respond(LOCALIZATION_DATA["errors"]["UserInputError"]))
+        await ctx.respond(LOCALIZATION_DATA["errors"]["UserInputError"])
 
 
 @plugin.command()
