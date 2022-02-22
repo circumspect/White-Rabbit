@@ -1,5 +1,6 @@
 # Built-in
 import os
+
 # Local
 from utils.localization import DEFAULT_LOCALIZATION, LANGUAGE_KEY
 from utils.rabbit import WHITE_RABBIT_DIR

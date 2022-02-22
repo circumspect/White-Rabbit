@@ -10,8 +10,11 @@ loc = LOCALIZATION_DATA["commands"]["settings"]
 
 plugin = lightbulb.Plugin("Settings")
 
+
 @plugin.command()
-@lightbulb.command(loc["auto"]["name"], loc["auto"]["description"], aliases=loc["auto"]["aliases"])
+@lightbulb.command(
+    loc["auto"]["name"], loc["auto"]["description"], aliases=loc["auto"]["aliases"]
+)
 @lightbulb.implements(lightbulb.PrefixCommand)
 async def auto(ctx: lightbulb.Context) -> None:
     """
@@ -44,7 +47,9 @@ async def auto(ctx: lightbulb.Context) -> None:
 
 
 @plugin.command()
-@lightbulb.command(loc["music"]["name"], loc["music"]["description"], aliases=loc["music"]["aliases"])
+@lightbulb.command(
+    loc["music"]["name"], loc["music"]["description"], aliases=loc["music"]["aliases"]
+)
 @lightbulb.implements(lightbulb.PrefixCommand)
 async def music(ctx: lightbulb.Context) -> None:
     """Enable/disable music stream when game starts"""
@@ -55,8 +60,13 @@ async def music(ctx: lightbulb.Context) -> None:
     else:
         asyncio.create_task(ctx.respond(loc["music"]["MusicDisabled"]))
 
+
 @plugin.command()
-@lightbulb.command(loc["show_timer"]["name"], loc["show_timer"]["description"], aliases=loc["show_timer"]["aliases"])
+@lightbulb.command(
+    loc["show_timer"]["name"],
+    loc["show_timer"]["description"],
+    aliases=loc["show_timer"]["aliases"],
+)
 @lightbulb.implements(lightbulb.PrefixCommand)
 async def show_timer(ctx: lightbulb.Context) -> None:
     """
@@ -69,9 +79,7 @@ async def show_timer(ctx: lightbulb.Context) -> None:
 
     if gap:
         if gap < gamedata.MIN_TIMER_GAP:
-            asyncio.create_task(ctx.respond(
-                loc["show_timer"]["TimerGapTooSmall"]
-            ))
+            asyncio.create_task(ctx.respond(loc["show_timer"]["TimerGapTooSmall"]))
             return
 
         # If timer spacing between pings exists, enable timer
@@ -85,8 +93,13 @@ async def show_timer(ctx: lightbulb.Context) -> None:
     else:
         asyncio.create_task(ctx.respond(loc["show_timer"]["HidingTimer"]))
 
+
 @plugin.command()
-@lightbulb.command(loc["endings"]["name"], loc["endings"]["description"], aliases=loc["endings"]["aliases"])
+@lightbulb.command(
+    loc["endings"]["name"],
+    loc["endings"]["description"],
+    aliases=loc["endings"]["aliases"],
+)
 @lightbulb.implements(lightbulb.PrefixCommand)
 async def endings(ctx: lightbulb.Context) -> None:
     """Enables/disables an ending. See docs for details"""
@@ -107,6 +120,7 @@ async def endings(ctx: lightbulb.Context) -> None:
 
 def load(bot):
     bot.add_plugin(plugin)
+
 
 def unload(bot):
     bot.remove_plugin(plugin)

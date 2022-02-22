@@ -9,17 +9,23 @@ from utils import constants, dirs, filepaths, gamedata, miscutils
 loc = LOCALIZATION_DATA["commands"]["manual"]
 
 plugin = lightbulb.Plugin("Manual")
+
+
 async def cog_check(self, ctx):
     ctx.game = self.bot.d.games.setdefault(ctx.guild.id, gamedata.Data(ctx.guild))
     # Console logging
     if ctx.game.automatic:
-        print(f"{constants.WARNING_PREFIX}{ctx.author.name} tried to run {self.bot.command_prefix}{ctx.command.name} in automatic mode!")
+        print(
+            f"{constants.WARNING_PREFIX}{ctx.author.name} tried to run {self.bot.command_prefix}{ctx.command.name} in automatic mode!"
+        )
 
     return not ctx.game.automatic
 
 
 @plugin.command()
-@lightbulb.command(loc["alice"]["name"], loc["alice"]["description"], aliases=loc["alice"]["aliases"])
+@lightbulb.command(
+    loc["alice"]["name"], loc["alice"]["description"], aliases=loc["alice"]["aliases"]
+)
 @lightbulb.implements(lightbulb.PrefixCommand)
 async def alice(ctx: lightbulb.Context) -> None:
     """
@@ -41,8 +47,13 @@ async def alice(ctx: lightbulb.Context) -> None:
     alice = miscutils.get_image(dirs.POSTER_DIR, f"Alice-Briarwood-{ctx.game.alice}")
     miscutils.send_image(LOCALIZATION_DATA["channels"]["resources"], alice, ctx)
 
+
 @plugin.command()
-@lightbulb.command(loc["shuffle_motives"]["name"], loc["shuffle_motives"]["description"], aliases=loc["shuffle_motives"]["aliases"])
+@lightbulb.command(
+    loc["shuffle_motives"]["name"],
+    loc["shuffle_motives"]["description"],
+    aliases=loc["shuffle_motives"]["aliases"],
+)
 @lightbulb.implements(lightbulb.PrefixCommand)
 async def shuffle_motives(ctx: lightbulb.Context) -> None:
     """Shuffle and assign motive cards"""
@@ -53,16 +64,20 @@ async def shuffle_motives(ctx: lightbulb.Context) -> None:
     motives = list(range(1, 6))
     random.shuffle(motives)
     ctx.game.motives = {
-        character: motive
-        for motive, character in zip(motives, gamedata.CHARACTERS)
+        character: motive for motive, character in zip(motives, gamedata.CHARACTERS)
     }
 
     # Console logging
     print(f"{constants.INFO_PREFIX}Shuffled motives!")
     print(ctx.game.motives)
 
+
 @plugin.command()
-@lightbulb.command(loc["send_motives"]["name"], loc["send_motives"]["description"], aliases=loc["send_motives"]["aliases"])
+@lightbulb.command(
+    loc["send_motives"]["name"],
+    loc["send_motives"]["description"],
+    aliases=loc["send_motives"]["aliases"],
+)
 @lightbulb.implements(lightbulb.PrefixCommand)
 async def send_motives(ctx: lightbulb.Context) -> None:
     """Distributes motive cards"""
@@ -75,13 +90,14 @@ async def send_motives(ctx: lightbulb.Context) -> None:
         channel = ctx.text_channels[LOCALIZATION_DATA["channels"]["clues"][name]]
         motive = ctx.game.motives[name]
         miscutils.send_image(
-            channel,
-            miscutils.get_image(dirs.MOTIVE_DIR, f"Motive-{motive}"),
-            ctx
+            channel, miscutils.get_image(dirs.MOTIVE_DIR, f"Motive-{motive}"), ctx
         )
 
+
 @plugin.command()
-@lightbulb.command(loc["clue"]["name"], loc["clue"]["description"], aliases=loc["clue"]["aliases"])
+@lightbulb.command(
+    loc["clue"]["name"], loc["clue"]["description"], aliases=loc["clue"]["aliases"]
+)
 @lightbulb.implements(lightbulb.PrefixCommand)
 async def clue(ctx: lightbulb.Context) -> None:
     """
@@ -121,6 +137,7 @@ async def clue(ctx: lightbulb.Context) -> None:
     # Send the clue
     send_clue(ctx, time)
 
+
 def send_clue(self, ctx, time: int):
     # Sends clue based on picked_clues value
 
@@ -133,7 +150,9 @@ def send_clue(self, ctx, time: int):
         raise ValueError("Missing clue")
 
     # Send clue card
-    channel = miscutils.get_text_channels(ctx.game.guild)[LOCALIZATION_DATA["channels"]["clues"][character]]
+    channel = miscutils.get_text_channels(ctx.game.guild)[
+        LOCALIZATION_DATA["channels"]["clues"][character]
+    ]
     choice = ctx.game.picked_clues[time]
     path = miscutils.get_image(dirs.CLUE_DIR / str(time), f"{time}-{choice}")
     miscutils.send_image(channel, path)
@@ -157,9 +176,7 @@ def send_clue(self, ctx, time: int):
             asyncio.create_task(channel.send(LOCALIZATION_DATA["messages"]["Culprit"]))
         elif suspect in gamedata.LOCATIONS:
             asyncio.create_task(
-                channel.send(
-                    LOCALIZATION_DATA["messages"]["AliceLocation"]
-                )
+                channel.send(LOCALIZATION_DATA["messages"]["AliceLocation"])
             )
         else:
             print("Something has gone very very wrong.")
@@ -172,8 +189,9 @@ def send_clue(self, ctx, time: int):
     if ctx.game.next_clue != 20:
         for i in range(len(gamedata.CLUE_TIMES)):
             if gamedata.CLUE_TIMES[i] == ctx.game.next_clue:
-                ctx.game.next_clue = gamedata.CLUE_TIMES[i+1]
+                ctx.game.next_clue = gamedata.CLUE_TIMES[i + 1]
                 break
+
 
 def draw_suspect(self, ctx, time: int):
     """Picks a suspect given the clue time"""
@@ -182,15 +200,15 @@ def draw_suspect(self, ctx, time: int):
 
     # Check if is tuple and pull the correct type from it
     if isinstance(clue_type, tuple):
-        clue_type = clue_type[ctx.game.picked_clues[time]-1]
+        clue_type = clue_type[ctx.game.picked_clues[time] - 1]
 
     if clue_type == "suspect":
-        index = random.randint(0, len(ctx.game.suspect_pile)-1)
-        ctx.game.suspects_drawn[time] = (ctx.game.suspect_pile.pop(index))
+        index = random.randint(0, len(ctx.game.suspect_pile) - 1)
+        ctx.game.suspects_drawn[time] = ctx.game.suspect_pile.pop(index)
         return ctx.game.suspects_drawn[time]
     elif clue_type == "location":
-        index = random.randint(0, len(ctx.game.location_pile)-1)
-        ctx.game.locations_drawn[time] = (ctx.game.location_pile.pop(index))
+        index = random.randint(0, len(ctx.game.location_pile) - 1)
+        ctx.game.locations_drawn[time] = ctx.game.location_pile.pop(index)
         return ctx.game.locations_drawn[time]
     elif clue_type == "suspect-drawn":
         culprit = random.choice(list(ctx.game.suspects_drawn.values()))
@@ -205,15 +223,17 @@ def draw_suspect(self, ctx, time: int):
 
 
 @plugin.command()
-@lightbulb.command(loc["shuffle_clues"]["name"], loc["shuffle_clues"]["description"], aliases=loc["shuffle_clues"]["aliases"])
+@lightbulb.command(
+    loc["shuffle_clues"]["name"],
+    loc["shuffle_clues"]["description"],
+    aliases=loc["shuffle_clues"]["aliases"],
+)
 @lightbulb.implements(lightbulb.PrefixCommand)
 async def shuffle_clues(ctx: lightbulb.Context) -> None:
     """(Re)shuffles the clue card piles"""
 
     if not ctx.game.automatic:
-        asyncio.create_task(
-            ctx.respond(loc["shuffle_clues"]["ShufflingClues"])
-        )
+        asyncio.create_task(ctx.respond(loc["shuffle_clues"]["ShufflingClues"]))
 
     for time in gamedata.CLUE_TIMES:
         ctx.game.picked_clues[time] = random.randint(1, 3)
@@ -227,7 +247,11 @@ async def shuffle_clues(ctx: lightbulb.Context) -> None:
 
 
 @plugin.command()
-@lightbulb.command(loc["assign_times"]["name"], loc["assign_times"]["description"], aliases=loc["assign_times"]["aliases"])
+@lightbulb.command(
+    loc["assign_times"]["name"],
+    loc["assign_times"]["description"],
+    aliases=loc["assign_times"]["aliases"],
+)
 @lightbulb.implements(lightbulb.PrefixCommand)
 async def assign_times(ctx: lightbulb.Context) -> None:
     """Randomizes and assigns clue times"""
@@ -244,9 +268,7 @@ async def assign_times(ctx: lightbulb.Context) -> None:
         return
 
     if not ctx.game.automatic:
-        asyncio.create_task(
-            ctx.respond(loc["assign_clues"]["AssigningClues"])
-        )
+        asyncio.create_task(ctx.respond(loc["assign_clues"]["AssigningClues"]))
 
     # Generate clues
     while True:
@@ -277,8 +299,13 @@ async def assign_times(ctx: lightbulb.Context) -> None:
     print(f"{constants.INFO_PREFIX}Assigned clue cards!")
     print(ctx.game.clue_assignments)
 
+
 @plugin.command()
-@lightbulb.command(loc["print_times"]["name"], loc["print_times"]["description"], aliases=loc["print_times"]["aliases"])
+@lightbulb.command(
+    loc["print_times"]["name"],
+    loc["print_times"]["description"],
+    aliases=loc["print_times"]["aliases"],
+)
 @lightbulb.implements(lightbulb.PrefixCommand)
 async def print_times(ctx: lightbulb.Context) -> None:
     """
@@ -286,14 +313,17 @@ async def print_times(ctx: lightbulb.Context) -> None:
     """
 
     message = loc["print_times"]["ClueTimes"] + "\n"
-    message += "\n".join([
-        f"{player.title()}: {', '.join(str(x) for x in bucket)}"
-        for player, bucket in ctx.game.clue_assignments.items()
-    ])
+    message += "\n".join(
+        [
+            f"{player.title()}: {', '.join(str(x) for x in bucket)}"
+            for player, bucket in ctx.game.clue_assignments.items()
+        ]
+    )
     message = miscutils.codeblock(message)
 
     channel = ctx.text_channels[LOCALIZATION_DATA["channels"]["resources"]]
     asyncio.create_task(channel.send(message))
+
 
 def _randomize_clues(self, player_count: int):
     """
@@ -310,6 +340,7 @@ def _randomize_clues(self, player_count: int):
             clue_buckets[i].append(shuffled_clues.pop())
 
     return clue_buckets
+
 
 def _test_clue_buckets(self, ctx, clue_buckets):
     """
@@ -338,9 +369,10 @@ def _test_clue_buckets(self, ctx, clue_buckets):
 
     return True
 
+
 def load(bot):
     bot.add_plugin(plugin)
 
+
 def unload(bot):
     bot.remove_plugin(plugin)
-

@@ -46,7 +46,7 @@ COVER_TITLE_Y = 1
 COVER_TITLE_POSTER_GAP = 0.8
 COVER_POSTER_WIDTH = 6
 COVER_POSTER_Y = COVER_TITLE_Y + COVER_TITLE_POSTER_GAP
-COVER_POSTER_X = PAGE_WIDTH/2 - COVER_POSTER_WIDTH/2
+COVER_POSTER_X = PAGE_WIDTH / 2 - COVER_POSTER_WIDTH / 2
 
 
 # Character Pages
@@ -115,16 +115,18 @@ CONCLUSION_LABEL_IMAGE_GAP = 0.3
 CONCLUSION_CHAR_CARD_X = 0.5
 CONCLUSION_ROW1_IMAGE_Y = CONCLUSION_ROW1_LABEL_Y + CONCLUSION_LABEL_IMAGE_GAP
 # 10 minute clue card
-CONCLUSION_CLUE_CARD_X = PAGE_WIDTH/2 - CONCLUSION_CARD_WIDTH/2
+CONCLUSION_CLUE_CARD_X = PAGE_WIDTH / 2 - CONCLUSION_CARD_WIDTH / 2
 # Location card
 CONCLUSION_LOCATION_CARD_X = 8.5 - CONCLUSION_CHAR_CARD_X - CONCLUSION_CARD_WIDTH
 
 # Row 2
 CONCLUSION_ROW1_ROW2_GAP = 1
-CONCLUSION_ROW2_LABEL_Y = CONCLUSION_ROW1_IMAGE_Y + CONCLUSION_CARD_HEIGHT + CONCLUSION_ROW1_ROW2_GAP
+CONCLUSION_ROW2_LABEL_Y = (
+    CONCLUSION_ROW1_IMAGE_Y + CONCLUSION_CARD_HEIGHT + CONCLUSION_ROW1_ROW2_GAP
+)
 # Suspect cards
 CONCLUSION_CHAR_SUSPECT_GAP = 0.3
-CONCLUSION_SUSPECT_CARD_GAP = 0.3   # Gap between first and second suspect cards
+CONCLUSION_SUSPECT_CARD_GAP = 0.3  # Gap between first and second suspect cards
 CONCLUSION_SUSPECT_CARD_X = CONCLUSION_CHAR_CARD_X
 CONCLUSION_ROW2_IMAGE_Y = CONCLUSION_ROW2_LABEL_Y + CONCLUSION_LABEL_IMAGE_GAP
 
@@ -143,28 +145,28 @@ MESSAGES_LINE_HEIGHT = 0.25
 
 # Fonts
 # Cover page
-COVER_TITLE_FONT = ("Built", 'bd', 80)
+COVER_TITLE_FONT = ("Built", "bd", 80)
 
 # Character pages
-CHAR_TITLE_FONT = ("Built", 'sb', 60)
-CLUE_LABEL_FONT = ("Built", 'sb', 48)
-VOICEMAIL_TITLE_FONT = ("Built", '', 20)
-VOICEMAIL_FONT = ("Abel", '', 12)
+CHAR_TITLE_FONT = ("Built", "sb", 60)
+CLUE_LABEL_FONT = ("Built", "sb", 48)
+VOICEMAIL_TITLE_FONT = ("Built", "", 20)
+VOICEMAIL_FONT = ("Abel", "", 12)
 
 # Timeline
-TIMELINE_TITLE_FONT = ("Built", 'sb', 72)
+TIMELINE_TITLE_FONT = ("Built", "sb", 72)
 
 # Conclusions page
-CONCLUSION_TITLE_FONT = ("Built", 'sb', 72)
-CONCLUSION_LABEL_FONT = ("Built", 'sb', 24)
-CONCLUSION_BODY_FONT = ("Abel", '', 18)
+CONCLUSION_TITLE_FONT = ("Built", "sb", 72)
+CONCLUSION_LABEL_FONT = ("Built", "sb", 24)
+CONCLUSION_BODY_FONT = ("Abel", "", 18)
 
 # Message pages
-PM_TITLE_FONT = ("Built", 'sb', 24)
-PM_FONT = ("Abel", '', 12)
+PM_TITLE_FONT = ("Built", "sb", 24)
+PM_FONT = ("Abel", "", 12)
 
 # Footer
-WATERMARK_FONTS = (("Abel", '', 12), ("Abel", '', 16))
+WATERMARK_FONTS = (("Abel", "", 12), ("Abel", "", 16))
 PAGE_NUMBER_FONT = WATERMARK_FONTS[1]
 
 
@@ -187,7 +189,7 @@ class PDF(FPDF):
             WATERMARK_SEPARATOR_LEFT,
             WATERMARK_SEPARATOR_Y,
             WATERMARK_SEPARATOR_RIGHT,
-            WATERMARK_SEPARATOR_Y
+            WATERMARK_SEPARATOR_Y,
         )
 
         self.set_y(WATERMARK_Y)
@@ -197,7 +199,7 @@ class PDF(FPDF):
             self.set_font(*WATERMARK_FONTS[i])
             text = WATERMARK[i]
             width = self.get_string_width(text)
-            self.cell(width, 0, text, 0, 0, 'L', link=constants.DOCS_URL)
+            self.cell(width, 0, text, 0, 0, "L", link=constants.DOCS_URL)
 
         # Page number
         self.set_font(*PAGE_NUMBER_FONT)
@@ -205,7 +207,7 @@ class PDF(FPDF):
 
         # Skip cover page
         if page_number_text != "0":
-            self.cell(0, 0, page_number_text, 0, 0, 'R')
+            self.cell(0, 0, page_number_text, 0, 0, "R")
 
 
 async def channel_attachments(channel, oldest_first: bool = False):
@@ -219,6 +221,7 @@ async def channel_attachments(channel, oldest_first: bool = False):
             url_list.append(attachment.url)
 
     return url_list
+
 
 @staticmethod
 def parse_filename(url: str) -> str:
@@ -235,6 +238,7 @@ def parse_filename(url: str) -> str:
             return tmp[0]
         return filename
 
+
 async def import_data(game):
     """imports data from message history"""
     text_channels = miscutils.get_text_channels(game.guild)
@@ -244,7 +248,10 @@ async def import_data(game):
     all_messages = list(reversed(await channel.fetch_history()))
     for message in all_messages:
         # Check if first message matches
-        if LOCALIZATION_DATA["stuff-for-charlie"]["first-message"][0:20] in message.content:
+        if (
+            LOCALIZATION_DATA["stuff-for-charlie"]["first-message"][0:20]
+            in message.content
+        ):
             game.start_time = message.created_at
             break
 
@@ -326,13 +333,18 @@ async def import_data(game):
                 except ValueError:
                     # If still can't determine image type, log to console
                     # and ignore
-                    print(f"{constants.WARNING_PREFIX}Unknown image found in {name.title()}'s clues during export: {filename}")
+                    print(
+                        f"{constants.WARNING_PREFIX}Unknown image found in {name.title()}'s clues during export: {filename}"
+                    )
 
     # Look for coin flip
     channel = text_channels[LOCALIZATION_DATA["channels"]["clues"][game.ten_char]]
     async for message in channel.history(limit=5):
         text = message.clean_content.strip().title()
-        if text in (LOCALIZATION_DATA["flip"]["heads"], LOCALIZATION_DATA["flip"]["tails"]):
+        if text in (
+            LOCALIZATION_DATA["flip"]["heads"],
+            LOCALIZATION_DATA["flip"]["tails"],
+        ):
             game.ending_flip = text
             break
 
@@ -348,13 +360,15 @@ async def import_data(game):
             voicemail = miscutils.clean_message(game, message.clean_content)
             game.voicemails[character] = voicemail.replace("||", "").replace("\n", "")
 
-def heading(pdf, title: str, font, align='', y=None, gap: float = 0):
+
+def heading(pdf, title: str, font, align="", y=None, gap: float = 0):
     """Add a heading to the current page"""
     pdf.set_font(*font)
     if y is not None:
         pdf.set_y(y)
     pdf.cell(0, 0, title, align=align)
     pdf.ln(gap)
+
 
 def generate_char_page(game, pdf, character):
     """Creates a character page"""
@@ -417,14 +431,13 @@ def generate_char_page(game, pdf, character):
     pdf.set_y(VOICEMAIL_Y)
     pdf.multi_cell(0, VOICEMAIL_TEXT_LINE_HEIGHT, game.voicemails[character])
 
+
 def conclusion_page(game, pdf):
     """Create conclusions page based on 10 minute clue"""
 
     # Add title
     pdf.add_page()
-    page_title(
-        pdf, CONCLUSION_TITLE_Y, CONCLUSION_TITLE_FONT, CONCLUSION_TITLE
-    )
+    page_title(pdf, CONCLUSION_TITLE_Y, CONCLUSION_TITLE_FONT, CONCLUSION_TITLE)
 
     # Labels
     pdf.set_font(*CONCLUSION_LABEL_FONT)
@@ -464,37 +477,56 @@ def conclusion_page(game, pdf):
     # Images
     # Add character card
     card = filepaths.MASTER_PATHS[game.ten_char]
-    pdf.image(str(card), CONCLUSION_CHAR_CARD_X,
-                CONCLUSION_ROW1_IMAGE_Y, CONCLUSION_CARD_WIDTH)
+    pdf.image(
+        str(card),
+        CONCLUSION_CHAR_CARD_X,
+        CONCLUSION_ROW1_IMAGE_Y,
+        CONCLUSION_CARD_WIDTH,
+    )
 
     # Add clue card
     card = miscutils.get_image(dirs.CLUE_DIR / "10", f"10-{game.picked_clues[10]}")
-    pdf.image(str(card), CONCLUSION_CLUE_CARD_X,
-                CONCLUSION_ROW1_IMAGE_Y, CONCLUSION_CARD_WIDTH)
+    pdf.image(
+        str(card),
+        CONCLUSION_CLUE_CARD_X,
+        CONCLUSION_ROW1_IMAGE_Y,
+        CONCLUSION_CARD_WIDTH,
+    )
 
     # Add location card
     card = filepaths.MASTER_PATHS[game.locations_drawn[20]]
-    pdf.image(str(card), CONCLUSION_LOCATION_CARD_X,
-                CONCLUSION_ROW1_IMAGE_Y, CONCLUSION_CARD_WIDTH)
+    pdf.image(
+        str(card),
+        CONCLUSION_LOCATION_CARD_X,
+        CONCLUSION_ROW1_IMAGE_Y,
+        CONCLUSION_CARD_WIDTH,
+    )
 
     # Add first suspect card
     card = filepaths.MASTER_PATHS[game.suspects_drawn[30]]
-    pdf.image(str(card), CONCLUSION_SUSPECT_CARD_X,
-                CONCLUSION_ROW2_IMAGE_Y, CONCLUSION_CARD_WIDTH)
+    pdf.image(
+        str(card),
+        CONCLUSION_SUSPECT_CARD_X,
+        CONCLUSION_ROW2_IMAGE_Y,
+        CONCLUSION_CARD_WIDTH,
+    )
 
     # Add second suspect card
     if game.second_culprit:
         card = filepaths.MASTER_PATHS[game.second_culprit]
-        pdf.image(str(card), CONCLUSION_CLUE_CARD_X,
-                    CONCLUSION_ROW2_IMAGE_Y, CONCLUSION_CARD_WIDTH)
+        pdf.image(
+            str(card),
+            CONCLUSION_CLUE_CARD_X,
+            CONCLUSION_ROW2_IMAGE_Y,
+            CONCLUSION_CARD_WIDTH,
+        )
+
 
 def timeline(game, pdf):
     """Adds timeline pages to PDf"""
 
     pdf.add_page()
-    page_title(
-        pdf, TIMELINE_TITLE_Y, TIMELINE_TITLE_FONT, TIMELINE_TITLE
-    )
+    page_title(pdf, TIMELINE_TITLE_Y, TIMELINE_TITLE_FONT, TIMELINE_TITLE)
 
 
 def page_title(pdf, y, font, text):
@@ -503,6 +535,7 @@ def page_title(pdf, y, font, text):
     pdf.set_y(y)
     pdf.set_font(*font)
     pdf.cell(0, 0, text)
+
 
 async def channel_export(ctx, pdf, channel):
     """
@@ -540,8 +573,9 @@ async def channel_export(ctx, pdf, channel):
             stamp = f"({miscutils.time_string(time)})"
             line += f" {stamp}"
 
-        await loop.run_in_executor(None, pdf.multi_cell,
-                                    *(0, MESSAGES_LINE_HEIGHT, line))
+        await loop.run_in_executor(
+            None, pdf.multi_cell, *(0, MESSAGES_LINE_HEIGHT, line)
+        )
 
 
 plugin = lightbulb.Plugin("Export")
@@ -549,7 +583,11 @@ plugin = lightbulb.Plugin("Export")
 
 @plugin.command()
 @lightbulb.option("file_name", "name of the file", type=str, default="")
-@lightbulb.command(loc["upload"]["name"], loc["upload"]["description"], aliases=loc["upload"]["aliases"])
+@lightbulb.command(
+    loc["upload"]["name"],
+    loc["upload"]["description"],
+    aliases=loc["upload"]["aliases"],
+)
 @lightbulb.implements(lightbulb.PrefixCommand)
 async def upload(ctx: lightbulb.Context) -> None:
     """Uploads a file and prints out the download url"""
@@ -565,7 +603,9 @@ async def upload(ctx: lightbulb.Context) -> None:
 
 @plugin.command()
 @lightbulb.option("file_name", "name of the file", type=str, default="")
-@lightbulb.command(loc["pdf"]["name"], loc["pdf"]["description"], aliases=loc["pdf"]["aliases"])
+@lightbulb.command(
+    loc["pdf"]["name"], loc["pdf"]["description"], aliases=loc["pdf"]["aliases"]
+)
 @lightbulb.implements(lightbulb.PrefixCommand)
 async def pdf(ctx: lightbulb.Context) -> None:
     """Exports the game to a PDF"""
@@ -611,17 +651,17 @@ async def pdf(ctx: lightbulb.Context) -> None:
     await loop.run_in_executor(None, pdf.add_page)
     # Heading
     await loop.run_in_executor(
-        None, heading,
-        *(pdf, LOCALIZATION_DATA["title"],
-            COVER_TITLE_FONT, "C", COVER_TITLE_Y)
+        None,
+        heading,
+        *(pdf, LOCALIZATION_DATA["title"], COVER_TITLE_FONT, "C", COVER_TITLE_Y),
     )
 
     # Poster
     poster = miscutils.get_image(dirs.POSTER_DIR, f"Alice-Briarwood-{game.alice}")
     await loop.run_in_executor(
-        None, pdf.image,
-        *(str(poster), COVER_POSTER_X,
-            COVER_POSTER_Y, COVER_POSTER_WIDTH)
+        None,
+        pdf.image,
+        *(str(poster), COVER_POSTER_X, COVER_POSTER_Y, COVER_POSTER_WIDTH),
     )
 
     # Create list of player characters
@@ -632,12 +672,10 @@ async def pdf(ctx: lightbulb.Context) -> None:
     pm_channels = []
     for i, character in enumerate(characters):
         # Create pages for each character
-        await loop.run_in_executor(
-            None, generate_char_page, *(game, pdf, character)
-        )
+        await loop.run_in_executor(None, generate_char_page, *(game, pdf, character))
 
         # Create list of character pairs
-        for j in range(i+1, len(characters)):
+        for j in range(i + 1, len(characters)):
             pm_channels.append((character, characters[j]))
 
     await ctx.respond(loc["pdf"]["RecreatingTimeline"])
@@ -654,12 +692,21 @@ async def pdf(ctx: lightbulb.Context) -> None:
     # Group chat export
     pdf.add_page()
     await loop.run_in_executor(
-        None, heading,
-        *(pdf, loc["pdf"]["group-chat"], PM_TITLE_FONT, '',
-            MESSAGES_TITLE_Y, MESSAGES_TITLE_TEXT_GAP)
+        None,
+        heading,
+        *(
+            pdf,
+            loc["pdf"]["group-chat"],
+            PM_TITLE_FONT,
+            "",
+            MESSAGES_TITLE_Y,
+            MESSAGES_TITLE_TEXT_GAP,
+        ),
     )
     text_channels = miscutils.get_text_channels(ctx.get_guild())
-    await channel_export(ctx, pdf, text_channels[LOCALIZATION_DATA["channels"]["texts"]["group-chat"]])
+    await channel_export(
+        ctx, pdf, text_channels[LOCALIZATION_DATA["channels"]["texts"]["group-chat"]]
+    )
 
     # Chat message exports
     for a, b in pm_channels:
@@ -667,7 +714,9 @@ async def pdf(ctx: lightbulb.Context) -> None:
             channel = text_channels[LOCALIZATION_DATA["channels"]["texts"][f"{a}-{b}"]]
         except KeyError:
             # Fallback from older versions
-            channel = text_channels[LOCALIZATION_DATA["channels"]["texts"][f"pm-{a}-{b}"]]
+            channel = text_channels[
+                LOCALIZATION_DATA["channels"]["texts"][f"pm-{a}-{b}"]
+            ]
 
         # Make sure channel has messages that will be counted
         empty = True
@@ -681,8 +730,9 @@ async def pdf(ctx: lightbulb.Context) -> None:
         title = f"{a.title()}/{b.title()}"
         pdf.add_page()
         await loop.run_in_executor(
-            None, heading,
-            *(pdf, title, PM_TITLE_FONT, '', MESSAGES_TITLE_Y, MESSAGES_TITLE_TEXT_GAP)
+            None,
+            heading,
+            *(pdf, title, PM_TITLE_FONT, "", MESSAGES_TITLE_Y, MESSAGES_TITLE_TEXT_GAP),
         )
 
         await channel_export(ctx, pdf, channel)
@@ -704,7 +754,9 @@ async def pdf(ctx: lightbulb.Context) -> None:
 
 
 @plugin.command()
-@lightbulb.command("txt", "gets all messages from a guild and writes to a txt file", hidden=True)
+@lightbulb.command(
+    "txt", "gets all messages from a guild and writes to a txt file", hidden=True
+)
 @lightbulb.implements(lightbulb.PrefixCommand)
 async def txt(ctx):
     """Gets all messages from a guild and writes to a .txt file"""
@@ -720,12 +772,14 @@ async def txt(ctx):
     # Download messages
     for channel in miscutils.get_text_channels(ctx.get_guild()):
         messages = [
-            " ".join((
-                message.created_at.strftime('%Y-%m-%d %H:%M'),
-                message.author.member.display_name + ":",
-                message.content,
-                ", ".join(attachment.url for attachment in message.attachments)
-            ))
+            " ".join(
+                (
+                    message.created_at.strftime("%Y-%m-%d %H:%M"),
+                    message.author.member.display_name + ":",
+                    message.content,
+                    ", ".join(attachment.url for attachment in message.attachments),
+                )
+            )
             async for message in reversed(await channel.fetch_history())
         ]
         with open(message_dir / f"{channel.name}.txt", mode="w") as message_file:
@@ -735,7 +789,8 @@ async def txt(ctx):
     zip_file = WHITE_RABBIT_DIR / f"{ctx.get_guild().name} Messages.zip"
     shutil.make_archive(
         zip_file.with_suffix(""),
-        "zip", message_dir,
+        "zip",
+        message_dir,
     )
     await ctx.send(attachment=zip_file)
 
@@ -746,6 +801,7 @@ async def txt(ctx):
 
 def load(bot):
     bot.add_plugin(plugin)
+
 
 def unload(bot):
     bot.remove_plugin(plugin)

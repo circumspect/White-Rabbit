@@ -7,12 +7,24 @@ import lightbulb
 import requests
 import hikari
 
-from utils import constants, dirs, envvars, filepaths, rabbit, miscutils, errors, gamedata
+from utils import (
+    constants,
+    dirs,
+    envvars,
+    filepaths,
+    rabbit,
+    miscutils,
+    errors,
+    gamedata,
+)
 from utils.localization import LOCALIZATION_DATA
 
 # Minimum Python version check
 if sys.version_info < (3, 6):
-    sys.exit("The White Rabbit does not support Python versions below 3.6. Please install a newer version")
+    sys.exit(
+        "The White Rabbit does not support Python versions below 3.6."
+        " Please install a newer version"
+    )
 
 # Clear .pkl files on startup to avoid export bug
 miscutils.delete_files(dirs.FONT_DIR, "pkl")
@@ -28,11 +40,13 @@ try:
     token = envvars.get_env_var("TOKEN")
 except FileNotFoundError:
     r = requests.get(constants.BLANK_DOTENV_URL)
-    with open(envvars.ENV_FILE, 'x') as env:
+    with open(envvars.ENV_FILE, "x") as env:
         env.write(r.content)
     sys.exit(LOCALIZATION_DATA["errors"]["MissingDotEnv"])
 
-bot = lightbulb.BotApp(token=token, prefix=constants.COMMAND_PREFIX, intents=hikari.Intents.ALL)
+bot = lightbulb.BotApp(
+    token=token, prefix=constants.COMMAND_PREFIX, intents=hikari.Intents.ALL
+)
 
 bot.d.games = {}
 bot.d.dev_ids = []
@@ -49,10 +63,11 @@ if filepaths.DEV_ID_FILE.exists():
 else:
     # Create file if it doesn't exist
     print(f"No {filepaths.DEV_ID_FILE.name} found, making empty file")
-    with open(filepaths.DEV_ID_FILE, 'x') as f:
+    with open(filepaths.DEV_ID_FILE, "x") as f:
         pass
 if environ.get("DEV_ID"):
     bot.d.dev_ids.append(int(environ.get("DEV_ID")))
+
 
 @bot.listen()
 async def on_ready(event: hikari.StartedEvent):
@@ -78,9 +93,11 @@ def is_not_spectator(ctx):
         raise errors.Spectator()
     return True
 
+
 @bot.listen()
 async def on_guild_message(event: hikari.GuildMessageCreateEvent):
     bot.d.games.setdefault(event.guild_id, gamedata.Data(event.get_guild()))
+
 
 @bot.listen(lightbulb.CommandErrorEvent)
 async def on_error(event: lightbulb.CommandErrorEvent) -> None:
@@ -89,22 +106,34 @@ async def on_error(event: lightbulb.CommandErrorEvent) -> None:
     # Failed a check
     if isinstance(event.exception, lightbulb.errors.CheckFailure):
         # Check if running debug command without being listed as developer
-        if isinstance(event.exception.__cause__ , errors.DevOnly):
-            await event.context.respond(LOCALIZATION_DATA["errors"]["MissingDeveloperPermissions"])
+        if isinstance(event.exception.__cause__, errors.DevOnly):
+            await event.context.respond(
+                LOCALIZATION_DATA["errors"]["MissingDeveloperPermissions"]
+            )
 
         # Check if user is spectator
-        elif isinstance(event.exception.__cause__ , errors.Spectator):
-            await event.context.respond(LOCALIZATION_DATA["errors"]["SpectatorCommandAttempt"])
+        elif isinstance(event.exception.__cause__, errors.Spectator):
+            await event.context.respond(
+                LOCALIZATION_DATA["errors"]["SpectatorCommandAttempt"]
+            )
 
         # Commands must be in bot-channel
-        elif isinstance(event.exception.__cause__ , errors.NotBotChannel):
-            await bot_channel.send(f"{event.context.author.mention} " + LOCALIZATION_DATA["errors"]["CommandInWrongChannel"], user_mentions=[event.context.author.id])
+        elif isinstance(event.exception.__cause__, errors.NotBotChannel):
+            await bot_channel.send(
+                f"{event.context.author.mention} "
+                + LOCALIZATION_DATA["errors"]["CommandInWrongChannel"],
+                user_mentions=[event.context.author.id],
+            )
         # Automatic/manual check
-        elif isinstance(event.exception.__cause__ , errors.ManualCommandInAuto):
-            await event.context.respond(LOCALIZATION_DATA["errors"]["ManualCommandInAuto"])
+        elif isinstance(event.exception.__cause__, errors.ManualCommandInAuto):
+            await event.context.respond(
+                LOCALIZATION_DATA["errors"]["ManualCommandInAuto"]
+            )
         else:
             # Couldn't determine a specific error; tell user to check console
-            await event.context.respond(LOCALIZATION_DATA["errors"]["GenericCheckFailure"])
+            await event.context.respond(
+                LOCALIZATION_DATA["errors"]["GenericCheckFailure"]
+            )
 
     # Bad input
     elif isinstance(event.exception, lightbulb.errors.ConverterFailure):

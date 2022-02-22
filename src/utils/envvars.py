@@ -1,5 +1,6 @@
 # Built-in
 from os import environ
+
 # 3rd-party
 from dotenv import dotenv_values
 from utils.rabbit import WHITE_RABBIT_DIR

@@ -11,6 +11,7 @@ from utils import gamedata, miscutils, errors
 plugin = lightbulb.Plugin("Debug")
 loc = LOCALIZATION_DATA["commands"]["debug"]
 
+
 @lightbulb.Check
 def is_dev(ctx: lightbulb.Context):
     """Only people with access to the code"""
@@ -18,19 +19,24 @@ def is_dev(ctx: lightbulb.Context):
         raise errors.DevOnly()
     return True
 
+
 plugin.add_checks(is_dev)
+
 
 async def on_ready(event: hikari.StartedEvent):
     # Console logging
     print("Bot has logged in!")
 
-    if environ.get('SHUTDOWN'):
+    if environ.get("SHUTDOWN"):
         print("Shutting down!")
         quit()
 
+
 @plugin.command()
 @lightbulb.option("speed", "speed to run the game at", type=float)
-@lightbulb.command(loc["speed"]["name"], loc["speed"]["description"], aliases=loc["speed"]["aliases"])
+@lightbulb.command(
+    loc["speed"]["name"], loc["speed"]["description"], aliases=loc["speed"]["aliases"]
+)
 @lightbulb.implements(lightbulb.PrefixCommand)
 async def speed(ctx: lightbulb.Context) -> None:
     """Changes the speed of the game - DEBUG USE ONLY"""
@@ -58,7 +64,11 @@ async def speed(ctx: lightbulb.Context) -> None:
 
 
 @plugin.command()
-@lightbulb.command(loc["plugins"]["name"], loc["plugins"]["description"], aliases=loc["plugins"]["aliases"])
+@lightbulb.command(
+    loc["plugins"]["name"],
+    loc["plugins"]["description"],
+    aliases=loc["plugins"]["aliases"],
+)
 @lightbulb.implements(lightbulb.PrefixCommand)
 async def plugins(ctx: lightbulb.Context) -> None:
     """Lists all currently loaded plugins"""
@@ -71,7 +81,9 @@ async def plugins(ctx: lightbulb.Context) -> None:
 
 @plugin.command()
 @lightbulb.option("extension", "name of the extension to load", type=str, default="all")
-@lightbulb.command(loc["load"]["name"], loc["load"]["description"], aliases=loc["load"]["aliases"])
+@lightbulb.command(
+    loc["load"]["name"], loc["load"]["description"], aliases=loc["load"]["aliases"]
+)
 @lightbulb.implements(lightbulb.PrefixCommand)
 async def load(ctx: lightbulb.Context) -> None:
     extension_name = ctx.options.extension.lower()
@@ -84,7 +96,10 @@ async def load(ctx: lightbulb.Context) -> None:
     else:
         try:
             for extension in ctx.bot.extensions:
-                if extension_name == extension.split(".")[-1] or extension_name == extension:
+                if (
+                    extension_name == extension.split(".")[-1]
+                    or extension_name == extension
+                ):
                     ctx.bot.reload_extensions(extension)
                     break
             else:
@@ -92,30 +107,44 @@ async def load(ctx: lightbulb.Context) -> None:
             asyncio.create_task(ctx.respond(f"Loaded {extension_name}"))
 
         except lightbulb.ExtensionNotFound:
-            asyncio.create_task(ctx.respond(f"Couldn't find extension: {extension_name}, did you mean extensions.{extension_name}?"))
+            asyncio.create_task(
+                ctx.respond(
+                    f"Couldn't find extension: {extension_name}, did you mean extensions.{extension_name}?"
+                )
+            )
 
 
 @plugin.command()
 @lightbulb.option("extension", "name of the extension to unload", type=str)
-@lightbulb.command(loc["unload"]["name"], loc["unload"]["description"], aliases=loc["unload"]["aliases"])
+@lightbulb.command(
+    loc["unload"]["name"],
+    loc["unload"]["description"],
+    aliases=loc["unload"]["aliases"],
+)
 @lightbulb.implements(lightbulb.PrefixCommand)
 async def unload(ctx: lightbulb.Context) -> None:
     """Unloads a plugin"""
     extension_name = ctx.options.extension
     try:
         for extension in ctx.bot.extensions:
-            if extension_name == extension.split(".")[-1] or extension_name == extension:
+            if (
+                extension_name == extension.split(".")[-1]
+                or extension_name == extension
+            ):
                 ctx.bot.unload_extensions(extension)
                 break
         await ctx.respond(f"Unloaded {ctx.options.extension}")
     except lightbulb.errors.ExtensionNotLoaded:
         asyncio.create_task(ctx.respond(f"{ctx.options.extension} was never loaded"))
 
+
 # DO NOT MOVE TO admin.py!
 # This command will shut down the bot across ALL servers,
 # and thus should only be able to be run by those listed in the dev_ids file
 @plugin.command()
-@lightbulb.command(loc["quit"]["name"], loc["quit"]["description"], aliases=loc["quit"]["aliases"])
+@lightbulb.command(
+    loc["quit"]["name"], loc["quit"]["description"], aliases=loc["quit"]["aliases"]
+)
 @lightbulb.implements(lightbulb.PrefixCommand)
 async def quit(ctx: lightbulb.Context) -> None:
     """Shuts down the bot - AFFECTS ALL SERVERS"""
@@ -126,6 +155,7 @@ async def quit(ctx: lightbulb.Context) -> None:
 def load(bot):
     bot.add_plugin(plugin)
     bot.subscribe(hikari.StartedEvent, on_ready)
+
 
 def unload(bot):
     bot.remove_plugin(plugin)

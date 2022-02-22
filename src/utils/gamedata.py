@@ -55,9 +55,15 @@ REMINDER_BUFFER = 2
 CLUE_TIMES = (90, 80, 70, 60, 50, 45, 40, 35, 30, 20)
 BUCKET_SIZES = {3: (3, 3, 4), 4: (2, 2, 3, 3), 5: (2, 2, 2, 2, 2)}
 CLUE_TYPES = {
-    80: "suspect", 70: "location", 60: "suspect", 50: "location",
-    45: ("suspect", "location", "location"), 40: "suspect",
-    35: "location", 30: "suspect-drawn", 20: "location-drawn"
+    80: "suspect",
+    70: "location",
+    60: "suspect",
+    50: "location",
+    45: ("suspect", "location", "location"),
+    40: "suspect",
+    35: "location",
+    30: "suspect-drawn",
+    20: "location-drawn",
 }
 
 
@@ -74,19 +80,16 @@ class Data:
         self.three_flip = False
         self.second_culprit = False
 
-
         # Settings
         self.automatic = True
         self.show_timer = False
         self.stream_music = False
-
 
         # Enabled endings
         self.endings = {}
         for i in range(1, 4):
             # Enable all endings
             self.endings[i] = True
-
 
         # Game data
         self.alice = 0
@@ -137,7 +140,6 @@ class Data:
             if role.name.title() == LOCALIZATION_DATA["spectator-role"]:
                 self.spectator_role = role
                 break
-
 
     def char_roles(self):
         """

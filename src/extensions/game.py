@@ -9,38 +9,36 @@ import typing
 import lightbulb
 from lightbulb import commands
 from utils.localization import LOCALIZATION_DATA
-from utils import constants, dirs, filepaths, gamedata, miscutils
+from utils import dirs, filepaths, gamedata, miscutils
 
 plugin = lightbulb.Plugin("Game")
 loc = LOCALIZATION_DATA["commands"]["game"]
 
 
 @plugin.command()
-@lightbulb.command(loc["init"]["name"], loc["init"]["description"], aliases=loc["init"]["aliases"])
+@lightbulb.command(
+    loc["init"]["name"], loc["init"]["description"], aliases=loc["init"]["aliases"]
+)
 @lightbulb.implements(lightbulb.PrefixCommand)
 async def init(ctx: lightbulb.Context) -> None:
     """Initial setup before character selection"""
-
-    if ctx.game.start_time:
-        asyncio.create_task(ctx.respond(LOCALIZATION_DATA["errors"]["AlreadyStarted"]))
+    game = ctx.bot.d.games[ctx.guild_id]
+    if game.start_time:
+        await ctx.respond(LOCALIZATION_DATA["errors"]["AlreadyStarted"])
         return
-    elif ctx.game.init and ctx.game.automatic:
+    elif game.init and game.automatic:
         # Disallow another initialization attempt unless manual mode is enabled
-        asyncio.create_task(ctx.respond(LOCALIZATION_DATA["errors"]["AlreadyInitialized"]))
+        await ctx.respond(LOCALIZATION_DATA["errors"]["AlreadyInitialized"])
         return
 
-    asyncio.create_task(ctx.respond(LOCALIZATION_DATA["messages"]["Initializing"]))
+    await ctx.respond(LOCALIZATION_DATA["messages"]["Initializing"])
 
     # Introduction images
     miscutils.send_image(
-        LOCALIZATION_DATA["channels"]["resources"],
-        filepaths.MASTER_PATHS["guide"],
-        ctx
+        LOCALIZATION_DATA["channels"]["resources"], filepaths.MASTER_PATHS["guide"], ctx
     )
     miscutils.send_image(
-        LOCALIZATION_DATA["channels"]["resources"],
-        filepaths.MASTER_PATHS["intro"],
-        ctx
+        LOCALIZATION_DATA["channels"]["resources"], filepaths.MASTER_PATHS["intro"], ctx
     )
 
     if ctx.game.automatic:
@@ -49,13 +47,19 @@ async def init(ctx: lightbulb.Context) -> None:
     # Send characters, suspects, and locations to appropriate channels
     for character in sorted(gamedata.CHARACTERS.keys()):
         filepath = miscutils.get_image(dirs.CHARACTER_INTRODUCTIONS_DIR, character)
-        miscutils.send_image(LOCALIZATION_DATA["channels"]["cards"]["character-cards"], filepath, ctx)
+        miscutils.send_image(
+            LOCALIZATION_DATA["channels"]["cards"]["character-cards"], filepath, ctx
+        )
     for suspect in sorted(gamedata.SUSPECTS.keys()):
         filepath = miscutils.get_image(dirs.SUSPECT_IMAGE_DIR, suspect)
-        miscutils.send_image(LOCALIZATION_DATA["channels"]["cards"]["suspect-cards"], filepath, ctx)
+        miscutils.send_image(
+            LOCALIZATION_DATA["channels"]["cards"]["suspect-cards"], filepath, ctx
+        )
     for location in sorted(gamedata.LOCATIONS.keys()):
         filepath = miscutils.get_image(dirs.LOCATION_IMAGE_DIR, location)
-        miscutils.send_image(LOCALIZATION_DATA["channels"]["cards"]["location-cards"], filepath, ctx)
+        miscutils.send_image(
+            LOCALIZATION_DATA["channels"]["cards"]["location-cards"], filepath, ctx
+        )
 
     # Instructions for Charlie Barnes
     channel = ctx.text_channels[LOCALIZATION_DATA["channels"]["clues"]["charlie"]]
@@ -72,11 +76,7 @@ async def init(ctx: lightbulb.Context) -> None:
     # Character and motive cards in clues channels
     for name in gamedata.CHARACTERS:
         channel = ctx.text_channels[LOCALIZATION_DATA["channels"]["clues"][name]]
-        miscutils.send_image(
-            channel,
-            filepaths.MASTER_PATHS[name],
-            ctx
-        )
+        miscutils.send_image(channel, filepaths.MASTER_PATHS[name], ctx)
 
     # Shuffle and send motives if in automatic mode
     if ctx.game.automatic:
@@ -85,8 +85,13 @@ async def init(ctx: lightbulb.Context) -> None:
 
     ctx.game.init = True
 
+
 @plugin.command()
-@lightbulb.command(loc["setup_clues"]["name"], loc["setup_clues"]["description"], aliases=loc["setup_clues"]["aliases"])
+@lightbulb.command(
+    loc["setup_clues"]["name"],
+    loc["setup_clues"]["description"],
+    aliases=loc["setup_clues"]["aliases"],
+)
 @lightbulb.implements(lightbulb.PrefixCommand)
 async def setup_clues(ctx: lightbulb.Context) -> None:
     """Shuffle and distribute clues"""
@@ -102,7 +107,9 @@ async def setup_clues(ctx: lightbulb.Context) -> None:
     player_count = len(ctx.game.char_roles())
     # Can't set up if there aren't enough players to assign clues
     if player_count < 3:
-        asyncio.create_task(ctx.respond(LOCALIZATION_DATA["errors"]["NotEnoughPlayers"]))
+        asyncio.create_task(
+            ctx.respond(LOCALIZATION_DATA["errors"]["NotEnoughPlayers"])
+        )
         return
     # Can't set up without Charlie Barnes
     elif "Charlie" not in ctx.game.char_roles():
@@ -117,8 +124,13 @@ async def setup_clues(ctx: lightbulb.Context) -> None:
 
     ctx.game.setup = True
 
+
 @plugin.command()
-@lightbulb.command(loc["example"]["name"], loc["example"]["description"], aliases=loc["example"]["aliases"])
+@lightbulb.command(
+    loc["example"]["name"],
+    loc["example"]["description"],
+    aliases=loc["example"]["aliases"],
+)
 @lightbulb.implements(lightbulb.PrefixCommand)
 async def example(ctx: lightbulb.Context) -> None:
     """Sends an example clue and suspect"""
@@ -134,8 +146,13 @@ async def example(ctx: lightbulb.Context) -> None:
     path = filepaths.MASTER_PATHS[suspect]
     miscutils.send_image(channel, path, ctx)
 
+
 @plugin.command()
-@lightbulb.command(loc["char_sheet"]["name"], loc["char_sheet"]["description"], aliases=loc["char_sheet"]["aliases"])
+@lightbulb.command(
+    loc["char_sheet"]["name"],
+    loc["char_sheet"]["description"],
+    aliases=loc["char_sheet"]["aliases"],
+)
 @lightbulb.implements(lightbulb.PrefixCommand)
 async def char_sheet(ctx: lightbulb.Context) -> None:
     """Sends the character sheet to the resources channel"""
@@ -143,11 +160,14 @@ async def char_sheet(ctx: lightbulb.Context) -> None:
     miscutils.send_image(
         LOCALIZATION_DATA["channels"]["resources"],
         filepaths.MASTER_PATHS["character_sheet"],
-        ctx
+        ctx,
     )
 
+
 @plugin.command()
-@lightbulb.command(loc["start"]["name"], loc["start"]["description"], aliases=loc["start"]["aliases"])
+@lightbulb.command(
+    loc["start"]["name"], loc["start"]["description"], aliases=loc["start"]["aliases"]
+)
 @lightbulb.implements(lightbulb.PrefixCommand)
 async def start(ctx: lightbulb.Context) -> None:
     """Begins the game"""
@@ -170,12 +190,16 @@ async def start(ctx: lightbulb.Context) -> None:
         return
 
     if len(ctx.game.char_roles()) < 3:
-        asyncio.create_task(ctx.respond(LOCALIZATION_DATA["errors"]["NotEnoughPlayers"]))
+        asyncio.create_task(
+            ctx.respond(LOCALIZATION_DATA["errors"]["NotEnoughPlayers"])
+        )
         return
 
     # 90 minute card/message for Charlie Barnes
     channel = ctx.text_channels[LOCALIZATION_DATA["channels"]["clues"]["charlie"]]
-    miscutils.send_image(channel, miscutils.get_image(dirs.CLUE_DIR / "90", "90-1"), ctx)
+    miscutils.send_image(
+        channel, miscutils.get_image(dirs.CLUE_DIR / "90", "90-1"), ctx
+    )
     first_message = LOCALIZATION_DATA["stuff-for-charlie"]["first-message"]
     await channel.send(first_message)
 
@@ -187,6 +211,7 @@ async def start(ctx: lightbulb.Context) -> None:
 
     # Start timer and clue_check tasks simultaneously
     await asyncio.gather(timer(ctx), clue_check(ctx))
+
 
 async def timer(self, ctx):
     """Prints out the timer"""
@@ -200,6 +225,7 @@ async def timer(self, ctx):
             asyncio.create_task(ctx.respond(time))
         await asyncio.sleep(ctx.game.timer_gap / ctx.game.game_speed)
 
+
 async def clue_check(self, ctx):
     """Timer loop to check clues and perform various actions"""
 
@@ -209,9 +235,15 @@ async def clue_check(self, ctx):
     while minutes_remaining > 0:
         if ctx.game.automatic:
             # Normal clue cards
-            if minutes_remaining in gamedata.CLUE_TIMES and minutes_remaining <= ctx.game.next_clue:
+            if (
+                minutes_remaining in gamedata.CLUE_TIMES
+                and minutes_remaining <= ctx.game.next_clue
+            ):
                 self.bot.cogs["Manual"].send_clue(ctx, minutes_remaining)
-                if minutes_remaining == 30 and ctx.game.picked_clues[minutes_remaining] == 1:
+                if (
+                    minutes_remaining == 30
+                    and ctx.game.picked_clues[minutes_remaining] == 1
+                ):
                     flip = miscutils.flip()
 
                     for character in ctx.game.clue_assignments:
@@ -227,9 +259,14 @@ async def clue_check(self, ctx):
                 check_interval = 1
 
             # Check if 10 min card has been assigned and send reminder if not
-            if minutes_remaining == gamedata.TEN_MIN_REMINDER_TIME and not ctx.game.ten_char:
+            if (
+                minutes_remaining == gamedata.TEN_MIN_REMINDER_TIME
+                and not ctx.game.ten_char
+            ):
                 channel = ctx.text_channels[LOCALIZATION_DATA["channels"]["resources"]]
-                asyncio.create_task(channel.send("@everyone " + gamedata.TEN_MIN_REMINDER_TEXT))
+                asyncio.create_task(
+                    channel.send("@everyone " + gamedata.TEN_MIN_REMINDER_TEXT)
+                )
 
             # 10 min card
             elif minutes_remaining == 10:
@@ -238,7 +275,9 @@ async def clue_check(self, ctx):
                     ctx.game.ten_char = "charlie"
 
                 channel = LOCALIZATION_DATA["channels"]["clues"][ctx.game.ten_char]
-                ending = random.choice([i for i in ctx.game.endings if ctx.game.endings[i]])
+                ending = random.choice(
+                    [i for i in ctx.game.endings if ctx.game.endings[i]]
+                )
                 clue = miscutils.get_image(dirs.CLUE_DIR / "10", f"10-{ending}")
                 miscutils.send_image(channel, clue, ctx)
 
@@ -250,7 +289,9 @@ async def clue_check(self, ctx):
             # Ending 3
             elif minutes_remaining == 8 and ctx.game.second_culprit:
                 culprit = ctx.game.suspects_drawn[30]
-                remaining_suspects = [suspect for suspect in gamedata.SUSPECTS if suspect != culprit]
+                remaining_suspects = [
+                    suspect for suspect in gamedata.SUSPECTS if suspect != culprit
+                ]
                 second = random.choice(remaining_suspects)
 
                 # Send to clues channel
@@ -259,8 +300,12 @@ async def clue_check(self, ctx):
                 miscutils.send_image(channel, path, ctx)
 
                 # Send to suspects-drawn channel
-                channel = ctx.text_channels[LOCALIZATION_DATA["channels"]["cards"]["suspects-drawn"]]
-                asyncio.create_task(channel.send(LOCALIZATION_DATA["messages"]["SecondCulprit"]))
+                channel = ctx.text_channels[
+                    LOCALIZATION_DATA["channels"]["cards"]["suspects-drawn"]
+                ]
+                asyncio.create_task(
+                    channel.send(LOCALIZATION_DATA["messages"]["SecondCulprit"])
+                )
                 miscutils.send_image(channel, path, ctx)
 
             # Endings 1 and 2
@@ -285,12 +330,16 @@ async def clue_check(self, ctx):
                         character = name
                         break
 
-                channel = ctx.text_channels[LOCALIZATION_DATA["channels"]["clues"][character]]
+                channel = ctx.text_channels[
+                    LOCALIZATION_DATA["channels"]["clues"][character]
+                ]
                 message = LOCALIZATION_DATA["messages"]["NextClueReminder"]
                 asyncio.create_task(channel.send(f"{message} ({ctx.game.next_clue})"))
 
             # Wait out the rest of the interval
-            await asyncio.sleep((check_interval - gamedata.REMINDER_BUFFER) * 60 / ctx.game.game_speed)
+            await asyncio.sleep(
+                (check_interval - gamedata.REMINDER_BUFFER) * 60 / ctx.game.game_speed
+            )
 
         minutes_remaining -= check_interval
 
@@ -298,11 +347,16 @@ async def clue_check(self, ctx):
     miscutils.send_image(
         LOCALIZATION_DATA["channels"]["clues"]["charlie"],
         filepaths.MASTER_PATHS["debrief"],
-        ctx
+        ctx,
     )
 
+
 @plugin.command()
-@lightbulb.command(loc["search"]["name"], loc["search"]["description"], aliases=loc["search"]["aliases"])
+@lightbulb.command(
+    loc["search"]["name"],
+    loc["search"]["description"],
+    aliases=loc["search"]["aliases"],
+)
 @lightbulb.implements(lightbulb.PrefixCommand)
 async def search(ctx: lightbulb.Context) -> None:
     """Draw a searching card"""
@@ -311,10 +365,14 @@ async def search(ctx: lightbulb.Context) -> None:
         asyncio.create_task(ctx.respond(LOCALIZATION_DATA["errors"]["GameNotStarted"]))
         return
     if not ctx.character:
-        asyncio.create_task(ctx.respond(LOCALIZATION_DATA["errors"]["NoCharacterRoles"]))
+        asyncio.create_task(
+            ctx.respond(LOCALIZATION_DATA["errors"]["NoCharacterRoles"])
+        )
         return
 
-    char_channel = ctx.text_channels[LOCALIZATION_DATA["channels"]["clues"][ctx.character]]
+    char_channel = ctx.text_channels[
+        LOCALIZATION_DATA["channels"]["clues"][ctx.character]
+    ]
 
     if ctx.game.search_cards:
         search = random.choice(ctx.game.search_cards)
@@ -326,8 +384,13 @@ async def search(ctx: lightbulb.Context) -> None:
         # out of unique cards
         asyncio.create_task(char_channel.send(loc["search"]["NothingFound"]))
 
+
 @plugin.command()
-@lightbulb.command(loc["ten_min_card"]["name"], loc["ten_min_card"]["description"], aliases=loc["ten_min_card"]["aliases"])
+@lightbulb.command(
+    loc["ten_min_card"]["name"],
+    loc["ten_min_card"]["description"],
+    aliases=loc["ten_min_card"]["aliases"],
+)
 @lightbulb.implements(lightbulb.PrefixCommand)
 async def ten_min_card(ctx: lightbulb.Context) -> None:
     """Assign the 10 minute card to another player"""
@@ -346,9 +409,9 @@ async def ten_min_card(ctx: lightbulb.Context) -> None:
     asyncio.create_task(ctx.respond(loc["ten_min_card"]["Assigned"]))
 
 
-
 def load(bot):
     bot.add_plugin(plugin)
+
 
 def unload(bot):
     bot.remove_plugin(plugin)

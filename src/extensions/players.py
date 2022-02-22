@@ -13,7 +13,9 @@ plugin = lightbulb.Plugin("Players")
 
 # Commands for players to claim character roles
 @plugin.command()
-@lightbulb.command(loc["claim"]["name"], loc["claim"]["description"], aliases=loc["claim"]["aliases"])
+@lightbulb.command(
+    loc["claim"]["name"], loc["claim"]["description"], aliases=loc["claim"]["aliases"]
+)
 @lightbulb.implements(lightbulb.PrefixCommand)
 async def claim(ctx: lightbulb.Context) -> None:
     """Claim a character/spectator role"""
@@ -23,7 +25,10 @@ async def claim(ctx: lightbulb.Context) -> None:
     if role in ctx.author.roles:
         await ctx.respond(loc["claim"]["AlreadyHaveThisRole"])
         return
-    elif role.name.lower() not in [*gamedata.CHARACTERS, LOCALIZATION_DATA["spectator-role"]]:
+    elif role.name.lower() not in [
+        *gamedata.CHARACTERS,
+        LOCALIZATION_DATA["spectator-role"],
+    ]:
         asyncio.create_task(ctx.respond(loc["claim"]["UnclaimableRole"]))
         return
     elif role.members and role.name.lower() in gamedata.CHARACTERS:
@@ -41,7 +46,9 @@ async def claim(ctx: lightbulb.Context) -> None:
     await ctx.respond(loc["claim"]["UpdatedRoles"])
     if ctx.author == ctx.guild.owner:
         # Can't update nickname for server owner
-        asyncio.create_task(ctx.respond(LOCALIZATION_DATA["errors"]["ServerOwnerNicknameChange"]))
+        asyncio.create_task(
+            ctx.respond(LOCALIZATION_DATA["errors"]["ServerOwnerNicknameChange"])
+        )
     elif role.name.lower() in gamedata.CHARACTERS:
         asyncio.create_task(
             ctx.author.edit(nick=gamedata.CHARACTERS[role.name.lower()])
@@ -49,7 +56,11 @@ async def claim(ctx: lightbulb.Context) -> None:
 
 
 @plugin.command()
-@lightbulb.command(loc["unclaim"]["name"], loc["unclaim"]["description"], aliases=loc["unclaim"]["aliases"])
+@lightbulb.command(
+    loc["unclaim"]["name"],
+    loc["unclaim"]["description"],
+    aliases=loc["unclaim"]["aliases"],
+)
 @lightbulb.implements(lightbulb.PrefixCommand)
 async def unclaim(ctx: lightbulb.Context) -> None:
     """Remove character roles"""
@@ -61,14 +72,21 @@ async def unclaim(ctx: lightbulb.Context) -> None:
             asyncio.create_task(ctx.respond(f"Removed role {role.name}"))
             if ctx.author == ctx.guild.owner:
                 # Can't update nickname for server owner
-                asyncio.create_task(ctx.respond(LOCALIZATION_DATA["errors"]["ServerOwnerNicknameChange"]))
+                asyncio.create_task(
+                    ctx.respond(
+                        LOCALIZATION_DATA["errors"]["ServerOwnerNicknameChange"]
+                    )
+                )
             else:
                 asyncio.create_task(ctx.author.edit(nick=None))
             return
     await ctx.respond(LOCALIZATION_DATA["errors"]["NoCharacterRoles"])
 
+
 @plugin.command()
-@lightbulb.command(loc["roles"]["name"], loc["roles"]["description"], aliases=loc["roles"]["aliases"])
+@lightbulb.command(
+    loc["roles"]["name"], loc["roles"]["description"], aliases=loc["roles"]["aliases"]
+)
 @lightbulb.implements(lightbulb.PrefixCommand)
 async def roles(ctx: lightbulb.Context) -> None:
     """Displays your roles"""
@@ -77,8 +95,11 @@ async def roles(ctx: lightbulb.Context) -> None:
     message += f"{', '.join(role.name for role in ctx.author.roles[1:])}"
     await ctx.respond(message)
 
+
 @plugin.command()
-@lightbulb.command(loc["users"]["name"], loc["users"]["description"], aliases=loc["users"]["aliases"])
+@lightbulb.command(
+    loc["users"]["name"], loc["users"]["description"], aliases=loc["users"]["aliases"]
+)
 @lightbulb.implements(lightbulb.PrefixCommand)
 async def users(ctx: lightbulb.Context) -> None:
     """Lists all players and spectators"""
@@ -87,16 +108,20 @@ async def users(ctx: lightbulb.Context) -> None:
     if ctx.game.spectator_role.members:
         message += loc["users"]["spectators"]
         message += "\n"
-        message += ', '.join(member.display_name for member in ctx.game.spectator_role.members)
+        message += ", ".join(
+            member.display_name for member in ctx.game.spectator_role.members
+        )
         message += "\n"
     if ctx.game.char_roles():
         message += loc["users"]["players"]
         message += "\n"
-        message += ', '.join(member.name for member in ctx.game.char_roles().values())
+        message += ", ".join(member.name for member in ctx.game.char_roles().values())
     await ctx.respond(message or loc["users"]["NoneFound"])
+
 
 def load(bot):
     bot.add_plugin(plugin)
+
 
 def unload(bot):
     bot.remove_plugin(plugin)
