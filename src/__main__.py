@@ -164,7 +164,9 @@ async def on_error(event: lightbulb.CommandErrorEvent) -> None:
             await event.context.respond(LOCALIZATION_DATA["errors"]["AlreadyStarted"])
             return
         elif isinstance(event.exception.original, errors.GameAlreadyInitialized):
-            await event.context.respond(LOCALIZATION_DATA["errors"]["AlreadyInitialized"])
+            await event.context.respond(
+                LOCALIZATION_DATA["errors"]["AlreadyInitialized"]
+            )
             return
 
     # Bad input

@@ -77,8 +77,8 @@ async def init(ctx: lightbulb.Context) -> None:
 
     background = miscutils.codeblock(background)
 
-    asyncio.create_task(channel.send(prompts))
-    asyncio.create_task(channel.send(background))
+    await channel.send(background)
+    await channel.send(prompts)
 
     # Character and motive cards in clues channels
     for name in gamedata.CHARACTERS:
@@ -105,7 +105,7 @@ async def setup_clues(ctx: lightbulb.Context) -> None:
     game = ctx.bot.d.games[ctx.guild_id]
     if (not game.init) and game.automatic:
         # Disallow if init hasn't been run yet and manual mode is off
-        asyncio.create_task(ctx.respond(LOCALIZATION_DATA["errors"]["NotInitialized"]))
+        await ctx.respond(LOCALIZATION_DATA["errors"]["NotInitialized"])
         return
     elif game.start_time:
         raise errors.GameAlreadyStarted()
@@ -167,7 +167,7 @@ async def start(ctx: lightbulb.Context) -> None:
     game = ctx.bot.d.games[ctx.guild_id]
     # Validity checks
     if not game.alice:
-        asyncio.create_task(ctx.respond(LOCALIZATION_DATA["errors"]["MissingAlice"]))
+        await ctx.respond(LOCALIZATION_DATA["errors"]["MissingAlice"])
         return
 
     if not game.setup:
@@ -184,7 +184,9 @@ async def start(ctx: lightbulb.Context) -> None:
         raise errors.NotEnoughPlayers()
 
     # 90 minute card/message for Charlie Barnes
-    channel = miscutils.get_text_channels(game.guild)[LOCALIZATION_DATA["channels"]["clues"]["charlie"]]
+    channel = miscutils.get_text_channels(game.guild)[
+        LOCALIZATION_DATA["channels"]["clues"]["charlie"]
+    ]
     miscutils.send_image(
         channel, miscutils.get_image(dirs.CLUE_DIR / "90", "90-1"), game.guild
     )
@@ -237,7 +239,7 @@ async def clue_check(game):
                             break
 
                     channel = text_channels[channel]
-                    asyncio.create_task(channel.send(flip))
+                    await channel.send(flip)
 
             # If 20 minutes left, make check run every minute
             if minutes_remaining == 20:
@@ -249,8 +251,10 @@ async def clue_check(game):
                 and not game.ten_char
             ):
                 channel = text_channels[LOCALIZATION_DATA["channels"]["resources"]]
-                await channel.send("@everyone " + gamedata.TEN_MIN_REMINDER_TEXT, mentions_everyone=True)
-
+                await channel.send(
+                    "@everyone " + gamedata.TEN_MIN_REMINDER_TEXT,
+                    mentions_everyone=True,
+                )
 
             # 10 min card
             elif minutes_remaining == 10:
@@ -259,9 +263,7 @@ async def clue_check(game):
                     game.ten_char = "charlie"
 
                 channel = LOCALIZATION_DATA["channels"]["clues"][game.ten_char]
-                ending = random.choice(
-                    [i for i in game.endings if game.endings[i]]
-                )
+                ending = random.choice([i for i in game.endings if game.endings[i]])
                 clue = miscutils.get_image(dirs.CLUE_DIR / "10", f"10-{ending}")
                 miscutils.send_image(channel, clue, game.guild)
 
@@ -287,15 +289,15 @@ async def clue_check(game):
                 channel = text_channels[
                     LOCALIZATION_DATA["channels"]["cards"]["suspects-drawn"]
                 ]
-                asyncio.create_task(
-                    channel.send(LOCALIZATION_DATA["messages"]["SecondCulprit"])
-                )
+                await channel.send(LOCALIZATION_DATA["messages"]["SecondCulprit"])
                 miscutils.send_image(channel, path, game.guild)
 
             # Endings 1 and 2
             elif minutes_remaining == 3 and game.three_flip:
                 flip = miscutils.flip()
-                channel = text_channels[LOCALIZATION_DATA["channels"]["clues"][game.ten_char]]
+                channel = text_channels[
+                    LOCALIZATION_DATA["channels"]["clues"][game.ten_char]
+                ]
                 await channel.send(flip)
 
             await asyncio.sleep(check_interval * 60 / game.game_speed)
@@ -317,7 +319,7 @@ async def clue_check(game):
                     LOCALIZATION_DATA["channels"]["clues"][character]
                 ]
                 message = LOCALIZATION_DATA["messages"]["NextClueReminder"]
-                asyncio.create_task(channel.send(f"{message} ({game.next_clue})"))
+                await channel.send(f"{message} ({game.next_clue})")
 
             # Wait out the rest of the interval
             await asyncio.sleep(
@@ -345,12 +347,11 @@ async def search(ctx: lightbulb.Context) -> None:
     """Draw a searching card"""
     game = ctx.bot.d.games[ctx.guild_id]
     if game.automatic and not game.start_time:
-        asyncio.create_task(ctx.respond(LOCALIZATION_DATA["errors"]["GameNotStarted"]))
+        await ctx.respond(LOCALIZATION_DATA["errors"]["GameNotStarted"])
         return
     if not ctx.character:
-        asyncio.create_task(
-            ctx.respond(LOCALIZATION_DATA["errors"]["NoCharacterRoles"])
-        )
+        await ctx.respond(LOCALIZATION_DATA["errors"]["NoCharacterRoles"])
+
         return
 
     char_channel = miscutils.get_text_channels(game.guild)[
@@ -385,12 +386,12 @@ async def ten_min_card(ctx: lightbulb.Context) -> None:
         character = mention.name
 
     if character.title() not in game.char_roles():
-        asyncio.create_task(ctx.respond(LOCALIZATION_DATA["errors"]["PlayerNotFound"]))
+        await ctx.respond(LOCALIZATION_DATA["errors"]["PlayerNotFound"])
         return
 
     game.ten_char = character.lower()
 
-    asyncio.create_task(ctx.respond(loc["ten_min_card"]["Assigned"]))
+    await ctx.respond(loc["ten_min_card"]["Assigned"])
 
 
 def load(bot):

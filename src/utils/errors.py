@@ -41,8 +41,10 @@ class MissingCharlie(WhiteRabbitError):
 class BadInput(WhiteRabbitError):
     pass
 
+
 class GameAlreadyStarted(WhiteRabbitError):
     pass
+
 
 class GameAlreadyInitialized(WhiteRabbitError):
     pass

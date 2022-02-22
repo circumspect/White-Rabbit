@@ -42,11 +42,11 @@ async def speed(ctx: lightbulb.Context) -> None:
 
     # Cap the top speed
     if ctx.options.speed > gamedata.MAX_SPEED:
-        asyncio.create_task(ctx.respond(f"Too fast! Max is {gamedata.MAX_SPEED}"))
+        await ctx.respond(f"Too fast! Max is {gamedata.MAX_SPEED}")
         return
     # Speed must be at least 1
     elif ctx.options.speed < 1:
-        asyncio.create_task(ctx.respond("Too slow! Speed must be at least 1"))
+        await ctx.respond("Too slow! Speed must be at least 1")
         return
 
     game = ctx.bot.d.games[ctx.guild_id]
@@ -57,9 +57,9 @@ async def speed(ctx: lightbulb.Context) -> None:
     game.timer_gap = 60
 
     if ctx.options.speed == 1:
-        asyncio.create_task(ctx.respond("Reset the game speed!"))
+        await ctx.respond("Reset the game speed!")
     else:
-        asyncio.create_task(ctx.respond("Set the game speed!"))
+        await ctx.respond("Set the game speed!")
 
 
 @plugin.command()
@@ -103,13 +103,11 @@ async def load(ctx: lightbulb.Context) -> None:
                     break
             else:
                 ctx.bot.load_extensions(extension_name)
-            asyncio.create_task(ctx.respond(f"Loaded {extension_name}"))
+            await ctx.respond(f"Loaded {extension_name}")
 
         except lightbulb.ExtensionNotFound:
-            asyncio.create_task(
-                ctx.respond(
-                    f"Couldn't find extension: {extension_name}, did you mean extensions.{extension_name}?"
-                )
+            await ctx.respond(
+                f"Couldn't find extension: {extension_name}, did you mean extensions.{extension_name}?"
             )
 
 
@@ -134,7 +132,7 @@ async def unload(ctx: lightbulb.Context) -> None:
                 break
         await ctx.respond(f"Unloaded {ctx.options.extension}")
     except lightbulb.errors.ExtensionNotLoaded:
-        asyncio.create_task(ctx.respond(f"{ctx.options.extension} was never loaded"))
+        await ctx.respond(f"{ctx.options.extension} was never loaded")
 
 
 # DO NOT MOVE TO admin.py!

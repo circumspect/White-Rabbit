@@ -83,7 +83,7 @@ async def show_timer(ctx: lightbulb.Context) -> None:
     game = ctx.bot.d.games[ctx.guild_id]
     if ctx.options.gap:
         if ctx.options.gap < gamedata.MIN_TIMER_GAP:
-            asyncio.create_task(ctx.respond(loc["show_timer"]["TimerGapTooSmall"]))
+            await ctx.respond(loc["show_timer"]["TimerGapTooSmall"])
             return
 
         # If timer spacing between pings exists, enable timer
@@ -93,9 +93,9 @@ async def show_timer(ctx: lightbulb.Context) -> None:
         game.show_timer = not game.show_timer
 
     if game.show_timer:
-        asyncio.create_task(ctx.respond(loc["show_timer"]["ShowingTimer"]))
+        await ctx.respond(loc["show_timer"]["ShowingTimer"])
     else:
-        asyncio.create_task(ctx.respond(loc["show_timer"]["HidingTimer"]))
+        await ctx.respond(loc["show_timer"]["HidingTimer"])
 
 
 @plugin.command()
@@ -115,7 +115,7 @@ async def endings(ctx: lightbulb.Context) -> None:
         message += ", ".join(f"{end}" for end in game.endings if game.endings[end])
 
         message = miscutils.codeblock(message)
-        asyncio.create_task(ctx.respond(message))
+        await ctx.respond(message)
     else:
         # Toggle specified ending
         game.endings[ctx.options.index] = not game.endings[ctx.options.index]

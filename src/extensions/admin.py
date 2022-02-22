@@ -96,26 +96,21 @@ async def reset_perms(ctx: lightbulb.Context) -> None:
             player = channel.name.split("-")[0].title()
             for role in ctx.get_guild().get_roles().values():
                 if role.name == player:
-                    asyncio.create_task(
-                        channel.edit_overwrite(
-                            role, allow=hikari.Permissions.VIEW_CHANNEL
-                        )
+                    await channel.edit_overwrite(
+                        role, allow=hikari.Permissions.VIEW_CHANNEL
                     )
 
         # Channels where all players can send messages
         elif channel.name in [GROUP_CHAT, LOCALIZATION_DATA["channels"]["voicemails"]]:
-            asyncio.create_task(
-                channel.edit_overwrite(
-                    everyone,
-                    deny=hikari.Permissions.SEND_MESSAGES,
-                )
+            await channel.edit_overwrite(
+                everyone,
+                deny=hikari.Permissions.SEND_MESSAGES,
             )
+
             for role in ctx.get_guild().get_roles().values():
                 if role.name.lower() in gamedata.CHARACTERS:
-                    asyncio.create_task(
-                        channel.edit_overwrite(
-                            role, allow=hikari.Permissions.SEND_MESSAGES
-                        )
+                    await channel.edit_overwrite(
+                        role, allow=hikari.Permissions.SEND_MESSAGES
                     )
 
         # Private message channels
@@ -123,26 +118,22 @@ async def reset_perms(ctx: lightbulb.Context) -> None:
             channel.name in LOCALIZATION_DATA["channels"]["texts"].values()
             and channel.name != GROUP_CHAT
         ):
-            asyncio.create_task(
-                channel.edit_overwrite(
-                    everyone,
-                    deny=hikari.Permissions.VIEW_CHANNEL,
-                )
+            await channel.edit_overwrite(
+                everyone,
+                deny=hikari.Permissions.VIEW_CHANNEL,
             )
-            asyncio.create_task(
-                channel.edit_overwrite(
-                    spectator,
-                    allow=hikari.Permissions.VIEW_CHANNEL,
-                    deny=hikari.Permissions.SEND_MESSAGES,
-                )
+
+            await channel.edit_overwrite(
+                spectator,
+                allow=hikari.Permissions.VIEW_CHANNEL,
+                deny=hikari.Permissions.SEND_MESSAGES,
             )
+
             player_a, player_b, *_ = channel.name.split("-")
             for role in ctx.get_guild().get_roles().values():
                 if role.name.lower() in [player_a, player_b]:
-                    asyncio.create_task(
-                        channel.edit_overwrite(
-                            role, allow=hikari.Permissions.VIEW_CHANNEL
-                        )
+                    await channel.edit_overwrite(
+                        role, allow=hikari.Permissions.VIEW_CHANNEL
                     )
 
 
