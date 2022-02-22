@@ -92,7 +92,11 @@ async def roles(ctx: lightbulb.Context) -> None:
     """Displays your roles"""
 
     message = loc["roles"]["YourRoles"] + "\n"
-    message += f"{', '.join(role.name for role in ctx.author.roles[1:])}"
+    message += ", ".join(
+        ctx.get_guild().get_role(role_id).name
+        for role_id in ctx.member.role_ids
+        if role_id != ctx.guild_id
+    )
     await ctx.respond(message)
 
 
@@ -103,19 +107,22 @@ async def roles(ctx: lightbulb.Context) -> None:
 @lightbulb.implements(lightbulb.PrefixCommand)
 async def users(ctx: lightbulb.Context) -> None:
     """Lists all players and spectators"""
-
+    game = ctx.bot.d.games[ctx.guild_id]
     message = ""
-    if ctx.game.spectator_role.members:
+    spectators = [
+        member
+        for member in game.guild.get_members().values()
+        if game.spectator_role.id in member.role_ids
+    ]
+    if spectators:
         message += loc["users"]["spectators"]
         message += "\n"
-        message += ", ".join(
-            member.display_name for member in ctx.game.spectator_role.members
-        )
+        message += ", ".join(member.display_name for member in spectators)
         message += "\n"
-    if ctx.game.char_roles():
+    if game.char_roles():
         message += loc["users"]["players"]
         message += "\n"
-        message += ", ".join(member.name for member in ctx.game.char_roles().values())
+        message += ", ".join(role.name for role in game.char_roles().values())
     await ctx.respond(message or loc["users"]["NoneFound"])
 
 

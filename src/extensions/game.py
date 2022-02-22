@@ -316,7 +316,7 @@ async def clue_check(self, ctx):
                 asyncio.create_task(
                     channel.send(LOCALIZATION_DATA["messages"]["SecondCulprit"])
                 )
-                miscutils.send_image(channel, path,  ctx.get_guild())
+                miscutils.send_image(channel, path, ctx.get_guild())
 
             # Endings 1 and 2
             elif minutes_remaining == 3 and ctx.game.three_flip:
@@ -357,7 +357,7 @@ async def clue_check(self, ctx):
     miscutils.send_image(
         LOCALIZATION_DATA["channels"]["clues"]["charlie"],
         filepaths.MASTER_PATHS["debrief"],
-         ctx.get_guild(),
+        ctx.get_guild(),
     )
 
 

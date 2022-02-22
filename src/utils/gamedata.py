@@ -149,8 +149,12 @@ class Data:
 
         unsorted = {
             role.name: role
-            for role in self.guild.get_roles()
-            if role.name.lower() in CHARACTERS and role.members
+            for role_id, role in self.guild.get_roles().items()
+            if role.name.lower() in CHARACTERS
+            and any(
+                role_id in member.role_ids
+                for member in self.guild.get_members().values()
+            )
         }
 
         return dict(sorted(unsorted.items(), key=lambda item: item[0]))
