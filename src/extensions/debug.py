@@ -27,7 +27,7 @@ async def on_ready(event: hikari.StartedEvent):
 
     if environ.get("SHUTDOWN"):
         print("Shutting down!")
-        await quit(event.context)
+        await event.app.close()
 
 
 @plugin.command()
