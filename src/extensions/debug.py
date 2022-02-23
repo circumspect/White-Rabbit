@@ -1,5 +1,4 @@
 from os import environ
-import asyncio
 
 import hikari
 import lightbulb
@@ -28,7 +27,7 @@ async def on_ready(event: hikari.StartedEvent):
 
     if environ.get("SHUTDOWN"):
         print("Shutting down!")
-        quit()
+        await quit(event.context)
 
 
 @plugin.command()
