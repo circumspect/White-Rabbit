@@ -15,6 +15,7 @@ LOCALIZATIONS = {
     "fr": "french.json",
     "fr-2": "french-2.json",
     "de": "german.json",
+    "it": "italian.json",
 }
 
 LANGUAGE_KEY = envvars.get_env_var("LANGUAGE")
