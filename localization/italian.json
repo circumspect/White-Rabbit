@@ -1,0 +1,425 @@
+{
+  "title": "Alice is Missing",
+  "template": "https://discord.new/YD7aEUr8AdBQ",
+  "bot-name": "The White Rabbit",
+
+  "spectator-role": "Spectator",
+
+  "channels": {
+    "discussion": "discussion",
+    "bot-channel": "bot-channel",
+    "call": "call",
+
+    "resources": "player-resources",
+
+    "cards": {
+      "character-cards": "character-cards",
+      "suspect-cards": "suspect-cards",
+      "location-cards": "location-cards",
+      "suspects-drawn": "suspects-drawn",
+      "locations-drawn": "locations-drawn"
+    },
+
+    "clues": {
+      "charlie": "charlie-clues",
+      "dakota": "dakota-clues",
+      "evan": "evan-clues",
+      "jack": "jack-clues",
+      "julia": "julia-clues"
+    },
+
+    "voicemails": "voicemails",
+
+    "texts": {
+      "group-chat": "group-chat",
+      "charlie-dakota": "charlie-dakota-pm",
+      "charlie-evan": "charlie-evan-pm",
+      "charlie-jack": "charlie-jack-pm",
+      "charlie-julia": "charlie-julia-pm",
+      "dakota-evan": "dakota-evan-pm",
+      "dakota-jack": "dakota-jack-pm",
+      "dakota-julia": "dakota-julia-pm",
+      "evan-jack": "evan-jack-pm",
+      "evan-julia": "evan-julia-pm",
+      "jack-julia": "jack-julia-pm"
+    }
+  },
+
+  "commands": {
+    "about": {
+      "credits": {
+        "name": "credits",
+        "aliases": ["about", "info"],
+        "description": "Stampa informazion sul bot",
+
+        "creators": "The White Rabbit was created by circumspect.",
+        "source": "Source code available here:"
+      },
+
+      "docs": {
+        "name": "docs",
+        "aliases": ["guide"],
+        "description": "Link alla documentazione del bot",
+        "documentation": "Documentation for The White Rabbit can be found here:"
+      }
+    },
+
+    "admin": {
+      "show_all": {
+        "name": "show_all",
+        "aliases": [],
+        "description": "Rivela tutti i canali e impedisci di mandare messaggi"
+      },
+
+      "wipe": {
+        "name": "wipe",
+        "aliases": ["clear"],
+        "description": "Cancella tutti i messaggi e i dati di gioco",
+
+        "DeletingMessages": "Deleting all messages!"
+      },
+
+      "reset_perms": {
+        "name": "reset_perms",
+        "aliases": [],
+        "description": "Resetta i permessi dei canali ai valori di default (annulla !show_all)"
+      },
+
+      "reset_roles": {
+        "name": "reset_roles",
+        "aliases": [],
+        "description": "Rimuove i ruoli e i nickname dei giocatori",
+
+        "NoteAboutOwner": "Note: il bot non può modificare i nickname dell'owner"
+      },
+
+      "reset": {
+        "name": "reset",
+        "aliases": [],
+        "description": "Completo reset del server",
+
+        "ResettingServer": "Resetting the server!"
+      }
+    },
+
+    "debug": {
+      "speed": {
+        "name": "speed",
+        "aliases": [],
+        "description": "Modifica la velocità del gioco"
+      },
+
+      "plugins": {
+        "name": "plugins",
+        "aliases": [],
+        "description": "Mostra i plugin caricati"
+      },
+
+      "load": {
+        "name": "load",
+        "aliases": [],
+        "description": "(Ri)carica tutti i plugin"
+      },
+
+      "unload": {
+        "name": "unload",
+        "aliases": [],
+        "description": "Disattiva un plugin"
+      },
+
+      "quit": {
+        "name": "quit",
+        "aliases": ["stop", "shutdown"],
+        "description": "Spegne il bot - VALE PER TUTTI I SERVER"
+      }
+    },
+
+    "export": {
+      "pdf": {
+        "name": "pdf",
+        "aliases": ["PDF"],
+        "description": "Esporta la partita in PDF",
+
+        "created-by": "Created by:",
+        "voicemail": "Voicemail",
+        "timeline": "Timeline",
+        "conclusion": "Conclusioni",
+        "group-chat": "Group Chat",
+        "investigator": "Investigator",
+        "ending": "Finale",
+        "location": "Luogo",
+        "culprit": "Sospetto",
+        "culprit1": "Sospetto #1",
+        "culprit2": "Sospetto #2",
+
+        "CollectingData": "Recupero i dati di gioco...",
+        "BuildingCharPages": "Costruisco le pagine dei personaggi...",
+        "FailedImport": "Non riesco a importare i dati, qualcuno è uscito dal server?",
+        "MissingGameData": "Non trovo una partita da esportare!",
+        "RecreatingTimeline": "Ricreo la timeline...",
+        "CollectingMessages": "Recupero i messaggi...",
+        "PDFCreated": "PDF creato!"
+      },
+
+      "upload": {
+        "name": "upload",
+        "aliases": [],
+        "description": "Carica un file e stampa l'url di download"
+      }
+    },
+
+    "game": {
+      "init": {
+        "name": "init",
+        "aliases": ["initialize"],
+        "description": "Setup iniziale prima della selezione personaggio"
+      },
+
+      "setup_clues": {
+        "name": "setup_clues",
+        "aliases": [],
+        "description": "Mescola e distribuisci gli indizi"
+      },
+
+      "start": {
+        "name": "start",
+        "aliases": [],
+        "description": "Inizia il gioco"
+      },
+
+      "example": {
+        "name": "example",
+        "aliases": [],
+        "description": "Manda un esempio di indizi e sospetti"
+      },
+
+      "char_sheet": {
+        "name": "char_sheet",
+        "aliases": [],
+        "description": "Manda la scheda personaggio nel canale risorse"
+      },
+
+      "search": {
+        "name": "search",
+        "aliases": ["searching"],
+        "description": "Estrai una carta ricerca",
+
+        "NothingFound": "Non hai trovato nulla"
+      },
+
+      "ten_min_card": {
+        "name": "10",
+        "aliases": [],
+        "description": "Assegna la carta 10 minuti a un altro giocatore",
+
+        "Assigned": "Carta 10 minuti assegnata!"
+      }
+    },
+
+    "manual": {
+      "alice": {
+        "name": "alice",
+        "aliases": ["poster"],
+        "description": "Manda un poster specifico di Alice, o uno casuale se non viene specificato un poster"
+      },
+
+      "shuffle_motives": {
+        "name": "shuffle_motives",
+        "aliases": [],
+        "description": "Mescola e assegna le carte motivazione",
+
+        "Shuffling": "Mescolo le motivazioni!"
+      },
+
+      "send_motives": {
+        "name": "send_motives",
+        "aliases": [],
+        "description": "Distribuisci le carte motivazione",
+
+        "NeedToShuffle": "Devi prima mescolare le motivazioni!"
+      },
+
+      "clue": {
+        "name": "clue",
+        "aliases": [],
+        "description": "Estrae una carta indizio al momento specificato",
+
+        "ClueNotFound": "Non c'è una carta indizio per quel momento!",
+        "CluesNotAssigned": "Gli indizi non sono stati assegnati!",
+        "CluesNotShuffled": "Gli indizi non sono stati mescolati!",
+        "NotYourClue": "Questo indizio non ti appartiene!"
+      },
+
+      "shuffle_clues": {
+        "name": "shuffle_clues",
+        "aliases": [],
+        "description": "(Ri)mescola gli indizi",
+
+        "ShufflingClues": "Mescolo gli indizi!"
+      },
+
+      "assign_times": {
+        "name": "assign_times",
+        "aliases": [],
+        "description": "Randomizza e assegna i tempi in cui usare gli indizi",
+
+        "AssigningClues": "Assegno gli indizi!"
+      },
+
+      "print_times": {
+        "name": "print_times",
+        "aliases": [],
+        "description": "Stampa gli assegnamenti degli indizi",
+
+        "ClueTimes": "Tempi degli indizi:"
+      }
+    },
+
+    "players": {
+      "claim": {
+        "name": "claim",
+        "aliases": [],
+        "description": "Ottieni un ruolo",
+
+        "AlreadyHaveThisRole": "Hai già quel ruolo!",
+        "AlreadyHaveOtherRole": "Hai già un ruolo!",
+        "UnclaimableRole": "Non puoi richiedere quel ruolo!",
+        "RoleIsTaken": "Questo ruolo è già preso!",
+        "UpdatedRoles": "Hai ottenuto il ruolo!"
+      },
+
+      "unclaim": {
+        "name": "unclaim",
+        "aliases": [],
+        "description": "Rimuovi ruoli"
+      },
+
+      "roles": {
+        "name": "roles",
+        "aliases": [],
+        "description": "Mostra i tuoi ruoli",
+
+        "YourRoles": "I tuoi ruoli:"
+      },
+
+      "users": {
+        "name": "users",
+        "aliases": ["list"],
+        "description": "Lista di tutti i giocatori e spettatori",
+
+        "spectators": "Spettatori:",
+        "players": "Giocatori:",
+        "NoneFound": "Nessun giocatore o spettatore trovato!"
+      }
+    },
+
+    "settings": {
+      "auto": {
+        "name": "auto",
+        "aliases": [],
+        "description": "Stampa se la modalità automatica è attiva o no e permetti l'attivazione/disattivazione (default on)",
+
+        "on": "on",
+        "off": "off",
+
+        "CurrentlyAuto": "Modalità automatica",
+        "CurrentlyManual": "Modalità manuale",
+        "AutoEnabled": "L'estrazione automatica delle carte è abilitata!",
+        "AutoDisabled": "L'estrazione automatica delle carte è disabilitata!"
+      },
+
+      "music": {
+        "name": "music",
+        "aliases": [],
+        "description": "Abilita/disabilita la musica quando parte il gioco",
+
+        "MusicEnabled": "Musica abilitata!",
+        "MusicDisabled": "Musica disabilitata!"
+      },
+
+      "show_timer": {
+        "name": "timer",
+        "aliases": [],
+        "description": "Mostra/nasconde il timer",
+
+        "TimerGapTooSmall": "Lo spazio tra i ping è troppo breve!",
+
+        "ShowingTimer": "Mostro il timer del bot!",
+        "HidingTimer": "Nascondo il timer del bot!"
+      },
+
+      "endings": {
+        "name": "endings",
+        "aliases": [],
+        "description": "Abilita/disabilita un finale. Guarda la documentazione per saperne di più",
+
+        "EndingsEnabled": "Finali abilitati:"
+      }
+    }
+  },
+
+  "stuff-for-charlie": {
+    "instructions": [
+      "Leggi istruzioni",
+      "Presenta Alice dal poster",
+      "Introduci/scegli i personaggi",
+      "Spiega le carte personaggio",
+      "Spiega le carte motivazione",
+      "Background personaggi",
+      "Relazioni",
+      "Sospetti e luoghi",
+      "!setup_clues",
+      "!example",
+      "Spiega le carte indizio",
+      "Spiega la ricerca",
+      "Guida del gioco",
+      "Voicemails",
+      "Timer stream (https://www.youtube.com/watch?v=ysOOFIOAy7A)",
+      "!start",
+      "Manda il primo messaggio"
+    ],
+
+    "background": "CHARLIE BARNES si è andato via da Silent Falls con sua madre alla fine dello scorso anno dopo che i suoi genitori hanno divorziato. È appena arrivato in città per stare con suo padre durante le vacanze, e vorrebbe vedere Alice e gli altri mentre è qui. Qualche giorno fa, Alice ha smesso di rispondere. Non la sente da allora.",
+    "first-message": "Hey! Scusate se vi mando un brutalmente un messaggio a tutti, sono tornato in città per le vacanze natalizie e sto da mio padre. Non sono riuscito a contattare Alice. Qualcuno di voi l'ha sentita?"
+  },
+
+  "messages": {
+    "TenMinuteReminder": "Reminder per assegnare la carta da 10 minuti al giocatore che sta andando nel luogo dove si trova Alice! (e.g., !10 Evan)",
+    "NextClueReminder": "Reminder: Hai la prossima carta indizio!",
+    "Initializing": "Inzializzo il gioco",
+    "DistributingClues": "Distribuisco gli indizi!",
+    "StartingGame": "Inizio il gioco!",
+    "Culprit": "SOSPETTO:",
+    "SecondCulprit": "SECONDO SOSPETTO:",
+    "AliceLocation": "LUOGO IN CUI SI TROVA ALICE:"
+  },
+
+  "flip": {
+    "heads": "Testa",
+    "tails": "Croce"
+  },
+
+  "errors": {
+    "MissingDotEnv": "No dotenv file found! Downloading sample .env and shutting down",
+    "LoginFailure": "Couldn't log in! Was the token incorrect?",
+    "UserInputError": "Invalid input!",
+    "CommandNotFound": "Command not found!",
+    "CommandInWrongChannel": "You can only use commands in this channel!",
+    "MissingDeveloperPermissions": "That command is for developers only!",
+    "ManualCommandInAuto": "Can't do that, are you running a manual command in automatic mode?",
+    "SpectatorCommandAttempt": "Spectators can't run commands!",
+    "GenericCheckFailure": "You can't do that!",
+    "MissingAlice": "Alice has not been chosen!",
+    "MissingCharlie": "Can't find Charlie!",
+    "NotEnoughPlayers": "Not enough players!",
+    "NeedToSetUp": "Can't start before setting up!",
+    "NoCharacterRoles": "You don't have a character role!",
+    "GameNotStarted": "Game hasn't started yet!",
+    "NotInitialized": "Need to initialize first!",
+    "AlreadyStarted": "Game has already begun!",
+    "AlreadyInitialized": "Initialization already run!",
+    "ServerOwnerNicknameChange": "Couldn't update nickname because you are server owner!",
+    "PlayerNotFound": "Couldn't find that player!",
+    "UnknownError": "Unknown error: check console!"
+  }
+}
