@@ -1,6 +1,0 @@
-```
-  10          Assegna la carta dei 10 minuti a un giocatore 
-              (e.g. !10 evans)
-  search      Estrai una carta ricerca
-  claim       Scegli un personaggio (e.g. !claim dakota)
-```
