@@ -162,6 +162,18 @@ class Game(commands.Cog):
         )
 
     @commands.command(
+        name="player_help",
+        aliases=[],
+        description="Sends help for players"
+    )
+    async def player_help(self, ctx):
+        """Sends help for players"""
+        f = open( dirs.WHITE_RABBIT_DIR / "helpPlayerMsg.txt","r")
+        message = f.read()
+        msg_to_pin = await ctx.send(message)
+        f.close()
+        await msg_to_pin.pin()
+    @commands.command(
         name=loc["start"]["name"],
         aliases=loc["start"]["aliases"],
         description=loc["start"]["description"]
