@@ -22,6 +22,29 @@ class Admin(commands.Cog):
         return ctx.author.guild_permissions.administrator
 
     @commands.command(
+        name="save",
+        aliases=["save-data"],
+        description="Save the game data"
+    )
+    async def save_data(self, ctx):
+        """Save the game data"""
+        await ctx.send("Saving data...")
+        ctx.game.save()
+        await ctx.send("Saved!")
+
+
+    @commands.command(
+        name="continue",
+        aliases=["load-data"],
+        description="Load the game data"
+    )
+    async def load_data(self, ctx):
+        """Load the game data"""
+        await ctx.send("Loading data...")
+        ctx.game.load(ctx.guild)
+        await ctx.send("Loaded!")
+
+    @commands.command(
         name=loc["show_all"]["name"],
         aliases=loc["show_all"]["aliases"],
         description=loc["show_all"]["description"]
@@ -48,7 +71,8 @@ class Admin(commands.Cog):
         if not text_channels:
             text_channels = ctx.guild.text_channels
         for text_channel in text_channels:
-            asyncio.create_task(text_channel.purge(limit=None))
+            if (text_channel.name != "history"):
+                asyncio.create_task(text_channel.purge(limit=None))
 
         # Reset game data
         ctx.game.__init__(ctx.game.guild)
