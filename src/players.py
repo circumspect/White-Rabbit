@@ -20,8 +20,9 @@ class Players(commands.Cog):
         aliases=loc["claim"]["aliases"],
         description=loc["claim"]["description"]
     )
-    async def claim(self, ctx, role: discord.Role):
+    async def claim(self, ctx, roleName):
         """Claim a character/spectator role"""
+        role = discord.utils.get(ctx.guild.roles,name=roleName.capitalize())
 
         # Check if role can be claimed
         if role in ctx.author.roles:
