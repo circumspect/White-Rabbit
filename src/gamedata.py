@@ -1,5 +1,6 @@
 # Local
 from localization import LOCALIZATION_DATA
+import json
 
 CHARACTERS = {
     "charlie": "Charlie Barnes",
@@ -65,6 +66,7 @@ class Data:
     def __init__(self, guild):
         self.guild = guild
 
+        self.minutes_remaining = 90
         # Status
         self.init = False
         self.setup = False
@@ -138,6 +140,28 @@ class Data:
                 self.spectator_role = role
                 break
 
+    def toJSON(self):
+        me = self.__dict__
+        me.pop('guild', None)
+        me.pop('spectator_role', None)
+        return json.dumps(me, default=lambda o: o.__dict__, 
+            sort_keys=True, indent=4)
+    
+    def save(self):
+        with open('savefile.txt', 'w') as f:
+            me = self.__dict__
+            me.pop("start_time", None)
+            f.write(self.toJSON())
+
+    def load(self,guild):
+        self.guild = guild
+        with open('savefile.txt', 'r') as f:
+            data = json.load(f, object_hook=lambda d: {int(k) if k.lstrip('-').isdigit() else k: v for k, v in d.items()})
+            if "start_time" in data:
+                del data["start_time"]
+            for k in data:
+                print(k)
+                setattr(self,k, data[k])
 
     def char_roles(self):
         """

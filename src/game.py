@@ -13,6 +13,7 @@ import dirs
 import filepaths
 import gamedata
 import utils
+import webbrowser
 from localization import LOCALIZATION_DATA
 
 loc = LOCALIZATION_DATA["commands"]["game"]
@@ -162,6 +163,18 @@ class Game(commands.Cog):
         )
 
     @commands.command(
+        name="player_help",
+        aliases=[],
+        description="Sends help for players"
+    )
+    async def player_help(self, ctx):
+        """Sends help for players"""
+        f = open( dirs.WHITE_RABBIT_DIR / "helpPlayerMsg.txt","r")
+        message = f.read()
+        msg_to_pin = await ctx.send(message)
+        f.close()
+        await msg_to_pin.pin()
+    @commands.command(
         name=loc["start"]["name"],
         aliases=loc["start"]["aliases"],
         description=loc["start"]["description"]
@@ -191,10 +204,12 @@ class Game(commands.Cog):
             return
 
         # 90 minute card/message for Charlie Barnes
-        channel = ctx.text_channels[LOCALIZATION_DATA["channels"]["clues"]["charlie"]]
-        utils.send_image(channel, utils.get_image(dirs.CLUE_DIR / "90", "90-1"), ctx)
-        first_message = LOCALIZATION_DATA["stuff-for-charlie"]["first-message"]
-        await channel.send(first_message)
+        if ctx.game.minutes_remaining == 90: 
+            channel = ctx.text_channels[LOCALIZATION_DATA["channels"]["clues"]["charlie"]]
+            utils.send_image(channel, utils.get_image(dirs.CLUE_DIR / "90", "90-1"), ctx)
+            first_message = LOCALIZATION_DATA["stuff-for-charlie"]["first-message"]
+            await channel.send(first_message)
+            webbrowser.open("https://www.youtube.com/watch?v=ysOOFIOAy7A&t=0", new=0, autoraise=True)
 
         if ctx.game.stream_music:
             if ctx.guild.voice_client is None:
@@ -214,7 +229,7 @@ class Game(commands.Cog):
     async def timer(self, ctx):
         """Prints out the timer"""
 
-        time_remaining = gamedata.GAME_LENGTH
+        time_remaining = ctx.game.minutes_remaining * 60
         while time_remaining > 0:
             time_remaining -= ctx.game.timer_gap
 
@@ -226,15 +241,14 @@ class Game(commands.Cog):
     async def clue_check(self, ctx):
         """Timer loop to check clues and perform various actions"""
 
-        minutes_remaining = 90
-        check_interval = 5
+        check_interval = ctx.game.minutes_remaining % 5
 
-        while minutes_remaining > 0:
+        while ctx.game.minutes_remaining > 0:
             if ctx.game.automatic:
                 # Normal clue cards
-                if minutes_remaining in gamedata.CLUE_TIMES and minutes_remaining <= ctx.game.next_clue:
-                    self.bot.cogs["Manual"].send_clue(ctx, minutes_remaining)
-                    if minutes_remaining == 30 and ctx.game.picked_clues[minutes_remaining] == 1:
+                if ctx.game.minutes_remaining in gamedata.CLUE_TIMES and ctx.game.minutes_remaining <= ctx.game.next_clue:
+                    self.bot.cogs["Manual"].send_clue(ctx, ctx.game.minutes_remaining)
+                    if ctx.game.minutes_remaining == 30 and ctx.game.picked_clues[ctx.game.minutes_remaining] == 1:
                         flip = utils.flip()
 
                         for character in ctx.game.clue_assignments:
@@ -246,16 +260,18 @@ class Game(commands.Cog):
                         asyncio.create_task(channel.send(flip))
 
                 # If 20 minutes left, make check run every minute
-                if minutes_remaining == 20:
+                if ctx.game.minutes_remaining == 20:
                     check_interval = 1
+                else:
+                    check_interval = ctx.game.minutes_remaining % 5
 
                 # Check if 10 min card has been assigned and send reminder if not
-                if minutes_remaining == gamedata.TEN_MIN_REMINDER_TIME and not ctx.game.ten_char:
+                if ctx.game.minutes_remaining == gamedata.TEN_MIN_REMINDER_TIME and not ctx.game.ten_char:
                     channel = ctx.text_channels[LOCALIZATION_DATA["channels"]["resources"]]
                     asyncio.create_task(channel.send("@everyone " + gamedata.TEN_MIN_REMINDER_TEXT))
 
                 # 10 min card
-                elif minutes_remaining == 10:
+                elif ctx.game.minutes_remaining == 10:
                     # If not assigned, default to Charlie
                     if not ctx.game.ten_char:
                         ctx.game.ten_char = "charlie"
@@ -271,7 +287,7 @@ class Game(commands.Cog):
                         ctx.game.second_culprit = True
 
                 # Ending 3
-                elif minutes_remaining == 8 and ctx.game.second_culprit:
+                elif ctx.game.minutes_remaining == 8 and ctx.game.second_culprit:
                     culprit = ctx.game.suspects_drawn[30]
                     remaining_suspects = [suspect for suspect in gamedata.SUSPECTS if suspect != culprit]
                     second = random.choice(remaining_suspects)
@@ -287,7 +303,7 @@ class Game(commands.Cog):
                     utils.send_image(channel, path, ctx)
 
                 # Endings 1 and 2
-                elif minutes_remaining == 3 and ctx.game.three_flip:
+                elif ctx.game.minutes_remaining == 3 and ctx.game.three_flip:
                     flip = utils.flip()
                     channel = LOCALIZATION_DATA["channels"]["clues"][ctx.game.ten_char]
                     channel = ctx.text_channels[channel]
@@ -301,10 +317,10 @@ class Game(commands.Cog):
                 await asyncio.sleep(gamedata.REMINDER_BUFFER * 60 / ctx.game.game_speed)
 
                 # Check if player hasn't drawn the clue yet
-                if minutes_remaining <= ctx.game.next_clue:
+                if ctx.game.minutes_remaining <= ctx.game.next_clue:
                     # Find character who owns the clue
                     for name in ctx.game.clue_assignments:
-                        if minutes_remaining in ctx.game.clue_assignments[name]:
+                        if ctx.game.minutes_remaining in ctx.game.clue_assignments[name]:
                             character = name
                             break
 
@@ -315,7 +331,7 @@ class Game(commands.Cog):
                 # Wait out the rest of the interval
                 await asyncio.sleep((check_interval - gamedata.REMINDER_BUFFER) * 60 / ctx.game.game_speed)
 
-            minutes_remaining -= check_interval
+            ctx.game.minutes_remaining -= check_interval
 
         # End of game, send debrief
         utils.send_image(
@@ -357,21 +373,24 @@ class Game(commands.Cog):
         description=loc["ten_min_card"]["description"]
     )
     async def ten_min_card(
-        self, ctx, mention: typing.Union[discord.Member, discord.Role]
+        self, ctx, mention: typing.Union[discord.Member, discord.Role, str]
     ):
         """Assign the 10 minute card to another player"""
 
         if isinstance(mention, discord.Member):
             character = mention.nick.split()[0]
-        else:
+        elif isinstance(mention, discord.Role):
             character = mention.name
+        else:
+            role = discord.utils.get(ctx.guild.roles,name=mention.capitalize())
+            character = role.name
 
         if character.title() not in ctx.game.char_roles():
             asyncio.create_task(ctx.send(LOCALIZATION_DATA["errors"]["PlayerNotFound"]))
             return
 
         ctx.game.ten_char = character.lower()
-
+        await ctx.send(ctx.game.ten_char)
         asyncio.create_task(ctx.send(loc["ten_min_card"]["Assigned"]))
 
 
