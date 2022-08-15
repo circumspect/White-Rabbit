@@ -5,7 +5,7 @@
 ![GitHub](https://img.shields.io/github/license/circumspect/White-Rabbit)
 [![Language grade: Python](https://img.shields.io/lgtm/grade/python/g/circumspect/White-Rabbit.svg?logo=lgtm&logoWidth=18)](https://lgtm.com/projects/g/circumspect/White-Rabbit/context:python)
 
-A Discord bot for Alice is Missing. Server template: <https://discord.new/YD7aEUr8AdBQ>.
+A Discord bot for Alice is Missing. Server template: <https://discord.new/SfcBdbyhGMmR>.
 This is a fan-made project which is not affiliated in any way with the creators of Alice is Missing.
 Game and all Alice is Missing images are property of
 [Hunters Entertainment](https://www.huntersentertainment.com/alice-is-missing).

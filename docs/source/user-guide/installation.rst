@@ -14,7 +14,7 @@ and extract the files to a directory of your choice. Install any missing
 libraries from ``requirements.txt`` using pip.
 
 Create a new Discord server using the following template:
-https://discord.new/YD7aEUr8AdBQ and name it however you like.
+https://discord.new/SfcBdbyhGMmR and name it however you like.
 
 .. note::
    If you wish to use the bot in a different language, you must use the server
