@@ -1,4 +1,4 @@
-discord.py[voice]
+discord.py[voice] >= 1.6, < 2.0
 fpdf
 python-dotenv
 requests
