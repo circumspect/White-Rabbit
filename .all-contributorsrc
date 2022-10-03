@@ -87,6 +87,16 @@
       "contributions": [
         "bug"
       ]
+    },
+    {
+      "login": "pipejakob",
+      "name": "Jacob Beacham",
+      "avatar_url": "https://avatars.githubusercontent.com/u/1605981?v=4",
+      "profile": "http://pipejakob.com",
+      "contributions": [
+        "code",
+        "bug"
+      ]
     }
   ],
   "contributorsPerLine": 7,
