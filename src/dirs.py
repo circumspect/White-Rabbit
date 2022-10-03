@@ -4,9 +4,6 @@ import os
 from localization import DEFAULT_LOCALIZATION, LANGUAGE_KEY
 from rabbit import WHITE_RABBIT_DIR
 
-# Temp files
-TEMP_DIR = WHITE_RABBIT_DIR / "temp"
-
 # Image paths
 # White-Rabbit/src/constants.py
 RESOURCE_DIR = WHITE_RABBIT_DIR / "resources"
@@ -38,5 +35,3 @@ if not os.path.isdir(PDF_EXPORT_DIR):
     os.mkdir(PDF_EXPORT_DIR)
 if not os.path.isdir(TEXT_EXPORT_DIR):
     os.mkdir(TEXT_EXPORT_DIR)
-if not os.path.isdir(TEMP_DIR):
-    os.mkdir(TEMP_DIR)

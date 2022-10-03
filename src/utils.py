@@ -14,7 +14,6 @@ import discord
 import requests
 # Local
 import constants
-from dirs import TEMP_DIR
 import envvars
 from localization import DEFAULT_LOCALIZATION, LOCALIZATION_DATA, LANGUAGE_KEY
 from rabbit import WHITE_RABBIT_DIR
