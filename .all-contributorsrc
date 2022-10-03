@@ -97,6 +97,15 @@
         "code",
         "bug"
       ]
+    },
+    {
+      "login": "Ghuldrigan",
+      "name": "Ghuldrigan",
+      "avatar_url": "https://avatars.githubusercontent.com/u/28635092?v=4",
+      "profile": "https://github.com/Ghuldrigan",
+      "contributions": [
+        "bug"
+      ]
     }
   ],
   "contributorsPerLine": 7,
