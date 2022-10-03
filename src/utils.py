@@ -202,8 +202,6 @@ def ooc_strip(ctx, text: str):
 def upload_file(path):
     """Uploads a file and returns the download URL"""
 
-    url_file = str(TEMP_DIR / "url.txt")
-
-    subprocess.run(["curl", "-T", path, "https://transfer.sh/Alice.pdf", ">", url_file], shell=True)
-    with open(url_file) as f:
-        return f.readline().strip()
+    return subprocess.run(["curl", "-T", path, "https://transfer.sh/Alice.pdf"],
+                          check=True, capture_output=True, text=True
+                          ).stdout.strip()
