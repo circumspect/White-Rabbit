@@ -1,47 +1,47 @@
 {
-  "title": "Alice is Missing",
+  "title": "Alice è scomparsa",
   "template": "https://discord.new/SfcBdbyhGMmR",
   "bot-name": "The White Rabbit",
 
-  "spectator-role": "Spectator",
+  "spectator-role": "Spettatore",
 
   "channels": {
-    "discussion": "discussion",
+    "discussion": "discussione",
     "bot-channel": "bot-channel",
-    "call": "call",
+    "call": "chiamata",
 
-    "resources": "player-resources",
+    "resources": "risorse-giocatore",
 
     "cards": {
-      "character-cards": "character-cards",
-      "suspect-cards": "suspect-cards",
-      "location-cards": "location-cards",
-      "suspects-drawn": "suspects-drawn",
-      "locations-drawn": "locations-drawn"
+      "character-cards": "carte-personaggio",
+      "suspect-cards": "carte-sospetto",
+      "location-cards": "carte-luogo",
+      "suspects-drawn": "pescate-sospetti",
+      "locations-drawn": "pescate-luoghi"
     },
 
     "clues": {
-      "charlie": "charlie-clues",
-      "dakota": "dakota-clues",
-      "evan": "evan-clues",
-      "jack": "jack-clues",
-      "julia": "julia-clues"
+      "charlie": "indizi-charlie",
+      "dakota": "indizi-dakota",
+      "evan": "indizi-evan",
+      "jack": "indizi-jack",
+      "julia": "indizi-julia"
     },
 
-    "voicemails": "voicemails",
+    "voicemails": "messaggi-vocali",
 
     "texts": {
-      "group-chat": "group-chat",
-      "charlie-dakota": "charlie-dakota-pm",
-      "charlie-evan": "charlie-evan-pm",
-      "charlie-jack": "charlie-jack-pm",
-      "charlie-julia": "charlie-julia-pm",
-      "dakota-evan": "dakota-evan-pm",
-      "dakota-jack": "dakota-jack-pm",
-      "dakota-julia": "dakota-julia-pm",
-      "evan-jack": "evan-jack-pm",
-      "evan-julia": "evan-julia-pm",
-      "jack-julia": "jack-julia-pm"
+      "group-chat": "chat-gruppo",
+      "charlie-dakota": "charlie-dakota-mp",
+      "charlie-evan": "charlie-evan-mp",
+      "charlie-jack": "charlie-jack-mp",
+      "charlie-julia": "charlie-julia-mp",
+      "dakota-evan": "dakota-evan-mp",
+      "dakota-jack": "dakota-jack-mp",
+      "dakota-julia": "dakota-julia-mp",
+      "evan-jack": "evan-jack-mp",
+      "evan-julia": "evan-julia-mp",
+      "jack-julia": "jack-julia-mp"
     }
   },
 
@@ -52,31 +52,31 @@
         "aliases": ["about", "info"],
         "description": "Stampa informazion sul bot",
 
-        "creators": "The White Rabbit was created by circumspect.",
-        "source": "Source code available here:"
+        "creators": "The White Rabbit è stato creato da circumspect.",
+        "source": "il codice sorgente è disponibile qui:"
       },
 
       "docs": {
-        "name": "docs",
-        "aliases": ["guide"],
+        "name": "documentazione",
+        "aliases": ["guida","aiuto","manuale"],
         "description": "Link alla documentazione del bot",
-        "documentation": "Documentation for The White Rabbit can be found here:"
+        "documentation": "La documentation per The White Rabbit è reperibile qui:"
       }
     },
 
     "admin": {
       "show_all": {
         "name": "show_all",
-        "aliases": [],
+        "aliases": ["mostra_tutto"],
         "description": "Rivela tutti i canali e impedisci di mandare messaggi"
       },
 
       "wipe": {
         "name": "wipe",
-        "aliases": ["clear"],
+        "aliases": ["clear","cancella"],
         "description": "Cancella tutti i messaggi e i dati di gioco",
 
-        "DeletingMessages": "Deleting all messages!"
+        "DeletingMessages": "Sto cancellando tutti i messaggi!"
       },
 
       "reset_perms": {
@@ -98,14 +98,14 @@
         "aliases": [],
         "description": "Completo reset del server",
 
-        "ResettingServer": "Resetting the server!"
+        "ResettingServer": "Sto resettando il server!"
       }
     },
 
     "debug": {
       "speed": {
         "name": "speed",
-        "aliases": [],
+        "aliases": ["velocità"],
         "description": "Modifica la velocità del gioco"
       },
 
@@ -123,13 +123,13 @@
 
       "unload": {
         "name": "unload",
-        "aliases": [],
+        "aliases": ["disattiva"],
         "description": "Disattiva un plugin"
       },
 
       "quit": {
         "name": "quit",
-        "aliases": ["stop", "shutdown"],
+        "aliases": ["stop", "shutdown","ferma"],
         "description": "Spegne il bot - VALE PER TUTTI I SERVER"
       }
     },
@@ -140,12 +140,12 @@
         "aliases": ["PDF"],
         "description": "Esporta la partita in PDF",
 
-        "created-by": "Created by:",
-        "voicemail": "Voicemail",
+        "created-by": "Creato da:",
+        "voicemail": "Messaggio vocale",
         "timeline": "Timeline",
         "conclusion": "Conclusioni",
-        "group-chat": "Group Chat",
-        "investigator": "Investigator",
+        "group-chat": "Chat di Gruppo",
+        "investigator": "Investigatore",
         "ending": "Finale",
         "location": "Luogo",
         "culprit": "Sospetto",
@@ -171,7 +171,7 @@
     "game": {
       "init": {
         "name": "init",
-        "aliases": ["initialize"],
+        "aliases": ["initialize","inizializza"],
         "description": "Setup iniziale prima della selezione personaggio"
       },
 
@@ -189,7 +189,7 @@
 
       "example": {
         "name": "example",
-        "aliases": [],
+        "aliases": ["esempio"],
         "description": "Manda un esempio di indizi e sospetti"
       },
 
@@ -379,8 +379,8 @@
       "Manda il primo messaggio"
     ],
 
-    "background": "CHARLIE BARNES si è andato via da Silent Falls con sua madre alla fine dello scorso anno dopo che i suoi genitori hanno divorziato. È appena arrivato in città per stare con suo padre durante le vacanze, e vorrebbe vedere Alice e gli altri mentre è qui. Qualche giorno fa, Alice ha smesso di rispondere. Non la sente da allora.",
-    "first-message": "Hey! Scusate se vi mando un brutalmente un messaggio a tutti, sono tornato in città per le vacanze natalizie e sto da mio padre. Non sono riuscito a contattare Alice. Qualcuno di voi l'ha sentita?"
+    "background": "CHARLIE BARNES è andato via da Silent Falls con sua madre alla fine dello scorso anno, dopo che i suoi genitori hanno divorziato. È appena arrivato in città per stare con suo padre durante le vacanze e vorrebbe vedere Alice e gli altri mentre è qui. Qualche giorno fa, Alice ha smesso di rispondere. Non la sente da allora.",
+    "first-message": "Hey! Scusate se mando brutalmente un messaggio a tutti, sono tornato in città per le vacanze natalizie e sto da mio padre. Non sono riuscito a contattare Alice. Qualcuno di voi l'ha sentita?"
   },
 
   "messages": {
@@ -400,26 +400,26 @@
   },
 
   "errors": {
-    "MissingDotEnv": "No dotenv file found! Downloading sample .env and shutting down",
-    "LoginFailure": "Couldn't log in! Was the token incorrect?",
-    "UserInputError": "Invalid input!",
-    "CommandNotFound": "Command not found!",
-    "CommandInWrongChannel": "You can only use commands in this channel!",
-    "MissingDeveloperPermissions": "That command is for developers only!",
-    "ManualCommandInAuto": "Can't do that, are you running a manual command in automatic mode?",
-    "SpectatorCommandAttempt": "Spectators can't run commands!",
-    "GenericCheckFailure": "You can't do that!",
-    "MissingAlice": "Alice has not been chosen!",
-    "MissingCharlie": "Can't find Charlie!",
-    "NotEnoughPlayers": "Not enough players!",
-    "NeedToSetUp": "Can't start before setting up!",
-    "NoCharacterRoles": "You don't have a character role!",
-    "GameNotStarted": "Game hasn't started yet!",
-    "NotInitialized": "Need to initialize first!",
-    "AlreadyStarted": "Game has already begun!",
-    "AlreadyInitialized": "Initialization already run!",
-    "ServerOwnerNicknameChange": "Couldn't update nickname because you are server owner!",
-    "PlayerNotFound": "Couldn't find that player!",
-    "UnknownError": "Unknown error: check console!"
+    "MissingDotEnv": "Non trovo il file .env! Scarico il file di esempio e arresto il server.",
+    "LoginFailure": "Non posso effettuare il login! Forse il token non era corretto?",
+    "UserInputError": "Input non valido!",
+    "CommandNotFound": "Comando non trovato!",
+    "CommandInWrongChannel": "In questo canale puoi utilizzare solo comandi!",
+    "MissingDeveloperPermissions": "Questo comando è riservato agli sviluppatori!",
+    "ManualCommandInAuto": "Non riesco a farlo, forse stai cercando di eseguire un comando manuale in modalità automatica?",
+    "SpectatorCommandAttempt": "Gli spettatori non possono eseguire comandi!",
+    "GenericCheckFailure": "non lo puoi fare!",
+    "MissingAlice": "Alice non è stata scelta!",
+    "MissingCharlie": "Non trovo Charlie!",
+    "NotEnoughPlayers": "Non ci sono abbastanza giocatori!",
+    "NeedToSetUp": "Non è possibile iniziare prima di aver effettuato il setup!",
+    "NoCharacterRoles": "Non hai un ruolo!",
+    "GameNotStarted": "Il gioco non è ancora iniziato!",
+    "NotInitialized": "Devi prima inizializzare!",
+    "AlreadyStarted": "Il gioco è già iniziato!",
+    "AlreadyInitialized": "L'inizializzazione è già in corso!",
+    "ServerOwnerNicknameChange": "Non riesco ad aggiornare il nickename in quanto sei il proprietario del server!",
+    "PlayerNotFound": "Non riesco a trovare quel giocatore!",
+    "UnknownError": "Errore sconosciuto: controlla la console!"
   }
 }
