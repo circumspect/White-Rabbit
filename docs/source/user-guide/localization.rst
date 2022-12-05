@@ -12,6 +12,8 @@ To change the language the bot runs in, modify the ``LANGUAGE`` key in the
 .. _circumspect: https://github.com/circumspect
 .. _Ylkhana: https://github.com/Ylkhana
 .. _Gabbalo: https://github.com/Gabbalo
+.. _d-beezee: https://github.com/d-beezee
+.. _wishmerhill: https://github.com/wishmerhill
 
 
 If you would like to contribute translations, fork the repository, copy
