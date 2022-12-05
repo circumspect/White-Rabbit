@@ -56,11 +56,9 @@ Built with help from these wonderful people ([emoji key](https://allcontributors
       <td align="center"><a href="https://github.com/Zanaku"><img src="https://avatars.githubusercontent.com/u/1145197?v=4?s=100" width="100px;" alt="Tom Whiteley"/><br /><sub><b>Tom Whiteley</b></sub></a><br /><a href="https://github.com/circumspect/White-Rabbit/issues?q=author%3AZanaku" title="Bug reports">🐛</a></td>
       <td align="center"><a href="http://pipejakob.com"><img src="https://avatars.githubusercontent.com/u/1605981?v=4?s=100" width="100px;" alt="Jacob Beacham"/><br /><sub><b>Jacob Beacham</b></sub></a><br /><a href="https://github.com/circumspect/White-Rabbit/commits?author=pipejakob" title="Code">💻</a> <a href="https://github.com/circumspect/White-Rabbit/issues?q=author%3Apipejakob" title="Bug reports">🐛</a></td>
       <td align="center"><a href="https://github.com/Ghuldrigan"><img src="https://avatars.githubusercontent.com/u/28635092?v=4?s=100" width="100px;" alt="Ghuldrigan"/><br /><sub><b>Ghuldrigan</b></sub></a><br /><a href="https://github.com/circumspect/White-Rabbit/issues?q=author%3AGhuldrigan" title="Bug reports">🐛</a></td>
+      <td align="center"><a href="http://www.nousefornames.it"><img src="https://avatars.githubusercontent.com/u/210835?v=4?s=100" width="100px;" alt="Alberto"/><br /><sub><b>Alberto</b></sub></a><br /><a href="#translation-wishmerhill" title="Translation">🌍</a></td>
     </tr>
   </tbody>
-  <tfoot>
-    
-  </tfoot>
 </table>
 
 <!-- markdownlint-restore -->
