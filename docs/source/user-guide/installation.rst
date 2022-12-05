@@ -11,7 +11,7 @@ Default Installation
 
 Download the source zip from Github `here <https://github.com/circumspect/White-Rabbit/releases/>`_
 and extract the files to a directory of your choice. Install any missing
-libraries from ``requirements.txt`` using pip.
+libraries from ``requirements.txt`` using pip (i.e., ``pip install -r requirements.txt``).
 
 Create a new Discord server using the following template:
 https://discord.new/SfcBdbyhGMmR and name it however you like.
