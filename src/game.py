@@ -9,6 +9,7 @@ import typing
 import discord
 from discord.ext import commands
 # Local
+import cards
 import dirs
 import filepaths
 import gamedata
@@ -56,13 +57,13 @@ class Game(commands.Cog):
             asyncio.create_task(self.bot.cogs["Manual"].alice(ctx))
 
         # Send characters, suspects, and locations to appropriate channels
-        for character in sorted(gamedata.CHARACTERS.keys()):
+        for character in sorted(cards.CHARACTERS.keys()):
             filepath = utils.get_image(dirs.CHARACTER_INTRODUCTIONS_DIR, character)
             utils.send_image(LOCALIZATION_DATA["channels"]["cards"]["character-cards"], filepath, ctx)
-        for suspect in sorted(gamedata.SUSPECTS.keys()):
+        for suspect in sorted(cards.SUSPECTS.keys()):
             filepath = utils.get_image(dirs.SUSPECT_IMAGE_DIR, suspect)
             utils.send_image(LOCALIZATION_DATA["channels"]["cards"]["suspect-cards"], filepath, ctx)
-        for location in sorted(gamedata.LOCATIONS.keys()):
+        for location in sorted(cards.LOCATIONS.keys()):
             filepath = utils.get_image(dirs.LOCATION_IMAGE_DIR, location)
             utils.send_image(LOCALIZATION_DATA["channels"]["cards"]["location-cards"], filepath, ctx)
 
@@ -79,7 +80,7 @@ class Game(commands.Cog):
         asyncio.create_task(channel.send(background))
 
         # Character and motive cards in clues channels
-        for name in gamedata.CHARACTERS:
+        for name in cards.CHARACTERS:
             channel = ctx.text_channels[LOCALIZATION_DATA["channels"]["clues"][name]]
             utils.send_image(
                 channel,
@@ -143,7 +144,7 @@ class Game(commands.Cog):
         utils.send_image(channel, path, ctx)
 
         # Send suspect card
-        suspect = random.choice(list(gamedata.SUSPECTS.keys()))
+        suspect = random.choice(list(cards.SUSPECTS.keys()))
         path = filepaths.MASTER_PATHS[suspect]
         utils.send_image(channel, path, ctx)
 
@@ -273,7 +274,7 @@ class Game(commands.Cog):
                 # Ending 3
                 elif minutes_remaining == 8 and ctx.game.second_culprit:
                     culprit = ctx.game.suspects_drawn[30]
-                    remaining_suspects = [suspect for suspect in gamedata.SUSPECTS if suspect != culprit]
+                    remaining_suspects = [suspect for suspect in cards.SUSPECTS if suspect != culprit]
                     second = random.choice(remaining_suspects)
 
                     # Send to clues channel

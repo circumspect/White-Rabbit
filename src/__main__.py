@@ -8,6 +8,7 @@ import discord
 from discord.ext import commands
 import requests
 # Local
+import cards
 import constants
 from debug import DEBUG_COMMAND_LIST
 import dirs
@@ -73,7 +74,7 @@ async def before_invoke(ctx):
     # Character that the author is
     ctx.character = None
     for role in ctx.author.roles:
-        if role.name.lower() in gamedata.CHARACTERS:
+        if role.name.lower() in cards.CHARACTERS:
             ctx.character = role.name.lower()
             break
 

@@ -4,6 +4,7 @@ import asyncio
 import discord
 from discord.ext import commands
 # Local
+import cards
 import constants
 import gamedata
 from localization import LOCALIZATION_DATA
@@ -86,7 +87,7 @@ class Admin(commands.Cog):
             elif channel.name in [GROUP_CHAT, LOCALIZATION_DATA["channels"]["voicemails"]]:
                 asyncio.create_task(channel.set_permissions(everyone, send_messages=False))
                 for role in ctx.guild.roles:
-                    if role.name.lower() in gamedata.CHARACTERS:
+                    if role.name.lower() in cards.CHARACTERS:
                         asyncio.create_task(channel.set_permissions(role, send_messages=True))
 
             # Private message channels
@@ -111,7 +112,7 @@ class Admin(commands.Cog):
             is_player = False
             if not member.bot:
                 for role in member.roles:
-                    if role.name.lower() in gamedata.CHARACTERS.keys():
+                    if role.name.lower() in cards.CHARACTERS.keys():
                         await member.remove_roles(role)
                         is_player = True
                 if is_player:

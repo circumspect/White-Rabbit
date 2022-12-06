@@ -9,6 +9,7 @@ import discord
 from discord.ext import commands
 from fpdf import FPDF
 # Local
+import cards
 import constants
 import dirs
 from dirs import FONT_DIR
@@ -237,9 +238,9 @@ class Export(commands.Cog):
             return filepaths.LEGACY_FILENAMES[filename]
         except KeyError:
             tmp = filename.split("-")
-            if tmp[0] in gamedata.SUSPECTS.keys():
+            if tmp[0] in cards.SUSPECTS.keys():
                 return tmp[0]
-            if tmp[0] in gamedata.CHARACTERS.keys():
+            if tmp[0] in cards.CHARACTERS.keys():
                 return tmp[0]
             return filename
 
@@ -277,7 +278,7 @@ class Export(commands.Cog):
                 break
 
         # Clues
-        for name in gamedata.CHARACTERS:
+        for name in cards.CHARACTERS:
             # Create blank values to fill out
             ctx.game.clue_assignments[name] = []
 
@@ -289,7 +290,7 @@ class Export(commands.Cog):
                 filename = self.parse_filename(url)
 
                 # Ignore character cards
-                if filename in gamedata.CHARACTERS.keys():
+                if filename in cards.CHARACTERS.keys():
                     continue
 
                 # Motives
@@ -297,17 +298,17 @@ class Export(commands.Cog):
                     ctx.game.motives[name] = filename.split("-")[1]
 
                 # Suspects
-                elif filename in gamedata.SUSPECTS.keys():
+                elif filename in cards.SUSPECTS.keys():
                     ctx.game.suspects_drawn[current_clue] = filename
                     if current_clue == 10:
                         ctx.game.second_culprit = filename
 
                 # Locations
-                elif filename in gamedata.LOCATIONS.keys():
+                elif filename in cards.LOCATIONS.keys():
                     ctx.game.locations_drawn[current_clue] = filename
 
                 # Searching cards
-                elif filename in gamedata.SEARCHING.keys():
+                elif filename in cards.SEARCHING.keys():
                     ctx.game.searching[name].append(filename)
 
                 # Ignore debrief card
@@ -515,11 +516,11 @@ class Export(commands.Cog):
         # Name at top left
         pdf.set_xy(CHAR_TITLE_X, CHAR_TITLE_Y)
         pdf.set_font(*CHAR_TITLE_FONT)
-        title = "\n".join(gamedata.CHARACTERS[character].split())
+        title = "\n".join(cards.CHARACTERS[character].split())
         pdf.multi_cell(0, CHAR_TITLE_HEIGHT, title)
 
         # Character and motive cards
-        name = gamedata.CHARACTERS[character]
+        name = cards.CHARACTERS[character]
         card = utils.get_image(dirs.CHARACTER_IMAGE_DIR, name.split()[0].lower())
         pdf.image(str(card), CHAR_CARD_LEFT, CHAR_CARD_TOP, CHAR_CARD_WIDTH)
 
