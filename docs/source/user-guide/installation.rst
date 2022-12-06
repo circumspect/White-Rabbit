@@ -55,14 +55,21 @@ Next, create a new Discord bot as follows:
 - Close the settings and you're done with setup!
 
 
+Optional Settings
+===================
+
+Some bot settings, such as language, can be set through the use of optional
+environment variables. See :doc:`env` for a full list.
+
+
 Docker Installation
 ===================
 
-Follow the Discord application setup above, don't worry about updating
-the .env file though
+Follow the Discord application setup above, skipping the steps relating to
+the ``.env`` file.
 
 Deploy the Docker container as follows, replacing ``YOUR_TOKEN_GOES_HERE``
-with the discord token obtained above
+with the Discord token obtained above.
 
 `List of Docker tags <https://hub.docker.com/r/circumspect/white-rabbit/tags>`_
 (version numbers are the same as Github releases).
@@ -78,23 +85,13 @@ with the discord token obtained above
 Optional Environment Variables
 ------------------------------
 
-You may set additional optional environment variables through Docker,
-as listed below:
-
-+---------------+--------------------------------------+-----------------------+
-| Variable Name | Usage                                | Example               |
-+===============+======================================+=======================+
-| LANGUAGE      | Sets the localization, default: en   | ``--env LANGUAGE=fr`` |
-+---------------+--------------------------------------+-----------------------+
-| DEV_ID        | Gives debug command access to the ID | ``--env DEV_ID=1234`` |
-+---------------+--------------------------------------+-----------------------+
+You may set additional optional environment variables through Docker using
+the `--env` option, e.g., ``--env LANGUAGE=fr``.
 
 
 Heroku Installation
 ===================
 
-The bot can be installed as a Heroku app, however note that a free dyno will
-likely not be sufficient for the bot to run the game. The bot will log in
-and respond to the ``!help`` command, but will have trouble sending images.
-It should work with a paid dyno, but I have not tested it. To install,
-simply use the default Python buildpack.
+Follow the Discord application setup above, skipping the steps relating to
+the `.env` file. Use the default Python buildpack. Make sure to set the
+token and any other desired environment variables as necessary.
