@@ -1,3 +1,5 @@
+# pyright: reportShadowedImports=false
+
 # Built-in
 import asyncio
 import sys
