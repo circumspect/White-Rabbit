@@ -4,7 +4,7 @@ import asyncio
 import discord
 from discord.ext import commands
 # Local
-import gamedata
+import cards
 from localization import LOCALIZATION_DATA
 
 loc = LOCALIZATION_DATA["commands"]["players"]
@@ -28,16 +28,16 @@ class Players(commands.Cog):
         if role in ctx.author.roles:
             await ctx.send(loc["claim"]["AlreadyHaveThisRole"])
             return
-        elif role.name.lower() not in [*gamedata.CHARACTERS, LOCALIZATION_DATA["spectator-role"]]:
+        elif role.name.lower() not in [*cards.CHARACTERS, LOCALIZATION_DATA["spectator-role"]]:
             asyncio.create_task(ctx.send(loc["claim"]["UnclaimableRole"]))
             return
-        elif role.members and role.name.lower() in gamedata.CHARACTERS:
+        elif role.members and role.name.lower() in cards.CHARACTERS:
             asyncio.create_task(ctx.send(loc["claim"]["RoleIsTaken"]))
             return
 
         # Check if player already has a character role
         for member_role in ctx.author.roles:
-            if member_role.name.lower() in gamedata.CHARACTERS:
+            if member_role.name.lower() in cards.CHARACTERS:
                 asyncio.create_task(ctx.send(loc["claim"]["AlreadyHaveOtherRole"]))
                 return
 
@@ -47,9 +47,9 @@ class Players(commands.Cog):
         if ctx.author == ctx.guild.owner:
             # Can't update nickname for server owner
             asyncio.create_task(ctx.send(LOCALIZATION_DATA["errors"]["ServerOwnerNicknameChange"]))
-        elif role.name.lower() in gamedata.CHARACTERS:
+        elif role.name.lower() in cards.CHARACTERS:
             asyncio.create_task(
-                ctx.author.edit(nick=gamedata.CHARACTERS[role.name.lower()])
+                ctx.author.edit(nick=cards.CHARACTERS[role.name.lower()])
             )
 
     @commands.command(
@@ -62,7 +62,7 @@ class Players(commands.Cog):
 
         # Keep @everyone
         for role in ctx.author.roles:
-            if role.name.lower() in gamedata.CHARACTERS:
+            if role.name.lower() in cards.CHARACTERS:
                 await ctx.author.remove_roles(role)
                 asyncio.create_task(ctx.send(f"Removed role {role.name}"))
                 if ctx.author == ctx.guild.owner:

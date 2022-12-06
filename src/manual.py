@@ -4,6 +4,7 @@ import random
 # 3rd-party
 from discord.ext import commands
 # Local
+import cards
 import constants
 import dirs
 import filepaths
@@ -73,7 +74,7 @@ class Manual(commands.Cog):
         random.shuffle(motives)
         ctx.game.motives = {
             character: motive
-            for motive, character in zip(motives, gamedata.CHARACTERS)
+            for motive, character in zip(motives, cards.CHARACTERS)
         }
 
         # Console logging
@@ -92,7 +93,7 @@ class Manual(commands.Cog):
             asyncio.create_task(ctx.send(loc["send_motives"]["NeedToShuffle"]))
             return
 
-        for name in gamedata.CHARACTERS:
+        for name in cards.CHARACTERS:
             channel = ctx.text_channels[LOCALIZATION_DATA["channels"]["clues"][name]]
             motive = ctx.game.motives[name]
             utils.send_image(
@@ -166,18 +167,18 @@ class Manual(commands.Cog):
         utils.send_image(channel, path)
 
         # Send suspect/location card to respective drawn cards channel
-        if suspect in gamedata.SUSPECTS:
+        if suspect in cards.SUSPECTS:
             channel = LOCALIZATION_DATA["channels"]["cards"]["suspects-drawn"]
-        elif suspect in gamedata.LOCATIONS:
+        elif suspect in cards.LOCATIONS:
             channel = LOCALIZATION_DATA["channels"]["cards"]["locations-drawn"]
         else:
             channel = LOCALIZATION_DATA["channels"]["bot-channel"]
         channel = utils.get_text_channels(ctx.game.guild)[channel]
         # Confirmed culprit/location
         if time <= 30:
-            if suspect in gamedata.SUSPECTS:
+            if suspect in cards.SUSPECTS:
                 asyncio.create_task(channel.send(LOCALIZATION_DATA["messages"]["Culprit"]))
-            elif suspect in gamedata.LOCATIONS:
+            elif suspect in cards.LOCATIONS:
                 asyncio.create_task(
                     channel.send(
                         LOCALIZATION_DATA["messages"]["AliceLocation"]
