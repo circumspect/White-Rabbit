@@ -421,7 +421,7 @@ class Export(commands.Cog):
         )
 
         # Create list of player characters
-        characters = [character.lower() for character in ctx.game.char_roles()]
+        characters = ctx.game.active_chars(lowercase=True)
 
         await ctx.send(loc["pdf"]["BuildingCharPages"])
 

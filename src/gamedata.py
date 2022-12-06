@@ -152,3 +152,10 @@ class Data:
         }
 
         return dict(sorted(unsorted.items(), key=lambda item: item[0]))
+
+
+    def active_chars(self, lowercase=False):
+        if lowercase:
+            return [name.lower() for name in self.char_roles()]
+        else:
+            return [name for name in self.char_roles()]
