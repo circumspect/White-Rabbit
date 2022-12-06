@@ -182,7 +182,7 @@ class Game(commands.Cog):
             asyncio.create_task(ctx.send(LOCALIZATION_DATA["errors"]["AlreadyStarted"]))
             return
 
-        if "Charlie" not in ctx.game.char_roles():
+        if "Charlie" not in ctx.game.active_chars():
             asyncio.create_task(ctx.send(LOCALIZATION_DATA["errors"]["MissingCharlie"]))
             return
 
