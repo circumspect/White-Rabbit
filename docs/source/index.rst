@@ -8,6 +8,7 @@ The White Rabbit Documentation
    user-guide/installation
    user-guide/quickstart
    user-guide/localization
+   user-guide/env
    user-guide/settings
    user-guide/exports
    user-guide/admin
