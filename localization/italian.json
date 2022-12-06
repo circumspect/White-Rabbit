@@ -20,29 +20,10 @@
       "locations-drawn": "pescate-luoghi"
     },
 
-    "clues": {
-      "charlie": "indizi-charlie",
-      "dakota": "indizi-dakota",
-      "evan": "indizi-evan",
-      "jack": "indizi-jack",
-      "julia": "indizi-julia"
-    },
-
+    "clue-channel-format": "indizi-{}",
     "voicemails": "messaggi-vocali",
-
-    "texts": {
-      "group-chat": "chat-gruppo",
-      "charlie-dakota": "charlie-dakota-mp",
-      "charlie-evan": "charlie-evan-mp",
-      "charlie-jack": "charlie-jack-mp",
-      "charlie-julia": "charlie-julia-mp",
-      "dakota-evan": "dakota-evan-mp",
-      "dakota-jack": "dakota-jack-mp",
-      "dakota-julia": "dakota-julia-mp",
-      "evan-jack": "evan-jack-mp",
-      "evan-julia": "evan-julia-mp",
-      "jack-julia": "jack-julia-mp"
-    }
+    "group-chat": "chat-gruppo",
+    "pm-channel-format": "{}-{}-mp"
   },
 
   "commands": {
