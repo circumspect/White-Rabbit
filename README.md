@@ -57,6 +57,7 @@ Built with help from these wonderful people ([emoji key](https://allcontributors
       <td align="center"><a href="http://pipejakob.com"><img src="https://avatars.githubusercontent.com/u/1605981?v=4?s=100" width="100px;" alt="Jacob Beacham"/><br /><sub><b>Jacob Beacham</b></sub></a><br /><a href="https://github.com/circumspect/White-Rabbit/commits?author=pipejakob" title="Code">💻</a> <a href="https://github.com/circumspect/White-Rabbit/issues?q=author%3Apipejakob" title="Bug reports">🐛</a></td>
       <td align="center"><a href="https://github.com/Ghuldrigan"><img src="https://avatars.githubusercontent.com/u/28635092?v=4?s=100" width="100px;" alt="Ghuldrigan"/><br /><sub><b>Ghuldrigan</b></sub></a><br /><a href="https://github.com/circumspect/White-Rabbit/issues?q=author%3AGhuldrigan" title="Bug reports">🐛</a></td>
       <td align="center"><a href="http://www.nousefornames.it"><img src="https://avatars.githubusercontent.com/u/210835?v=4?s=100" width="100px;" alt="Alberto"/><br /><sub><b>Alberto</b></sub></a><br /><a href="#translation-wishmerhill" title="Translation">🌍</a></td>
+      <td align="center"><a href="https://github.com/d-beezee"><img src="https://avatars.githubusercontent.com/u/59012086?v=4?s=100" width="100px;" alt="d-beezee"/><br /><sub><b>d-beezee</b></sub></a><br /><a href="#translation-d-beezee" title="Translation">🌍</a></td>
     </tr>
   </tbody>
 </table>
