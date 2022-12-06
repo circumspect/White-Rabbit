@@ -4,7 +4,7 @@
 COMMAND_PREFIX = "!"
 
 # Links and bot info
-VERSION = "0.12.4"
+VERSION = "0.12.5"
 DOCS_URL = "https://white-rabbit.readthedocs.io/"
 DOCS_SHORT_URL = "https://white-rabbit.rtfd.io/"
 SOURCE_URL = "https://github.com/circumspect/White-Rabbit"
