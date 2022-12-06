@@ -39,7 +39,7 @@ class Game(commands.Cog):
             asyncio.create_task(ctx.send(LOCALIZATION_DATA["errors"]["AlreadyInitialized"]))
             return
 
-        asyncio.create_task(ctx.send(LOCALIZATION_DATA["messages"]["Initializing"]))
+        await ctx.send(LOCALIZATION_DATA["messages"]["Initializing"])
 
         # Introduction images
         utils.send_image(
