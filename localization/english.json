@@ -20,29 +20,10 @@
             "locations-drawn": "locations-drawn"
         },
 
-        "clues": {
-            "charlie": "charlie-clues",
-            "dakota": "dakota-clues",
-            "evan": "evan-clues",
-            "jack": "jack-clues",
-            "julia": "julia-clues"
-        },
-
+        "clue-channel-format": "{}-clues",
         "voicemails": "voicemails",
-
-        "texts": {
-            "group-chat": "group-chat",
-            "charlie-dakota": "charlie-dakota-pm",
-            "charlie-evan": "charlie-evan-pm",
-            "charlie-jack": "charlie-jack-pm",
-            "charlie-julia": "charlie-julia-pm",
-            "dakota-evan": "dakota-evan-pm",
-            "dakota-jack": "dakota-jack-pm",
-            "dakota-julia": "dakota-julia-pm",
-            "evan-jack": "evan-jack-pm",
-            "evan-julia": "evan-julia-pm",
-            "jack-julia": "jack-julia-pm"
-        }
+        "group-chat": "group-chat",
+        "pm-channel-format": "{}-{}-pm"
     },
 
     "commands": {
