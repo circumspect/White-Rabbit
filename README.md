@@ -2,6 +2,7 @@
 
 ![GitHub Workflow Status](https://img.shields.io/github/workflow/status/circumspect/White-Rabbit/Login%20Test)
 [![Documentation Status](https://readthedocs.org/projects/white-rabbit/badge/?version=latest)](https://white-rabbit.readthedocs.io/en/latest/?badge=latest)
+[![Docker Hub image](https://github.com/circumspect/White-Rabbit/actions/workflows/docker.yml/badge.svg)](https://hub.docker.com/r/circumspect/white-rabbit)
 ![GitHub](https://img.shields.io/github/license/circumspect/White-Rabbit)
 
 A Discord bot for Alice is Missing. Server template: <https://discord.new/SfcBdbyhGMmR>.
