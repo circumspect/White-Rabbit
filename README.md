@@ -1,6 +1,6 @@
 # The White Rabbit
 
-![GitHub Workflow Status](https://img.shields.io/github/workflow/status/circumspect/White-Rabbit/Login%20Test)
+![GitHub Workflow Status](https://img.shields.io/github/actions/workflow/status/circumspect/White-Rabbit/login-test.yml?branch=main)
 [![Documentation Status](https://readthedocs.org/projects/white-rabbit/badge/?version=latest)](https://white-rabbit.readthedocs.io/en/latest/?badge=latest)
 [![GitHub release (latest SemVer)](https://img.shields.io/github/v/release/circumspect/White-Rabbit)](https://github.com/circumspect/White-Rabbit/releases)
 [![Docker Image Version (latest semver)](https://img.shields.io/docker/v/circumspect/white-rabbit?label=Docker%20Hub)](https://hub.docker.com/r/circumspect/white-rabbit)
