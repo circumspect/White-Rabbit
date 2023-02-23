@@ -78,7 +78,7 @@ with the Discord token obtained above.
 
   docker run -d \
     --name=white-rabbit \
-    --env TOKEN=YOUR_TOKEN_GOES_HERE \
+    --env WHITE_RABBIT_TOKEN=YOUR_TOKEN_GOES_HERE \
     --restart unless-stopped \
     circumspect/white-rabbit
 
@@ -86,7 +86,7 @@ Optional Environment Variables
 ------------------------------
 
 You may set additional optional environment variables through Docker using
-the `--env` option, e.g., ``--env LANGUAGE=fr``.
+the `--env` option, e.g., ``--env WHITE_RABBIT_LANGUAGE=fr``.
 
 
 Heroku Installation

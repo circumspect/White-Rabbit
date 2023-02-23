@@ -144,7 +144,7 @@ for plugin in PLUGINS:
 
 # Import bot token
 try:
-    token = envvars.get_env_var("TOKEN")
+    token = envvars.get_env_var("WHITE_RABBIT_TOKEN")
     print("Logging in...")
     bot.run(token)
 except FileNotFoundError:
