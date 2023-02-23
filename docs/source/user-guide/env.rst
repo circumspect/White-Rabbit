@@ -5,23 +5,23 @@ Environment Variables
 The following is a list of environment variables that the bot can use.
 Variables in the environment take precedence over variables found in
 the ``.env`` file. To use the ``.env`` file, use the format
-``VARNAME=VALUE``, (e.g., ``TOKEN=123456789``) with one value per line.
+``VARNAME=VALUE``, (e.g., ``WHITE_RABBIT_TOKEN=123456789``) with one value per line.
 
 
-TOKEN
+WHITE_RABBIT_TOKEN
 -----
 
 The Discord token for the bot. Required.
 
 
-LANGUAGE
+WHITE_RABBIT_LANGUAGE
 -----------
 
 The localization to be used by the bot. Defaults to ``en``. For a list of
 supported languages, see :doc:`localization`.
 
 
-USE_LOCAL_IMAGES
+WHITE_RABBIT_USE_LOCAL_IMAGES
 --------------------
 
 Defaults to ``false``. If true, the bot will upload the images from its

@@ -2,7 +2,7 @@
 Localization
 ************
 
-To change the language the bot runs in, modify the ``LANGUAGE`` key in the
+To change the language the bot runs in, modify the ``WHITE_RABBIT_LANGUAGE`` key in the
 ``.env`` file. A table of languages with their key values is show below:
 
 .. csv-table::

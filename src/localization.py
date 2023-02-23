@@ -8,7 +8,7 @@ import envvars
 from rabbit import WHITE_RABBIT_DIR
 
 # Localization
-DEFAULT_LOCALIZATION = envvars.DEFAULTS["LANGUAGE"]
+DEFAULT_LOCALIZATION = envvars.DEFAULTS["WHITE_RABBIT_LANGUAGE"]
 LOCALIZATION_DIR = WHITE_RABBIT_DIR / "localization"
 
 LOCALIZATIONS = {
@@ -18,7 +18,7 @@ LOCALIZATIONS = {
     "it": "italian.json",
 }
 
-LANGUAGE_KEY = envvars.get_env_var("LANGUAGE")
+LANGUAGE_KEY = envvars.get_env_var("WHITE_RABBIT_LANGUAGE")
 
 localization_file = LOCALIZATION_DIR / LOCALIZATIONS[LANGUAGE_KEY]
 

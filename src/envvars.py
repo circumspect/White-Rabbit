@@ -7,9 +7,9 @@ from rabbit import WHITE_RABBIT_DIR
 ENV_FILE = WHITE_RABBIT_DIR / ".env"
 
 DEFAULTS = {
-    "TOKEN": "0",
-    "LANGUAGE": "en",
-    "USE_LOCAL_IMAGES": False,
+    "WHITE_RABBIT_TOKEN": "0",
+    "WHITE_RABBIT_LANGUAGE": "en",
+    "WHITE_RABBIT_USE_LOCAL_IMAGES": False,
 }
 
 
