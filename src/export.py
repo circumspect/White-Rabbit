@@ -257,7 +257,7 @@ class Export(commands.Cog):
                 break
 
         # Couldn't find exact match, use first message in channel
-        first_message = await channel.history(limit=1, oldest_first=True).flatten()
+        first_message = [message async for message in channel.history(limit=1, oldest_first=True)]
 
         if not first_message:
             # Channel is empty, so we quit
