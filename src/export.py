@@ -749,5 +749,5 @@ class Export(commands.Cog):
         zip_file.unlink()
 
 
-def setup(bot):
-    bot.add_cog(Export(bot))
+async def setup(bot):
+    await bot.add_cog(Export(bot))

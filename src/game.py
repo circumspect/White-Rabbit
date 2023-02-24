@@ -376,5 +376,5 @@ class Game(commands.Cog):
         asyncio.create_task(ctx.send(loc["ten_min_card"]["Assigned"]))
 
 
-def setup(bot):
-    bot.add_cog(Game(bot))
+async def setup(bot):
+    await bot.add_cog(Game(bot))

@@ -139,5 +139,5 @@ class Admin(commands.Cog):
         await asyncio.gather(self.wipe(ctx), self.reset_perms(ctx), self.reset_roles(ctx))
 
 
-def setup(bot):
-    bot.add_cog(Admin(bot))
+async def setup(bot):
+    await bot.add_cog(Admin(bot))

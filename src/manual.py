@@ -366,5 +366,5 @@ class Manual(commands.Cog):
         return True
 
 
-def setup(bot):
-    bot.add_cog(Manual(bot))
+async def setup(bot):
+    await bot.add_cog(Manual(bot))
