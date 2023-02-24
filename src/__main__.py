@@ -8,6 +8,7 @@ import discord
 from discord.ext import commands
 import requests
 # Local
+from bot import WhiteRabbit
 import cards
 import constants
 from debug import DEBUG_COMMAND_LIST
@@ -28,7 +29,7 @@ utils.delete_files(dirs.FONT_DIR, "pkl")
 # Enable Server Members gateway intent to find all users
 intents = discord.Intents.all()
 
-bot = commands.Bot(command_prefix=commands.when_mentioned_or(constants.COMMAND_PREFIX), intents=intents)
+bot = WhiteRabbit(command_prefix=commands.when_mentioned_or(constants.COMMAND_PREFIX), intents=intents)
 bot.games = {}
 
 # Localization
@@ -137,10 +138,6 @@ async def on_command_error(ctx, error):
         asyncio.create_task(ctx.send(LOCALIZATION_DATA["errors"]["UnknownError"]))
         raise error
 
-# Load all extensions
-PLUGINS = ["about", "admin", "debug", "export", "game", "manual", "players", "settings"]
-for plugin in PLUGINS:
-    bot.load_extension(plugin)
 
 # Import bot token
 try:

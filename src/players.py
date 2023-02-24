@@ -106,5 +106,5 @@ class Players(commands.Cog):
         await ctx.send(message or loc["users"]["NoneFound"])
 
 
-def setup(bot):
-    bot.add_cog(Players(bot))
+async def setup(bot):
+    await bot.add_cog(Players(bot))

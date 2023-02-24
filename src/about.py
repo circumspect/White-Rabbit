@@ -46,5 +46,5 @@ class About(commands.Cog):
         asyncio.create_task(ctx.send(message))
 
 
-def setup(bot):
-    bot.add_cog(About(bot))
+async def setup(bot):
+    await bot.add_cog(About(bot))
