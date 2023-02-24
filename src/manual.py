@@ -57,7 +57,7 @@ class Manual(commands.Cog):
         ctx.game.alice = choice
 
         alice = utils.get_image(dirs.POSTER_DIR, f"Alice-Briarwood-{ctx.game.alice}")
-        utils.send_image(LOCALIZATION_DATA["channels"]["resources"], alice, ctx)
+        await utils.send_image(LOCALIZATION_DATA["channels"]["resources"], alice, ctx)
 
     @commands.command(
         name=loc["shuffle_motives"]["name"],
@@ -93,14 +93,19 @@ class Manual(commands.Cog):
             asyncio.create_task(ctx.send(loc["send_motives"]["NeedToShuffle"]))
             return
 
+        async_tasks = []
         for name in cards.CHARACTERS:
             channel = ctx.text_channels[LOCALIZATION_DATA["channels"]["clues"][name]]
             motive = ctx.game.motives[name]
-            utils.send_image(
-                channel,
-                utils.get_image(dirs.MOTIVE_DIR, f"Motive-{motive}"),
-                ctx
+            async_tasks.append(
+                utils.send_image(
+                    channel,
+                    utils.get_image(dirs.MOTIVE_DIR, f"Motive-{motive}"),
+                    ctx
+                )
             )
+
+        await asyncio.gather(*async_tasks)
 
     @commands.command(
         name=loc["clue"]["name"],
@@ -142,9 +147,9 @@ class Manual(commands.Cog):
         #     return
 
         # Send the clue
-        self.send_clue(ctx, time)
+        await self.send_clue(ctx, time)
 
-    def send_clue(self, ctx, time: int):
+    async def send_clue(self, ctx, time: int):
         # Sends clue based on picked_clues value
 
         # Find character who the clue has been assigned to
@@ -159,12 +164,12 @@ class Manual(commands.Cog):
         channel = utils.get_text_channels(ctx.game.guild)[LOCALIZATION_DATA["channels"]["clues"][character]]
         choice = ctx.game.picked_clues[time]
         path = utils.get_image(dirs.CLUE_DIR / str(time), f"{time}-{choice}")
-        utils.send_image(channel, path)
+        await utils.send_image(channel, path)
 
         # Send suspect/location card to player's clues channel
         suspect = self.draw_suspect(ctx, time)
         path = filepaths.MASTER_PATHS[suspect]
-        utils.send_image(channel, path)
+        await utils.send_image(channel, path)
 
         # Send suspect/location card to respective drawn cards channel
         if suspect in cards.SUSPECTS:
@@ -177,19 +182,13 @@ class Manual(commands.Cog):
         # Confirmed culprit/location
         if time <= 30:
             if suspect in cards.SUSPECTS:
-                asyncio.create_task(channel.send(LOCALIZATION_DATA["messages"]["Culprit"]))
+                await channel.send(LOCALIZATION_DATA["messages"]["Culprit"])
             elif suspect in cards.LOCATIONS:
-                asyncio.create_task(
-                    channel.send(
-                        LOCALIZATION_DATA["messages"]["AliceLocation"]
-                    )
-                )
+                await channel.send(LOCALIZATION_DATA["messages"]["AliceLocation"])
             else:
                 print("Something has gone very very wrong.")
-                asyncio.create_task(
-                    channel.send(LOCALIZATION_DATA["errors"]["UnknownError"])
-                )
-        utils.send_image(channel, path)
+                await channel.send(LOCALIZATION_DATA["errors"]["UnknownError"])
+        await utils.send_image(channel, path)
 
         # Update next_clue unless at end
         if ctx.game.next_clue != 20:

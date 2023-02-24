@@ -32,40 +32,48 @@ class Game(commands.Cog):
         """Initial setup before character selection"""
 
         if ctx.game.start_time:
-            asyncio.create_task(ctx.send(LOCALIZATION_DATA["errors"]["AlreadyStarted"]))
+            await ctx.send(LOCALIZATION_DATA["errors"]["AlreadyStarted"])
             return
         elif ctx.game.init and ctx.game.automatic:
             # Disallow another initialization attempt unless manual mode is enabled
-            asyncio.create_task(ctx.send(LOCALIZATION_DATA["errors"]["AlreadyInitialized"]))
+            await ctx.send(LOCALIZATION_DATA["errors"]["AlreadyInitialized"])
             return
 
         await ctx.send(LOCALIZATION_DATA["messages"]["Initializing"])
 
+        async_tasks = []
+
         # Introduction images
-        utils.send_image(
-            LOCALIZATION_DATA["channels"]["resources"],
-            filepaths.MASTER_PATHS["guide"],
-            ctx
+        async_tasks.append(
+            utils.send_image(
+                LOCALIZATION_DATA["channels"]["resources"],
+                filepaths.MASTER_PATHS["guide"],
+                ctx
+            )
         )
-        utils.send_image(
-            LOCALIZATION_DATA["channels"]["resources"],
-            filepaths.MASTER_PATHS["intro"],
-            ctx
+        async_tasks.append(
+            utils.send_image(
+                LOCALIZATION_DATA["channels"]["resources"],
+                filepaths.MASTER_PATHS["intro"],
+                ctx
+            )
         )
 
         if ctx.game.automatic:
-            asyncio.create_task(self.bot.cogs["Manual"].alice(ctx))
+            async_tasks.append(self.bot.cogs["Manual"].alice(ctx))
+
+        await asyncio.gather(*async_tasks)
 
         # Send characters, suspects, and locations to appropriate channels
         for character in sorted(cards.CHARACTERS.keys()):
             filepath = utils.get_image(dirs.CHARACTER_INTRODUCTIONS_DIR, character)
-            utils.send_image(LOCALIZATION_DATA["channels"]["cards"]["character-cards"], filepath, ctx)
+            await utils.send_image(LOCALIZATION_DATA["channels"]["cards"]["character-cards"], filepath, ctx)
         for suspect in sorted(cards.SUSPECTS.keys()):
             filepath = utils.get_image(dirs.SUSPECT_IMAGE_DIR, suspect)
-            utils.send_image(LOCALIZATION_DATA["channels"]["cards"]["suspect-cards"], filepath, ctx)
+            await utils.send_image(LOCALIZATION_DATA["channels"]["cards"]["suspect-cards"], filepath, ctx)
         for location in sorted(cards.LOCATIONS.keys()):
             filepath = utils.get_image(dirs.LOCATION_IMAGE_DIR, location)
-            utils.send_image(LOCALIZATION_DATA["channels"]["cards"]["location-cards"], filepath, ctx)
+            await utils.send_image(LOCALIZATION_DATA["channels"]["cards"]["location-cards"], filepath, ctx)
 
         # Instructions for Charlie Barnes
         channel = ctx.text_channels[LOCALIZATION_DATA["channels"]["clues"]["charlie"]]
@@ -76,22 +84,27 @@ class Game(commands.Cog):
 
         background = utils.codeblock(background)
 
-        asyncio.create_task(channel.send(prompts))
-        asyncio.create_task(channel.send(background))
+        await channel.send(prompts)
+        await channel.send(background)
 
-        # Character and motive cards in clues channels
+        # Character cards in clues channels
+        async_tasks = []
         for name in cards.CHARACTERS:
             channel = ctx.text_channels[LOCALIZATION_DATA["channels"]["clues"][name]]
-            utils.send_image(
-                channel,
-                filepaths.MASTER_PATHS[name],
-                ctx
+            async_tasks.append(
+                utils.send_image(
+                    channel,
+                    filepaths.MASTER_PATHS[name],
+                    ctx
+                )
             )
+
+        await asyncio.gather(*async_tasks)
 
         # Shuffle and send motives if in automatic mode
         if ctx.game.automatic:
             await self.bot.cogs["Manual"].shuffle_motives(ctx)
-            asyncio.create_task(self.bot.cogs["Manual"].send_motives(ctx))
+            await self.bot.cogs["Manual"].send_motives(ctx)
 
         ctx.game.init = True
 
@@ -141,12 +154,12 @@ class Game(commands.Cog):
         channel = LOCALIZATION_DATA["channels"]["resources"]
         choice = random.randint(1, 3)
         path = utils.get_image(dirs.CLUE_DIR / "80", f"80-{choice}")
-        utils.send_image(channel, path, ctx)
+        await utils.send_image(channel, path, ctx)
 
         # Send suspect card
         suspect = random.choice(list(cards.SUSPECTS.keys()))
         path = filepaths.MASTER_PATHS[suspect]
-        utils.send_image(channel, path, ctx)
+        await utils.send_image(channel, path, ctx)
 
     @commands.command(
         name=loc["char_sheet"]["name"],
@@ -156,7 +169,7 @@ class Game(commands.Cog):
     async def char_sheet(self, ctx):
         """Sends the character sheet to the resources channel"""
 
-        utils.send_image(
+        await utils.send_image(
             LOCALIZATION_DATA["channels"]["resources"],
             filepaths.MASTER_PATHS["character_sheet"],
             ctx
@@ -193,7 +206,7 @@ class Game(commands.Cog):
 
         # 90 minute card/message for Charlie Barnes
         channel = ctx.text_channels[LOCALIZATION_DATA["channels"]["clues"]["charlie"]]
-        utils.send_image(channel, utils.get_image(dirs.CLUE_DIR / "90", "90-1"), ctx)
+        await utils.send_image(channel, utils.get_image(dirs.CLUE_DIR / "90", "90-1"), ctx)
         first_message = LOCALIZATION_DATA["stuff-for-charlie"]["first-message"]
         await channel.send(first_message)
 
@@ -234,7 +247,7 @@ class Game(commands.Cog):
             if ctx.game.automatic:
                 # Normal clue cards
                 if minutes_remaining in gamedata.CLUE_TIMES and minutes_remaining <= ctx.game.next_clue:
-                    self.bot.cogs["Manual"].send_clue(ctx, minutes_remaining)
+                    asyncio.create_task(self.bot.cogs["Manual"].send_clue(ctx, minutes_remaining))
                     if minutes_remaining == 30 and ctx.game.picked_clues[minutes_remaining] == 1:
                         flip = utils.flip()
 
@@ -255,7 +268,7 @@ class Game(commands.Cog):
                     channel = ctx.text_channels[LOCALIZATION_DATA["channels"]["resources"]]
                     asyncio.create_task(channel.send("@everyone " + gamedata.TEN_MIN_REMINDER_TEXT))
 
-                # 10 min card
+                # 10 min card - send culprit
                 elif minutes_remaining == 10:
                     # If not assigned, default to Charlie
                     if not ctx.game.ten_char:
@@ -264,7 +277,7 @@ class Game(commands.Cog):
                     channel = LOCALIZATION_DATA["channels"]["clues"][ctx.game.ten_char]
                     ending = random.choice([i for i in ctx.game.endings if ctx.game.endings[i]])
                     clue = utils.get_image(dirs.CLUE_DIR / "10", f"10-{ending}")
-                    utils.send_image(channel, clue, ctx)
+                    await utils.send_image(channel, clue, ctx)
 
                     if ending != 3:
                         ctx.game.three_flip = True
@@ -280,12 +293,12 @@ class Game(commands.Cog):
                     # Send to clues channel
                     path = utils.get_image(dirs.SUSPECT_IMAGE_DIR, second)
                     channel = LOCALIZATION_DATA["channels"]["clues"][ctx.game.ten_char]
-                    utils.send_image(channel, path, ctx)
+                    await utils.send_image(channel, path, ctx)
 
                     # Send to suspects-drawn channel
                     channel = ctx.text_channels[LOCALIZATION_DATA["channels"]["cards"]["suspects-drawn"]]
-                    asyncio.create_task(channel.send(LOCALIZATION_DATA["messages"]["SecondCulprit"]))
-                    utils.send_image(channel, path, ctx)
+                    await channel.send(LOCALIZATION_DATA["messages"]["SecondCulprit"])
+                    await utils.send_image(channel, path, ctx)
 
                 # Endings 1 and 2
                 elif minutes_remaining == 3 and ctx.game.three_flip:
@@ -319,7 +332,7 @@ class Game(commands.Cog):
             minutes_remaining -= check_interval
 
         # End of game, send debrief
-        utils.send_image(
+        await utils.send_image(
             LOCALIZATION_DATA["channels"]["clues"]["charlie"],
             filepaths.MASTER_PATHS["debrief"],
             ctx
@@ -346,7 +359,7 @@ class Game(commands.Cog):
             search = random.choice(ctx.game.search_cards)
             ctx.game.search_cards.remove(search)
             image = utils.get_image(dirs.SEARCHING_DIR, search)
-            utils.send_image(char_channel, image, ctx)
+            await utils.send_image(char_channel, image, ctx)
 
         else:
             # out of unique cards

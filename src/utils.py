@@ -109,7 +109,7 @@ def get_image(directory: Path, name: str) -> Union[Path, str]:
             return find_url(fallback_url, ImageResource.IMAGE_EXTENSIONS)
 
 
-def send_image(channel, filepath: Union[Path, str], ctx=None):
+async def send_image(channel, filepath: Union[Path, str], ctx=None):
     """Sends an image to a specified channel"""
 
     if isinstance(channel, str):
@@ -121,18 +121,18 @@ def send_image(channel, filepath: Union[Path, str], ctx=None):
 
     if isinstance(filepath, Path):
         # If sending image as a file, attach it
-        asyncio.create_task(channel.send(file=discord.File(filepath)))
+        await channel.send(file=discord.File(filepath))
     else:
         # Otherwise send the link directly
-        asyncio.create_task(channel.send(filepath))
+        await channel.send(filepath)
 
 
-def send_folder(channel, path, ctx=None):
+async def send_folder(channel, path, ctx=None):
     """Sends all images in a folder in alphabetical order"""
 
     for image in sorted(path.glob("*.*")):
         filepath = get_image(path, image.stem)
-        send_image(channel, filepath, ctx)
+        await send_image(channel, filepath, ctx)
 
 
 def is_command(message: str):  # sourcery skip: return-identity
