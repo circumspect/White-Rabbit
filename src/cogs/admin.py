@@ -1,8 +1,10 @@
 # Built-in
 import asyncio
+import itertools as it
 # 3rd-party
 import discord
 from discord.ext import commands
+from discord.permissions import PermissionOverwrite
 # Local
 from data import cards, constants
 from data.localization import LOCALIZATION_DATA
@@ -10,6 +12,18 @@ from data.localization import LOCALIZATION_DATA
 loc = LOCALIZATION_DATA["commands"]["admin"]
 GROUP_CHAT = LOCALIZATION_DATA["channels"]["texts"]["group-chat"]
 
+PERMS_NO_READING = PermissionOverwrite()
+PERMS_NO_READING.update(**{"read_messages": False})
+PERMS_NO_SENDING = PermissionOverwrite()
+PERMS_NO_SENDING.update(**{"send_messages": False})
+PERMS_YES_READING = PermissionOverwrite()
+PERMS_YES_READING.update(**{"read_messages": True})
+PERMS_YES_SENDING = PermissionOverwrite()
+PERMS_YES_SENDING.update(**{"send_messages": True})
+PERMS_NO_ACCESS = PermissionOverwrite()
+PERMS_NO_ACCESS.update(**{"read_messages": False, "send_messages": False})
+PERMS_SPECTATOR = PermissionOverwrite()
+PERMS_SPECTATOR.update(**{"read_messages": True, "send_messages": False})
 
 class Admin(commands.Cog):
     def __init__(self, bot):
@@ -19,6 +33,125 @@ class Admin(commands.Cog):
         """Commands for server admins only"""
 
         return ctx.author.guild_permissions.administrator
+
+    @commands.command(
+        name=loc["server_setup"]["name"],
+        aliases=loc["server_setup"]["aliases"],
+        description=loc["server_setup"]["description"]
+    )
+    async def server_setup(self, ctx):
+        """Deletes all channels and roles and creates new ones based on the given card list"""
+
+        # Delete roles and channels
+        async_tasks = []
+        for role in ctx.guild.roles:
+            if role.name != "The White Rabbit" and role != ctx.guild.default_role:
+                async_tasks.append(role.delete())
+
+        for channel in ctx.guild.text_channels:
+            # if channel.name != LOCALIZATION_DATA["channels"]["bot-channel"]:
+            async_tasks.append(channel.delete())
+        for channel in ctx.guild.categories:
+            async_tasks.append(channel.delete())
+        for channel in ctx.guild.voice_channels:
+            async_tasks.append(channel.delete())
+
+        await asyncio.gather(*async_tasks)
+
+        # Create roles
+        roles = {}
+        roles["spectator"] = await ctx.guild.create_role(name=LOCALIZATION_DATA["spectator-role"])
+
+        for character in cards.CHARACTERS:
+            roles[character] = await ctx.guild.create_role(name=character.capitalize())
+
+
+        # TODO: Localization
+        channel_categories = {
+            "general": await ctx.guild.create_category("General/OOC"),
+            "game": await ctx.guild.create_category("The Game",
+                overwrites = {
+                    ctx.guild.default_role: PERMS_NO_SENDING
+                }
+            ),
+            "texts": await ctx.guild.create_category("Texts",
+                overwrites = { ctx.guild.default_role: PERMS_NO_SENDING }
+            )
+        }
+
+        # General channels are open to everyone
+        await ctx.guild.create_text_channel(
+            LOCALIZATION_DATA["channels"]["discussion"],
+            category = channel_categories["general"]
+        )
+        await ctx.guild.create_text_channel(
+            LOCALIZATION_DATA["channels"]["bot-channel"],
+            category = channel_categories["general"]
+        )
+        await ctx.guild.create_voice_channel(
+            LOCALIZATION_DATA["channels"]["call"],
+            category = channel_categories["general"]
+        )
+
+        # Game channels don't allow sending, except in voicemails
+        await ctx.guild.create_text_channel(
+            LOCALIZATION_DATA["channels"]["resources"],
+            category = channel_categories["game"],
+            overwrites = { ctx.guild.default_role: PERMS_NO_SENDING }
+        )
+
+        for _, name in LOCALIZATION_DATA["channels"]["cards"].items():
+            await ctx.guild.create_text_channel(
+                name,
+                category = channel_categories["game"],
+                overwrites = { ctx.guild.default_role: PERMS_NO_SENDING }
+            )
+
+        # Clues
+        for character in cards.CHARACTERS:
+            await ctx.guild.create_text_channel(
+                LOCALIZATION_DATA["channels"]["clues"][character],
+                category = channel_categories["game"],
+                overwrites = {
+                    ctx.guild.default_role: PERMS_NO_ACCESS,
+                    roles["spectator"]: PERMS_YES_READING,
+                    roles[character]: PERMS_YES_READING,
+                }
+            )
+
+        # Voicemails
+        overwrites = { roles[character]: PERMS_YES_SENDING for character in cards.CHARACTERS }
+        overwrites[ctx.guild.default_role] = PERMS_NO_SENDING
+        await ctx.guild.create_text_channel(
+            LOCALIZATION_DATA["channels"]["voicemails"],
+            category = channel_categories["game"],
+            overwrites = overwrites
+        )
+
+        # Group chat
+        overwrites = { roles[character]: PERMS_YES_SENDING for character in cards.CHARACTERS }
+        overwrites[ctx.guild.default_role] = PERMS_NO_SENDING
+        await ctx.guild.create_text_channel(
+            LOCALIZATION_DATA["channels"]["group-chat"],
+            category = channel_categories["texts"],
+            overwrites = overwrites
+        )
+
+
+        # Private message channels
+
+        for (c1, c2) in it.combinations(cards.CHARACTERS.keys(), 2):
+            channel = await ctx.guild.create_text_channel(
+                LOCALIZATION_DATA["channels"]["texts"][f"{c1}-{c2}"],
+                category = channel_categories["texts"],
+                overwrites = {
+                    ctx.guild.default_role: PERMS_NO_READING,
+                    roles["spectator"]: PERMS_SPECTATOR,
+                    roles[c1]: PERMS_YES_READING,
+                    roles[c2]: PERMS_YES_READING,
+                }
+            )
+
 
     @commands.command(
         name=loc["show_all"]["name"],
