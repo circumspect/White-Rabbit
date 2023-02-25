@@ -11,7 +11,7 @@ import requests
 from bot import WhiteRabbit
 import cards
 import constants
-from debug import DEBUG_COMMAND_LIST
+from cogs.debug import DEBUG_COMMAND_LIST
 import dirs
 import envvars
 import gamedata

@@ -17,5 +17,5 @@ class WhiteRabbit(commands.Bot):
         # Load all extensions
         PLUGINS = ["about", "admin", "debug", "export", "game", "manual", "players", "settings"]
         for plugin in PLUGINS:
-            await self.load_extension(plugin)
+            await self.load_extension(f"cogs.{plugin}")
 

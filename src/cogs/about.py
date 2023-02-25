@@ -10,7 +10,7 @@ import utils
 loc = LOCALIZATION_DATA["commands"]["about"]
 
 
-class About(commands.Cog):
+class About(commands.Cog, name='about'):
     def __init__(self, bot):
         self.bot = bot
 
