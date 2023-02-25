@@ -70,7 +70,7 @@ class Manual(commands.Cog):
         random.shuffle(motives)
         ctx.game.motives = {
             character.lower(): motive
-            for motive, character in zip(motives, ctx.game.char_roles())
+            for character, motive in zip(ctx.game.char_roles(), motives)
         }
 
         # Console logging
