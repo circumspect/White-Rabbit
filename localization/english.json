@@ -46,6 +46,12 @@
         },
 
         "admin": {
+            "server_setup": {
+                "name": "server_setup",
+                "aliases": [],
+                "description": "Deletes all channels and roles and creates new ones based on the given card list"
+            },
+
             "show_all": {
                 "name": "show_all",
                 "aliases": [],
