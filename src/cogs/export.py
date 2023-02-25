@@ -286,7 +286,7 @@ class Export(commands.Cog):
                 filename = self.parse_filename(url)
 
                 # Ignore character cards
-                if filename in cards.CHARACTERS.keys():
+                if filename in cards.CHARACTERS:
                     continue
 
                 # Motives
@@ -512,12 +512,11 @@ class Export(commands.Cog):
         # Name at top left
         pdf.set_xy(CHAR_TITLE_X, CHAR_TITLE_Y)
         pdf.set_font(*CHAR_TITLE_FONT)
-        title = "\n".join(cards.CHARACTERS[character].split())
+        title = "\n".join(cards.CHARACTERS[character]["full-name"].split())
         pdf.multi_cell(0, CHAR_TITLE_HEIGHT, title)
 
         # Character and motive cards
-        name = cards.CHARACTERS[character]
-        card = utils.get_image(dirs.CHARACTER_IMAGE_DIR, name.split()[0].lower())
+        card = utils.get_image(dirs.CHARACTER_IMAGE_DIR, character.split()[0])
         pdf.image(str(card), CHAR_CARD_LEFT, CHAR_CARD_TOP, CHAR_CARD_WIDTH)
 
         motive = ctx.game.motives[character]

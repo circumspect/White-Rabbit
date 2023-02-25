@@ -63,7 +63,7 @@ class Admin(commands.Cog):
         roles["spectator"] = await ctx.guild.create_role(name=LOCALIZATION_DATA["spectator-role"])
 
         for character in cards.CHARACTERS:
-            roles[character] = await ctx.guild.create_role(name=character.capitalize())
+            roles[character] = await ctx.guild.create_role(name=cards.CHARACTERS[character]["role"])
 
 
         # TODO: Localization
@@ -218,7 +218,7 @@ class Admin(commands.Cog):
             elif channel.name in [GROUP_CHAT, LOCALIZATION_DATA["channels"]["voicemails"]]:
                 asyncio.create_task(channel.set_permissions(everyone, send_messages=False))
                 for role in ctx.guild.roles:
-                    if role.name.lower() in cards.CHARACTERS:
+                    if role.name in cards.ROLES_TO_CHARACTERS:
                         asyncio.create_task(channel.set_permissions(role, send_messages=True))
 
             # Private message channels
@@ -243,7 +243,7 @@ class Admin(commands.Cog):
             is_player = False
             if not member.bot:
                 for role in member.roles:
-                    if role.name.lower() in cards.CHARACTERS.keys():
+                    if role.name in cards.ROLES_TO_CHARACTERS:
                         await member.remove_roles(role)
                         is_player = True
                 if is_player:
