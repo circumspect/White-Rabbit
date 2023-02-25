@@ -79,7 +79,7 @@ def find_url(url: str, extensions):
 
 def get_image(directory: Path, name: str) -> Union[Path, str]:
     if envvars.get_env_var("WHITE_RABBIT_USE_LOCAL_IMAGES"):
-        img = ImageResource(ImageResource.IMAGE_EXTENSIONS)
+        img = ImageResource(ImageResource.DEFAULT_EXTENSIONS)
         try:
             return img.get(directory, name)
         except FileNotFoundError:
@@ -98,14 +98,14 @@ def get_image(directory: Path, name: str) -> Union[Path, str]:
 
         localized_url = f"{url}{'/'.join(parts)}/{name}"
         try:
-            return find_url(localized_url, ImageResource.IMAGE_EXTENSIONS)
+            return find_url(localized_url, ImageResource.DEFAULT_EXTENSIONS)
         except FileNotFoundError:
             if parts[2] == LANGUAGE_KEY:
                 fallback = list(parts)
                 fallback[2] = DEFAULT_LOCALIZATION
 
             fallback_url = f"{url}{'/'.join(fallback)}/{name}"
-            return find_url(fallback_url, ImageResource.IMAGE_EXTENSIONS)
+            return find_url(fallback_url, ImageResource.DEFAULT_EXTENSIONS)
 
 
 async def send_image(channel, filepath: Union[Path, str], ctx=None):
