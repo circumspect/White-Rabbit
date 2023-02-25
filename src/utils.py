@@ -1,7 +1,6 @@
 # pylint: disable=unsubscriptable-object   # https://github.com/PyCQA/pylint/issues/3637#issuecomment-720097674
 
 # Built-in
-import asyncio
 import math
 import os
 from pathlib import Path

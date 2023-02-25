@@ -6,7 +6,6 @@ from discord.ext import commands
 # Local
 import cards
 import constants
-import gamedata
 from localization import LOCALIZATION_DATA
 
 loc = LOCALIZATION_DATA["commands"]["admin"]
