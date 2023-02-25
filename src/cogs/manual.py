@@ -69,8 +69,8 @@ class Manual(commands.Cog):
         motives = list(range(1, 6))
         random.shuffle(motives)
         ctx.game.motives = {
-            character: motive
-            for motive, character in zip(motives, cards.CHARACTERS)
+            character.lower(): motive
+            for motive, character in zip(motives, ctx.game.char_roles())
         }
 
         # Console logging
@@ -90,9 +90,8 @@ class Manual(commands.Cog):
             return
 
         async_tasks = []
-        for name in cards.CHARACTERS:
-            channel = ctx.text_channels[LOCALIZATION_DATA["channels"]["clues"][name]]
-            motive = ctx.game.motives[name]
+        for character, motive in ctx.game.motives.items():
+            channel = ctx.text_channels[LOCALIZATION_DATA["channels"]["clues"][character]]
             async_tasks.append(
                 utils.send_image(
                     channel,

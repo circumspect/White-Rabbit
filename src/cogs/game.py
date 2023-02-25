@@ -98,11 +98,6 @@ class Game(commands.Cog):
 
         await asyncio.gather(*async_tasks)
 
-        # Shuffle and send motives if in automatic mode
-        if ctx.game.automatic:
-            await self.bot.cogs["Manual"].shuffle_motives(ctx)
-            await self.bot.cogs["Manual"].send_motives(ctx)
-
         ctx.game.init = True
 
     @commands.command(
@@ -132,6 +127,11 @@ class Game(commands.Cog):
             return
 
         asyncio.create_task(ctx.send(LOCALIZATION_DATA["messages"]["DistributingClues"]))
+
+        # Shuffle and send motives if in automatic mode
+        if ctx.game.automatic:
+            await self.bot.cogs["Manual"].shuffle_motives(ctx)
+            await self.bot.cogs["Manual"].send_motives(ctx)
 
         asyncio.create_task(self.bot.cogs["Manual"].shuffle_clues(ctx))
         asyncio.create_task(self.bot.cogs["Manual"].assign_times(ctx))
