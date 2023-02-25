@@ -1,5 +1,4 @@
-import cards
-import dirs
+from data import cards, dirs
 import utils
 
 DEV_ID_FILE = dirs.WHITE_RABBIT_DIR / "dev_ids.txt"

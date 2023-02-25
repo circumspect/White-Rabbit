@@ -3,9 +3,9 @@ import asyncio
 # 3rd-party
 from discord.ext import commands
 # Local
-import gamedata
+from data import gamedata
+from data.localization import LOCALIZATION_DATA
 import utils
-from localization import LOCALIZATION_DATA
 
 loc = LOCALIZATION_DATA["commands"]["settings"]
 

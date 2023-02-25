@@ -9,14 +9,11 @@ from discord.ext import commands
 import requests
 # Local
 from bot import WhiteRabbit
-import cards
-import constants
 from cogs.debug import DEBUG_COMMAND_LIST
-import dirs
+from data import cards, constants, dirs, gamedata
+from data.localization import LOCALIZATION_DATA
 import envvars
-import gamedata
 import utils
-from localization import LOCALIZATION_DATA
 
 
 # Minimum Python version check

@@ -4,9 +4,8 @@ import asyncio
 import discord
 from discord.ext import commands
 # Local
-import cards
-import constants
-from localization import LOCALIZATION_DATA
+from data import cards, constants
+from data.localization import LOCALIZATION_DATA
 
 loc = LOCALIZATION_DATA["commands"]["admin"]
 GROUP_CHAT = LOCALIZATION_DATA["channels"]["texts"]["group-chat"]

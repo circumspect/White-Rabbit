@@ -1,7 +1,7 @@
 # Built-in
 import os
 # Local
-from localization import DEFAULT_LOCALIZATION, LANGUAGE_KEY
+from data.localization import DEFAULT_LOCALIZATION, LANGUAGE_KEY
 from rabbit import WHITE_RABBIT_DIR
 
 # Image paths

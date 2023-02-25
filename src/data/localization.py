@@ -1,7 +1,7 @@
 # Built-in
 import json
 # Local
-import cards
+from data import cards
 import envvars
 
 # White-Rabbit/src/localization.py

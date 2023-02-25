@@ -4,8 +4,8 @@ import asyncio
 import discord
 from discord.ext import commands
 # Local
-import cards
-from localization import LOCALIZATION_DATA
+from data import cards
+from data.localization import LOCALIZATION_DATA
 
 loc = LOCALIZATION_DATA["commands"]["players"]
 

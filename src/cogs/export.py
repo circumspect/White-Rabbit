@@ -9,15 +9,11 @@ import discord
 from discord.ext import commands
 from fpdf import FPDF
 # Local
-import cards
-import constants
-import dirs
-from dirs import FONT_DIR
-import filepaths
-import gamedata
+from data import cards, constants, dirs, filepaths, gamedata
+from data.dirs import FONT_DIR
+from data.localization import LOCALIZATION_DATA
 from rabbit import WHITE_RABBIT_DIR
 import utils
-from localization import LOCALIZATION_DATA
 
 loc = LOCALIZATION_DATA["commands"]["export"]
 

@@ -3,8 +3,8 @@ import asyncio
 # 3rd-party
 from discord.ext import commands
 # Local
-import constants
-from localization import LOCALIZATION_DATA
+from data import constants
+from data.localization import LOCALIZATION_DATA
 import utils
 
 loc = LOCALIZATION_DATA["commands"]["about"]

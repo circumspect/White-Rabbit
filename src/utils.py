@@ -12,9 +12,9 @@ from typing import Union
 import discord
 import requests
 # Local
-import constants
+from data import constants
+from data.localization import DEFAULT_LOCALIZATION, LOCALIZATION_DATA, LANGUAGE_KEY
 import envvars
-from localization import DEFAULT_LOCALIZATION, LOCALIZATION_DATA, LANGUAGE_KEY
 from rabbit import WHITE_RABBIT_DIR
 from resources import ImageResource
 

@@ -1,6 +1,6 @@
 # Local
-from cards import *
-from localization import LOCALIZATION_DATA
+from data.cards import *
+from data.localization import LOCALIZATION_DATA
 
 # Message to send when reminding player
 TEN_MIN_REMINDER_TIME = 15
