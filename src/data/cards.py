@@ -1,34 +1,13 @@
-CHARACTERS = {
-    "charlie": "Charlie Barnes",
-    "dakota": "Dakota Travis",
-    "evan": "Evan Holwell",
-    "jack": "Jack Briarwood",
-    "julia": "Julia North",
-}
+from rabbit import WHITE_RABBIT_DIR
+import envvars
+import yaml
 
-SUSPECTS = {
-    "bria": "Bria Brown",
-    "cj": "CJ Wallace",
-    "david": "David Nelson",
-    "halvert": "Mr Halvert",
-    "ryan": "Ryan Groggins",
-}
+CARD_LIST_DIR = WHITE_RABBIT_DIR / "card_lists"
 
-LOCATIONS = {
-    "barn": "Barn",
-    "lighthouse": "Lighthouse",
-    "nightclub": "Nightclub",
-    "park": "State Park",
-    "station": "Train Station",
-}
+with open(CARD_LIST_DIR / f"{envvars.get_env_var('WHITE_RABBIT_CARD_LIST')}.yaml", "r") as f:
+    data = yaml.safe_load(f)
 
-SEARCHING = {
-    "10k": "10000 Dollars",
-    "alcohol": "Bottle of Alcohol",
-    "blade": "Broken Switchblade",
-    "blood": "Drops of Blood",
-    "firearm": "Firearm",
-    "followed": "Followed",
-    "mask": "Mask",
-    "van": "White Van",
-}
+CHARACTERS = data["characters"]
+SUSPECTS = data["suspects"]
+LOCATIONS = data["locations"]
+SEARCHING = data["searching"]

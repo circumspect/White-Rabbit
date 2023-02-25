@@ -1,4 +1,5 @@
 discord.py[voice] >= 2.0
 fpdf
 python-dotenv
+pyyaml
 requests
