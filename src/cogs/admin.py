@@ -63,7 +63,7 @@ class Admin(commands.Cog):
         roles["spectator"] = await ctx.guild.create_role(name=LOCALIZATION_DATA["spectator-role"])
 
         for character in cards.CHARACTERS:
-            roles[character] = await ctx.guild.create_role(name=character)
+            roles[character] = await ctx.guild.create_role(name=character.capitalize())
 
 
         # TODO: Localization
