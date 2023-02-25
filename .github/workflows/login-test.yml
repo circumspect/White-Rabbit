@@ -24,7 +24,7 @@ jobs:
         if [ -f requirements.txt ]; then pip install -r requirements.txt; fi
     - name: Test logging in
       env:
-        SHUTDOWN: true
+        WHITE_RABBIT_SHUTDOWN: true
         WHITE_RABBIT_TOKEN: ${{ secrets.WHITE_RABBIT_TOKEN }}
       run: |
         python ./src

@@ -54,7 +54,7 @@ class Debug(commands.Cog):
         # Console logging
         print("Bot has logged in!")
 
-        if environ.get('SHUTDOWN'):
+        if environ.get('WHITE_RABBIT_SHUTDOWN'):
             print("Shutting down!")
             quit()
 
