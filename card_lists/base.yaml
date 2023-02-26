@@ -8,16 +8,13 @@ characters:
             - Charlie
             - Barnes
     dakota:
-        role: Dakota
+        role:
         full-name: Dakota Travis
     evan:
-        role: Evan
         full-name: Evan Holwell
     jack:
-        role: Jack
         full-name: Jack Briarwood
     julia:
-        role: Julia
         full-name: Julia North
 
 suspects:

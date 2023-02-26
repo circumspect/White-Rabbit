@@ -12,6 +12,9 @@ with open(CARD_LIST_DIR / f"{envvars.get_env_var('WHITE_RABBIT_CARD_LIST')}.yaml
     CARD_LIST = yaml.safe_load(f)
 
 CHARACTERS = CARD_LIST["characters"]
+for character in CHARACTERS:
+    if "role" not in CHARACTERS[character] or CHARACTERS[character]["role"] is None:
+        CHARACTERS[character]["role"] = character.capitalize()
 ROLES_TO_CHARACTERS = {
     details["role"]: character for character, details in CHARACTERS.items()
 }
