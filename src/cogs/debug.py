@@ -41,8 +41,9 @@ class Debug(commands.Cog):
             with open(filepaths.DEV_ID_FILE, 'x') as f:
                 pass
 
-        if environ.get("DEV_ID"):
-            self.bot.dev_ids.append(int(environ.get("DEV_ID")))
+        env_id = environ.get("WHITE_RABBIT_DEV_ID")
+        if env_id:
+            self.bot.dev_ids.append(int(env_id))
 
     async def cog_check(self, ctx):
         """Only people with access to the code"""
