@@ -29,35 +29,17 @@ class Character:
             self.pdf_name_format = self.full_name.split()
 
 class Suspect:
-    def __init__(self, data: Dict[str, str]):
-        if len(data) != 1:
-            raise ValueError
-
-        self.name: str
-        self.description: Optional[str]
-
-        self.name = data.keys()[0]
-        self.description = data[self.name]
+    def __init__(self, name: str, description: Optional[str]):
+        self.name = name
+        self.description = description
 
 class Location:
-    def __init__(self, data: Dict[str, str]):
-        if len(data) != 1:
-            raise ValueError
-
-        self.name: str
-        self.description: Optional[str]
-
-        self.name = data.keys()[0]
-        self.description = data[self.name]
+    def __init__(self, name: str, description: Optional[str]):
+        self.name = name
+        self.description = description
 
 class Searching:
-    def __init__(self, data: Dict[str, str]):
-        if len(data) != 1:
-            raise ValueError
-
-        self.name: str
-        self.description: Optional[str]
-
-        self.name = data.keys()[0]
-        self.description = data[self.name]
+    def __init__(self, name: str, description: Optional[str]):
+        self.name = name
+        self.description = description
 
