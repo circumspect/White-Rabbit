@@ -1,3 +1,5 @@
+# This is an example of a minimal card list file for the base game. Not meant
+# for actual use. Use base.yaml instead.
 # List of characters. Other fields optional (see base.yaml), colons are not.
 characters:
     charlie:
