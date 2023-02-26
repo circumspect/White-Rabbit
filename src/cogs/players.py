@@ -33,16 +33,16 @@ class Players(commands.Cog):
         if role in ctx.author.roles:
             await ctx.send(loc["claim"]["AlreadyHaveThisRole"])
             return
-        elif role.name not in [*cards.ROLES_TO_CHARACTERS, LOCALIZATION_DATA["spectator-role"]]:
+        elif role.name not in [*cards.ROLES_TO_NAMES, LOCALIZATION_DATA["spectator-role"]]:
             asyncio.create_task(ctx.send(loc["claim"]["UnclaimableRole"]))
             return
-        elif role.members and role.name in cards.ROLES_TO_CHARACTERS:
+        elif role.members and role.name in cards.ROLES_TO_NAMES:
             asyncio.create_task(ctx.send(loc["claim"]["RoleIsTaken"]))
             return
 
         # Check if player already has a character role
         for member_role in ctx.author.roles:
-            if member_role.name in cards.ROLES_TO_CHARACTERS:
+            if member_role.name in cards.ROLES_TO_NAMES:
                 asyncio.create_task(ctx.send(loc["claim"]["AlreadyHaveOtherRole"]))
                 return
 
@@ -52,9 +52,9 @@ class Players(commands.Cog):
         if ctx.author == ctx.guild.owner:
             # Can't update nickname for server owner
             asyncio.create_task(ctx.send(LOCALIZATION_DATA["errors"]["ServerOwnerNicknameChange"]))
-        elif role.name in cards.ROLES_TO_CHARACTERS:
+        elif role.name in cards.ROLES_TO_NAMES:
             asyncio.create_task(
-                ctx.author.edit(nick=cards.CHARACTERS[cards.ROLES_TO_CHARACTERS[role.name]]["full-name"])
+                ctx.author.edit(nick=cards.CHARACTERS[cards.ROLES_TO_NAMES[role.name]].full_name)
             )
 
     @commands.command(
@@ -67,7 +67,7 @@ class Players(commands.Cog):
 
         # Keep @everyone
         for role in ctx.author.roles:
-            if role.name in cards.ROLES_TO_CHARACTERS:
+            if role.name in cards.ROLES_TO_NAMES:
                 await ctx.author.remove_roles(role)
                 asyncio.create_task(ctx.send(f"Removed role {role.name}"))
                 if ctx.author == ctx.guild.owner:

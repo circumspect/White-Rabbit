@@ -234,9 +234,9 @@ class Export(commands.Cog):
             return filepaths.LEGACY_FILENAMES[filename]
         except KeyError:
             tmp = filename.split("-")
-            if tmp[0] in cards.SUSPECTS.keys():
+            if tmp[0] in cards.SUSPECTS:
                 return tmp[0]
-            if tmp[0] in cards.CHARACTERS.keys():
+            if tmp[0] in cards.CHARACTERS:
                 return tmp[0]
             return filename
 
@@ -294,17 +294,17 @@ class Export(commands.Cog):
                     ctx.game.motives[name] = filename.split("-")[1]
 
                 # Suspects
-                elif filename in cards.SUSPECTS.keys():
+                elif filename in cards.SUSPECTS:
                     ctx.game.suspects_drawn[current_clue] = filename
                     if current_clue == 10:
                         ctx.game.second_culprit = filename
 
                 # Locations
-                elif filename in cards.LOCATIONS.keys():
+                elif filename in cards.LOCATIONS:
                     ctx.game.locations_drawn[current_clue] = filename
 
                 # Searching cards
-                elif filename in cards.SEARCHING.keys():
+                elif filename in cards.SEARCHING:
                     ctx.game.searching[name].append(filename)
 
                 # Ignore debrief card
@@ -513,10 +513,7 @@ class Export(commands.Cog):
         pdf.set_xy(CHAR_TITLE_X, CHAR_TITLE_Y)
         pdf.set_font(*CHAR_TITLE_FONT)
 
-        if "pdf-name-format" in cards.CHARACTERS[character]:
-            title = "\n".join(cards.CHARACTERS[character]["pdf-name-format"])
-        else:
-            title = "\n".join(cards.CHARACTERS[character]["full-name"].split())
+        title = "\n".join(cards.CHARACTERS[character].pdf_name_format)
 
         pdf.multi_cell(0, CHAR_TITLE_HEIGHT, title)
 

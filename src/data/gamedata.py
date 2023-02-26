@@ -63,12 +63,12 @@ class Data:
 
         # Suspects and locations
         self.suspect_pile = []
-        for suspect in SUSPECTS.keys():
+        for suspect in SUSPECTS:
             self.suspect_pile.append(suspect)
             self.suspect_pile.append(suspect)
 
         self.location_pile = []
-        for location in LOCATIONS.keys():
+        for location in LOCATIONS:
             self.location_pile.append(location)
             self.location_pile.append(location)
 
@@ -114,11 +114,11 @@ class Data:
         unsorted = {
             role.name: role
             for role in self.guild.roles
-            if role.name in ROLES_TO_CHARACTERS and role.members
+            if role.name in ROLES_TO_NAMES and role.members
         }
 
         return dict(sorted(unsorted.items(), key=lambda item: item[0]))
 
 
     def active_chars(self):
-        return [ROLES_TO_CHARACTERS[role] for role in self.char_roles()]
+        return [ROLES_TO_NAMES[role] for role in self.char_roles()]
