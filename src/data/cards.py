@@ -18,13 +18,13 @@ ROLES_TO_NAMES = { v.role: v.name for _, v in CHARACTERS.items() }
 STARTING_PLAYER = CARD_LIST["starting-player"]
 print(STARTING_PLAYER)
 
-ALL_SUSPECTS = CARD_LIST["suspects"]
+ALL_SUSPECTS: Dict[str, Suspect] = { k: Suspect(k, v) for k, v in CARD_LIST["suspects"].items() }
 suspect_keys = random.sample(ALL_SUSPECTS.keys(), 5)
 SUSPECTS = { k: ALL_SUSPECTS[k] for k in suspect_keys }
 
-ALL_LOCATIONS = CARD_LIST["locations"]
+ALL_LOCATIONS: Dict[str, Location] = { k: Location(k, v) for k, v in CARD_LIST["locations"].items() }
 location_keys = random.sample(ALL_LOCATIONS.keys(), 5)
 LOCATIONS = { k: ALL_LOCATIONS[k] for k in location_keys }
 
-SEARCHING = CARD_LIST["searching"]
+SEARCHING: Dict[str, Searching] = { k: Searching(k, v) for k, v in CARD_LIST["searching"].items() }
 CLUES = CARD_LIST["clues"]

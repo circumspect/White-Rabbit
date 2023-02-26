@@ -294,17 +294,17 @@ class Export(commands.Cog):
                     ctx.game.motives[name] = filename.split("-")[1]
 
                 # Suspects
-                elif filename in cards.SUSPECTS.keys():
+                elif filename in cards.SUSPECTS:
                     ctx.game.suspects_drawn[current_clue] = filename
                     if current_clue == 10:
                         ctx.game.second_culprit = filename
 
                 # Locations
-                elif filename in cards.LOCATIONS.keys():
+                elif filename in cards.LOCATIONS:
                     ctx.game.locations_drawn[current_clue] = filename
 
                 # Searching cards
-                elif filename in cards.SEARCHING.keys():
+                elif filename in cards.SEARCHING:
                     ctx.game.searching[name].append(filename)
 
                 # Ignore debrief card

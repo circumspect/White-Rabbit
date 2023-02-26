@@ -63,12 +63,12 @@ class Data:
 
         # Suspects and locations
         self.suspect_pile = []
-        for suspect in SUSPECTS.keys():
+        for suspect in SUSPECTS:
             self.suspect_pile.append(suspect)
             self.suspect_pile.append(suspect)
 
         self.location_pile = []
-        for location in LOCATIONS.keys():
+        for location in LOCATIONS:
             self.location_pile.append(location)
             self.location_pile.append(location)
 
