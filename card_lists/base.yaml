@@ -1,15 +1,21 @@
-# All entries should be in the format <filename (no extension)>: <description>
-
+# List of characters
 characters:
+    # Call this <key>.
+    # Can be anything, but it's best to make it the character's given name
     charlie:
-        role: Charlie
+        # The character's full name.
         full-name: Charlie Barnes
+        # The name of the role to use when setting up the Discord server. Optional, defaults to <key>.capitalize()
+        role: Charlie
+        # How to display the character's name in the PDF export. Optional, defaults to replacing each space
+        # in full-name with a line break.
         pdf-name-format:
             - Charlie
             - Barnes
     dakota:
-        role:
         full-name: Dakota Travis
+        # Note that this can be empty, or the "role" line can be removed entirely.
+        role:
     evan:
         full-name: Evan Holwell
     jack:
@@ -17,6 +23,7 @@ characters:
     julia:
         full-name: Julia North
 
+# List of suspects. Descriptions optional, colons are not.
 suspects:
     bria: Bria Brown
     cj: CJ Wallace
@@ -24,6 +31,7 @@ suspects:
     halvert: Mr. Halvert
     ryan: Ryan Groggins
 
+# List of locations. Descriptions optional, colons are not.
 locations:
     barn: Barn
     lighthouse: Lighthouse
@@ -31,6 +39,7 @@ locations:
     park: State Park
     station: Train Station
 
+# List of searching cards. Descriptions optional, colons are not.
 searching:
     10k: 10000 Dollars
     alcohol: Bottle of Alcohol
