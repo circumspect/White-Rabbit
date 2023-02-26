@@ -36,3 +36,4 @@ location_keys = random.sample(ALL_LOCATIONS.keys(), 5)
 LOCATIONS = { k: ALL_LOCATIONS[k] for k in location_keys }
 
 SEARCHING = CARD_LIST["searching"]
+CLUES = CARD_LIST["clues"]

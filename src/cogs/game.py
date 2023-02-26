@@ -10,7 +10,7 @@ import discord
 from discord.ext import commands
 # Local
 from data import cards, dirs, filepaths, gamedata
-from data.cards import STARTING_PLAYER
+from data.cards import CLUES, STARTING_PLAYER
 from data.localization import LOCALIZATION_DATA
 import utils
 
@@ -150,7 +150,7 @@ class Game(commands.Cog):
 
         # Send random 80 minute clue card
         channel = LOCALIZATION_DATA["channels"]["resources"]
-        choice = random.randint(1, 3)
+        choice = random.choice([*CLUES[80].keys()])
         path = utils.get_image(dirs.CLUE_DIR / "80", f"80-{choice}")
         await utils.send_image(channel, path, ctx)
 
