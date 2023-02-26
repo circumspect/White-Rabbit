@@ -1,0 +1,34 @@
+# List of characters
+characters:
+    charlie:
+    dakota:
+    evan:
+    jack:
+    julia:
+
+# List of suspects. Descriptions optional, colons are not.
+suspects:
+    bria:
+    cj:
+    david:
+    halvert:
+    ryan:
+
+# List of locations. Descriptions optional, colons are not.
+locations:
+    barn:
+    lighthouse:
+    nightclub:
+    park:
+    station:
+
+# List of searching cards. Descriptions optional, colons are not.
+searching:
+    10k:
+    alcohol:
+    blade:
+    blood:
+    firearm:
+    followed:
+    mask:
+    van:
