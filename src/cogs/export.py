@@ -512,7 +512,12 @@ class Export(commands.Cog):
         # Name at top left
         pdf.set_xy(CHAR_TITLE_X, CHAR_TITLE_Y)
         pdf.set_font(*CHAR_TITLE_FONT)
-        title = "\n".join(cards.CHARACTERS[character]["full-name"].split())
+
+        if "pdf-name-format" in cards.CHARACTERS[character]:
+            title = "\n".join(cards.CHARACTERS[character]["pdf-name-format"])
+        else:
+            title = "\n".join(cards.CHARACTERS[character]["full-name"].split())
+
         pdf.multi_cell(0, CHAR_TITLE_HEIGHT, title)
 
         # Character and motive cards

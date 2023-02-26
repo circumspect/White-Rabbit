@@ -4,6 +4,9 @@ characters:
     charlie:
         role: Charlie
         full-name: Charlie Barnes
+        pdf-name-format:
+            - Charlie
+            - Barnes
     dakota:
         role: Dakota
         full-name: Dakota Travis
