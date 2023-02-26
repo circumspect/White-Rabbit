@@ -3,19 +3,22 @@ characters:
     # Call this <key>.
     # Can be anything, but it's best to make it the character's given name
     charlie:
-        # The character's full name.
-        full-name: Charlie Barnes
         # The name of the role to use when setting up the Discord server. Optional, defaults to <key>.capitalize()
         role: Charlie
-        # How to display the character's name in the PDF export. Optional, defaults to replacing each space
-        # in full-name with a line break.
+        # The character's full name. Optional, defaults to <key>.capitalize()
+        # If you want to use the PDF export function, you should set either
+        # this or pdf-name-format
+        full-name: Charlie Barnes
+        # How to display the character's name in the PDF export. Each entry will be a separate line
+        # Optional, defaults to replacing each space in full-name with a line break.
+        # Output may look weird if using a number of lines other than 2
         pdf-name-format:
             - Charlie
             - Barnes
     dakota:
-        full-name: Dakota Travis
         # Note that this can be empty, or the "role" line can be removed entirely.
         role:
+        full-name: Dakota Travis
     evan:
         full-name: Evan Holwell
     jack:
