@@ -285,8 +285,8 @@ class Game(commands.Cog):
                 # Ending 3
                 elif minutes_remaining == 8 and ctx.game.second_culprit:
                     culprit = ctx.game.suspects_drawn[30]
-                    remaining_suspects = [suspect for suspect in cards.SUSPECTS if suspect != culprit]
-                    second = random.choice(remaining_suspects)
+                    remaining_suspects = [suspect for suspect in ctx.game.suspect_pile if suspect != culprit]
+                    second = remaining_suspects.pop()
 
                     # Send to clues channel
                     path = utils.get_image(dirs.SUSPECT_IMAGE_DIR, second)
