@@ -9,7 +9,7 @@ with open(CARD_LIST_DIR / f"{envvars.get_env_var('WHITE_RABBIT_CARD_LIST')}.yaml
 
 CHARACTERS = data["characters"]
 ROLES_TO_CHARACTERS = {
-    v["role"]: character for character, v in CHARACTERS.items()
+    details["role"]: character for character, details in CHARACTERS.items()
 }
 SUSPECTS = data["suspects"]
 LOCATIONS = data["locations"]
