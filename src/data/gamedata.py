@@ -107,21 +107,18 @@ class Data:
 
     def char_roles(self):
         """
-        Returns a dictionary mapping titlecase character names to their
+        Returns a dictionary mapping character role names to their
         corresponding roles for all characters currently being played
         """
 
         unsorted = {
             role.name: role
             for role in self.guild.roles
-            if role.name.lower() in CHARACTERS and role.members
+            if role.name in ROLES_TO_CHARACTERS and role.members
         }
 
         return dict(sorted(unsorted.items(), key=lambda item: item[0]))
 
 
-    def active_chars(self, lowercase=False):
-        if lowercase:
-            return [name.lower() for name in self.char_roles()]
-        else:
-            return [name for name in self.char_roles()]
+    def active_chars(self):
+        return [ROLES_TO_CHARACTERS[role] for role in self.char_roles()]

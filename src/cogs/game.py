@@ -73,7 +73,7 @@ class Game(commands.Cog):
             filepath = utils.get_image(dirs.LOCATION_IMAGE_DIR, location)
             await utils.send_image(LOCALIZATION_DATA["channels"]["cards"]["location-cards"], filepath, ctx)
 
-        # Instructions for Charlie Barnes
+        # Instructions for starting player
         channel = ctx.text_channels[LOCALIZATION_DATA["channels"]["clues"][STARTING_PLAYER]]
         prompts = "\n".join(LOCALIZATION_DATA["stuff-for-charlie"]["instructions"])
         prompts = utils.codeblock(prompts)
@@ -122,8 +122,8 @@ class Game(commands.Cog):
         if player_count < 3:
             asyncio.create_task(ctx.send(LOCALIZATION_DATA["errors"]["NotEnoughPlayers"]))
             return
-        # Can't set up without Charlie Barnes
-        elif "Charlie" not in ctx.game.char_roles():
+        # Can't set up without 90 clue character
+        elif cards.CHARACTERS[STARTING_PLAYER]["role"] not in ctx.game.char_roles():
             asyncio.create_task(ctx.send(LOCALIZATION_DATA["errors"]["MissingCharlie"]))
             return
 
@@ -194,7 +194,7 @@ class Game(commands.Cog):
             asyncio.create_task(ctx.send(LOCALIZATION_DATA["errors"]["AlreadyStarted"]))
             return
 
-        if "Charlie" not in ctx.game.active_chars():
+        if cards.CHARACTERS[STARTING_PLAYER]["role"] not in ctx.game.char_roles():
             asyncio.create_task(ctx.send(LOCALIZATION_DATA["errors"]["MissingCharlie"]))
             return
 

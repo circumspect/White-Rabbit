@@ -26,6 +26,7 @@ ROLES_TO_CHARACTERS = {
 }
 
 STARTING_PLAYER = CARD_LIST["starting-player"]
+print(STARTING_PLAYER)
 
 ALL_SUSPECTS = CARD_LIST["suspects"]
 suspect_keys = random.sample(ALL_SUSPECTS.keys(), 5)

@@ -418,7 +418,7 @@ class Export(commands.Cog):
         )
 
         # Create list of player characters
-        characters = ctx.game.active_chars(lowercase=True)
+        characters = ctx.game.active_chars()
 
         await ctx.send(loc["pdf"]["BuildingCharPages"])
 
@@ -669,7 +669,7 @@ class Export(commands.Cog):
         pdf.set_font(*PM_FONT)
         async for message in channel.history(limit=None, oldest_first=True):
             # Name
-            author = message.author.display_name.split()[0]
+            author = message.author.roles[1].name
 
             # Remove emojis and out of character parts
             line = utils.clean_message(ctx, message.clean_content)

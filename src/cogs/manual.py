@@ -259,8 +259,8 @@ class Manual(commands.Cog):
             asyncio.create_task(ctx.send(loc["errors"]["NotEnoughPlayers"]))
             return
 
-        # Can't play without Charlie
-        elif "Charlie" not in ctx.game.char_roles():
+        # Can't play without 90 clue player
+        elif cards.CHARACTERS[STARTING_PLAYER]["role"] not in ctx.game.char_roles():
             asyncio.create_task(ctx.send(loc["errors"]["MissingCharlie"]))
             return
 
@@ -339,15 +339,15 @@ class Manual(commands.Cog):
         """
 
         for bucket in clue_buckets:
-            # If three players, make sure Charlie gets the 4 clue bucket
+            # If three players, make sure starting player gets the 4 clue bucket
             # This both ensures that each player has the same number of clues
             # (not counting the 90 minute card) and caps the clues on each
             # character page in the PDF export at 3
             if len(bucket) == 4 and 90 not in bucket:
                 return False
 
-            # If four players, make sure Charlie gets three clues so PDF export
-            # doesn't look like Charlie has one and someone else has three
+            # If four players, make sure starting player gets three clues so PDF export
+            # doesn't look like they has have and someone else has three
             if len(ctx.game.char_roles()) == 4 and 90 in bucket and len(bucket) == 2:
                 return False
 
