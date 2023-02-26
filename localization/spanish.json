@@ -1,0 +1,413 @@
+{
+    "title": "Alice is Missing",
+    "template": "https://discord.new/SfcBdbyhGMmR",
+    "bot-name": "The White Rabbit",
+
+    "spectator-role": "Spectator",
+
+    "channels": {
+        "discussion": "discussion",
+        "bot-channel": "bot-channel",
+        "call": "call",
+
+        "resources": "player-resources",
+
+        "cards": {
+            "character-cards": "character-cards",
+            "suspect-cards": "suspect-cards",
+            "location-cards": "location-cards",
+            "suspects-drawn": "suspects-drawn",
+            "locations-drawn": "locations-drawn"
+        },
+
+        "clue-channel-format": "{}-clues",
+        "voicemails": "voicemails",
+        "group-chat": "group-chat",
+        "pm-channel-format": "{}-{}-pm"
+    },
+
+    "commands": {
+        "about": {
+            "credits": {
+                "name": "credits",
+                "aliases": ["about", "info"],
+                "description": "Prints information about the bot",
+
+                "creators": "The White Rabbit was created by circumspect.",
+                "source": "Source code available here:"
+            },
+
+            "docs": {
+                "name": "docs",
+                "aliases": ["guide"],
+                "description": "Link to the documentation",
+                "documentation": "Documentation for The White Rabbit can be found here:"
+            }
+        },
+
+        "admin": {
+            "server_setup": {
+                "name": "server_setup",
+                "aliases": [],
+                "description": "Deletes all channels and roles and creates new ones based on the given card list"
+            },
+
+            "show_all": {
+                "name": "show_all",
+                "aliases": [],
+                "description": "Reveal all channels and disable sending messages"
+            },
+
+            "wipe": {
+                "name": "wipe",
+                "aliases": ["clear"],
+                "description": "Erases all messages and clears game data",
+
+                "DeletingMessages": "Deleting all messages!"
+            },
+
+            "reset_perms": {
+                "name": "reset_perms",
+                "aliases": [],
+                "description": "Resets channel permissions to the default (undoes !show_all)"
+            },
+
+            "reset_roles": {
+                "name": "reset_roles",
+                "aliases": [],
+                "description": "Removes character roles and nicknames from all players",
+
+                "NoteAboutOwner": "Note: the bot cannot update the server owner's nickname"
+            },
+
+            "reset": {
+                "name": "reset",
+                "aliases": [],
+                "description": "Complete server reset",
+
+                "ResettingServer": "Resetting the server!"
+            }
+        },
+
+        "debug": {
+            "speed": {
+                "name": "speed",
+                "aliases": [],
+                "description": "Changes the speed of the game"
+            },
+
+            "plugins": {
+                "name": "plugins",
+                "aliases": [],
+                "description": "Lists all currently loaded plugins"
+            },
+
+            "load": {
+                "name": "load",
+                "aliases": [],
+                "description": "(Re)loads a plugin"
+            },
+
+            "unload": {
+                "name": "unload",
+                "aliases": [],
+                "description": "Unloads a plugin"
+            },
+
+            "quit": {
+                "name": "quit",
+                "aliases": ["stop", "shutdown"],
+                "description": "Shuts down the bot - AFFECTS ALL SERVERS"
+            }
+        },
+
+        "export": {
+            "pdf": {
+                "name": "pdf",
+                "aliases": ["PDF"],
+                "description": "Exports the game to a PDF",
+
+                "created-by": "Created by:",
+                "voicemail": "Voicemail",
+                "timeline": "Timeline",
+                "conclusion": "Conclusions",
+                "group-chat": "Group Chat",
+                "investigator": "Investigator",
+                "ending": "Ending",
+                "location": "Location",
+                "culprit": "Culprit",
+                "culprit1": "Culprit #1",
+                "culprit2": "Culprit #2",
+
+                "CollectingData": "Gathering game data...",
+                "BuildingCharPages": "Building character pages...",
+                "FailedImport": "Failed to import game data, did someone leave the server?",
+                "MissingGameData": "Couldn't find game data to export!",
+                "RecreatingTimeline": "Recreating timeline...",
+                "CollectingMessages": "Collecting messages...",
+                "PDFCreated": "PDF created!"
+            },
+
+            "upload": {
+                "name": "upload",
+                "aliases": [],
+                "description": "Uploads a file and prints out the download url"
+            }
+        },
+
+        "game": {
+            "init": {
+                "name": "init",
+                "aliases": ["initialize"],
+                "description": "Initial setup before character selection"
+            },
+
+            "setup_clues": {
+                "name": "setup_clues",
+                "aliases": [],
+                "description": "Shuffle and distribute clues"
+            },
+
+            "start": {
+                "name": "start",
+                "aliases": [],
+                "description": "Begins the game"
+            },
+
+            "example": {
+                "name": "example",
+                "aliases": [],
+                "description": "Sends an example clue and suspect"
+            },
+
+            "char_sheet": {
+                "name": "char_sheet",
+                "aliases": [],
+                "description": "Sends the character sheet to the resources channel"
+            },
+
+            "search": {
+                "name": "search",
+                "aliases": ["searching"],
+                "description": "Draw a searching card",
+
+                "NothingFound": "You found nothing"
+            },
+
+            "ten_min_card": {
+                "name": "10",
+                "aliases": [],
+                "description": "Assign the 10 minute card to another player",
+
+                "Assigned": "Assigned 10 minute card!"
+            }
+        },
+
+        "manual": {
+            "alice": {
+                "name": "alice",
+                "aliases": ["poster"],
+                "description": "Sends a specified Alice poster, or a random one if no argument is passed"
+            },
+
+            "shuffle_motives": {
+                "name": "shuffle_motives",
+                "aliases": [],
+                "description": "Shuffle and assign motive cards",
+
+                "Shuffling": "Shuffling motives!"
+            },
+
+            "send_motives": {
+                "name": "send_motives",
+                "aliases": [],
+                "description": "Distributes motive cards",
+
+                "NeedToShuffle": "Need to shuffle motives first!"
+            },
+
+            "clue": {
+                "name": "clue",
+                "aliases": [],
+                "description": "Draws a clue card given a time",
+
+                "ClueNotFound": "No clue card found for that time!",
+                "CluesNotAssigned": "Clues have not been assigned!",
+                "CluesNotShuffled": "Clues have not been shuffled!",
+                "NotYourClue": "That clue doesn't belong to you!"
+            },
+
+            "shuffle_clues": {
+                "name": "shuffle_clues",
+                "aliases": [],
+                "description": "(Re)shuffles the clue card piles",
+
+                "ShufflingClues": "Shuffling clues!"
+            },
+
+            "assign_times": {
+                "name": "assign_times",
+                "aliases": [],
+                "description": "Randomizes and assigns clue times",
+
+                "AssigningClues": "Assigning clue cards!"
+            },
+
+            "print_times": {
+                "name": "print_times",
+                "aliases": [],
+                "description": "Print out clue assignments",
+
+                "ClueTimes": "Clue times:"
+            }
+        },
+
+        "players": {
+            "claim": {
+                "name": "claim",
+                "aliases": [],
+                "description": "Claim a character/spectator role",
+
+                "AlreadyHaveThisRole": "You already have that role!",
+                "AlreadyHaveOtherRole": "You already have a role!",
+                "UnclaimableRole": "You cannot claim that role!",
+                "RoleIsTaken": "That role is taken!",
+                "UpdatedRoles": "Gave you the role!"
+            },
+
+            "unclaim": {
+                "name": "unclaim",
+                "aliases": [],
+                "description": "Remove character roles"
+            },
+
+            "roles": {
+                "name": "roles",
+                "aliases": [],
+                "description": "Displays your roles",
+
+                "YourRoles": "Your roles:"
+            },
+
+            "users": {
+                "name": "users",
+                "aliases": ["list"],
+                "description": "Lists all players and spectators",
+
+                "spectators": "Spectators:",
+                "players": "Players:",
+                "NoneFound": "No players or spectators found"
+            }
+        },
+
+        "settings": {
+            "auto": {
+                "name": "auto",
+                "aliases": [],
+                "description": "Prints current mode or turn automatic on/off (on by default)",
+
+                "on": "on",
+                "off": "off",
+
+                "CurrentlyAuto": "Current mode: automatic",
+                "CurrentlyManual": "Current mode: manual",
+                "AutoEnabled": "Automatic card draw enabled!",
+                "AutoDisabled": "Automatic card draw disabled!"
+            },
+
+            "music": {
+                "name": "music",
+                "aliases": [],
+                "description": "Enable/disable music stream when game starts",
+
+                "MusicEnabled": "Music stream enabled!",
+                "MusicDisabled": "Music stream disabled!"
+            },
+
+            "show_timer": {
+                "name": "timer",
+                "aliases": [],
+                "description": "Show/hide bot timer",
+
+                "TimerGapTooSmall": "Gap between timer pings is too small!",
+
+                "ShowingTimer": "Showing bot timer!",
+                "HidingTimer": "Hiding bot timer!"
+            },
+
+            "endings": {
+                "name": "endings",
+                "aliases": [],
+                "description": "Enables/disables an ending. See docs for details",
+
+                "EndingsEnabled": "Endings enabled:"
+            }
+        }
+    },
+
+    "stuff-for-charlie": {
+        "instructions": [
+            "Read introduction",
+            "Introduce Alice from poster",
+            "Introduce/pick characters",
+            "Explain character cards",
+            "Explain motive cards",
+            "Character backgrounds",
+            "Relationships",
+            "Suspects and locations",
+            "!setup_clues",
+            "!example",
+            "Explain clue cards",
+            "Explain searching",
+            "Game guide",
+            "Voicemails",
+            "Stream timer (https://www.youtube.com/watch?v=ysOOFIOAy7A)",
+            "!start",
+            "Send first message"
+        ],
+
+        "background": "CHARLIE BARNES moved away from Silent Falls with their mom at the end of the last school year after their parents divorced. They just arrived in town to stay with their dad for winter break, and hope to see Alice and the others while they're here. A few days ago, Alice stopped responding. They haven't heard from her since.",
+
+        "first-message": "Hey! Sorry for the big group text, but I just got into town for winter break at my dad's and haven't been able to get ahold of Alice. Just wondering if any of you have spoken to her?"
+    },
+
+    "messages": {
+        "TenMinuteReminder": "Reminder to assign the 10 minute card to the player who is going to Alice's location! (e.g., !10 Evan)",
+        "NextClueReminder": "Reminder: You have the next clue card",
+        "Initializing": "Initializing game",
+        "DistributingClues": "Distributing clues!",
+        "StartingGame": "Starting the game!",
+        "Culprit": "CULPRIT:",
+        "SecondCulprit": "SECOND CULPRIT:",
+        "AliceLocation": "ALICE'S LOCATION:"
+    },
+
+    "flip": {
+        "heads": "Heads",
+        "tails": "Tails"
+    },
+
+    "errors": {
+        "MissingDotEnv": "No dotenv file found! Downloading sample .env and shutting down",
+        "LoginFailure": "Couldn't log in! Was the token incorrect?",
+        "UserInputError": "Invalid input!",
+        "CommandNotFound": "Command not found!",
+        "CommandInWrongChannel": "You can only use commands in this channel!",
+        "MissingDeveloperPermissions": "That command is for developers only!",
+        "ManualCommandInAuto": "Can't do that, are you running a manual command in automatic mode?",
+        "SpectatorCommandAttempt": "Spectators can't run commands!",
+        "GenericCheckFailure": "You can't do that!",
+        "MissingAlice": "Alice has not been chosen!",
+        "MissingCharlie": "Can't find Charlie!",
+        "NotEnoughPlayers": "Not enough players!",
+        "NeedToSetUp": "Can't start before setting up!",
+        "NoCharacterRoles": "You don't have a character role!",
+        "GameNotStarted": "Game hasn't started yet!",
+        "NotInitialized": "Need to initialize first!",
+        "AlreadyStarted": "Game has already begun!",
+        "AlreadyInitialized": "Initialization already run!",
+        "ServerOwnerNicknameChange": "Couldn't update nickname because you are server owner!",
+        "PlayerNotFound": "Couldn't find that player!",
+        "UnknownError": "Unknown error: check console!"
+    }
+}
