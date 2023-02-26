@@ -10,6 +10,7 @@ import discord
 from discord.ext import commands
 # Local
 from data import cards, dirs, filepaths, gamedata
+from data.cards import STARTING_PLAYER
 from data.localization import LOCALIZATION_DATA
 import utils
 
@@ -73,7 +74,7 @@ class Game(commands.Cog):
             await utils.send_image(LOCALIZATION_DATA["channels"]["cards"]["location-cards"], filepath, ctx)
 
         # Instructions for Charlie Barnes
-        channel = ctx.text_channels[LOCALIZATION_DATA["channels"]["clues"]["charlie"]]
+        channel = ctx.text_channels[LOCALIZATION_DATA["channels"]["clues"][STARTING_PLAYER]]
         prompts = "\n".join(LOCALIZATION_DATA["stuff-for-charlie"]["instructions"])
         prompts = utils.codeblock(prompts)
 
@@ -202,7 +203,7 @@ class Game(commands.Cog):
             return
 
         # 90 minute card/message for Charlie Barnes
-        channel = ctx.text_channels[LOCALIZATION_DATA["channels"]["clues"]["charlie"]]
+        channel = ctx.text_channels[LOCALIZATION_DATA["channels"]["clues"][STARTING_PLAYER]]
         await utils.send_image(channel, utils.get_image(dirs.CLUE_DIR / "90", "90-1"), ctx)
         first_message = LOCALIZATION_DATA["stuff-for-charlie"]["first-message"]
         await channel.send(first_message)
@@ -267,9 +268,9 @@ class Game(commands.Cog):
 
                 # 10 min card - send culprit
                 elif minutes_remaining == 10:
-                    # If not assigned, default to Charlie
+                    # If not assigned, default to starting player
                     if not ctx.game.ten_char:
-                        ctx.game.ten_char = "charlie"
+                        ctx.game.ten_char = STARTING_PLAYER
 
                     channel = LOCALIZATION_DATA["channels"]["clues"][ctx.game.ten_char]
                     ending = random.choice([i for i in ctx.game.endings if ctx.game.endings[i]])
@@ -330,7 +331,7 @@ class Game(commands.Cog):
 
         # End of game, send debrief
         await utils.send_image(
-            LOCALIZATION_DATA["channels"]["clues"]["charlie"],
+            LOCALIZATION_DATA["channels"]["clues"][STARTING_PLAYER],
             filepaths.MASTER_PATHS["debrief"],
             ctx
         )

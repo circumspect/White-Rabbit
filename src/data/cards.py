@@ -20,13 +20,19 @@ for character in CHARACTERS:
         CHARACTERS[character]["role"] = character.capitalize()
     if "full-name" not in CHARACTERS[character] or CHARACTERS[character]["full-name"] is None:
         CHARACTERS[character]["full-name"] = character.capitalize()
+
 ROLES_TO_CHARACTERS = {
     details["role"]: character for character, details in CHARACTERS.items()
 }
+
+STARTING_PLAYER = CARD_LIST["starting-player"]
+
 ALL_SUSPECTS = CARD_LIST["suspects"]
 suspect_keys = random.sample(ALL_SUSPECTS.keys(), 5)
 SUSPECTS = { k: ALL_SUSPECTS[k] for k in suspect_keys }
+
 ALL_LOCATIONS = CARD_LIST["locations"]
 location_keys = random.sample(ALL_LOCATIONS.keys(), 5)
 LOCATIONS = { k: ALL_LOCATIONS[k] for k in location_keys }
+
 SEARCHING = CARD_LIST["searching"]

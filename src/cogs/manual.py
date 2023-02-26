@@ -5,6 +5,7 @@ import random
 from discord.ext import commands
 # Local
 from data import cards, constants, dirs, filepaths, gamedata
+from data.cards import STARTING_PLAYER
 from data.localization import LOCALIZATION_DATA
 import utils
 
@@ -278,17 +279,16 @@ class Manual(commands.Cog):
         # Empty buckets
         ctx.game.clue_assignments = {}
 
-        # Give bucket with 90 minute card to Charlie Barnes
+        # Give bucket with 90 minute card to starting player
         for bucket in clue_buckets:
             if 90 in bucket:
-                # Charlie's bucket! Willy Wonka sends his regards
-                ctx.game.clue_assignments["charlie"] = sorted(bucket, reverse=True)
+                ctx.game.clue_assignments[STARTING_PLAYER] = sorted(bucket, reverse=True)
                 clue_buckets.remove(bucket)
                 break
 
         # Assign the rest of the buckets randomly
         names = [name.lower() for name in ctx.game.char_roles()]
-        names.remove("charlie")  # Already assigned
+        names.remove(STARTING_PLAYER)  # Already assigned
         for name in names:
             ctx.game.clue_assignments[name] = sorted(clue_buckets.pop(), reverse=True)
 

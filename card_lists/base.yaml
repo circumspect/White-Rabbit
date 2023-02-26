@@ -26,6 +26,9 @@ characters:
     julia:
         full-name: Julia North
 
+# Note that this should match one of the <key>'s above
+starting-player: charlie
+
 # List of suspects. Descriptions optional, colons are not.
 suspects:
     bria: Bria Brown
