@@ -234,9 +234,9 @@ class Export(commands.Cog):
             return filepaths.LEGACY_FILENAMES[filename]
         except KeyError:
             tmp = filename.split("-")
-            if tmp[0] in cards.SUSPECTS.keys():
+            if tmp[0] in cards.SUSPECTS:
                 return tmp[0]
-            if tmp[0] in cards.CHARACTERS.keys():
+            if tmp[0] in cards.CHARACTERS:
                 return tmp[0]
             return filename
 
@@ -513,10 +513,7 @@ class Export(commands.Cog):
         pdf.set_xy(CHAR_TITLE_X, CHAR_TITLE_Y)
         pdf.set_font(*CHAR_TITLE_FONT)
 
-        if "pdf-name-format" in cards.CHARACTERS[character]:
-            title = "\n".join(cards.CHARACTERS[character]["pdf-name-format"])
-        else:
-            title = "\n".join(cards.CHARACTERS[character]["full-name"].split())
+        title = "\n".join(cards.CHARACTERS[character].pdf_name_format)
 
         pdf.multi_cell(0, CHAR_TITLE_HEIGHT, title)
 

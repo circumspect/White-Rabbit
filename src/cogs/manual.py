@@ -260,7 +260,7 @@ class Manual(commands.Cog):
             return
 
         # Can't play without 90 clue player
-        elif cards.CHARACTERS[STARTING_PLAYER]["role"] not in ctx.game.char_roles():
+        elif cards.CHARACTERS[STARTING_PLAYER].role not in ctx.game.char_roles():
             asyncio.create_task(ctx.send(loc["errors"]["MissingCharlie"]))
             return
 

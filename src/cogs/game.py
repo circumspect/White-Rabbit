@@ -123,7 +123,7 @@ class Game(commands.Cog):
             asyncio.create_task(ctx.send(LOCALIZATION_DATA["errors"]["NotEnoughPlayers"]))
             return
         # Can't set up without 90 clue character
-        elif cards.CHARACTERS[STARTING_PLAYER]["role"] not in ctx.game.char_roles():
+        elif cards.CHARACTERS[STARTING_PLAYER].role not in ctx.game.char_roles():
             asyncio.create_task(ctx.send(LOCALIZATION_DATA["errors"]["MissingCharlie"]))
             return
 
@@ -194,7 +194,7 @@ class Game(commands.Cog):
             asyncio.create_task(ctx.send(LOCALIZATION_DATA["errors"]["AlreadyStarted"]))
             return
 
-        if cards.CHARACTERS[STARTING_PLAYER]["role"] not in ctx.game.char_roles():
+        if cards.CHARACTERS[STARTING_PLAYER].role not in ctx.game.char_roles():
             asyncio.create_task(ctx.send(LOCALIZATION_DATA["errors"]["MissingCharlie"]))
             return
 

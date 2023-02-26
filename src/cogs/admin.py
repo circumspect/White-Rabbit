@@ -61,8 +61,8 @@ class Admin(commands.Cog):
         # Create roles
         roles = {}
 
-        for character in cards.CHARACTERS:
-            roles[character] = await ctx.guild.create_role(name=cards.CHARACTERS[character]["role"])
+        for name, character in cards.CHARACTERS.items():
+            roles[name] = await ctx.guild.create_role(name=character.role)
 
         roles["spectator"] = await ctx.guild.create_role(name=LOCALIZATION_DATA["spectator-role"])
 
@@ -140,7 +140,7 @@ class Admin(commands.Cog):
 
         # Private message channels
 
-        for (c1, c2) in it.combinations(cards.CHARACTERS.keys(), 2):
+        for (c1, c2) in it.combinations(cards.CHARACTERS, 2):
             channel = await ctx.guild.create_text_channel(
                 LOCALIZATION_DATA["channels"]["texts"][f"{c1}-{c2}"],
                 category = channel_categories["texts"],
@@ -218,7 +218,7 @@ class Admin(commands.Cog):
             elif channel.name in [GROUP_CHAT, LOCALIZATION_DATA["channels"]["voicemails"]]:
                 asyncio.create_task(channel.set_permissions(everyone, send_messages=False))
                 for role in ctx.guild.roles:
-                    if role.name in cards.ROLES_TO_CHARACTERS:
+                    if role.name in cards.ROLES_TO_NAMES:
                         asyncio.create_task(channel.set_permissions(role, send_messages=True))
 
             # Private message channels
@@ -243,7 +243,7 @@ class Admin(commands.Cog):
             is_player = False
             if not member.bot:
                 for role in member.roles:
-                    if role.name in cards.ROLES_TO_CHARACTERS:
+                    if role.name in cards.ROLES_TO_NAMES:
                         await member.remove_roles(role)
                         is_player = True
                 if is_player:

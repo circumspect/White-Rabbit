@@ -72,8 +72,8 @@ async def before_invoke(ctx):
     # Character that the author is
     ctx.character = None
     for role in ctx.author.roles:
-        if role.name in cards.ROLES_TO_CHARACTERS:
-            ctx.character = cards.ROLES_TO_CHARACTERS[role.name]
+        if role.name in cards.ROLES_TO_NAMES:
+            ctx.character = cards.ROLES_TO_NAMES[role.name]
             break
 
 

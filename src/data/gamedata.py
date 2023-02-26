@@ -114,11 +114,11 @@ class Data:
         unsorted = {
             role.name: role
             for role in self.guild.roles
-            if role.name in ROLES_TO_CHARACTERS and role.members
+            if role.name in ROLES_TO_NAMES and role.members
         }
 
         return dict(sorted(unsorted.items(), key=lambda item: item[0]))
 
 
     def active_chars(self):
-        return [ROLES_TO_CHARACTERS[role] for role in self.char_roles()]
+        return [ROLES_TO_NAMES[role] for role in self.char_roles()]
