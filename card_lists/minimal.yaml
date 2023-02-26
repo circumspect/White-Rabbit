@@ -1,4 +1,4 @@
-# List of characters
+# List of characters. Other fields optional (see base.yaml), colons are not.
 characters:
     charlie:
     dakota:
