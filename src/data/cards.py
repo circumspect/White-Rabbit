@@ -16,7 +16,6 @@ CHARACTERS: Dict[str, Character] = { k: Character(k, v) for k, v in CARD_LIST["c
 ROLES_TO_NAMES = { v.role: v.name for _, v in CHARACTERS.items() }
 
 STARTING_PLAYER = CARD_LIST["starting-player"]
-print(STARTING_PLAYER)
 
 ALL_SUSPECTS: Dict[str, Suspect] = { k: Suspect(k, v) for k, v in CARD_LIST["suspects"].items() }
 suspect_keys = random.sample(ALL_SUSPECTS.keys(), 5)
