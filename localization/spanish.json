@@ -1,47 +1,47 @@
 {
-    "title": "Alice is Missing",
+    "title": "Alice ha desaparecido",
     "template": "https://discord.new/SfcBdbyhGMmR",
-    "bot-name": "The White Rabbit",
+    "bot-name": "El Conejo Blanco",
 
-    "spectator-role": "Spectator",
+    "spectator-role": "Espectador",
 
     "channels": {
-        "discussion": "discussion",
-        "bot-channel": "bot-channel",
-        "call": "call",
+        "discussion": "charla",
+        "bot-channel": "comandos-bot",
+        "call": "voz",
 
-        "resources": "player-resources",
+        "resources": "recursos",
 
         "cards": {
-            "character-cards": "character-cards",
-            "suspect-cards": "suspect-cards",
-            "location-cards": "location-cards",
-            "suspects-drawn": "suspects-drawn",
-            "locations-drawn": "locations-drawn"
+            "character-cards": "cartas-personajes",
+            "suspect-cards": "cartas-sospechosos",
+            "location-cards": "cartas-localizaciones",
+            "suspects-drawn": "descartes-sospechosos",
+            "locations-drawn": "descartes-localizaciones"
         },
 
-        "clue-channel-format": "{}-clues",
-        "voicemails": "voicemails",
-        "group-chat": "group-chat",
-        "pm-channel-format": "{}-{}-pm"
+        "clue-channel-format": "pistas-{}",
+        "voicemails": "buzón-voz",
+        "group-chat": "chat-grupal",
+        "pm-channel-format": "{}-{}"
     },
 
     "commands": {
         "about": {
             "credits": {
-                "name": "credits",
-                "aliases": ["about", "info"],
-                "description": "Prints information about the bot",
+                "name": "info",
+                "aliases": [],
+                "description": "Información sobre el bot",
 
-                "creators": "The White Rabbit was created by circumspect.",
-                "source": "Source code available here:"
+                "creators": "El Conejo Blanco es una creación de circumspect.",
+                "source": "Código fuente disponible en el siguiente enlace:"
             },
 
             "docs": {
                 "name": "docs",
                 "aliases": ["guide"],
-                "description": "Link to the documentation",
-                "documentation": "Documentation for The White Rabbit can be found here:"
+                "description": "Enlace a la documentación",
+                "documentation": "La documentación de El Conejo Blanco está disponible en el siguiente enlace:"
             }
         },
 
@@ -49,75 +49,75 @@
             "server_setup": {
                 "name": "server_setup",
                 "aliases": [],
-                "description": "Deletes all channels and roles and creates new ones based on the given card list"
+                "description": "Elimina todos los canales y roles y crea unos nuevos en base a la lista de cartas dada"
             },
 
             "show_all": {
-                "name": "show_all",
-                "aliases": [],
-                "description": "Reveal all channels and disable sending messages"
+                "name": "mostrar",
+                "aliases": ["show_all"],
+                "description": "Muestra todos los canales y desactiva el envío de mensajes"
             },
 
             "wipe": {
-                "name": "wipe",
-                "aliases": ["clear"],
-                "description": "Erases all messages and clears game data",
+                "name": "eliminar",
+                "aliases": ["wipe"],
+                "description": "Elimina todos los mensajes",
 
-                "DeletingMessages": "Deleting all messages!"
+                "DeletingMessages": "Eliminando todos los mensajes!"
             },
 
             "reset_perms": {
-                "name": "reset_perms",
-                "aliases": [],
-                "description": "Resets channel permissions to the default (undoes !show_all)"
+                "name": "reiniciar_permisos",
+                "aliases": ["reset_perms"],
+                "description": "Reinicia los permisos por defecto de todos los canales (anula !mostrar)"
             },
 
             "reset_roles": {
-                "name": "reset_roles",
-                "aliases": [],
-                "description": "Removes character roles and nicknames from all players",
+                "name": "reiniciar_roles",
+                "aliases": ["reset_roles"],
+                "description": "Elimina los permisos y los nicks de todos los jugadores",
 
-                "NoteAboutOwner": "Note: the bot cannot update the server owner's nickname"
+                "NoteAboutOwner": "Nota: el bot no puede cambiar el nick del propietario del servidor"
             },
 
             "reset": {
-                "name": "reset",
-                "aliases": [],
-                "description": "Complete server reset",
+                "name": "reiniciar",
+                "aliases": ["reset"],
+                "description": "Reinicio del servidor",
 
-                "ResettingServer": "Resetting the server!"
+                "ResettingServer": "Reiniciando el servidor!"
             }
         },
 
         "debug": {
             "speed": {
-                "name": "speed",
-                "aliases": [],
-                "description": "Changes the speed of the game"
+                "name": "velocidad",
+                "aliases": ["speed"],
+                "description": "Modifica la velocidad de partida"
             },
 
             "plugins": {
                 "name": "plugins",
                 "aliases": [],
-                "description": "Lists all currently loaded plugins"
+                "description": "Muestra todos los plugins cargados"
             },
 
             "load": {
-                "name": "load",
-                "aliases": [],
-                "description": "(Re)loads a plugin"
+                "name": "cargar",
+                "aliases": ["load"],
+                "description": "(Re)carga un plugin"
             },
 
             "unload": {
-                "name": "unload",
-                "aliases": [],
-                "description": "Unloads a plugin"
+                "name": "descargar",
+                "aliases": ["unload"],
+                "description": "Descarga un plugin"
             },
 
             "quit": {
-                "name": "quit",
-                "aliases": ["stop", "shutdown"],
-                "description": "Shuts down the bot - AFFECTS ALL SERVERS"
+                "name": "desactivar",
+                "aliases": ["quit", "stop", "shutdown"],
+                "description": "Desactiva el bot - AFECTA A TODOS LOS SERVIDORES"
             }
         },
 
@@ -125,33 +125,33 @@
             "pdf": {
                 "name": "pdf",
                 "aliases": ["PDF"],
-                "description": "Exports the game to a PDF",
+                "description": "Exporta la partida en formato PDF",
 
-                "created-by": "Created by:",
-                "voicemail": "Voicemail",
-                "timeline": "Timeline",
-                "conclusion": "Conclusions",
-                "group-chat": "Group Chat",
-                "investigator": "Investigator",
-                "ending": "Ending",
-                "location": "Location",
-                "culprit": "Culprit",
-                "culprit1": "Culprit #1",
-                "culprit2": "Culprit #2",
+                "created-by": "Creado por:",
+                "voicemail": "Buzón de Voz",
+                "timeline": "Línea Temporal",
+                "conclusion": "Conclusiones",
+                "group-chat": "Chat Grupal",
+                "investigator": "Investigador",
+                "ending": "Final",
+                "location": "Localización",
+                "culprit": "Culpable",
+                "culprit1": "Culpable #1",
+                "culprit2": "Culpable #2",
 
-                "CollectingData": "Gathering game data...",
-                "BuildingCharPages": "Building character pages...",
-                "FailedImport": "Failed to import game data, did someone leave the server?",
-                "MissingGameData": "Couldn't find game data to export!",
-                "RecreatingTimeline": "Recreating timeline...",
-                "CollectingMessages": "Collecting messages...",
-                "PDFCreated": "PDF created!"
+                "CollectingData": "Recopilando datos de la partida...",
+                "BuildingCharPages": "Creando historial de personaje...",
+                "FailedImport": "No se han podido importar los datos de la partida, ¿algún jugador ha abandonado el servidor?",
+                "MissingGameData": "No se han podido encontrar datos de partida para exportar!",
+                "RecreatingTimeline": "Recreando línea temporal...",
+                "CollectingMessages": "Recopilando mensajes...",
+                "PDFCreated": "PDF creado!"
             },
 
             "upload": {
-                "name": "upload",
-                "aliases": [],
-                "description": "Uploads a file and prints out the download url"
+                "name": "subir",
+                "aliases": ["upload", "telecharger"],
+                "description": "Sube un archivo y muestra una url de descarga"
             }
         },
 
@@ -159,47 +159,47 @@
             "init": {
                 "name": "init",
                 "aliases": ["initialize"],
-                "description": "Initial setup before character selection"
+                "description": "Configuración previa a la elección de personaje"
             },
 
             "setup_clues": {
-                "name": "setup_clues",
-                "aliases": [],
-                "description": "Shuffle and distribute clues"
+                "name": "pistas",
+                "aliases": ["setup_clues"],
+                "description": "Baraja y reparte las pistas"
             },
 
             "start": {
-                "name": "start",
-                "aliases": [],
-                "description": "Begins the game"
+                "name": "iniciar",
+                "aliases": ["start"],
+                "description": "Iniciar la partida"
             },
 
             "example": {
-                "name": "example",
-                "aliases": [],
-                "description": "Sends an example clue and suspect"
+                "name": "ejemplo",
+                "aliases": ["example"],
+                "description": "Muestra un ejemplo de pista y sospechoso"
             },
 
             "char_sheet": {
-                "name": "char_sheet",
-                "aliases": [],
-                "description": "Sends the character sheet to the resources channel"
+                "name": "historial_pj",
+                "aliases": ["char_sheet"],
+                "description": "Muestra el historial de personaje en el canal de recursos"
             },
 
             "search": {
-                "name": "search",
-                "aliases": ["searching"],
-                "description": "Draw a searching card",
+                "name": "buscar",
+                "aliases": ["search", "searching"],
+                "description": "Roba una carta de búsqueda",
 
-                "NothingFound": "You found nothing"
+                "NothingFound": "No has encontrado nada"
             },
 
             "ten_min_card": {
                 "name": "10",
                 "aliases": [],
-                "description": "Assign the 10 minute card to another player",
+                "description": "Asigna la carta de 10 minutos a un jugador",
 
-                "Assigned": "Assigned 10 minute card!"
+                "Assigned": "Carta de 10 minutos asignada!"
             }
         },
 
@@ -207,58 +207,58 @@
             "alice": {
                 "name": "alice",
                 "aliases": ["poster"],
-                "description": "Sends a specified Alice poster, or a random one if no argument is passed"
+                "description": "Muestra un cartel concreto de Alice o uno aleatorio si no se especifica"
             },
 
             "shuffle_motives": {
-                "name": "shuffle_motives",
-                "aliases": [],
-                "description": "Shuffle and assign motive cards",
+                "name": "barajar_motivos",
+                "aliases": ["shuffle_motives"],
+                "description": "Baraja y reparte las cartas de motivación",
 
-                "Shuffling": "Shuffling motives!"
+                "Shuffling": "Barajando las cartas de motivación!"
             },
 
             "send_motives": {
-                "name": "send_motives",
-                "aliases": [],
-                "description": "Distributes motive cards",
+                "name": "enviar_motivos",
+                "aliases": ["send_motives"],
+                "description": "Reparte las cartas de motivación",
 
-                "NeedToShuffle": "Need to shuffle motives first!"
+                "NeedToShuffle": "Se requiere barajar primero las cartas de motivación!"
             },
 
             "clue": {
-                "name": "clue",
-                "aliases": [],
-                "description": "Draws a clue card given a time",
+                "name": "pista",
+                "aliases": ["clue"],
+                "description": "Reparte una carta de pista en el tiempo indicado",
 
-                "ClueNotFound": "No clue card found for that time!",
-                "CluesNotAssigned": "Clues have not been assigned!",
-                "CluesNotShuffled": "Clues have not been shuffled!",
-                "NotYourClue": "That clue doesn't belong to you!"
+                "ClueNotFound": "No se ha encontrado ninguna carta de pista para ese tiempo!",
+                "CluesNotAssigned": "Las pistas no se han sido asignadas!",
+                "CluesNotShuffled": "Las pistas no han sido barajadas!",
+                "NotYourClue": "Esa pista no te pertenece!"
             },
 
             "shuffle_clues": {
-                "name": "shuffle_clues",
-                "aliases": [],
-                "description": "(Re)shuffles the clue card piles",
+                "name": "barajar_pistas",
+                  "aliases": ["shuffle_clues"],
+                "description": "(Re)baraja la pila de descartes de pistas",
 
-                "ShufflingClues": "Shuffling clues!"
+                "ShufflingClues": "Barajando pistas!"
             },
 
             "assign_times": {
-                "name": "assign_times",
-                "aliases": [],
-                "description": "Randomizes and assigns clue times",
+                "name": "asignar_tiempos",
+                "aliases": ["assign_times"],
+                "description": "Asigna aleatoriamente los tiempos de pistas",
 
-                "AssigningClues": "Assigning clue cards!"
+                "AssigningClues": "Asignando pistas!"
             },
 
             "print_times": {
-                "name": "print_times",
-                "aliases": [],
-                "description": "Print out clue assignments",
+                "name": "mostrar_tiempos",
+                "aliases": ["print_times"],
+                "description": "Muestra la asignación de los tiempos de pistas",
 
-                "ClueTimes": "Clue times:"
+                "ClueTimes": "Tiempos de pistas:"
             }
         },
 
