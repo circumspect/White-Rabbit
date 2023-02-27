@@ -7,6 +7,7 @@ from discord.ext import commands
 from discord.permissions import PermissionOverwrite
 # Local
 from data import cards, constants
+from data.gamedata import Context
 from data.localization import LOCALIZATION_DATA
 
 loc = LOCALIZATION_DATA["commands"]["admin"]
@@ -29,7 +30,7 @@ class Admin(commands.Cog):
     def __init__(self, bot: commands.Bot):
         self.bot = bot
 
-    async def cog_check(self, ctx: commands.Context):
+    async def cog_check(self, ctx: Context):
         """Commands for server admins only"""
 
         return ctx.author.guild_permissions.administrator
@@ -39,7 +40,7 @@ class Admin(commands.Cog):
         aliases=loc["server_setup"]["aliases"],
         description=loc["server_setup"]["description"]
     )
-    async def server_setup(self, ctx: commands.Context):
+    async def server_setup(self, ctx: Context):
         """Deletes all channels and roles and creates new ones based on the given card list"""
 
         # Delete roles and channels
@@ -158,7 +159,7 @@ class Admin(commands.Cog):
         aliases=loc["show_all"]["aliases"],
         description=loc["show_all"]["description"]
     )
-    async def show_all(self, ctx: commands.Context):
+    async def show_all(self, ctx: Context):
         """Reveal all channels and disable sending messages"""
 
         for channel in ctx.guild.text_channels:
@@ -170,7 +171,7 @@ class Admin(commands.Cog):
         aliases=loc["wipe"]["aliases"],
         description=loc["wipe"]["description"]
     )
-    async def wipe(self, ctx: commands.Context, *text_channels: discord.TextChannel):
+    async def wipe(self, ctx: Context, *text_channels: discord.TextChannel):
         """Erases all messages and clears game data"""
 
         # Confirm command to user
@@ -193,7 +194,7 @@ class Admin(commands.Cog):
         aliases=loc["reset_perms"]["aliases"],
         description=loc["reset_perms"]["description"]
     )
-    async def reset_perms(self, ctx: commands.Context):
+    async def reset_perms(self, ctx: Context):
         """Resets channel permissions to the default (undoes !show_all)"""
 
         everyone = ctx.guild.default_role
@@ -237,7 +238,7 @@ class Admin(commands.Cog):
         aliases=loc["reset_roles"]["aliases"],
         description=loc["reset_roles"]["description"]
     )
-    async def reset_roles(self, ctx: commands.Context):
+    async def reset_roles(self, ctx: Context):
         # Removes character roles from everyone
         for member in ctx.guild.members:
             is_player = False
@@ -257,7 +258,7 @@ class Admin(commands.Cog):
         aliases=loc["reset"]["aliases"],
         description=loc["reset"]["description"]
     )
-    async def reset(self, ctx: commands.Context):
+    async def reset(self, ctx: Context):
         """Complete server reset"""
 
         # Confirm command to user

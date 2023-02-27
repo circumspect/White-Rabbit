@@ -5,6 +5,7 @@ import discord
 from discord.ext import commands
 # Local
 from data import cards
+from data.gamedata import Context
 from data.localization import LOCALIZATION_DATA
 
 loc = LOCALIZATION_DATA["commands"]["players"]
@@ -20,7 +21,7 @@ class Players(commands.Cog):
         aliases=loc["claim"]["aliases"],
         description=loc["claim"]["description"]
     )
-    async def claim(self, ctx: commands.Context, role_name: str):
+    async def claim(self, ctx: Context, role_name: str):
         """Claim a character/spectator role"""
 
         role = discord.utils.get(ctx.guild.roles, name=role_name) or discord.utils.get(ctx.guild.roles, name=role_name.capitalize())
@@ -62,7 +63,7 @@ class Players(commands.Cog):
         aliases=loc["unclaim"]["aliases"],
         description=loc["unclaim"]["description"]
     )
-    async def unclaim(self, ctx: commands.Context):
+    async def unclaim(self, ctx: Context):
         """Remove character roles"""
 
         # Keep @everyone
@@ -83,7 +84,7 @@ class Players(commands.Cog):
         aliases=loc["roles"]["aliases"],
         description=loc["roles"]["description"]
     )
-    async def roles(self, ctx: commands.Context):
+    async def roles(self, ctx: Context):
         """Displays your roles"""
 
         message = loc["roles"]["YourRoles"] + "\n"
@@ -95,7 +96,7 @@ class Players(commands.Cog):
         aliases=loc["users"]["aliases"],
         description=loc["users"]["description"]
     )
-    async def users(self, ctx: commands.Context):
+    async def users(self, ctx: Context):
         """Lists all players and spectators"""
 
         message = ""
