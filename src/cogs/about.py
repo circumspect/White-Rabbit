@@ -19,7 +19,7 @@ class About(commands.Cog):
         aliases=loc["credits"]["aliases"],
         description=loc["credits"]["description"]
     )
-    async def credits(self, ctx):
+    async def credits(self, ctx: commands.Context):
         """Prints information about the bot"""
 
         message = "\n".join([
@@ -35,7 +35,7 @@ class About(commands.Cog):
         aliases=loc["docs"]["aliases"],
         description=loc["docs"]["description"]
     )
-    async def docs(self, ctx):
+    async def docs(self, ctx: commands.Context):
         """Link to the documentation"""
 
         message = "\n".join([

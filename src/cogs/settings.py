@@ -19,7 +19,7 @@ class Settings(commands.Cog):
         aliases=loc["auto"]["aliases"],
         description=loc["auto"]["description"]
     )
-    async def auto(self, ctx, mode: str = ""):
+    async def auto(self, ctx: commands.Context, mode: str = ""):
         """
         Prints current mode or turn automatic on/off (on by default)
 
@@ -53,7 +53,7 @@ class Settings(commands.Cog):
         aliases=loc["music"]["aliases"],
         description=loc["music"]["description"]
     )
-    async def music(self, ctx):
+    async def music(self, ctx: commands.Context):
         """Enable/disable music stream when game starts"""
 
         ctx.game.stream_music = not ctx.game.stream_music
@@ -67,7 +67,7 @@ class Settings(commands.Cog):
         aliases=loc["show_timer"]["aliases"],
         description=loc["show_timer"]["description"]
     )
-    async def show_timer(self, ctx, gap: int = 0):
+    async def show_timer(self, ctx: commands.Context, gap: int = 0):
         """
         Show/hide bot timer
 
@@ -98,7 +98,7 @@ class Settings(commands.Cog):
         aliases=loc["endings"]["aliases"],
         description=loc["endings"]["description"]
     )
-    async def endings(self, ctx, index: int = 0):
+    async def endings(self, ctx: commands.Context, index: int = 0):
         """Enables/disables an ending. See docs for details"""
 
         if not index:

@@ -10,6 +10,7 @@ import subprocess
 from typing import Union
 # 3rd-party
 import discord
+from discord.ext import commands
 import requests
 # Local
 from data import constants
@@ -108,7 +109,7 @@ def get_image(directory: Path, name: str) -> Union[Path, str]:
             return find_url(fallback_url, ImageResource.DEFAULT_EXTENSIONS)
 
 
-async def send_image(channel, filepath: Union[Path, str], ctx=None):
+async def send_image(channel, filepath: Union[Path, str], ctx: commands.Context=None):
     """Sends an image to a specified channel"""
 
     if isinstance(channel, str):
@@ -126,7 +127,7 @@ async def send_image(channel, filepath: Union[Path, str], ctx=None):
         await channel.send(filepath)
 
 
-async def send_folder(channel, path, ctx=None):
+async def send_folder(channel, path, ctx: commands.Context=None):
     """Sends all images in a folder in alphabetical order"""
 
     for image in sorted(path.glob("*.*")):
@@ -156,7 +157,7 @@ def is_command(message: str):  # sourcery skip: return-identity
     return True
 
 
-def clean_message(ctx, text: str):
+def clean_message(ctx: commands.Context, text: str):
     """Removes emojis and out of character parts of a string"""
 
     text = remove_emojis(text).strip()
@@ -178,7 +179,7 @@ def remove_emojis(text: str):
     return emojis.sub(r'', text)
 
 
-def ooc_strip(ctx, text: str):
+def ooc_strip(ctx: commands.Context, text: str):
     """
     Takes a string and removes out of context portions
 

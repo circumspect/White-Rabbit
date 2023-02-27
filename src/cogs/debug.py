@@ -45,7 +45,7 @@ class Debug(commands.Cog):
         if env_id:
             self.bot.dev_ids.append(int(env_id))
 
-    async def cog_check(self, ctx):
+    async def cog_check(self, ctx: commands.Context):
         """Only people with access to the code"""
 
         return ctx.author.id in self.bot.dev_ids
@@ -64,7 +64,7 @@ class Debug(commands.Cog):
         aliases=loc["speed"]["aliases"],
         description=loc["speed"]["description"]
     )
-    async def speed(self, ctx, speed: float = 1):
+    async def speed(self, ctx: commands.Context, speed: float = 1):
         """Changes the speed of the game - DEBUG USE ONLY"""
 
         ctx.game.game_speed = speed
@@ -93,7 +93,7 @@ class Debug(commands.Cog):
         aliases=loc["plugins"]["aliases"],
         description=loc["plugins"]["description"]
     )
-    async def plugins(self, ctx):
+    async def plugins(self, ctx: commands.Context):
         """Lists all currently loaded plugins"""
 
         message = "Plugins loaded:"
@@ -106,7 +106,7 @@ class Debug(commands.Cog):
         aliases=loc["load"]["aliases"],
         description=loc["load"]["description"]
     )
-    async def load(self, ctx, extension_name: str = "all"):
+    async def load(self, ctx: commands.Context, extension_name: str = "all"):
         """(Re)loads a plugin"""
 
         extension_name = extension_name.lower()
@@ -136,7 +136,7 @@ class Debug(commands.Cog):
         aliases=loc["unload"]["aliases"],
         description=loc["unload"]["description"]
     )
-    async def unload(self, ctx, extension_name: str):
+    async def unload(self, ctx: commands.Context, extension_name: str):
         """Unloads a plugin"""
         try:
             self.bot.unload_extension(extension_name)
@@ -152,7 +152,7 @@ class Debug(commands.Cog):
         aliases=loc["quit"]["aliases"],
         description=loc["quit"]["description"]
     )
-    async def quit(self, ctx):
+    async def quit(self, ctx: commands.Context):
         """Shuts down the bot - AFFECTS ALL SERVERS"""
 
         await ctx.send("Shutting down, thanks for playing!")

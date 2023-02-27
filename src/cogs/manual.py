@@ -20,10 +20,10 @@ class Manual(commands.Cog):
     without user input
     """
 
-    def __init__(self, bot):
+    def __init__(self, bot: commands.Bot):
         self.bot = bot
 
-    async def cog_check(self, ctx):
+    async def cog_check(self, ctx: commands.Context):
         ctx.game = self.bot.games.setdefault(ctx.guild.id, gamedata.Data(ctx.guild))
         # Console logging
         if ctx.game.automatic:
@@ -36,7 +36,7 @@ class Manual(commands.Cog):
         aliases=loc["alice"]["aliases"],
         description=loc["alice"]["description"]
     )
-    async def alice(self, ctx, choice: int = 0):
+    async def alice(self, ctx: commands.Context, choice: int = 0):
         """
         Sends a specified Alice poster, or a random one if no argument is
         passed
@@ -61,7 +61,7 @@ class Manual(commands.Cog):
         aliases=loc["shuffle_motives"]["aliases"],
         description=loc["shuffle_motives"]["description"]
     )
-    async def shuffle_motives(self, ctx):
+    async def shuffle_motives(self, ctx: commands.Context):
         """Shuffle and assign motive cards"""
 
         if not ctx.game.automatic:
@@ -83,7 +83,7 @@ class Manual(commands.Cog):
         aliases=loc["send_motives"]["aliases"],
         description=loc["send_motives"]["description"]
     )
-    async def send_motives(self, ctx):
+    async def send_motives(self, ctx: commands.Context):
         """Distributes motive cards"""
 
         if not ctx.game.motives:
@@ -108,7 +108,7 @@ class Manual(commands.Cog):
         aliases=loc["clue"]["aliases"],
         description=loc["clue"]["description"]
     )
-    async def clue(self, ctx, time: int):
+    async def clue(self, ctx: commands.Context, time: int):
         """
         Draws a clue card given a time
 
@@ -193,7 +193,7 @@ class Manual(commands.Cog):
                     ctx.game.next_clue = gamedata.CLUE_TIMES[i+1]
                     break
 
-    def draw_suspect(self, ctx, time: int):
+    def draw_suspect(self, ctx: commands.Context, time: int):
         """Picks a suspect given the clue time"""
 
         clue_type = gamedata.CLUE_TYPES[time]
@@ -226,7 +226,7 @@ class Manual(commands.Cog):
         aliases=loc["shuffle_clues"]["aliases"],
         description=loc["shuffle_clues"]["description"]
     )
-    async def shuffle_clues(self, ctx):
+    async def shuffle_clues(self, ctx: commands.Context):
         """(Re)shuffles the clue card piles"""
 
         if not ctx.game.automatic:
@@ -250,7 +250,7 @@ class Manual(commands.Cog):
         aliases=loc["assign_times"]["aliases"],
         description=loc["assign_times"]["description"]
     )
-    async def assign_times(self, ctx):
+    async def assign_times(self, ctx: commands.Context):
         """Randomizes and assigns clue times"""
 
         player_count = len(ctx.game.char_roles())
@@ -302,7 +302,7 @@ class Manual(commands.Cog):
         aliases=loc["print_times"]["aliases"],
         description=loc["print_times"]["description"]
     )
-    async def print_times(self, ctx):
+    async def print_times(self, ctx: commands.Context):
         """
         Print out clue assignments in a code block
         """
@@ -333,7 +333,7 @@ class Manual(commands.Cog):
 
         return clue_buckets
 
-    def _test_clue_buckets(self, ctx, clue_buckets):
+    def _test_clue_buckets(self, ctx: commands.Context, clue_buckets):
         """
         Checks clue buckets and returns False if any checks fail
         """

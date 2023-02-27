@@ -11,7 +11,7 @@ loc = LOCALIZATION_DATA["commands"]["players"]
 
 
 class Players(commands.Cog):
-    def __init__(self, bot):
+    def __init__(self, bot: commands.Bot):
         self.bot = bot
 
     # Commands for players to claim character roles
@@ -20,7 +20,7 @@ class Players(commands.Cog):
         aliases=loc["claim"]["aliases"],
         description=loc["claim"]["description"]
     )
-    async def claim(self, ctx, role_name):
+    async def claim(self, ctx: commands.Context, role_name: str):
         """Claim a character/spectator role"""
 
         role = discord.utils.get(ctx.guild.roles, name=role_name) or discord.utils.get(ctx.guild.roles, name=role_name.capitalize())
@@ -62,7 +62,7 @@ class Players(commands.Cog):
         aliases=loc["unclaim"]["aliases"],
         description=loc["unclaim"]["description"]
     )
-    async def unclaim(self, ctx):
+    async def unclaim(self, ctx: commands.Context):
         """Remove character roles"""
 
         # Keep @everyone

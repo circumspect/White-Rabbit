@@ -50,18 +50,18 @@ def check_channel(ctx):
 
 
 @bot.check
-def not_spectator(ctx):
+def not_spectator(ctx: commands.Context):
     """Don't let spectators run commands"""
 
     return SPECTATOR_ROLE not in [role.name for role in ctx.author.roles]
 
 
 @bot.before_invoke
-async def before_invoke(ctx):
+async def before_invoke(ctx: commands.Context):
     """Attaches stuff to ctx for convenience"""
 
     # that guild's game
-    ctx.game = bot.games.setdefault(ctx.guild.id, gamedata.Data(ctx.guild))
+    ctx.game: gamedata.Data = bot.games.setdefault(ctx.guild.id, gamedata.Data(ctx.guild))
 
     # access text channels by name
     ctx.text_channels = {
@@ -78,11 +78,11 @@ async def before_invoke(ctx):
 
 
 @bot.event
-async def on_command_error(ctx, error):
+async def on_command_error(ctx: commands.Context, error):
     """Default error catcher for commands"""
 
     bot_channel = utils.get_text_channels(ctx.guild)[BOT_CHANNEL]
-    ctx.game = bot.games.setdefault(ctx.guild.id, gamedata.Data(ctx.guild))
+    ctx.game: gamedata.Data = bot.games.setdefault(ctx.guild.id, gamedata.Data(ctx.guild))
 
     # Failed a check
     if isinstance(error, commands.errors.CheckFailure):

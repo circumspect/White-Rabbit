@@ -240,7 +240,7 @@ class Export(commands.Cog):
                 return tmp[0]
             return filename
 
-    async def import_data(self, ctx):
+    async def import_data(self, ctx: commands.Context):
         """imports data from message history"""
 
         # Find game start
@@ -360,7 +360,7 @@ class Export(commands.Cog):
         aliases=loc["pdf"]["aliases"],
         description=loc["pdf"]["description"]
     )
-    async def pdf(self, ctx, file_name=""):
+    async def pdf(self, ctx: commands.Context, file_name: str=""):
         """Exports the game to a PDF"""
 
         # Start timer
@@ -494,7 +494,7 @@ class Export(commands.Cog):
 
         await ctx.send(loc["pdf"]["PDFCreated"])
 
-    def heading(self, ctx, pdf, title: str, font,
+    def heading(self, ctx: commands.Context, pdf: PDF, title: str, font,
                 align='', y=None, gap: float = 0):
         """Add a heading to the current page"""
 
@@ -504,7 +504,7 @@ class Export(commands.Cog):
         pdf.cell(0, 0, title, align=align)
         pdf.ln(gap)
 
-    def generate_char_page(self, ctx, pdf, character):
+    def generate_char_page(self, ctx: commands.Context, pdf: PDF, character: str):
         """Creates a character page"""
 
         pdf.add_page()
@@ -567,7 +567,7 @@ class Export(commands.Cog):
         pdf.multi_cell(0, VOICEMAIL_TEXT_LINE_HEIGHT,
                        ctx.game.voicemails[character])
 
-    def conclusion_page(self, ctx, pdf):
+    def conclusion_page(self, ctx: commands.Context, pdf: PDF):
         """Create conclusions page based on 10 minute clue"""
 
         # Add title
@@ -638,7 +638,7 @@ class Export(commands.Cog):
             pdf.image(str(card), CONCLUSION_CLUE_CARD_X,
                       CONCLUSION_ROW2_IMAGE_Y, CONCLUSION_CARD_WIDTH)
 
-    def timeline(self, ctx, pdf):
+    def timeline(self, ctx: commands.Context, pdf: PDF):
         """Adds timeline pages to PDf"""
 
         pdf.add_page()
@@ -647,14 +647,14 @@ class Export(commands.Cog):
         )
 
 
-    def page_title(self, pdf, y, font, text):
+    def page_title(self, pdf: PDF, y: float, font, text):
         """Add title to current page"""
 
         pdf.set_y(y)
         pdf.set_font(*font)
         pdf.cell(0, 0, text)
 
-    async def channel_export(self, ctx, pdf, channel):
+    async def channel_export(self, ctx: commands.Context, pdf: PDF, channel):
         """
         Takes all messages from a text channel and adds them
         to the current page of the PDF object
@@ -698,7 +698,7 @@ class Export(commands.Cog):
         aliases=loc["upload"]["aliases"],
         description=loc["upload"]["description"]
     )
-    async def upload(self, ctx, file_name=""):
+    async def upload(self, ctx: commands.Context, file_name: str=""):
         """Uploads a file and prints out the download url"""
 
         if not file_name:
@@ -708,7 +708,7 @@ class Export(commands.Cog):
         await ctx.send(url)
 
     @commands.command(hidden=True)
-    async def txt(self, ctx):
+    async def txt(self, ctx: commands.Context):
         """Gets all messages from a guild and writes to a .txt file"""
 
         # TODO: Make this cleaner
