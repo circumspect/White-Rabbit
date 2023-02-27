@@ -210,10 +210,10 @@ class PDF(FPDF):
 
 
 class Export(commands.Cog):
-    def __init__(self, bot):
+    def __init__(self, bot: commands.Bot):
         self.bot = bot
 
-    async def channel_attachments(self, channel, oldest_first: bool = False):
+    async def channel_attachments(self, channel: discord.TextChannel, oldest_first: bool = False):
         url_list = []
         async for message in channel.history(limit=None, oldest_first=oldest_first):
             text = message.clean_content.strip()
@@ -647,14 +647,14 @@ class Export(commands.Cog):
         )
 
 
-    def page_title(self, pdf: PDF, y: float, font, text):
+    def page_title(self, pdf: PDF, y: float, font, text: str):
         """Add title to current page"""
 
         pdf.set_y(y)
         pdf.set_font(*font)
         pdf.cell(0, 0, text)
 
-    async def channel_export(self, ctx: commands.Context, pdf: PDF, channel):
+    async def channel_export(self, ctx: commands.Context, pdf: PDF, channel: discord.TextChannel):
         """
         Takes all messages from a text channel and adds them
         to the current page of the PDF object
@@ -746,5 +746,5 @@ class Export(commands.Cog):
         zip_file.unlink()
 
 
-async def setup(bot):
+async def setup(bot: commands.Bot):
     await bot.add_cog(Export(bot))

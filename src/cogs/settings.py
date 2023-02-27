@@ -115,5 +115,5 @@ class Settings(commands.Cog):
             ctx.game.endings[index] = not ctx.game.endings[index]
 
 
-async def setup(bot):
+async def setup(bot: commands.Bot):
     await bot.add_cog(Settings(bot))

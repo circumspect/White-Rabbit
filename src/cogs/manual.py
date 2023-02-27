@@ -145,7 +145,7 @@ class Manual(commands.Cog):
         # Send the clue
         await self.send_clue(ctx, time)
 
-    async def send_clue(self, ctx, time: int):
+    async def send_clue(self, ctx: commands.Context, time: int):
         # Sends clue based on picked_clues value
 
         # Find character who the clue has been assigned to
@@ -361,5 +361,5 @@ class Manual(commands.Cog):
         return True
 
 
-async def setup(bot):
+async def setup(bot: commands.Bot):
     await bot.add_cog(Manual(bot))

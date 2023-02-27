@@ -1,3 +1,4 @@
+import discord
 # Local
 from data.cards import *
 from data.localization import LOCALIZATION_DATA
@@ -28,7 +29,7 @@ CLUE_TYPES = {
 
 
 class Data:
-    def __init__(self, guild):
+    def __init__(self, guild: discord.Guild):
         self.guild = guild
 
         # Status

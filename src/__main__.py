@@ -43,7 +43,7 @@ async def on_ready():
 
 
 @bot.check
-def check_channel(ctx):
+def check_channel(ctx: commands.Context):
     """Only allow commands in #bot-channel"""
 
     return ctx.channel.name == BOT_CHANNEL

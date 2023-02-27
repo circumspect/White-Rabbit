@@ -83,7 +83,7 @@ class Players(commands.Cog):
         aliases=loc["roles"]["aliases"],
         description=loc["roles"]["description"]
     )
-    async def roles(self, ctx):
+    async def roles(self, ctx: commands.Context):
         """Displays your roles"""
 
         message = loc["roles"]["YourRoles"] + "\n"
@@ -95,7 +95,7 @@ class Players(commands.Cog):
         aliases=loc["users"]["aliases"],
         description=loc["users"]["description"]
     )
-    async def users(self, ctx):
+    async def users(self, ctx: commands.Context):
         """Lists all players and spectators"""
 
         message = ""
@@ -111,5 +111,5 @@ class Players(commands.Cog):
         await ctx.send(message or loc["users"]["NoneFound"])
 
 
-async def setup(bot):
+async def setup(bot: commands.Bot):
     await bot.add_cog(Players(bot))
