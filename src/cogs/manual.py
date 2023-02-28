@@ -6,6 +6,7 @@ from discord.ext import commands
 # Local
 from data import cards, constants, dirs, filepaths, gamedata
 from data.cards import CLUES, STARTING_PLAYER
+from data.gamedata import Context
 from data.localization import LOCALIZATION_DATA
 import utils
 
@@ -20,10 +21,10 @@ class Manual(commands.Cog):
     without user input
     """
 
-    def __init__(self, bot):
+    def __init__(self, bot: commands.Bot):
         self.bot = bot
 
-    async def cog_check(self, ctx):
+    async def cog_check(self, ctx: Context):
         ctx.game = self.bot.games.setdefault(ctx.guild.id, gamedata.Data(ctx.guild))
         # Console logging
         if ctx.game.automatic:
@@ -36,7 +37,7 @@ class Manual(commands.Cog):
         aliases=loc["alice"]["aliases"],
         description=loc["alice"]["description"]
     )
-    async def alice(self, ctx, choice: int = 0):
+    async def alice(self, ctx: Context, choice: int = 0):
         """
         Sends a specified Alice poster, or a random one if no argument is
         passed
@@ -61,7 +62,7 @@ class Manual(commands.Cog):
         aliases=loc["shuffle_motives"]["aliases"],
         description=loc["shuffle_motives"]["description"]
     )
-    async def shuffle_motives(self, ctx):
+    async def shuffle_motives(self, ctx: Context):
         """Shuffle and assign motive cards"""
 
         if not ctx.game.automatic:
@@ -83,7 +84,7 @@ class Manual(commands.Cog):
         aliases=loc["send_motives"]["aliases"],
         description=loc["send_motives"]["description"]
     )
-    async def send_motives(self, ctx):
+    async def send_motives(self, ctx: Context):
         """Distributes motive cards"""
 
         if not ctx.game.motives:
@@ -108,7 +109,7 @@ class Manual(commands.Cog):
         aliases=loc["clue"]["aliases"],
         description=loc["clue"]["description"]
     )
-    async def clue(self, ctx, time: int):
+    async def clue(self, ctx: Context, time: int):
         """
         Draws a clue card given a time
 
@@ -145,7 +146,7 @@ class Manual(commands.Cog):
         # Send the clue
         await self.send_clue(ctx, time)
 
-    async def send_clue(self, ctx, time: int):
+    async def send_clue(self, ctx: Context, time: int):
         # Sends clue based on picked_clues value
 
         # Find character who the clue has been assigned to
@@ -193,7 +194,7 @@ class Manual(commands.Cog):
                     ctx.game.next_clue = gamedata.CLUE_TIMES[i+1]
                     break
 
-    def draw_suspect(self, ctx, time: int):
+    def draw_suspect(self, ctx: Context, time: int):
         """Picks a suspect given the clue time"""
 
         clue_type = gamedata.CLUE_TYPES[time]
@@ -226,7 +227,7 @@ class Manual(commands.Cog):
         aliases=loc["shuffle_clues"]["aliases"],
         description=loc["shuffle_clues"]["description"]
     )
-    async def shuffle_clues(self, ctx):
+    async def shuffle_clues(self, ctx: Context):
         """(Re)shuffles the clue card piles"""
 
         if not ctx.game.automatic:
@@ -250,7 +251,7 @@ class Manual(commands.Cog):
         aliases=loc["assign_times"]["aliases"],
         description=loc["assign_times"]["description"]
     )
-    async def assign_times(self, ctx):
+    async def assign_times(self, ctx: Context):
         """Randomizes and assigns clue times"""
 
         player_count = len(ctx.game.char_roles())
@@ -302,7 +303,7 @@ class Manual(commands.Cog):
         aliases=loc["print_times"]["aliases"],
         description=loc["print_times"]["description"]
     )
-    async def print_times(self, ctx):
+    async def print_times(self, ctx: Context):
         """
         Print out clue assignments in a code block
         """
@@ -333,7 +334,7 @@ class Manual(commands.Cog):
 
         return clue_buckets
 
-    def _test_clue_buckets(self, ctx, clue_buckets):
+    def _test_clue_buckets(self, ctx: Context, clue_buckets):
         """
         Checks clue buckets and returns False if any checks fail
         """
@@ -361,5 +362,5 @@ class Manual(commands.Cog):
         return True
 
 
-async def setup(bot):
+async def setup(bot: commands.Bot):
     await bot.add_cog(Manual(bot))

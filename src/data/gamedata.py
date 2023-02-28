@@ -1,3 +1,6 @@
+import discord
+from discord.ext import commands
+from discord import TextChannel
 # Local
 from data.cards import *
 from data.localization import LOCALIZATION_DATA
@@ -26,9 +29,8 @@ CLUE_TYPES = {
     35: "location", 30: "suspect-drawn", 20: "location-drawn"
 }
 
-
 class Data:
-    def __init__(self, guild):
+    def __init__(self, guild: discord.Guild):
         self.guild = guild
 
         # Status
@@ -122,3 +124,7 @@ class Data:
 
     def active_chars(self):
         return [ROLES_TO_NAMES[role] for role in self.char_roles()]
+
+class Context(commands.Context):
+    game: Data
+    text_channels: List[TextChannel]

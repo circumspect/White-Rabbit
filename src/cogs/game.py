@@ -11,6 +11,7 @@ from discord.ext import commands
 # Local
 from data import cards, dirs, filepaths, gamedata
 from data.cards import CLUES, STARTING_PLAYER
+from data.gamedata import Context
 from data.localization import LOCALIZATION_DATA
 import utils
 
@@ -26,7 +27,7 @@ class Game(commands.Cog):
         aliases=loc["init"]["aliases"],
         description=loc["init"]["description"]
     )
-    async def init(self, ctx):
+    async def init(self, ctx: Context):
         """Initial setup before character selection"""
 
         if ctx.game.start_time:
@@ -106,7 +107,7 @@ class Game(commands.Cog):
         aliases=loc["setup_clues"]["aliases"],
         description=loc["setup_clues"]["description"]
     )
-    async def setup_clues(self, ctx):
+    async def setup_clues(self, ctx: Context):
         """Shuffle and distribute clues"""
 
         if (not ctx.game.init) and ctx.game.automatic:
@@ -145,7 +146,7 @@ class Game(commands.Cog):
         aliases=loc["example"]["aliases"],
         description=loc["example"]["description"]
     )
-    async def example(self, ctx):
+    async def example(self, ctx: Context):
         """Sends an example clue and suspect"""
 
         # Send random 80 minute clue card
@@ -164,7 +165,7 @@ class Game(commands.Cog):
         aliases=loc["char_sheet"]["aliases"],
         description=loc["char_sheet"]["description"]
     )
-    async def char_sheet(self, ctx):
+    async def char_sheet(self, ctx: Context):
         """Sends the character sheet to the resources channel"""
 
         await utils.send_image(
@@ -178,7 +179,7 @@ class Game(commands.Cog):
         aliases=loc["start"]["aliases"],
         description=loc["start"]["description"]
     )
-    async def start(self, ctx):
+    async def start(self, ctx: Context):
         """Begins the game"""
 
         # Validity checks
@@ -223,7 +224,7 @@ class Game(commands.Cog):
         # Start timer and clue_check tasks simultaneously
         await asyncio.gather(self.timer(ctx), self.clue_check(ctx))
 
-    async def timer(self, ctx):
+    async def timer(self, ctx: Context):
         """Prints out the timer"""
 
         time_remaining = gamedata.GAME_LENGTH
@@ -235,7 +236,7 @@ class Game(commands.Cog):
                 asyncio.create_task(ctx.send(time))
             await asyncio.sleep(ctx.game.timer_gap / ctx.game.game_speed)
 
-    async def clue_check(self, ctx):
+    async def clue_check(self, ctx: Context):
         """Timer loop to check clues and perform various actions"""
 
         minutes_remaining = 90
@@ -341,7 +342,7 @@ class Game(commands.Cog):
         aliases=loc["search"]["aliases"],
         description=loc["search"]["description"]
     )
-    async def search(self, ctx):
+    async def search(self, ctx: Context):
         """Draw a searching card"""
 
         if ctx.game.automatic and not ctx.game.start_time:
@@ -369,7 +370,7 @@ class Game(commands.Cog):
         description=loc["ten_min_card"]["description"]
     )
     async def ten_min_card(
-        self, ctx, mention: typing.Union[discord.Member, discord.Role]
+        self, ctx: Context, mention: typing.Union[discord.Member, discord.Role]
     ):
         """Assign the 10 minute card to another player"""
 
@@ -387,5 +388,5 @@ class Game(commands.Cog):
         asyncio.create_task(ctx.send(loc["ten_min_card"]["Assigned"]))
 
 
-async def setup(bot):
+async def setup(bot: commands.Bot):
     await bot.add_cog(Game(bot))

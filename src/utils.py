@@ -7,12 +7,13 @@ from pathlib import Path
 import random
 import re
 import subprocess
-from typing import Union
+from typing import List, Union
 # 3rd-party
 import discord
 import requests
 # Local
 from data import constants
+from data.gamedata import Context
 from data.localization import DEFAULT_LOCALIZATION, LOCALIZATION_DATA, LANGUAGE_KEY
 import envvars
 from rabbit import WHITE_RABBIT_DIR
@@ -27,14 +28,14 @@ def codeblock(text: str):
     return f"```{text}```"
 
 
-def get_text_channels(guild):
+def get_text_channels(guild: discord.Guild):
     return {
         channel.name: channel
         for channel in guild.text_channels
     }
 
 
-def time_string(time):
+def time_string(time: int):
     """Takes # of seconds and returns formatted string mm:ss"""
 
     def pad(num):
@@ -46,7 +47,7 @@ def time_string(time):
     return f"{minutes}:{seconds}"
 
 
-def delete_files(dir, ext):
+def delete_files(dir: Path, ext: str):
     for root, _, files in os.walk(dir, topdown=False):
         for name in files:
             if name.split(".")[-1] == ext:
@@ -68,7 +69,7 @@ def url_is_good(url: str):
     return r.status_code == 200
 
 
-def find_url(url: str, extensions):
+def find_url(url: str, extensions: List[str]):
     for extension in extensions:
         image_url = f"{url}.{extension}"
         if url_is_good(image_url):
@@ -108,7 +109,7 @@ def get_image(directory: Path, name: str) -> Union[Path, str]:
             return find_url(fallback_url, ImageResource.DEFAULT_EXTENSIONS)
 
 
-async def send_image(channel, filepath: Union[Path, str], ctx=None):
+async def send_image(channel: discord.TextChannel, filepath: Union[Path, str], ctx: Context=None):
     """Sends an image to a specified channel"""
 
     if isinstance(channel, str):
@@ -126,7 +127,7 @@ async def send_image(channel, filepath: Union[Path, str], ctx=None):
         await channel.send(filepath)
 
 
-async def send_folder(channel, path, ctx=None):
+async def send_folder(channel, path, ctx: Context=None):
     """Sends all images in a folder in alphabetical order"""
 
     for image in sorted(path.glob("*.*")):
@@ -156,7 +157,7 @@ def is_command(message: str):  # sourcery skip: return-identity
     return True
 
 
-def clean_message(ctx, text: str):
+def clean_message(ctx: Context, text: str):
     """Removes emojis and out of character parts of a string"""
 
     text = remove_emojis(text).strip()
@@ -178,7 +179,7 @@ def remove_emojis(text: str):
     return emojis.sub(r'', text)
 
 
-def ooc_strip(ctx, text: str):
+def ooc_strip(ctx: Context, text: str):
     """
     Takes a string and removes out of context portions
 
@@ -197,7 +198,7 @@ def ooc_strip(ctx, text: str):
 
     return text
 
-def upload_file(path):
+def upload_file(path: Path):
     """Uploads a file and returns the download URL"""
 
     return subprocess.run(["curl", "-T", path, "https://transfer.sh/Alice.pdf"],
