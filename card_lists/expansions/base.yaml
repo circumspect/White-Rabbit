@@ -1,7 +1,8 @@
 # List of characters
 characters:
     # Call this <key>.
-    # Can be anything, but it's best to make it the character's given name
+    # Can be anything, but it's best to make it the character's given name.
+    # Must match character card filename.
     charlie:
         # The name of the role to use when setting up the Discord server. Optional, defaults to <key>.capitalize()
         role: Charlie
