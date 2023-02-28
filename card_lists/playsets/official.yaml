@@ -1,0 +1,5 @@
+starting-player: charlie
+
+expansions:
+    - base
+    - silent-falls
