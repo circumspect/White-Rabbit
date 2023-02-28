@@ -65,7 +65,8 @@ class Admin(commands.Cog):
         for name, character in cards.CHARACTERS.items():
             roles[name] = await ctx.guild.create_role(name=character.role)
 
-        roles["spectator"] = await ctx.guild.create_role(name=LOCALIZATION_DATA["spectator-role"])
+        ctx.game.spectator_role = await ctx.guild.create_role(name=LOCALIZATION_DATA["spectator-role"])
+        roles["spectator"] = ctx.game.spectator_role
 
         # TODO: Localization
         channel_categories = {
