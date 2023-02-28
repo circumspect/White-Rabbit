@@ -12,7 +12,7 @@ environment variable (see :doc:`env` for details):
 .. note::
     The default server template will not work with character cards not
     included in the base set! When changing playsets, make sure to run the
-    `!server_setup` command to update your server
+    ``!server_setup`` command to update your server
 
 
 Below is the list of all official expansions that can be used in a playset:
