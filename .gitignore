@@ -2,7 +2,8 @@
 dev_ids.txt
 token.txt
 *.mp3
-card_lists/testing/
+card_lists/expansions/testing/
+card_lists/playsets/testing/
 exports/
 temp/
 
