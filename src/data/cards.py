@@ -27,18 +27,19 @@ def merge(a, b, path=None):
             a[key] = b[key]
     return a
 
-expansions: List[str] = []
-with open(PLAYSET_DIR / f"{envvars.get_env_var('WHITE_RABBIT_PLAYSET')}.playset", "r") as f:
-    for line in f:
-        line = line.strip()
-        if line:
-            expansions.append(line)
+with open(PLAYSET_DIR / f"{envvars.get_env_var('WHITE_RABBIT_PLAYSET')}.yaml", "r") as f:
+    data = yaml.safe_load(f)
+    STARTING_PLAYER = data["starting-player"]
+    expansions = data["expansions"]
 
 CARD_LIST = None
 for expansion in expansions:
     expansion_file = EXPANSION_DIR / f"{expansion}.yaml"
     with open(expansion_file, "r") as f:
         cards = yaml.safe_load(f)
+        if cards is None:
+            continue
+
         if CARD_LIST is None:
             CARD_LIST = cards
         else:
@@ -46,8 +47,6 @@ for expansion in expansions:
 
 CHARACTERS: Dict[str, Character] = { k: Character(k, v) for k, v in CARD_LIST["characters"].items() }
 ROLES_TO_NAMES = { v.role: v.name for _, v in CHARACTERS.items() }
-
-STARTING_PLAYER = CARD_LIST["starting-player"]
 
 ALL_SUSPECTS: Dict[str, Suspect] = { k: Suspect(k, v) for k, v in CARD_LIST["suspects"].items() }
 suspect_keys = random.sample(ALL_SUSPECTS.keys(), 5)
@@ -59,3 +58,5 @@ LOCATIONS = { k: ALL_LOCATIONS[k] for k in location_keys }
 
 SEARCHING: Dict[str, Searching] = { k: Searching(k, v) for k, v in CARD_LIST["searching"].items() }
 CLUES = CARD_LIST["clues"]
+
+assert STARTING_PLAYER in CLUES[90]

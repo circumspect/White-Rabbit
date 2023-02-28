@@ -8,8 +8,6 @@ characters:
     jack:
     julia:
 
-starting-player: charlie
-
 # List of suspects. Descriptions optional, colons are not.
 suspects:
     bria:
