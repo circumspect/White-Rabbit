@@ -5,7 +5,7 @@ Expansions, Playsets, and Custom Cards
 .. note::
     This page is intended for those who wish to define their own sets of
     cards, or to use a custom list of expansions. If you only want to run
-    a game using the base set, follow the instructions in :doc:`../quickstart`.
+    a game using the base set, follow the instructions in :doc:`/user-guide/quickstart`.
     If you want to run a game using all officially released expansions, see
     :doc:`official`.
 
