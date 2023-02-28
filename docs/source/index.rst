@@ -11,6 +11,7 @@ The White Rabbit Documentation
    user-guide/env
    user-guide/settings
    user-guide/exports
+   user-guide/card-lists/official
    user-guide/admin
    user-guide/manual-mode
    dev-guide/debugging
