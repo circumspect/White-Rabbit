@@ -21,6 +21,13 @@ The localization to be used by the bot. Defaults to ``en``. For a list of
 supported languages, see :doc:`localization`.
 
 
+WHITE_RABBIT_PLAYSET
+------
+
+The playset to use for the bot. Defaults to ``base``. For details, see
+:doc:`card-lists/official`.
+
+
 WHITE_RABBIT_USE_LOCAL_IMAGES
 --------------------
 
