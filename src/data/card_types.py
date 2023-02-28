@@ -2,12 +2,12 @@ from typing import Dict, List, Optional, Union
 
 
 class Character:
-    def __init__(self, name: str, data: Optional[Dict[str, Union[str, List[str]]]]):
-        self.name: str
-        self.role: str
-        self.full_name: str
-        self.pdf_name_format: List[str]
+    name: str
+    role: str
+    full_name: str
+    pdf_name_format: List[str]
 
+    def __init__(self, name: str, data: Optional[Dict[str, Union[str, List[str]]]]):
         self.name = name
 
         if data is None:
