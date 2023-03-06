@@ -4,6 +4,7 @@ import asyncio
 from discord.ext import commands
 # Local
 from data import constants
+from data.gamedata import Context
 from data.localization import LOCALIZATION_DATA
 import utils
 
@@ -19,7 +20,7 @@ class About(commands.Cog):
         aliases=loc["credits"]["aliases"],
         description=loc["credits"]["description"]
     )
-    async def credits(self, ctx):
+    async def credits(self, ctx: Context):
         """Prints information about the bot"""
 
         message = "\n".join([
@@ -35,7 +36,7 @@ class About(commands.Cog):
         aliases=loc["docs"]["aliases"],
         description=loc["docs"]["description"]
     )
-    async def docs(self, ctx):
+    async def docs(self, ctx: Context):
         """Link to the documentation"""
 
         message = "\n".join([
@@ -46,5 +47,5 @@ class About(commands.Cog):
         asyncio.create_task(ctx.send(message))
 
 
-async def setup(bot):
+async def setup(bot: commands.Bot):
     await bot.add_cog(About(bot))

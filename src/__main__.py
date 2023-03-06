@@ -10,7 +10,8 @@ import requests
 # Local
 from bot import WhiteRabbit
 from cogs.debug import DEBUG_COMMAND_LIST
-from data import cards, constants, dirs, gamedata
+from data import cards, constants, dirs
+from data.gamedata import Context, Data
 from data.localization import LOCALIZATION_DATA
 import envvars
 import utils
@@ -43,25 +44,25 @@ async def on_ready():
 
 
 @bot.check
-def check_channel(ctx):
+def check_channel(ctx: Context) -> bool:
     """Only allow commands in #bot-channel"""
 
     return ctx.channel.name == BOT_CHANNEL
 
 
 @bot.check
-def not_spectator(ctx):
+def not_spectator(ctx: Context):
     """Don't let spectators run commands"""
 
     return SPECTATOR_ROLE not in [role.name for role in ctx.author.roles]
 
 
 @bot.before_invoke
-async def before_invoke(ctx):
+async def before_invoke(ctx: Context):
     """Attaches stuff to ctx for convenience"""
 
     # that guild's game
-    ctx.game = bot.games.setdefault(ctx.guild.id, gamedata.Data(ctx.guild))
+    ctx.game: Data = bot.games.setdefault(ctx.guild.id, Data(ctx.guild))
 
     # access text channels by name
     ctx.text_channels = {
@@ -72,17 +73,17 @@ async def before_invoke(ctx):
     # Character that the author is
     ctx.character = None
     for role in ctx.author.roles:
-        if role.name in cards.ROLES_TO_CHARACTERS:
-            ctx.character = cards.ROLES_TO_CHARACTERS[role.name]
+        if role.name in cards.ROLES_TO_NAMES:
+            ctx.character = cards.ROLES_TO_NAMES[role.name]
             break
 
 
 @bot.event
-async def on_command_error(ctx, error):
+async def on_command_error(ctx: Context, error):
     """Default error catcher for commands"""
 
     bot_channel = utils.get_text_channels(ctx.guild)[BOT_CHANNEL]
-    ctx.game = bot.games.setdefault(ctx.guild.id, gamedata.Data(ctx.guild))
+    ctx.game: Data = bot.games.setdefault(ctx.guild.id, Data(ctx.guild))
 
     # Failed a check
     if isinstance(error, commands.errors.CheckFailure):

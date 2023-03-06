@@ -1,0 +1,84 @@
+# This is an example of a minimal card list file for the base game. Not meant
+# for actual use. Use base.yaml instead.
+# List of characters. Other fields optional (see base.yaml), colons are not.
+characters:
+    charlie:
+    dakota:
+    evan:
+    jack:
+    julia:
+
+# List of suspects. Descriptions optional, colons are not.
+suspects:
+    bria:
+    cj:
+    david:
+    halvert:
+    ryan:
+
+# List of locations. Descriptions optional, colons are not.
+locations:
+    barn:
+    lighthouse:
+    nightclub:
+    park:
+    station:
+
+# List of searching cards. Descriptions optional, colons are not.
+searching:
+    10k:
+    alcohol:
+    blade:
+    blood:
+    firearm:
+    followed:
+    mask:
+    van:
+
+clues:
+    90:
+        charlie:
+            1:
+    80:
+        1:
+        2:
+        3:
+    70:
+        1:
+        2:
+        3:
+    60:
+        1:
+        2:
+        3:
+    50:
+        1:
+        2:
+        3: 
+    45:
+        1:
+        2:
+        3:
+    40:
+        1:
+        2:
+        3:
+    35:
+        1:
+        2:
+        3:
+    # Culprit
+    30:
+        1:
+        2:
+        3:
+    # Alice's location
+    20:
+        1:
+        2:
+        3: 
+    # Endings
+    10:
+        1: 
+        2: 
+        3:

@@ -1,3 +1,6 @@
+import discord
+from discord.ext import commands
+from discord import TextChannel
 # Local
 from data.cards import *
 from data.localization import LOCALIZATION_DATA
@@ -26,9 +29,8 @@ CLUE_TYPES = {
     35: "location", 30: "suspect-drawn", 20: "location-drawn"
 }
 
-
 class Data:
-    def __init__(self, guild):
+    def __init__(self, guild: discord.Guild):
         self.guild = guild
 
         # Status
@@ -63,12 +65,12 @@ class Data:
 
         # Suspects and locations
         self.suspect_pile = []
-        for suspect in SUSPECTS.keys():
+        for suspect in SUSPECTS:
             self.suspect_pile.append(suspect)
             self.suspect_pile.append(suspect)
 
         self.location_pile = []
-        for location in LOCATIONS.keys():
+        for location in LOCATIONS:
             self.location_pile.append(location)
             self.location_pile.append(location)
 
@@ -107,21 +109,22 @@ class Data:
 
     def char_roles(self):
         """
-        Returns a dictionary mapping titlecase character names to their
+        Returns a dictionary mapping character role names to their
         corresponding roles for all characters currently being played
         """
 
         unsorted = {
             role.name: role
             for role in self.guild.roles
-            if role.name.lower() in CHARACTERS and role.members
+            if role.name in ROLES_TO_NAMES and role.members
         }
 
         return dict(sorted(unsorted.items(), key=lambda item: item[0]))
 
 
-    def active_chars(self, lowercase=False):
-        if lowercase:
-            return [name.lower() for name in self.char_roles()]
-        else:
-            return [name for name in self.char_roles()]
+    def active_chars(self):
+        return [ROLES_TO_NAMES[role] for role in self.char_roles()]
+
+class Context(commands.Context):
+    game: Data
+    text_channels: List[TextChannel]

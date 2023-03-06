@@ -10,6 +10,8 @@ import discord
 from discord.ext import commands
 # Local
 from data import cards, dirs, filepaths, gamedata
+from data.cards import CLUES, STARTING_PLAYER
+from data.gamedata import Context
 from data.localization import LOCALIZATION_DATA
 import utils
 
@@ -25,7 +27,7 @@ class Game(commands.Cog):
         aliases=loc["init"]["aliases"],
         description=loc["init"]["description"]
     )
-    async def init(self, ctx):
+    async def init(self, ctx: Context):
         """Initial setup before character selection"""
 
         if ctx.game.start_time:
@@ -72,8 +74,8 @@ class Game(commands.Cog):
             filepath = utils.get_image(dirs.LOCATION_IMAGE_DIR, location)
             await utils.send_image(LOCALIZATION_DATA["channels"]["cards"]["location-cards"], filepath, ctx)
 
-        # Instructions for Charlie Barnes
-        channel = ctx.text_channels[LOCALIZATION_DATA["channels"]["clues"]["charlie"]]
+        # Instructions for starting player
+        channel = ctx.text_channels[LOCALIZATION_DATA["channels"]["clues"][STARTING_PLAYER]]
         prompts = "\n".join(LOCALIZATION_DATA["stuff-for-charlie"]["instructions"])
         prompts = utils.codeblock(prompts)
 
@@ -105,7 +107,7 @@ class Game(commands.Cog):
         aliases=loc["setup_clues"]["aliases"],
         description=loc["setup_clues"]["description"]
     )
-    async def setup_clues(self, ctx):
+    async def setup_clues(self, ctx: Context):
         """Shuffle and distribute clues"""
 
         if (not ctx.game.init) and ctx.game.automatic:
@@ -121,8 +123,8 @@ class Game(commands.Cog):
         if player_count < 3:
             asyncio.create_task(ctx.send(LOCALIZATION_DATA["errors"]["NotEnoughPlayers"]))
             return
-        # Can't set up without Charlie Barnes
-        elif "Charlie" not in ctx.game.char_roles():
+        # Can't set up without 90 clue character
+        elif cards.CHARACTERS[STARTING_PLAYER].role not in ctx.game.char_roles():
             asyncio.create_task(ctx.send(LOCALIZATION_DATA["errors"]["MissingCharlie"]))
             return
 
@@ -144,12 +146,12 @@ class Game(commands.Cog):
         aliases=loc["example"]["aliases"],
         description=loc["example"]["description"]
     )
-    async def example(self, ctx):
+    async def example(self, ctx: Context):
         """Sends an example clue and suspect"""
 
         # Send random 80 minute clue card
         channel = LOCALIZATION_DATA["channels"]["resources"]
-        choice = random.randint(1, 3)
+        choice = random.choice([*CLUES[80].keys()])
         path = utils.get_image(dirs.CLUE_DIR / "80", f"80-{choice}")
         await utils.send_image(channel, path, ctx)
 
@@ -163,7 +165,7 @@ class Game(commands.Cog):
         aliases=loc["char_sheet"]["aliases"],
         description=loc["char_sheet"]["description"]
     )
-    async def char_sheet(self, ctx):
+    async def char_sheet(self, ctx: Context):
         """Sends the character sheet to the resources channel"""
 
         await utils.send_image(
@@ -177,7 +179,7 @@ class Game(commands.Cog):
         aliases=loc["start"]["aliases"],
         description=loc["start"]["description"]
     )
-    async def start(self, ctx):
+    async def start(self, ctx: Context):
         """Begins the game"""
 
         # Validity checks
@@ -193,7 +195,7 @@ class Game(commands.Cog):
             asyncio.create_task(ctx.send(LOCALIZATION_DATA["errors"]["AlreadyStarted"]))
             return
 
-        if "Charlie" not in ctx.game.active_chars():
+        if cards.CHARACTERS[STARTING_PLAYER].role not in ctx.game.char_roles():
             asyncio.create_task(ctx.send(LOCALIZATION_DATA["errors"]["MissingCharlie"]))
             return
 
@@ -202,7 +204,7 @@ class Game(commands.Cog):
             return
 
         # 90 minute card/message for Charlie Barnes
-        channel = ctx.text_channels[LOCALIZATION_DATA["channels"]["clues"]["charlie"]]
+        channel = ctx.text_channels[LOCALIZATION_DATA["channels"]["clues"][STARTING_PLAYER]]
         await utils.send_image(channel, utils.get_image(dirs.CLUE_DIR / "90", "90-1"), ctx)
         first_message = LOCALIZATION_DATA["stuff-for-charlie"]["first-message"]
         await channel.send(first_message)
@@ -222,7 +224,7 @@ class Game(commands.Cog):
         # Start timer and clue_check tasks simultaneously
         await asyncio.gather(self.timer(ctx), self.clue_check(ctx))
 
-    async def timer(self, ctx):
+    async def timer(self, ctx: Context):
         """Prints out the timer"""
 
         time_remaining = gamedata.GAME_LENGTH
@@ -234,7 +236,7 @@ class Game(commands.Cog):
                 asyncio.create_task(ctx.send(time))
             await asyncio.sleep(ctx.game.timer_gap / ctx.game.game_speed)
 
-    async def clue_check(self, ctx):
+    async def clue_check(self, ctx: Context):
         """Timer loop to check clues and perform various actions"""
 
         minutes_remaining = 90
@@ -267,9 +269,9 @@ class Game(commands.Cog):
 
                 # 10 min card - send culprit
                 elif minutes_remaining == 10:
-                    # If not assigned, default to Charlie
+                    # If not assigned, default to starting player
                     if not ctx.game.ten_char:
-                        ctx.game.ten_char = "charlie"
+                        ctx.game.ten_char = STARTING_PLAYER
 
                     channel = LOCALIZATION_DATA["channels"]["clues"][ctx.game.ten_char]
                     ending = random.choice([i for i in ctx.game.endings if ctx.game.endings[i]])
@@ -284,8 +286,8 @@ class Game(commands.Cog):
                 # Ending 3
                 elif minutes_remaining == 8 and ctx.game.second_culprit:
                     culprit = ctx.game.suspects_drawn[30]
-                    remaining_suspects = [suspect for suspect in cards.SUSPECTS if suspect != culprit]
-                    second = random.choice(remaining_suspects)
+                    remaining_suspects = [suspect for suspect in ctx.game.suspect_pile if suspect != culprit]
+                    second = remaining_suspects.pop()
 
                     # Send to clues channel
                     path = utils.get_image(dirs.SUSPECT_IMAGE_DIR, second)
@@ -330,7 +332,7 @@ class Game(commands.Cog):
 
         # End of game, send debrief
         await utils.send_image(
-            LOCALIZATION_DATA["channels"]["clues"]["charlie"],
+            LOCALIZATION_DATA["channels"]["clues"][STARTING_PLAYER],
             filepaths.MASTER_PATHS["debrief"],
             ctx
         )
@@ -340,7 +342,7 @@ class Game(commands.Cog):
         aliases=loc["search"]["aliases"],
         description=loc["search"]["description"]
     )
-    async def search(self, ctx):
+    async def search(self, ctx: Context):
         """Draw a searching card"""
 
         if ctx.game.automatic and not ctx.game.start_time:
@@ -368,7 +370,7 @@ class Game(commands.Cog):
         description=loc["ten_min_card"]["description"]
     )
     async def ten_min_card(
-        self, ctx, mention: typing.Union[discord.Member, discord.Role]
+        self, ctx: Context, mention: typing.Union[discord.Member, discord.Role]
     ):
         """Assign the 10 minute card to another player"""
 
@@ -386,5 +388,5 @@ class Game(commands.Cog):
         asyncio.create_task(ctx.send(loc["ten_min_card"]["Assigned"]))
 
 
-async def setup(bot):
+async def setup(bot: commands.Bot):
     await bot.add_cog(Game(bot))

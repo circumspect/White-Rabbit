@@ -1,0 +1,413 @@
+{
+    "title": "Alice a Disparu",
+    "template": "https://discord.new/CyqF4KpV6SMY",
+    "bot-name": "Le Lapin Blanc",
+
+    "spectator-role": "Spectateur",
+
+    "channels": {
+        "discussion": "discussion",
+        "bot-channel": "commandes-bot",
+        "call": "appel",
+
+        "resources": "ressources",
+
+        "cards": {
+            "character-cards": "cartes-personnages",
+            "suspect-cards": "cartes-suspects",
+            "location-cards": "cartes-lieux",
+            "suspects-drawn": "suspects-révélés",
+            "locations-drawn": "lieux-révélés"
+        },
+
+        "clue-channel-format": "notes-{}",
+        "voicemails": "messages-vocaux",
+        "group-chat": "discussion-groupe",
+        "pm-channel-format": "{}-{}"
+    },
+
+    "commands": {
+        "about": {
+            "credits": {
+                "name": "info",
+                "aliases": [],
+                "description": "Affiche les informations sur le bot",
+
+                "creators": "Le Lapin Blanc a été créé par circumspect.",
+                "source": "Code source disponible à ce lien :"
+            },
+
+            "docs": {
+                "name": "docs",
+                "aliases": ["guide"],
+                "description": "Lien vers la documentation",
+                "documentation": "La documentation sur Le Lapin Blanc se trouve à ce lien :"
+            }
+        },
+
+        "admin": {
+            "server_setup": {
+                "name": "server_setup",
+                "aliases": [],
+                "description": "Deletes all channels and roles and creates new ones based on the given card list"
+            },
+
+            "show_all": {
+                "name": "révèle",
+                "aliases": ["show_all"],
+                "description": "Rends les salons de jeux accessibles à tous et empêche l'envoi de nouveaux messages"
+            },
+
+            "wipe": {
+                "name": "efface",
+                "aliases": ["wipe"],
+                "description": "Efface tous les messages",
+
+                "DeletingMessages": "Effacement des messages !"
+            },
+
+            "reset_perms": {
+                "name": "reset_perms",
+                "aliases": [],
+                "description": "Réinitialise les permissions de tous les salons (annule !révèle)"
+            },
+
+            "reset_roles": {
+                "name": "reset_roles",
+                "aliases": [],
+                "description": "Removes character roles and nicknames from all players",
+
+                "NoteAboutOwner": "Note : cette action n'impacte pas le propriétaire du serveur."
+            },
+
+            "reset": {
+                "name": "reset",
+                "aliases": [],
+                "description": "Reset intégral du serveur",
+
+                "ResettingServer": "Reset du serveur en cours !"
+            }
+        },
+
+        "debug": {
+            "speed": {
+                "name": "vitesse",
+                "aliases": ["speed"],
+                "description": "Change la vitesse du jeu"
+            },
+
+            "plugins": {
+                "name": "plugins",
+                "aliases": [],
+                "description": "Liste les plugins chargés"
+            },
+
+            "load": {
+                "name": "load",
+                "aliases": [],
+                "description": "(Re)charge un plugin"
+            },
+
+            "unload": {
+                "name": "unload",
+                "aliases": [],
+                "description": "Décharge un plugin"
+            },
+
+            "quit": {
+                "name": "quitter",
+                "aliases": ["quit", "stop", "shutdown"],
+                "description": "Coupe le bot - AFFECTE TOUS LES SERVEURS"
+            }
+        },
+
+        "export": {
+            "pdf": {
+                "name": "pdf",
+                "aliases": ["PDF"],
+                "description": "Exporte la partie au format PDF",
+
+                "created-by": "Créé par :",
+                "voicemail": "Message vocal",
+                "timeline": "Timeline",
+                "conclusion": "Conclusions",
+                "group-chat": "Discussion Groupe",
+                "investigator": "Enquêteur",
+                "ending": "Fin",
+                "location": "Lieu",
+                "culprit": "Coupable",
+                "culprit1": "Coupable #1",
+                "culprit2": "Coupable #2",
+
+                "CollectingData": "Récolte des données du jeu...",
+                "BuildingCharPages": "Construction des pages de personnages...",
+                "FailedImport": "Impossible d'importer les données, quelqu'un a-t-il quitté le serveur ?",
+                "MissingGameData": "Impossible de trouver des données de jeu à exporter !",
+                "RecreatingTimeline": "Recréation de la timeline...",
+                "CollectingMessages": "Collecte des messages...",
+                "PDFCreated": "Le PDF a été créé !"
+            },
+
+            "upload": {
+                "name": "télécharger",
+                "aliases": ["upload", "telecharger"],
+                "description": "Uploads a file and prints out the download url"
+            }
+        },
+
+        "game": {
+            "init": {
+                "name": "init",
+                "aliases": ["initialiser"],
+                "description": "Initialiser avant de la sélection des personnages"
+            },
+
+            "setup_clues": {
+                "name": "indices",
+                "aliases": ["setup_clues"],
+                "description": "Attribuer les indices"
+            },
+
+            "start": {
+                "name": "commence",
+                "aliases": ["start"],
+                "description": "Commencer le jeu"
+            },
+
+            "example": {
+                "name": "exemple",
+                "aliases": ["example"],
+                "description": "Envoyer une carte indice et suspect pour l'exemple"
+            },
+
+            "char_sheet": {
+                "name": "fiche_perso",
+                "aliases": ["char_sheet"],
+                "description": "Envoie la fiche de personnage dans le salon Ressources"
+            },
+
+            "search": {
+                "name": "cherche",
+                "aliases": ["search", "searching"],
+                "description": "Tirer une carte Recherche",
+
+                "NothingFound": "Tu n'as rien trouvé."
+            },
+
+            "ten_min_card": {
+                "name": "10",
+                "aliases": [],
+                "description": "Assigne la carte des 10 minutes à un joueur",
+
+                "Assigned": "La carte des 10 minutes a été assignée !"
+            }
+        },
+
+        "manual": {
+            "alice": {
+                "name": "alice",
+                "aliases": ["poster"],
+                "description": "Envoie le poster d'Alice spécifié sur le salon Ressources, ou un poster aléatoire si aucun argument n'est spécifié."
+            },
+
+            "shuffle_motives": {
+                "name": "melange_motivations",
+                "aliases": ["shuffle_motives"],
+                "description": "Mélanger les cartes Motivations.",
+
+                "Shuffling": "Mélange des motivations !"
+            },
+
+            "send_motives": {
+                "name": "envoie_motivations",
+                "aliases": ["send_motives"],
+                "description": "Distribuer les cartes Motivations.",
+
+                "NeedToShuffle": "Les cartes doivent être mélangées d'abord !"
+            },
+
+            "clue": {
+                "name": "indice",
+                "aliases": ["clue"],
+                "description": "Tirer une carte indice pour le timer indiqué.",
+
+                "ClueNotFound": "Pas d'indice trouvé cette fois !",
+                "CluesNotAssigned": "Les indices n'ont pas été assignés !",
+                "CluesNotShuffled": "Il faut mélanger d'abord !",
+                "NotYourClue": "Cette carte ne t'appartient pas !"
+            },
+
+            "shuffle_clues": {
+                "name": "melange_indices",
+                "aliases": ["shuffle_clues"],
+                "description": "(Re)mélange la pile des cartes Indices.",
+
+                "ShufflingClues": "Mélange des indices !"
+            },
+
+            "assign_times": {
+                "name": "assign_times",
+                "aliases": [],
+                "description": "Randomisation et assignation des indices.",
+
+                "AssigningClues": "Assignation des indices !"
+            },
+
+            "print_times": {
+                "name": "print_times",
+                "aliases": [],
+                "description": "Affiche la répartition des timers d'indices",
+
+                "ClueTimes": "Distribution des indices :"
+            }
+        },
+
+        "players": {
+            "claim": {
+                "name": "claim",
+                "aliases": [],
+                "description": "Demander un rôle de personnage ou de spectateur.",
+
+                "AlreadyHaveThisRole": "Tu as déjà ce rôle !",
+                "AlreadyHaveOtherRole": "Tu as déjà un autre rôle !",
+                "UnclaimableRole": "Tu ne peux pas avoir ce rôle.",
+                "RoleIsTaken": "Ce rôle est pris.",
+                "UpdatedRoles": "Ton rôle a été mis à jour !"
+            },
+
+            "unclaim": {
+                "name": "retirer",
+                "aliases": ["unclaim"],
+                "description": "Retirer tes rôles"
+            },
+
+            "roles": {
+                "name": "rôles",
+                "aliases": ["roles"],
+                "description": "Affiche tes rôles",
+
+                "YourRoles": "Tes rôles :"
+            },
+
+            "users": {
+                "name": "utilisateurs",
+                "aliases": ["users", "énumère"],
+                "description": "Énumère les joueurs et les spectateurs",
+
+                "spectators": "Spectateurs :",
+                "players": "Joueurs :",
+                "NoneFound": "Aucun joueur ni spectateur n'a été trouvé."
+            }
+        },
+
+        "settings": {
+            "auto": {
+                "name": "auto",
+                "aliases": [],
+                "description": "Affiche le mode en cours, active ou désactive le mode auto (on/off, on par défaut)",
+
+                "on": "on",
+                "off": "off",
+
+                "CurrentlyAuto": "Mode actuel : automatique",
+                "CurrentlyManual": "Mode actuel : manuel",
+                "AutoEnabled": "Tirage automatique des cartes activé !",
+                "AutoDisabled": "Tirage automatique des cartes désactivé !"
+            },
+
+            "music": {
+                "name": "musique",
+                "aliases": ["music"],
+                "description": "Active ou désactive le stream de musique pendant la partie.",
+
+                "MusicEnabled": "Stream de la musique activé !",
+                "MusicDisabled": "Stream de la musique désactivé !"
+            },
+
+            "show_timer": {
+                "name": "timer",
+                "aliases": ["chrono"],
+                "description": "Afficher/cacher le timer",
+
+                "TimerGapTooSmall": "Le laps de temps entre deux pings est trop court !",
+
+                "ShowingTimer": "Timer affiché !",
+                "HidingTimer": "Timer caché !"
+            },
+
+            "endings": {
+                "name": "fins",
+                "aliases": ["endings"],
+                "description": "Active ou désactive la fin indiquée. Voir la documentation pour plus d'informations.",
+
+                "EndingsEnabled": "Fins possibles :"
+            }
+        }
+    },
+
+    "stuff-for-charlie": {
+        "instructions": [
+            "Lire l'introduction",
+            "Parler d'Alice en se basant sur l'affiche",
+            "Présenter/choisir son personnage",
+            "Parler de son personnages",
+            "Expliquer sa motivation",
+            "Parler du background des personnages",
+            "Parler des relations entre personnages",
+            "Parler des suspects et des lieux",
+            "!indices",
+            "!exemple",
+            "Expliquer les cartes indice",
+            "Expliquer les mécaniques de jeu",
+            "Guide du jeu",
+            "Messages vocaux",
+            "Diffuser le timer (https://www.youtube.com/watch?v=ysOOFIOAy7A)",
+            "!commence",
+            "Envoyer le premier message"
+        ],
+
+        "background": "CHARLIE BARNES a déménagé de Silent Falls avec sa mère à la fin de l'année dernière après que ses parents aient divorcé. Il revient en ville pour passer les vacances d'hiver avec son père, et espère revoir Alice et les autres pendant son séjour. Il y a quelques jours, Alice a cessé de répondre. Il n'en a plus entendu parler depuis.",
+
+        "first-message": "Hey ! Déso de ping tout le monde, mais je viens de revenir chez mon père à Silent Falls pour les vacances d'hiver et j'ai pas réussi à avoir de nouvelles d'Alice. Je me demandais juste si quelqu'un ici lui a parlé récemment ?"
+    },
+
+    "messages": {
+        "TenMinuteReminder": "Rappel qu'il faut assigner la carte des 10 minutes à la personne qui va vers l'emplacement d'Alice ! (ex : !10 Evan)",
+        "NextClueReminder": "Rappel : Tu as la prochaine carte indice",
+        "Initializing": "Initialisation du jeu !",
+        "DistributingClues": "Distribution des indices !",
+        "StartingGame": "Le jeu commence !",
+        "Culprit": "Coupable :",
+        "SecondCulprit": "Complice :",
+        "AliceLocation": "Lieu où se trouve Alice :"
+    },
+
+    "flip": {
+        "heads": "Face",
+        "tails": "Pile"
+    },
+
+    "errors": {
+        "MissingDotEnv": "Fichier dotenv introuvable ! Téléchargement d'un .env modèle et fermeture du bot.",
+        "LoginFailure": "Impossible de se connecter ! Vérifiez votre token !",
+        "UserInputError": "L'intrant est incompréhensible !",
+        "CommandNotFound": "Commande inconnue !",
+        "CommandInWrongChannel": "Tu ne peux utiliser les commandes que dans ce canal !",
+        "MissingDeveloperPermissions": "That command is for developers only!",
+        "ManualCommandInAuto": "Tu ne peux pas faire ça, essaies-tu une commande manuelle en mode automatique ?",
+        "SpectatorCommandAttempt": "Les spectateurs ne peuvent pas exécuter les commandes !",
+        "GenericCheckFailure": "Tu ne peux pas faire ça !",
+        "MissingAlice": "Alice n'a pas été choisie !",
+        "MissingCharlie": "Charlie est introuvable !",
+        "NotEnoughPlayers": "Pas assez de joueurs !",
+        "NeedToSetUp": "Il faut mettre le jeu en place !",
+        "NoCharacterRoles": "Tu n'as pas un rôle de personnage !",
+        "GameNotStarted": "La partie n'a pas encore commencé!",
+        "NotInitialized": "Tu dois d'abord initialiser la partie !",
+        "AlreadyStarted": "La partie a déjà commencé !",
+        "AlreadyInitialized": "L'initialisation est déjà faite !",
+        "ServerOwnerNicknameChange": "Ton nom n'a pas pu être mis à jour car tu es l'admin !",
+        "PlayerNotFound": "Ce joueur est introuvable !",
+        "UnknownError": "Erreur inconnue : regardez les logs !"
+    }
+}

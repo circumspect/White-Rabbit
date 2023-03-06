@@ -7,6 +7,7 @@ from discord.ext import commands
 from discord.permissions import PermissionOverwrite
 # Local
 from data import cards, constants
+from data.gamedata import Context
 from data.localization import LOCALIZATION_DATA
 
 loc = LOCALIZATION_DATA["commands"]["admin"]
@@ -26,10 +27,10 @@ PERMS_SPECTATOR = PermissionOverwrite()
 PERMS_SPECTATOR.update(**{"read_messages": True, "send_messages": False})
 
 class Admin(commands.Cog):
-    def __init__(self, bot):
+    def __init__(self, bot: commands.Bot):
         self.bot = bot
 
-    async def cog_check(self, ctx):
+    async def cog_check(self, ctx: Context):
         """Commands for server admins only"""
 
         return ctx.author.guild_permissions.administrator
@@ -39,7 +40,7 @@ class Admin(commands.Cog):
         aliases=loc["server_setup"]["aliases"],
         description=loc["server_setup"]["description"]
     )
-    async def server_setup(self, ctx):
+    async def server_setup(self, ctx: Context):
         """Deletes all channels and roles and creates new ones based on the given card list"""
 
         # Delete roles and channels
@@ -60,11 +61,12 @@ class Admin(commands.Cog):
 
         # Create roles
         roles = {}
-        roles["spectator"] = await ctx.guild.create_role(name=LOCALIZATION_DATA["spectator-role"])
 
-        for character in cards.CHARACTERS:
-            roles[character] = await ctx.guild.create_role(name=cards.CHARACTERS[character]["role"])
+        for name, character in cards.CHARACTERS.items():
+            roles[name] = await ctx.guild.create_role(name=character.role)
 
+        ctx.game.spectator_role = await ctx.guild.create_role(name=LOCALIZATION_DATA["spectator-role"])
+        roles["spectator"] = ctx.game.spectator_role
 
         # TODO: Localization
         channel_categories = {
@@ -140,7 +142,7 @@ class Admin(commands.Cog):
 
         # Private message channels
 
-        for (c1, c2) in it.combinations(cards.CHARACTERS.keys(), 2):
+        for (c1, c2) in it.combinations(cards.CHARACTERS, 2):
             channel = await ctx.guild.create_text_channel(
                 LOCALIZATION_DATA["channels"]["texts"][f"{c1}-{c2}"],
                 category = channel_categories["texts"],
@@ -158,7 +160,7 @@ class Admin(commands.Cog):
         aliases=loc["show_all"]["aliases"],
         description=loc["show_all"]["description"]
     )
-    async def show_all(self, ctx):
+    async def show_all(self, ctx: Context):
         """Reveal all channels and disable sending messages"""
 
         for channel in ctx.guild.text_channels:
@@ -170,7 +172,7 @@ class Admin(commands.Cog):
         aliases=loc["wipe"]["aliases"],
         description=loc["wipe"]["description"]
     )
-    async def wipe(self, ctx, *text_channels: discord.TextChannel):
+    async def wipe(self, ctx: Context, *text_channels: discord.TextChannel):
         """Erases all messages and clears game data"""
 
         # Confirm command to user
@@ -193,7 +195,7 @@ class Admin(commands.Cog):
         aliases=loc["reset_perms"]["aliases"],
         description=loc["reset_perms"]["description"]
     )
-    async def reset_perms(self, ctx):
+    async def reset_perms(self, ctx: Context):
         """Resets channel permissions to the default (undoes !show_all)"""
 
         everyone = ctx.guild.default_role
@@ -218,7 +220,7 @@ class Admin(commands.Cog):
             elif channel.name in [GROUP_CHAT, LOCALIZATION_DATA["channels"]["voicemails"]]:
                 asyncio.create_task(channel.set_permissions(everyone, send_messages=False))
                 for role in ctx.guild.roles:
-                    if role.name in cards.ROLES_TO_CHARACTERS:
+                    if role.name in cards.ROLES_TO_NAMES:
                         asyncio.create_task(channel.set_permissions(role, send_messages=True))
 
             # Private message channels
@@ -237,13 +239,13 @@ class Admin(commands.Cog):
         aliases=loc["reset_roles"]["aliases"],
         description=loc["reset_roles"]["description"]
     )
-    async def reset_roles(self, ctx):
+    async def reset_roles(self, ctx: Context):
         # Removes character roles from everyone
         for member in ctx.guild.members:
             is_player = False
             if not member.bot:
                 for role in member.roles:
-                    if role.name in cards.ROLES_TO_CHARACTERS:
+                    if role.name in cards.ROLES_TO_NAMES:
                         await member.remove_roles(role)
                         is_player = True
                 if is_player:
@@ -257,7 +259,7 @@ class Admin(commands.Cog):
         aliases=loc["reset"]["aliases"],
         description=loc["reset"]["description"]
     )
-    async def reset(self, ctx):
+    async def reset(self, ctx: Context):
         """Complete server reset"""
 
         # Confirm command to user
@@ -270,5 +272,5 @@ class Admin(commands.Cog):
         await asyncio.gather(self.wipe(ctx), self.reset_perms(ctx), self.reset_roles(ctx))
 
 
-async def setup(bot):
+async def setup(bot: commands.Bot):
     await bot.add_cog(Admin(bot))

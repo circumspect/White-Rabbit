@@ -5,13 +5,14 @@ import discord
 from discord.ext import commands
 # Local
 from data import cards
+from data.gamedata import Context
 from data.localization import LOCALIZATION_DATA
 
 loc = LOCALIZATION_DATA["commands"]["players"]
 
 
 class Players(commands.Cog):
-    def __init__(self, bot):
+    def __init__(self, bot: commands.Bot):
         self.bot = bot
 
     # Commands for players to claim character roles
@@ -20,7 +21,7 @@ class Players(commands.Cog):
         aliases=loc["claim"]["aliases"],
         description=loc["claim"]["description"]
     )
-    async def claim(self, ctx, role_name):
+    async def claim(self, ctx: Context, role_name: str):
         """Claim a character/spectator role"""
 
         role = discord.utils.get(ctx.guild.roles, name=role_name) or discord.utils.get(ctx.guild.roles, name=role_name.capitalize())
@@ -33,16 +34,16 @@ class Players(commands.Cog):
         if role in ctx.author.roles:
             await ctx.send(loc["claim"]["AlreadyHaveThisRole"])
             return
-        elif role.name not in [*cards.ROLES_TO_CHARACTERS, LOCALIZATION_DATA["spectator-role"]]:
+        elif role.name not in [*cards.ROLES_TO_NAMES, LOCALIZATION_DATA["spectator-role"]]:
             asyncio.create_task(ctx.send(loc["claim"]["UnclaimableRole"]))
             return
-        elif role.members and role.name in cards.ROLES_TO_CHARACTERS:
+        elif role.members and role.name in cards.ROLES_TO_NAMES:
             asyncio.create_task(ctx.send(loc["claim"]["RoleIsTaken"]))
             return
 
         # Check if player already has a character role
         for member_role in ctx.author.roles:
-            if member_role.name in cards.ROLES_TO_CHARACTERS:
+            if member_role.name in cards.ROLES_TO_NAMES:
                 asyncio.create_task(ctx.send(loc["claim"]["AlreadyHaveOtherRole"]))
                 return
 
@@ -52,9 +53,9 @@ class Players(commands.Cog):
         if ctx.author == ctx.guild.owner:
             # Can't update nickname for server owner
             asyncio.create_task(ctx.send(LOCALIZATION_DATA["errors"]["ServerOwnerNicknameChange"]))
-        elif role.name in cards.ROLES_TO_CHARACTERS:
+        elif role.name in cards.ROLES_TO_NAMES:
             asyncio.create_task(
-                ctx.author.edit(nick=cards.CHARACTERS[cards.ROLES_TO_CHARACTERS[role.name]]["full-name"])
+                ctx.author.edit(nick=cards.CHARACTERS[cards.ROLES_TO_NAMES[role.name]].full_name)
             )
 
     @commands.command(
@@ -62,12 +63,12 @@ class Players(commands.Cog):
         aliases=loc["unclaim"]["aliases"],
         description=loc["unclaim"]["description"]
     )
-    async def unclaim(self, ctx):
+    async def unclaim(self, ctx: Context):
         """Remove character roles"""
 
         # Keep @everyone
         for role in ctx.author.roles:
-            if role.name in cards.ROLES_TO_CHARACTERS:
+            if role.name in cards.ROLES_TO_NAMES:
                 await ctx.author.remove_roles(role)
                 asyncio.create_task(ctx.send(f"Removed role {role.name}"))
                 if ctx.author == ctx.guild.owner:
@@ -83,7 +84,7 @@ class Players(commands.Cog):
         aliases=loc["roles"]["aliases"],
         description=loc["roles"]["description"]
     )
-    async def roles(self, ctx):
+    async def roles(self, ctx: Context):
         """Displays your roles"""
 
         message = loc["roles"]["YourRoles"] + "\n"
@@ -95,7 +96,7 @@ class Players(commands.Cog):
         aliases=loc["users"]["aliases"],
         description=loc["users"]["description"]
     )
-    async def users(self, ctx):
+    async def users(self, ctx: Context):
         """Lists all players and spectators"""
 
         message = ""
@@ -111,5 +112,5 @@ class Players(commands.Cog):
         await ctx.send(message or loc["users"]["NoneFound"])
 
 
-async def setup(bot):
+async def setup(bot: commands.Bot):
     await bot.add_cog(Players(bot))
