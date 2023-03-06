@@ -1,6 +1,6 @@
 {
     "title": "Alice ha desaparecido",
-    "template": "https://discord.new/SfcBdbyhGMmR",
+    "template": "https://discord.new/",
     "bot-name": "El Conejo Blanco",
 
     "spectator-role": "Espectador",
@@ -15,13 +15,13 @@
         "cards": {
             "character-cards": "cartas-personajes",
             "suspect-cards": "cartas-sospechosos",
-            "location-cards": "cartas-localizaciones",
-            "suspects-drawn": "descartes-sospechosos",
-            "locations-drawn": "descartes-localizaciones"
+            "location-cards": "cartas-ubicaciones",
+            "suspects-drawn": "reveladas-sospechosos",
+            "locations-drawn": "reveladas-ubicaciones"
         },
 
         "clue-channel-format": "pistas-{}",
-        "voicemails": "buzón-voz",
+        "voicemails": "mensajes-voz",
         "group-chat": "chat-grupal",
         "pm-channel-format": "{}-{}"
     },
@@ -63,7 +63,7 @@
                 "aliases": ["wipe"],
                 "description": "Elimina todos los mensajes",
 
-                "DeletingMessages": "Eliminando todos los mensajes!"
+                "DeletingMessages": "¡Eliminando todos los mensajes!"
             },
 
             "reset_perms": {
@@ -85,7 +85,7 @@
                 "aliases": ["reset"],
                 "description": "Reinicio del servidor",
 
-                "ResettingServer": "Reiniciando el servidor!"
+                "ResettingServer": "¡Reiniciando el servidor!"
             }
         },
 
@@ -128,30 +128,30 @@
                 "description": "Exporta la partida en formato PDF",
 
                 "created-by": "Creado por:",
-                "voicemail": "Buzón de Voz",
+                "voicemail": "Mensajes de Voz",
                 "timeline": "Línea Temporal",
                 "conclusion": "Conclusiones",
                 "group-chat": "Chat Grupal",
                 "investigator": "Investigador",
                 "ending": "Final",
-                "location": "Localización",
+                "location": "Ubicación",
                 "culprit": "Culpable",
                 "culprit1": "Culpable #1",
                 "culprit2": "Culpable #2",
 
                 "CollectingData": "Recopilando datos de la partida...",
-                "BuildingCharPages": "Creando historial de personaje...",
+                "BuildingCharPages": "Creando historiales de personaje...",
                 "FailedImport": "No se han podido importar los datos de la partida, ¿algún jugador ha abandonado el servidor?",
-                "MissingGameData": "No se han podido encontrar datos de partida para exportar!",
+                "MissingGameData": "¡No se han podido encontrar datos de partida para exportar!",
                 "RecreatingTimeline": "Recreando línea temporal...",
                 "CollectingMessages": "Recopilando mensajes...",
-                "PDFCreated": "PDF creado!"
+                "PDFCreated": "¡PDF creado!"
             },
 
             "upload": {
                 "name": "subir",
                 "aliases": ["upload", "telecharger"],
-                "description": "Sube un archivo y muestra una url de descarga"
+                "description": "Sube un archivo y genera una url de descarga"
             }
         },
 
@@ -165,7 +165,7 @@
             "setup_clues": {
                 "name": "pistas",
                 "aliases": ["setup_clues"],
-                "description": "Baraja y reparte las pistas"
+                "description": "Baraja y reparte las cartas de pista"
             },
 
             "start": {
@@ -199,7 +199,7 @@
                 "aliases": [],
                 "description": "Asigna la carta de 10 minutos a un jugador",
 
-                "Assigned": "Carta de 10 minutos asignada!"
+                "Assigned": "¡Carta de 10 minutos asignada!"
             }
         },
 
@@ -211,19 +211,19 @@
             },
 
             "shuffle_motives": {
-                "name": "barajar_motivos",
+                "name": "barajar_motivacion",
                 "aliases": ["shuffle_motives"],
                 "description": "Baraja y reparte las cartas de motivación",
 
-                "Shuffling": "Barajando las cartas de motivación!"
+                "Shuffling": "¡Barajando las cartas de motivación!"
             },
 
             "send_motives": {
-                "name": "enviar_motivos",
+                "name": "enviar_motivacion",
                 "aliases": ["send_motives"],
                 "description": "Reparte las cartas de motivación",
 
-                "NeedToShuffle": "Se requiere barajar primero las cartas de motivación!"
+                "NeedToShuffle": "¡Se requiere barajar primero las cartas de motivación!"
             },
 
             "clue": {
@@ -231,10 +231,10 @@
                 "aliases": ["clue"],
                 "description": "Reparte una carta de pista en el tiempo indicado",
 
-                "ClueNotFound": "No se ha encontrado ninguna carta de pista para ese tiempo!",
-                "CluesNotAssigned": "Las pistas no se han sido asignadas!",
-                "CluesNotShuffled": "Las pistas no han sido barajadas!",
-                "NotYourClue": "Esa pista no te pertenece!"
+                "ClueNotFound": "¡No se ha encontrado ninguna carta de pista para ese tiempo!",
+                "CluesNotAssigned": "¡Las cartas de pista no se han sido asignadas!",
+                "CluesNotShuffled": "¡Las cartas de pista no han sido barajadas!",
+                "NotYourClue": "Esa carta de pista no te pertenece!"
             },
 
             "shuffle_clues": {
@@ -242,7 +242,7 @@
                   "aliases": ["shuffle_clues"],
                 "description": "(Re)baraja la pila de descartes de pistas",
 
-                "ShufflingClues": "Barajando pistas!"
+                "ShufflingClues": "¡Barajando cartas de pista!"
             },
 
             "assign_times": {
@@ -250,7 +250,7 @@
                 "aliases": ["assign_times"],
                 "description": "Asigna aleatoriamente los tiempos de pistas",
 
-                "AssigningClues": "Asignando pistas!"
+                "AssigningClues": "¡Asignando pistas!"
             },
 
             "print_times": {
@@ -264,39 +264,39 @@
 
         "players": {
             "claim": {
-                "name": "claim",
-                "aliases": [],
-                "description": "Claim a character/spectator role",
+                "name": "reclamar",
+                "aliases": ["claim"],
+                "description": "Reclamar un rol de personaje/espectador",
 
-                "AlreadyHaveThisRole": "You already have that role!",
-                "AlreadyHaveOtherRole": "You already have a role!",
-                "UnclaimableRole": "You cannot claim that role!",
-                "RoleIsTaken": "That role is taken!",
-                "UpdatedRoles": "Gave you the role!"
+                "AlreadyHaveThisRole": "¡Ya tienes asignado ese rol!",
+                "AlreadyHaveOtherRole": "¡Ya tienes asignado otro rol!",
+                "UnclaimableRole": "¡No puedes reclamar ese rol!",
+                "RoleIsTaken": "¡Ese rol está ocupado!",
+                "UpdatedRoles": "¡Rol actualizado!"
             },
 
             "unclaim": {
-                "name": "unclaim",
-                "aliases": [],
-                "description": "Remove character roles"
+                "name": "eliminar",
+                "aliases": ["unclaim"],
+                "description": "Elimina los roles de personaje"
             },
 
             "roles": {
                 "name": "roles",
                 "aliases": [],
-                "description": "Displays your roles",
+                "description": "Muestra tus roles",
 
-                "YourRoles": "Your roles:"
+                "YourRoles": "Tus roles:"
             },
 
             "users": {
-                "name": "users",
-                "aliases": ["list"],
-                "description": "Lists all players and spectators",
+                "name": "listar",
+                "aliases": ["users", "list"],
+                "description": "Listado de todos los jugadores y espectadores",
 
-                "spectators": "Spectators:",
-                "players": "Players:",
-                "NoneFound": "No players or spectators found"
+                "spectators": "Espectadores:",
+                "players": "Jugadores:",
+                "NoneFound": "No se han encontrado jugadores o espectadores"
             }
         },
 
@@ -304,110 +304,110 @@
             "auto": {
                 "name": "auto",
                 "aliases": [],
-                "description": "Prints current mode or turn automatic on/off (on by default)",
+                "description": "Muestra el modo actual o activa/desactiva el modo automático (activado por defecto)",
 
                 "on": "on",
                 "off": "off",
 
-                "CurrentlyAuto": "Current mode: automatic",
-                "CurrentlyManual": "Current mode: manual",
-                "AutoEnabled": "Automatic card draw enabled!",
-                "AutoDisabled": "Automatic card draw disabled!"
+                "CurrentlyAuto": "Modo actual: automático",
+                "CurrentlyManual": "Modo actual: manual",
+                "AutoEnabled": "¡Reparto automático de cartas activado!",
+                "AutoDisabled": "¡Reparto automático de cartas desactivado!"
             },
 
             "music": {
-                "name": "music",
-                "aliases": [],
-                "description": "Enable/disable music stream when game starts",
+                "name": "musica",
+                "aliases": ["music"],
+                "description": "Activa/desactiva la música al comenzar la partida",
 
-                "MusicEnabled": "Music stream enabled!",
-                "MusicDisabled": "Music stream disabled!"
+                "MusicEnabled": "¡Música activada!",
+                "MusicDisabled": "¡Música desactivada!"
             },
 
             "show_timer": {
-                "name": "timer",
-                "aliases": [],
-                "description": "Show/hide bot timer",
+                "name": "cronometro",
+                "aliases": ["timer"],
+                "description": "Mostrar/ocultar cronómetro",
 
-                "TimerGapTooSmall": "Gap between timer pings is too small!",
+                "TimerGapTooSmall": "¡El intervalo entre los pings del cronómetro es muy corto!",
 
-                "ShowingTimer": "Showing bot timer!",
-                "HidingTimer": "Hiding bot timer!"
+                "ShowingTimer": "¡Mostrando cronómetro!",
+                "HidingTimer": "¡Ocultando cronómetro!"
             },
 
             "endings": {
-                "name": "endings",
-                "aliases": [],
-                "description": "Enables/disables an ending. See docs for details",
+                "name": "finales",
+                "aliases": ["endings"],
+                "description": "Activa/desactiva un final. Ver la documentación para más detalles",
 
-                "EndingsEnabled": "Endings enabled:"
+                "EndingsEnabled": "Finales habilitados:"
             }
         }
     },
 
     "stuff-for-charlie": {
         "instructions": [
-            "Read introduction",
-            "Introduce Alice from poster",
-            "Introduce/pick characters",
-            "Explain character cards",
-            "Explain motive cards",
-            "Character backgrounds",
-            "Relationships",
-            "Suspects and locations",
-            "!setup_clues",
-            "!example",
-            "Explain clue cards",
-            "Explain searching",
-            "Game guide",
-            "Voicemails",
-            "Stream timer (https://www.youtube.com/watch?v=ysOOFIOAy7A)",
-            "!start",
-            "Send first message"
+            "Leer la introducción",
+            "Presentar a Alice basándose en el cartel",
+            "Presentar/elegir los personajes",
+            "Explicar las cartas de personaje",
+            "Explicar las cartas de motivación",
+            "Hablar sobre el trasfondo de los personajes",
+            "Establecer relaciones entre los personajes",
+            "Hablar sobre los sospechosos y ubicaciones",
+            "!pistas",
+            "!ejemplo",
+            "Explicar las cartas de pista",
+            "Explicar las cartas de búsqueda",
+            "Guía de juego",
+            "Mensajes de voz",
+            "Iniciar el cronómetro (https://www.youtube.com/watch?v=ysOOFIOAy7A)",
+            "!iniciar",
+            "Enviar el primer mensaje"
         ],
 
-        "background": "CHARLIE BARNES moved away from Silent Falls with their mom at the end of the last school year after their parents divorced. They just arrived in town to stay with their dad for winter break, and hope to see Alice and the others while they're here. A few days ago, Alice stopped responding. They haven't heard from her since.",
+        "background": "CHARLIE BARNES se mudó de Silent Falls con su madre al final del último curso después de que sus padres se divorciaran. Ha vuelto a la ciudad para quedarse con su padre durante las vacaciones de Navidad y espera ver a Alice y a los demás mientras esté aquí. Hace unos días, Alice dejó de responder. No ha sabido nada de ella desde entonces.",
 
-        "first-message": "Hey! Sorry for the big group text, but I just got into town for winter break at my dad's and haven't been able to get ahold of Alice. Just wondering if any of you have spoken to her?"
+        "first-message": "¡Hola! Perdón por el mensaje grupal, pero acabo de llegar a casa de mi padre en la ciudad por las vacaciones de Navidad y no he podido contactar con Alice. Me pregunto si alguno de vosotros ha hablado con ella."
     },
 
     "messages": {
-        "TenMinuteReminder": "Reminder to assign the 10 minute card to the player who is going to Alice's location! (e.g., !10 Evan)",
-        "NextClueReminder": "Reminder: You have the next clue card",
-        "Initializing": "Initializing game",
-        "DistributingClues": "Distributing clues!",
-        "StartingGame": "Starting the game!",
-        "Culprit": "CULPRIT:",
-        "SecondCulprit": "SECOND CULPRIT:",
-        "AliceLocation": "ALICE'S LOCATION:"
+        "TenMinuteReminder": "¡Recordatorio para asignar la carta de 10 minutos al jugador que va a la ubicación de Alice! (ej : !10 Evan)",
+        "NextClueReminder": "Recordatorio: Tienes la próxima carta de pista",
+        "Initializing": "¡Iniciando!",
+        "DistributingClues": "¡Repartiendo pistas!",
+        "StartingGame": "¡Empezando la partida!",
+        "Culprit": "CULPABLE:",
+        "SecondCulprit": "CÓMPLICE:",
+        "AliceLocation": "UBICACIÓN DE ALICE:"
     },
 
     "flip": {
-        "heads": "Heads",
-        "tails": "Tails"
+        "heads": "Cara",
+        "tails": "Cruz"
     },
 
     "errors": {
-        "MissingDotEnv": "No dotenv file found! Downloading sample .env and shutting down",
-        "LoginFailure": "Couldn't log in! Was the token incorrect?",
-        "UserInputError": "Invalid input!",
-        "CommandNotFound": "Command not found!",
-        "CommandInWrongChannel": "You can only use commands in this channel!",
-        "MissingDeveloperPermissions": "That command is for developers only!",
-        "ManualCommandInAuto": "Can't do that, are you running a manual command in automatic mode?",
-        "SpectatorCommandAttempt": "Spectators can't run commands!",
-        "GenericCheckFailure": "You can't do that!",
-        "MissingAlice": "Alice has not been chosen!",
-        "MissingCharlie": "Can't find Charlie!",
-        "NotEnoughPlayers": "Not enough players!",
-        "NeedToSetUp": "Can't start before setting up!",
-        "NoCharacterRoles": "You don't have a character role!",
-        "GameNotStarted": "Game hasn't started yet!",
-        "NotInitialized": "Need to initialize first!",
-        "AlreadyStarted": "Game has already begun!",
-        "AlreadyInitialized": "Initialization already run!",
-        "ServerOwnerNicknameChange": "Couldn't update nickname because you are server owner!",
-        "PlayerNotFound": "Couldn't find that player!",
-        "UnknownError": "Unknown error: check console!"
+        "MissingDotEnv": "¡No se ha encontrado ningún archivo dotenv! Descargando una muestra de archivo .env y apagando",
+        "LoginFailure": "¡No se ha podido iniciar sesión! ¡Comprueba el token!",
+        "UserInputError": "¡Entrada no válida!",
+        "CommandNotFound": "¡Comando desconocido!",
+        "CommandInWrongChannel": "¡Solo puedes usar comandos en este canal!",
+        "MissingDeveloperPermissions": "¡Ese comando es sólo para desarrolladores!",
+        "ManualCommandInAuto": "No puedes hacer eso, ¿estás introduciendo un comando manual en el modo automático?",
+        "SpectatorCommandAttempt": "¡Los espectadores no pueden usar comandos!",
+        "GenericCheckFailure": "¡No puedes hacer eso!",
+        "MissingAlice": "¡No se ha elegido ninguna Alice!",
+        "MissingCharlie": "¡No se ha encontrado a Charlie!",
+        "NotEnoughPlayers": "¡No hay jugadores suficientes!",
+        "NeedToSetUp": "¡La partida no puede iniciarse sin estar preparada!",
+        "NoCharacterRoles": "¡No tienes ningún rol de personaje!",
+        "GameNotStarted": "¡La partida no ha empezado!",
+        "NotInitialized": "¡Primero debes iniciar la partida!",
+        "AlreadyStarted": "¡La partida ya ha empezado!",
+        "AlreadyInitialized": "¡La inicialización ya se ha ejecutado!",
+        "ServerOwnerNicknameChange": "¡No se ha podido actualizar el nick porque eres el propietario del servidor!",
+        "PlayerNotFound": "¡No se ha encontrado a ese jugador!",
+        "UnknownError": "Error desconocido: ¡revisa los logs!"
     }
 }
