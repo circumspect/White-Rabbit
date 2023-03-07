@@ -14,10 +14,10 @@
 
         "cards": {
             "character-cards": "cartas-personajes",
-            "suspect-cards": "cartas-sospechosos",
-            "location-cards": "cartas-ubicaciones",
-            "suspects-drawn": "reveladas-sospechosos",
-            "locations-drawn": "reveladas-ubicaciones"
+            "suspect-cards": "cartas-sospechoso",
+            "location-cards": "cartas-ubicacion",
+            "suspects-drawn": "reveladas-sospechoso",
+            "locations-drawn": "reveladas-ubicacion"
         },
 
         "clue-channel-format": "pistas-{}",
