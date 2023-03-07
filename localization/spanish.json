@@ -59,11 +59,11 @@
             },
 
             "wipe": {
-                "name": "eliminar",
+                "name": "limpiar",
                 "aliases": ["wipe"],
-                "description": "Elimina todos los mensajes",
+                "description": "Limpiar todos los mensajes",
 
-                "DeletingMessages": "¡Eliminando todos los mensajes!"
+                "DeletingMessages": "¡Limpiando todos los mensajes!"
             },
 
             "reset_perms": {
