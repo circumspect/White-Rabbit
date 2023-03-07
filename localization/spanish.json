@@ -13,7 +13,7 @@
         "resources": "recursos",
 
         "cards": {
-            "character-cards": "cartas-personajes",
+            "character-cards": "cartas-personaje",
             "suspect-cards": "cartas-sospechoso",
             "location-cards": "cartas-ubicacion",
             "suspects-drawn": "reveladas-sospechoso",
