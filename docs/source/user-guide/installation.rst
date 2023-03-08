@@ -17,9 +17,9 @@ Create a new Discord server using the following template:
 https://discord.new/SfcBdbyhGMmR and name it however you like.
 
 .. note::
-   If you wish to use the bot in a different language, you must use the server
-   template corresponding to that language. See :doc:`localization` for a list
-   of supported languages and Discord server templates.
+   If you wish to use the bot in a different language, set the environment
+   variable accordingly, and then run ``!server_setup`` before starting the
+   game to regenerate the channels.
 
 Next, create a new Discord bot as follows:
 
