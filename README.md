@@ -61,6 +61,7 @@ Built with help from these wonderful people ([emoji key](https://allcontributors
       <td align="center" valign="top" width="14.28%"><a href="http://www.nousefornames.it"><img src="https://avatars.githubusercontent.com/u/210835?v=4?s=100" width="100px;" alt="Alberto"/><br /><sub><b>Alberto</b></sub></a><br /><a href="#translation-wishmerhill" title="Translation">🌍</a></td>
       <td align="center" valign="top" width="14.28%"><a href="https://github.com/d-beezee"><img src="https://avatars.githubusercontent.com/u/59012086?v=4?s=100" width="100px;" alt="d-beezee"/><br /><sub><b>d-beezee</b></sub></a><br /><a href="#translation-d-beezee" title="Translation">🌍</a></td>
       <td align="center" valign="top" width="14.28%"><a href="https://github.com/Leujii"><img src="https://avatars.githubusercontent.com/u/126162473?v=4?s=100" width="100px;" alt="Leujii"/><br /><sub><b>Leujii</b></sub></a><br /><a href="https://github.com/circumspect/White-Rabbit/issues?q=author%3ALeujii" title="Bug reports">🐛</a></td>
+      <td align="center" valign="top" width="14.28%"><a href="https://github.com/Sinesthesyc"><img src="https://avatars.githubusercontent.com/u/126390834?v=4?s=100" width="100px;" alt="Sinesthesyc"/><br /><sub><b>Sinesthesyc</b></sub></a><br /><a href="#translation-Sinesthesyc" title="Translation">🌍</a></td>
     </tr>
   </tbody>
 </table>
