@@ -124,6 +124,15 @@
       "contributions": [
         "translation"
       ]
+    },
+    {
+      "login": "Leujii",
+      "name": "Leujii",
+      "avatar_url": "https://avatars.githubusercontent.com/u/126162473?v=4",
+      "profile": "https://github.com/Leujii",
+      "contributions": [
+        "bug"
+      ]
     }
   ],
   "contributorsPerLine": 7,
