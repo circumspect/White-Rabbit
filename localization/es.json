@@ -1,6 +1,5 @@
 {
     "title": "Alice ha desaparecido",
-    "template": "https://discord.new/",
     "bot-name": "El Conejo Blanco",
 
     "spectator-role": "Espectador",
@@ -13,11 +12,11 @@
         "resources": "recursos",
 
         "cards": {
-            "character-cards": "cartas-personajes",
-            "suspect-cards": "cartas-sospechosos",
-            "location-cards": "cartas-ubicaciones",
-            "suspects-drawn": "reveladas-sospechosos",
-            "locations-drawn": "reveladas-ubicaciones"
+            "character-cards": "cartas-personaje",
+            "suspect-cards": "cartas-sospechoso",
+            "location-cards": "cartas-ubicacion",
+            "suspects-drawn": "reveladas-sospechoso",
+            "locations-drawn": "reveladas-ubicacion"
         },
 
         "clue-channel-format": "pistas-{}",
@@ -59,11 +58,11 @@
             },
 
             "wipe": {
-                "name": "eliminar",
+                "name": "limpiar",
                 "aliases": ["wipe"],
-                "description": "Elimina todos los mensajes",
+                "description": "Limpiar todos los mensajes",
 
-                "DeletingMessages": "¡Eliminando todos los mensajes!"
+                "DeletingMessages": "¡Limpiando todos los mensajes!"
             },
 
             "reset_perms": {

@@ -9,6 +9,8 @@ temp/
 
 .vscode/
 
+*.kra-autosave.kra
+
 # PyCharm
 .idea/
 

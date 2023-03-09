@@ -45,14 +45,11 @@ debug commands can be found
 
 ## Changes to Localization
 
-To test changes to localization files, use the appropriate Discord server
-template to create a new server, then run the bot using the matching language
-key.
+To test changes to localization files, run the bot using the matching language
+key and then run `!server_setup` to generate the appropriate channels.
 
 If adding a new localization file, please add the English names for commands
 as an alias when changing the command names, as this both makes testing the
 bot easier and allows users to follow the commands as written in the
 documentation (which is currently all written in English) even when running
-the bot in another language. If possible, also create a Discord server
-template and include the link in the json file, along with adding it to the
-list in `docs/source/user-guide/localizations.csv`.
+the bot in another language.
