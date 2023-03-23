@@ -1,6 +1,7 @@
 # Built-in
 import envvars
 import random
+import sys
 import yaml
 # Local
 from data.card_types import *
@@ -44,6 +45,9 @@ for expansion in expansions:
             CARD_LIST = cards
         else:
             merge(CARD_LIST, cards)
+
+if CARD_LIST is None:
+    sys.exit("No expansions loaded!")
 
 CHARACTERS: Dict[str, Character] = { k: Character(k, v) for k, v in CARD_LIST["characters"].items() }
 ROLES_TO_NAMES = { v.role: v.name for _, v in CHARACTERS.items() }
