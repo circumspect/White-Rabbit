@@ -142,17 +142,16 @@ class Admin(commands.Cog):
 
         # Private message channels
 
-        for (c1, c2) in it.combinations(cards.CHARACTERS, 2):
-            channel = await ctx.guild.create_text_channel(
-                LOCALIZATION_DATA["channels"]["texts"][f"{c1}-{c2}"],
-                category = channel_categories["texts"],
-                overwrites = {
-                    ctx.guild.default_role: PERMS_NO_READING,
-                    roles["spectator"]: PERMS_SPECTATOR,
-                    roles[c1]: PERMS_YES_READING,
-                    roles[c2]: PERMS_YES_READING,
-                }
-            )
+        for character_number in range(2, len(cards.CHARACTERS)):
+            for c_list in it.combinations(cards.CHARACTERS, character_number):
+                overwrites_dict = {roles[c]:PERMS_YES_READING for c in c_list}
+                overwrites_dict[roles["spectator"]] = PERMS_SPECTATOR
+                overwrites_dict[ctx.guild.default_role] = PERMS_NO_READING
+                channel = await ctx.guild.create_text_channel(
+                    LOCALIZATION_DATA["channels"]["texts"]["-".join(c_list)],
+                    category = channel_categories["texts"],
+                    overwrites = overwrites_dict
+                )
 
 
     @commands.command(
@@ -227,11 +226,9 @@ class Admin(commands.Cog):
             elif channel.name in LOCALIZATION_DATA["channels"]["texts"].values() and channel.name != GROUP_CHAT:
                 asyncio.create_task(channel.set_permissions(everyone, view_channel=False, send_messages=None))
                 asyncio.create_task(channel.set_permissions(spectator, view_channel=True, send_messages=False))
-                split_name = channel.name.split("-")
-                player_a = split_name[0].title()
-                player_b = split_name[1].title()
+                players = [player.title() for player in channel.name.split("-")]
                 for role in ctx.guild.roles:
-                    if role.name in [player_a, player_b]:
+                    if role.name in players:
                         asyncio.create_task(channel.set_permissions(role, view_channel=True))
 
     @commands.command(

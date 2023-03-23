@@ -1,5 +1,6 @@
 # Built-in
 import json
+import itertools as it
 # Local
 from data import cards
 import envvars
@@ -29,10 +30,10 @@ for character in characters:
 LOCALIZATION_DATA["channels"]["texts"] = {}
 LOCALIZATION_DATA["channels"]["texts"]["group-chat"] = LOCALIZATION_DATA["channels"]["group-chat"]
 
-for i, char1 in enumerate(characters):
-    # Create list of character pairs
-    for j in range(i+1, len(characters)):
-        char2 = characters[j]
-        LOCALIZATION_DATA["channels"]["texts"][f"{char1}-{char2}"] = LOCALIZATION_DATA["channels"]["pm-channel-format"].format(char1, char2)
+pm_channel_format_separator = LOCALIZATION_DATA["channels"]["pm-channel-format"].split("{}")[1]
+pm_channel_format_suffix = LOCALIZATION_DATA["channels"]["pm-channel-format"].split("{}")[2]
+for nb_characters in range(2, len(characters)):
+    for c_sublist in it.combinations(characters, nb_characters):
+        LOCALIZATION_DATA["channels"]["texts"]["-".join(c_sublist)] = pm_channel_format_separator.join(c_sublist) + pm_channel_format_suffix
 
 print("Done!")

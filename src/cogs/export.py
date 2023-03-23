@@ -15,6 +15,7 @@ from data.gamedata import Context
 from data.localization import LOCALIZATION_DATA
 from rabbit import WHITE_RABBIT_DIR
 import utils
+import itertools as it
 
 loc = LOCALIZATION_DATA["commands"]["export"]
 
@@ -423,16 +424,11 @@ class Export(commands.Cog):
 
         await ctx.send(loc["pdf"]["BuildingCharPages"])
 
-        pm_channels = []
-        for i, character in enumerate(characters):
+        for character in characters:
             # Create pages for each character
             await loop.run_in_executor(
                 None, self.generate_char_page, *(ctx, pdf, character)
             )
-
-            # Create list of character pairs
-            for j in range(i+1, len(characters)):
-                pm_channels.append((character, characters[j]))
 
         await ctx.send(loc["pdf"]["RecreatingTimeline"])
 
@@ -455,32 +451,35 @@ class Export(commands.Cog):
         await self.channel_export(ctx, pdf, ctx.text_channels[LOCALIZATION_DATA["channels"]["texts"]["group-chat"]])
 
         # Chat message exports
-        for a, b in pm_channels:
-            try:
-                channel = ctx.text_channels[LOCALIZATION_DATA["channels"]["texts"][f"{a}-{b}"]]
-            except KeyError:
-                # Fallback from older versions
-                channel = ctx.text_channels[LOCALIZATION_DATA["channels"]["texts"][f"pm-{a}-{b}"]]
+        for nb_characters in range(2, len(characters)):
+            for c_sublist in it.combinations(characters, nb_characters):
+                try:
+                    channel = ctx.text_channels[LOCALIZATION_DATA["channels"]["texts"]["-".join(c_sublist)]]
+                except KeyError:
+                    # Fallback from older versions
+                    if len(c_sublist) ==2:
+                        channel = ctx.text_channels[LOCALIZATION_DATA["channels"]["texts"]["pm-" + "-".join(c_sublist)]]
 
-            # Make sure channel has messages that will be counted
-            empty = True
-            async for message in channel.history(limit=None, oldest_first=True):
-                line = utils.clean_message(ctx, message.clean_content)
+                # Make sure channel has messages that will be counted
+                empty = True
+                async for message in channel.history(limit=None, oldest_first=True):
+                    line = utils.clean_message(ctx, message.clean_content)
 
-                if line:
-                    empty = False
-                    break
+                    if line:
+                        empty = False
+                        break
 
-            if not empty:
-                title = f"{a.title()}/{b.title()}"
-                pdf.add_page()
-                await loop.run_in_executor(
-                    None, self.heading,
-                    *(ctx, pdf, title, PM_TITLE_FONT, '',
-                      MESSAGES_TITLE_Y, MESSAGES_TITLE_TEXT_GAP)
-                )
+                if not empty:
+                    c_sublist_titles = [c.title() for c in c_sublist]
+                    title = "/".join(c_sublist_titles)
+                    pdf.add_page()
+                    await loop.run_in_executor(
+                        None, self.heading,
+                        *(ctx, pdf, title, PM_TITLE_FONT, '',
+                          MESSAGES_TITLE_Y, MESSAGES_TITLE_TEXT_GAP)
+                    )
 
-                await self.channel_export(ctx, pdf, channel)
+                    await self.channel_export(ctx, pdf, channel)
 
         # Output the file
         if not file_name:
