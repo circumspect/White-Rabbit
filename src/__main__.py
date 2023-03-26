@@ -11,7 +11,7 @@ import requests
 from bot import WhiteRabbit
 from cogs.debug import DEBUG_COMMAND_LIST
 from data import cards, constants, dirs
-from data.gamedata import Context, Data
+from data.wrappers import Context, Data
 from data.localization import LOCALIZATION_DATA
 import envvars
 import utils

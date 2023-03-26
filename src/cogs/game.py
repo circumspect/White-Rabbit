@@ -11,8 +11,8 @@ from discord.ext import commands
 # Local
 from data import cards, dirs, filepaths, gamedata
 from data.cards import CLUES, STARTING_PLAYER
-from data.gamedata import Context
 from data.localization import LOCALIZATION_DATA
+from data.wrappers import Bot, Context
 import utils
 
 loc = LOCALIZATION_DATA["commands"]["game"]
@@ -388,5 +388,5 @@ class Game(commands.Cog):
         asyncio.create_task(ctx.send(loc["ten_min_card"]["Assigned"]))
 
 
-async def setup(bot: commands.Bot):
+async def setup(bot: Bot):
     await bot.add_cog(Game(bot))

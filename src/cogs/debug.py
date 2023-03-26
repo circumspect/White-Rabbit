@@ -5,7 +5,7 @@ from os import environ
 from discord.ext import commands
 # Local
 from data import filepaths, gamedata
-from data.gamedata import Context
+from data.wrappers import Bot, Context
 from data.localization import LOCALIZATION_DATA
 import utils
 
@@ -19,7 +19,7 @@ DEBUG_COMMAND_LIST = (
 )
 
 class Debug(commands.Cog):
-    def __init__(self, bot: commands.Bot):
+    def __init__(self, bot: Bot):
         self.bot = bot
 
         self.bot.dev_ids = []

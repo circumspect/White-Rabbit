@@ -7,7 +7,7 @@ from discord.ext import commands
 from discord.permissions import PermissionOverwrite
 # Local
 from data import cards, constants
-from data.gamedata import Context
+from data.wrappers import Bot, Context
 from data.localization import LOCALIZATION_DATA
 
 loc = LOCALIZATION_DATA["commands"]["admin"]
@@ -27,7 +27,7 @@ PERMS_SPECTATOR = PermissionOverwrite()
 PERMS_SPECTATOR.update(**{"read_messages": True, "send_messages": False})
 
 class Admin(commands.Cog):
-    def __init__(self, bot: commands.Bot):
+    def __init__(self, bot: Bot):
         self.bot = bot
 
     async def cog_check(self, ctx: Context):
@@ -284,5 +284,5 @@ class Admin(commands.Cog):
         await asyncio.gather(self.wipe(ctx), self.reset_perms(ctx), self.reset_roles(ctx))
 
 
-async def setup(bot: commands.Bot):
+async def setup(bot: Bot):
     await bot.add_cog(Admin(bot))

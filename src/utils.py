@@ -13,7 +13,7 @@ import discord
 import requests
 # Local
 from data import constants
-from data.gamedata import Context
+from data.wrappers import Context
 from data.localization import DEFAULT_LOCALIZATION, LOCALIZATION_DATA, LANGUAGE_KEY
 import envvars
 from rabbit import WHITE_RABBIT_DIR

@@ -4,7 +4,7 @@ import asyncio
 from discord.ext import commands
 # Local
 from data import constants
-from data.gamedata import Context
+from data.wrappers import Bot, Context
 from data.localization import LOCALIZATION_DATA
 import utils
 
@@ -47,5 +47,5 @@ class About(commands.Cog):
         asyncio.create_task(ctx.send(message))
 
 
-async def setup(bot: commands.Bot):
+async def setup(bot: Bot):
     await bot.add_cog(About(bot))

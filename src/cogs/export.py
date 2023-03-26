@@ -11,7 +11,7 @@ from fpdf import FPDF
 # Local
 from data import cards, constants, dirs, filepaths, gamedata
 from data.dirs import FONT_DIR
-from data.gamedata import Context
+from data.wrappers import Bot, Context
 from data.localization import LOCALIZATION_DATA
 from rabbit import WHITE_RABBIT_DIR
 import utils
@@ -211,7 +211,7 @@ class PDF(FPDF):
 
 
 class Export(commands.Cog):
-    def __init__(self, bot: commands.Bot):
+    def __init__(self, bot: Bot):
         self.bot = bot
 
     async def channel_attachments(self, channel: discord.TextChannel, oldest_first: bool = False):
@@ -747,5 +747,5 @@ class Export(commands.Cog):
         zip_file.unlink()
 
 
-async def setup(bot: commands.Bot):
+async def setup(bot: Bot):
     await bot.add_cog(Export(bot))

@@ -6,7 +6,7 @@ from discord.ext import commands
 # Local
 from data import cards, constants, dirs, filepaths, gamedata
 from data.cards import CLUES, STARTING_PLAYER
-from data.gamedata import Context
+from data.wrappers import Bot, Context
 from data.localization import LOCALIZATION_DATA
 import utils
 
@@ -21,7 +21,7 @@ class Manual(commands.Cog):
     without user input
     """
 
-    def __init__(self, bot: commands.Bot):
+    def __init__(self, bot: Bot):
         self.bot = bot
 
     async def cog_check(self, ctx: Context):
@@ -364,5 +364,5 @@ class Manual(commands.Cog):
         return True
 
 
-async def setup(bot: commands.Bot):
+async def setup(bot: Bot):
     await bot.add_cog(Manual(bot))

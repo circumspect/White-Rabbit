@@ -1,6 +1,6 @@
-from discord.ext import commands
+from data.wrappers import Bot
 
-class WhiteRabbit(commands.Bot):
+class WhiteRabbit(Bot):
     async def setup_hook(self) -> None:
         PLUGINS = ["about", "admin", "debug", "export", "game", "manual", "players", "settings"]
         for plugin in PLUGINS:
