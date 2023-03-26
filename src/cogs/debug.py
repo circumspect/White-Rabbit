@@ -117,16 +117,16 @@ class Debug(commands.Cog):
             # avoid RuntimeError: dictionary keys changed during iteration
             extensions = list(self.bot.extensions.keys())
             for extension in extensions:
-                self.bot.reload_extension(extension)
+                await self.bot.reload_extension(extension)
             asyncio.create_task(ctx.send(f"Reloaded {', '.join(self.bot.extensions.keys())}"))
             return
 
         # Load extension
         try:
             if extension_name in self.bot.extensions:
-                self.bot.reload_extension(extension_name)
+                await self.bot.reload_extension(extension_name)
             else:
-                self.bot.load_extension(extension_name)
+                await self.bot.load_extension(extension_name)
             asyncio.create_task(ctx.send(f"Loaded {extension_name}"))
 
         except commands.errors.ExtensionNotFound:
@@ -140,7 +140,7 @@ class Debug(commands.Cog):
     async def unload(self, ctx: Context, extension_name: str):
         """Unloads a plugin"""
         try:
-            self.bot.unload_extension(extension_name)
+            await self.bot.unload_extension(extension_name)
             asyncio.create_task(ctx.send(f"Unloaded {extension_name}"))
         except commands.errors.ExtensionNotLoaded:
             asyncio.create_task(ctx.send(f"{extension_name} was never loaded"))
