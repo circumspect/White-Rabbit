@@ -16,6 +16,11 @@ To change the language the bot runs in, modify the ``WHITE_RABBIT_LANGUAGE`` key
 .. _wishmerhill: https://github.com/wishmerhill
 .. _Sinesthesyc: https://github.com/Sinesthesyc
 
+Key:
+
+- ✔️: Complete
+- 🚧: Incomplete (usually means mostly done, but missing a translation for some cards or bot commands)
+- ❌: Missing
 
 If you would like to contribute translations, fork the repository, copy
 ``en.json`` in the ``localization`` folder, translate the values
