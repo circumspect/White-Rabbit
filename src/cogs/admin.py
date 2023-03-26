@@ -1,6 +1,7 @@
 # Built-in
 import asyncio
 import itertools as it
+from typing import List, Union
 # 3rd-party
 import discord
 from discord.ext import commands
@@ -176,18 +177,66 @@ class Admin(commands.Cog):
         aliases=loc["wipe"]["aliases"],
         description=loc["wipe"]["description"]
     )
-    async def wipe(self, ctx: Context, *text_channels: discord.TextChannel):
-        """Erases all messages and clears game data"""
+    async def wipe(self, ctx: Context, *ids: Union[discord.CategoryChannel, discord.TextChannel, int, str]):
+        """
+        Erases all messages and clears game data
+
+        Arguments can be names of text channels, channel categories, or integers.
+        Integers will refer to channel categories, indexed from top to bottom,
+        starting at 0. By default this will be:
+        0: General/OOC
+        1: The Game
+        2: Texts
+        """
 
         assert ctx.guild is not None
+
+        to_wipe: List[discord.TextChannel] = []
+
+        # If no args given, wipe entire server
+        if not ids:
+            to_wipe = ctx.guild.text_channels
+        else:
+            for id in ids:
+                # Find category by index
+                if isinstance(id, int):
+                    if id < 0 or id >= len(ctx.guild.categories):
+                        await ctx.channel.send(LOCALIZATION_DATA["errors"]["UserInputError"])
+                        return
+                    id = ctx.guild.categories[id]
+
+                # Search categories, then channels
+                if isinstance(id, str):
+                    found = False
+                    for category in ctx.guild.categories:
+                        if id.lower() in category.name.lower():
+                            id = category
+                            found = True
+                            break
+
+                    if isinstance(id, str):
+                        for channel in ctx.guild.text_channels:
+                            if id.lower() in channel.name.lower():
+                                id = channel
+                                found = True
+                                break
+
+                    if not found:
+                        await ctx.channel.send(LOCALIZATION_DATA["errors"]["UserInputError"])
+                        return
+
+                if isinstance(id, discord.TextChannel):
+                    to_wipe.append(id)
+                elif isinstance(id, discord.CategoryChannel):
+                    to_wipe += id.text_channels
+                else:
+                    await ctx.channel.send(LOCALIZATION_DATA["errors"]["UserInputError"])
+                    return
 
         # Confirm command to user
         await ctx.send(loc["wipe"]["DeletingMessages"])
 
-        # Wipe messages
-        if not text_channels:
-            text_channels = ctx.guild.text_channels
-        for text_channel in text_channels:
+        for text_channel in to_wipe:
             asyncio.create_task(text_channel.purge(limit=None))
 
         # Reset game data
