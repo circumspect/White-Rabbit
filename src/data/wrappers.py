@@ -11,4 +11,4 @@ class Context(commands.Context):
     text_channels: List[TextChannel]
 
 class Bot(commands.Bot):
-    dev_ids: List[str]
+    dev_ids: List[int]

@@ -65,7 +65,7 @@ class Debug(commands.Cog):
         aliases=loc["speed"]["aliases"],
         description=loc["speed"]["description"]
     )
-    async def speed(self, ctx: Context, speed: float = 1):
+    async def speed(self, ctx: Context, speed: int = 1):
         """Changes the speed of the game - DEBUG USE ONLY"""
 
         ctx.game.game_speed = speed
