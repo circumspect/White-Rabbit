@@ -3,6 +3,7 @@
 # Built-in
 import asyncio
 import sys
+from typing import Union
 # 3rd-party
 import discord
 from discord.ext import commands
@@ -47,12 +48,17 @@ async def on_ready():
 def check_channel(ctx: Context) -> bool:
     """Only allow commands in #bot-channel"""
 
+    assert ctx.command
+    assert isinstance(ctx.channel, discord.TextChannel)
+
     return ctx.channel.name == BOT_CHANNEL or ctx.command.name in ["server_setup", LOCALIZATION_DATA["commands"]["admin"]["server_setup"]]
 
 
 @bot.check
 def not_spectator(ctx: Context):
     """Don't let spectators run commands"""
+
+    assert isinstance(ctx.author, discord.Member)
 
     return SPECTATOR_ROLE not in [role.name for role in ctx.author.roles]
 
@@ -61,8 +67,11 @@ def not_spectator(ctx: Context):
 async def before_invoke(ctx: Context):
     """Attaches stuff to ctx for convenience"""
 
+    assert ctx.guild
+    assert isinstance(ctx.author, discord.Member)
+
     # that guild's game
-    ctx.game: Data = bot.games.setdefault(ctx.guild.id, Data(ctx.guild))
+    ctx.game = bot.games.setdefault(ctx.guild.id, Data(ctx.guild))
 
     # access text channels by name
     ctx.text_channels = {
@@ -82,8 +91,11 @@ async def before_invoke(ctx: Context):
 async def on_command_error(ctx: Context, error):
     """Default error catcher for commands"""
 
+    assert ctx.guild
+    assert isinstance(ctx.author, discord.Member)
+
     bot_channel = utils.get_text_channels(ctx.guild)[BOT_CHANNEL]
-    ctx.game: Data = bot.games.setdefault(ctx.guild.id, Data(ctx.guild))
+    ctx.game = bot.games.setdefault(ctx.guild.id, Data(ctx.guild))
 
     # Failed a check
     if isinstance(error, commands.errors.CheckFailure):
@@ -98,6 +110,7 @@ async def on_command_error(ctx: Context, error):
             return
 
         # Commands must be in bot-channel
+        assert isinstance(ctx.channel, discord.TextChannel)
         if ctx.channel.name != BOT_CHANNEL and utils.is_command(ctx.message.clean_content):
             asyncio.create_task(bot_channel.send(f"{ctx.author.mention} " + LOCALIZATION_DATA["errors"]["CommandInWrongChannel"]))
             return
@@ -140,11 +153,12 @@ async def on_command_error(ctx: Context, error):
 # Import bot token
 try:
     token = envvars.get_env_var("WHITE_RABBIT_TOKEN")
+    assert isinstance(token, str)
     print("Logging in...")
     bot.run(token)
 except FileNotFoundError:
     r = requests.get(constants.BLANK_DOTENV_URL)
-    with open(envvars.ENV_FILE, 'x') as env:
+    with open(envvars.ENV_FILE, 'xb') as env:
         env.write(r.content)
     sys.exit(LOCALIZATION_DATA["errors"]["MissingDotEnv"])
 except discord.errors.LoginFailure:

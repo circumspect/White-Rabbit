@@ -25,7 +25,8 @@ class Manual(commands.Cog):
         self.bot = bot
 
     async def cog_check(self, ctx: Context):
-        assert ctx.guild is not None
+        assert ctx.guild
+        assert ctx.command
 
         ctx.game = self.bot.games.setdefault(ctx.guild.id, gamedata.Data(ctx.guild))
         # Console logging

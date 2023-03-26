@@ -1,3 +1,4 @@
+import datetime
 import discord
 # Local
 from data.cards import *
@@ -34,9 +35,9 @@ class Data:
         # Status
         self.init = False
         self.setup = False
-        self.start_time = None
+        self.start_time: Optional[datetime.datetime] = None
 
-        self.ten_char = None
+        self.ten_char: Optional[str] = None
         self.three_flip = False
         self.second_culprit = False
 

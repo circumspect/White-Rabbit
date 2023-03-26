@@ -46,7 +46,7 @@ class Admin(commands.Cog):
     async def server_setup(self, ctx: Context):
         """Deletes all channels and roles and creates new ones based on the given card list"""
 
-        assert ctx.guild is not None
+        assert ctx.guild
 
         # Delete roles and channels
         async_tasks = []
@@ -168,7 +168,7 @@ class Admin(commands.Cog):
     async def show_all(self, ctx: Context):
         """Reveal all channels and disable sending messages"""
 
-        assert ctx.guild is not None
+        assert ctx.guild
 
         for channel in ctx.guild.text_channels:
             asyncio.create_task(channel.edit(sync_permissions=True))
@@ -191,7 +191,7 @@ class Admin(commands.Cog):
         2: Texts
         """
 
-        assert ctx.guild is not None
+        assert ctx.guild
 
         to_wipe: List[discord.TextChannel] = []
 
@@ -255,7 +255,7 @@ class Admin(commands.Cog):
     async def reset_perms(self, ctx: Context):
         """Resets channel permissions to the default (undoes !show_all)"""
 
-        assert ctx.guild is not None
+        assert ctx.guild
 
         everyone = ctx.guild.default_role
         spectator = ctx.game.spectator_role
@@ -299,7 +299,7 @@ class Admin(commands.Cog):
         description=loc["reset_roles"]["description"]
     )
     async def reset_roles(self, ctx: Context):
-        assert ctx.guild is not None
+        assert ctx.guild
 
         # Removes character roles from everyone
         for member in ctx.guild.members:
@@ -323,7 +323,7 @@ class Admin(commands.Cog):
     async def reset(self, ctx: Context):
         """Complete server reset"""
 
-        assert ctx.guild is not None
+        assert ctx.guild
 
         # Confirm command to user
         await ctx.send(loc["reset"]["ResettingServer"])

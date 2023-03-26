@@ -364,6 +364,8 @@ class Export(commands.Cog):
     async def pdf(self, ctx: Context, file_name: str=""):
         """Exports the game to a PDF"""
 
+        assert ctx.guild
+
         # Start timer
         start_time = timer()
 
@@ -666,6 +668,8 @@ class Export(commands.Cog):
 
         pdf.set_font(*PM_FONT)
         async for message in channel.history(limit=None, oldest_first=True):
+            assert isinstance(message.author, discord.Member)
+
             # Name
             author = message.author.roles[1].name
 
@@ -683,6 +687,8 @@ class Export(commands.Cog):
             line = f"{author}: {line}"
 
             # Time remaining
+            if ctx.game.start_time is None:
+                return
             delta = message.created_at - ctx.game.start_time
             change = delta.seconds
             time = gamedata.GAME_LENGTH - change
@@ -701,6 +707,8 @@ class Export(commands.Cog):
     )
     async def upload(self, ctx: Context, file_name: str=""):
         """Uploads a file and prints out the download url"""
+
+        assert ctx.guild
 
         if not file_name:
             file_name = ctx.guild.name

@@ -17,6 +17,8 @@ DEFAULTS = {
 def get_env_var(key: str):
     try:
         var = environ.get(key) or dotenv_values(ENV_FILE)[key]
+        if not var:
+            raise KeyError
         var = var.strip()
         if var.lower() == "false":
             return False
