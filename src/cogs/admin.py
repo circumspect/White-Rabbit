@@ -34,6 +34,8 @@ class Admin(commands.Cog):
     async def cog_check(self, ctx: Context):
         """Commands for server admins only"""
 
+        assert isinstance(ctx.author, discord.Member)
+
         return ctx.author.guild_permissions.administrator
 
     @commands.command(
