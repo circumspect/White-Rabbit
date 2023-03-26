@@ -24,6 +24,9 @@ class Players(commands.Cog):
     async def claim(self, ctx: Context, role_name: str):
         """Claim a character/spectator role"""
 
+        assert ctx.guild
+        assert isinstance(ctx.author, discord.Member)
+
         role = discord.utils.get(ctx.guild.roles, name=role_name) or discord.utils.get(ctx.guild.roles, name=role_name.capitalize())
 
         if not role:
@@ -66,6 +69,9 @@ class Players(commands.Cog):
     async def unclaim(self, ctx: Context):
         """Remove character roles"""
 
+        assert ctx.guild
+        assert isinstance(ctx.author, discord.Member)
+
         # Keep @everyone
         for role in ctx.author.roles:
             if role.name in cards.ROLES_TO_NAMES:
@@ -86,6 +92,8 @@ class Players(commands.Cog):
     )
     async def roles(self, ctx: Context):
         """Displays your roles"""
+
+        assert isinstance(ctx.author, discord.Member)
 
         message = loc["roles"]["YourRoles"] + "\n"
         message += f"{', '.join(role.name for role in ctx.author.roles[1:])}"

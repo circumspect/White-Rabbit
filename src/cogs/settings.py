@@ -12,7 +12,7 @@ loc = LOCALIZATION_DATA["commands"]["settings"]
 
 
 class Settings(commands.Cog):
-    def __init__(self, bot):
+    def __init__(self, bot: Bot):
         self.bot = bot
 
     @commands.command(
