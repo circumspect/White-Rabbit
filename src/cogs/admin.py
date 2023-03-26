@@ -70,13 +70,13 @@ class Admin(commands.Cog):
 
         # TODO: Localization
         channel_categories = {
-            "general": await ctx.guild.create_category("General/OOC"),
-            "game": await ctx.guild.create_category("The Game",
+            "general": await ctx.guild.create_category(LOCALIZATION_DATA["categories"]["general"]),
+            "game": await ctx.guild.create_category(LOCALIZATION_DATA["categories"]["game"],
                 overwrites = {
                     ctx.guild.default_role: PERMS_NO_SENDING
                 }
             ),
-            "texts": await ctx.guild.create_category("Texts",
+            "texts": await ctx.guild.create_category(LOCALIZATION_DATA["categories"]["texts"],
                 overwrites = { ctx.guild.default_role: PERMS_NO_SENDING }
             )
         }
