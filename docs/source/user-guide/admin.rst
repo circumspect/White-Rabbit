@@ -24,12 +24,12 @@ you will have to start setup again from the beginning.
 
 ``!wipe`` accepts three different kinds of optional arguments, listed below:
 
-* Text channel names or tags, e.g., ``discussion`` or ``#bot-channel``
-* Names of channel categories, e.g., ``Texts``
-* Integer indexes for channel categories, from top to bottom, starting with 0. By default this will be:
-    * 0: General/OOC
-    * 1: The Game
-    * 2: Texts
+- Text channel names or tags, e.g., ``discussion`` or ``#bot-channel``
+- Names of channel categories, e.g., ``Texts``
+- Integer indexes for channel categories, from top to bottom, starting with 0. By default this will be:
+    - 0: ``General/OOC``
+    - 1: ``The Game``
+    - 2: ``Texts``
 
 If given a partial channel/category name, such as ``gen``, the bot will
 convert it to lowercase before attempting to find a category whose lowercased
