@@ -49,7 +49,7 @@ def check_channel(ctx: Context) -> bool:
     """Only allow commands in #bot-channel"""
 
     assert ctx.command
-    assert isinstance(ctx.channel, discord.TextChannel)
+    assert isinstance(ctx.channel, Union[discord.TextChannel, discord.Thread])
 
     return ctx.channel.name == BOT_CHANNEL or ctx.command.name in ["server_setup", LOCALIZATION_DATA["commands"]["admin"]["server_setup"]]
 
@@ -110,7 +110,7 @@ async def on_command_error(ctx: Context, error):
             return
 
         # Commands must be in bot-channel
-        assert isinstance(ctx.channel, discord.TextChannel)
+        assert isinstance(ctx.channel, Union[discord.TextChannel, discord.Thread])
         if ctx.channel.name != BOT_CHANNEL and utils.is_command(ctx.message.clean_content):
             asyncio.create_task(bot_channel.send(f"{ctx.author.mention} " + LOCALIZATION_DATA["errors"]["CommandInWrongChannel"]))
             return

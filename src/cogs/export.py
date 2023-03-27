@@ -616,6 +616,7 @@ class Export(commands.Cog):
 
         # Images
         # Add character card
+        assert ctx.game.ten_char
         card = filepaths.MASTER_PATHS[ctx.game.ten_char]
         pdf.image(str(card), CONCLUSION_CHAR_CARD_X,
                   CONCLUSION_ROW1_IMAGE_Y, CONCLUSION_CARD_WIDTH)
