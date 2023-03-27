@@ -1,5 +1,5 @@
 {
     // This line can be uncommented and modified to check if a certain Python
     // version supports the language features being used by the bot.
-    // "pythonVersion": "3.6"
+    // "pythonVersion": "3.9"
 }

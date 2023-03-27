@@ -6,7 +6,7 @@ Default Installation
 ====================
 
 .. note::
-  Make sure you are using at least Python 3.7. The bot will not be able to run
+  Make sure you are using at least Python 3.10. The bot will not be able to run
   otherwise.
 
 Download the source zip from Github `here <https://github.com/circumspect/White-Rabbit/releases/>`_
