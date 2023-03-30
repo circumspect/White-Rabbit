@@ -64,6 +64,9 @@ Built with help from these wonderful people ([emoji key](https://allcontributors
       <td align="center" valign="top" width="14.28%"><a href="https://github.com/Leujii"><img src="https://avatars.githubusercontent.com/u/126162473?v=4?s=100" width="100px;" alt="Leujii"/><br /><sub><b>Leujii</b></sub></a><br /><a href="https://github.com/circumspect/White-Rabbit/issues?q=author%3ALeujii" title="Bug reports">🐛</a></td>
       <td align="center" valign="top" width="14.28%"><a href="https://github.com/Sinesthesyc"><img src="https://avatars.githubusercontent.com/u/126390834?v=4?s=100" width="100px;" alt="Sinesthesyc"/><br /><sub><b>Sinesthesyc</b></sub></a><br /><a href="#translation-Sinesthesyc" title="Translation">🌍</a></td>
     </tr>
+    <tr>
+      <td align="center" valign="top" width="14.28%"><a href="https://github.com/dracek1458"><img src="https://avatars.githubusercontent.com/u/32167387?v=4?s=100" width="100px;" alt="dracek1458"/><br /><sub><b>dracek1458</b></sub></a><br /><a href="https://github.com/circumspect/White-Rabbit/issues?q=author%3Adracek1458" title="Bug reports">🐛</a></td>
+    </tr>
   </tbody>
 </table>
 
