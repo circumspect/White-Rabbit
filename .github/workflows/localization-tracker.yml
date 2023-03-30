@@ -39,11 +39,27 @@ jobs:
         body: |
           [github actions placeholder text]
 
-    - name: Update comment
+    - name: Render template
+      id: template
+      if: steps.fc.outputs.comment-id != ''
+      uses: chuhlomin/render-template@v1.4
+      with:
+        template: .github/localization-tracker-header.md
+        vars: |
+          timestamp: ${{ github.event.repository.updated_at }}
+
+    - name: Insert header
       if: steps.fc.outputs.comment-id != ''
       uses: peter-evans/create-or-update-comment@v2
       with:
         comment-id: ${{ steps.fc.outputs.comment-id }}
         edit-mode: replace
-        body: |
-          ${{steps.csv-to-md.outputs.markdown-table}}
+        body: ${{ steps.template.outputs.result }}
+
+    - name: Update comment
+      if: steps.fc.outputs.comment-id != ''
+      uses: peter-evans/create-or-update-comment@v2
+      with:
+        comment-id: ${{ steps.fc.outputs.comment-id }}
+        edit-mode: append
+        body: ${{ steps.csv-to-md.outputs.markdown-table }}
