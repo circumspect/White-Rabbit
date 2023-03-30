@@ -66,6 +66,7 @@ Built with help from these wonderful people ([emoji key](https://allcontributors
     </tr>
     <tr>
       <td align="center" valign="top" width="14.28%"><a href="https://github.com/dracek1458"><img src="https://avatars.githubusercontent.com/u/32167387?v=4?s=100" width="100px;" alt="dracek1458"/><br /><sub><b>dracek1458</b></sub></a><br /><a href="https://github.com/circumspect/White-Rabbit/issues?q=author%3Adracek1458" title="Bug reports">🐛</a></td>
+      <td align="center" valign="top" width="14.28%"><a href="https://github.com/PokePango"><img src="https://avatars.githubusercontent.com/u/34710204?v=4?s=100" width="100px;" alt="PokePango"/><br /><sub><b>PokePango</b></sub></a><br /><a href="https://github.com/circumspect/White-Rabbit/commits?author=PokePango" title="Code">💻</a></td>
     </tr>
   </tbody>
 </table>
