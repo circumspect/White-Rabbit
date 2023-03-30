@@ -1,0 +1,49 @@
+name: Update Localization Tracker
+
+on:
+  push:
+    branches:
+      - 'main'
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v2
+
+    - name: Read CSV
+      id: csv
+      uses: juliangruber/read-file-action@v1
+      with:
+        path: ./docs/source/user-guide/localizations.csv
+
+    - name: Create MD
+      uses: petems/csv-to-md-table-action@master
+      id: csv-to-md
+      with:
+        csvinput: ${{ steps.csv.outputs.content }}
+
+    - name: Find Comment
+      uses: peter-evans/find-comment@v2
+      id: fc
+      with:
+        issue-number: ${{ vars.LOCALIZATION_TRACKER_ISSUE_NUMBER }}
+        comment-author: 'github-actions[bot]'
+
+    - name: Create comment
+      if: steps.fc.outputs.comment-id == ''
+      uses: peter-evans/create-or-update-comment@v2
+      with:
+        issue-number: ${{ vars.LOCALIZATION_TRACKER_ISSUE_NUMBER }}
+        body: |
+          [github actions placeholder text]
+
+    - name: Update comment
+      if: steps.fc.outputs.comment-id != ''
+      uses: peter-evans/create-or-update-comment@v2
+      with:
+        comment-id: ${{ steps.fc.outputs.comment-id }}
+        edit-mode: replace
+        body: |
+          ${{steps.csv-to-md.outputs.markdown-table}}
