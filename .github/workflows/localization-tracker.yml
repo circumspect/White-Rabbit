@@ -41,6 +41,12 @@ jobs:
       with:
         csvinput: ${{ steps.csv.outputs.content }}
 
+    - name: Get timestamp
+      id: timestamp
+      if: steps.fc.outputs.comment-id != ''
+      run: |
+        echo "TIMESTAMP=$(git log -1 --date=iso-local --format="%ad" -- ./localization/localization-tracker.csv)" >> ${GITHUB_OUTPUT}
+
     - name: Render template
       id: template
       if: steps.fc.outputs.comment-id != ''
@@ -48,7 +54,7 @@ jobs:
       with:
         template: .github/localization-tracker-header.md
         vars: |
-          timestamp: ${{ github.event.repository.updated_at }}
+          timestamp: ${{ steps.timestamp.outputs.TIMESTAMP }}
 
     - name: Insert header
       if: steps.fc.outputs.comment-id != ''
