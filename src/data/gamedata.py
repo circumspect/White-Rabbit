@@ -37,16 +37,10 @@ class Data:
         self.setup = False
         self.start_time: Optional[datetime.datetime] = None
 
-        self.ten_char: Optional[str] = None
-        self.three_flip = False
-        self.second_culprit = False
-
-
         # Settings
         self.automatic = True
         self.show_timer = False
         self.stream_music = False
-
 
         # Enabled endings
         self.endings = {}
@@ -54,12 +48,13 @@ class Data:
             # Enable all endings
             self.endings[i] = True
 
-
         # Game data
         self.alice = 0
         self.motives = {}
         self.clue_assignments = {}
         self.picked_clues = {}
+        self.ten_char: Optional[str] = None
+        self.three_flip = False
         self.second_culprit = ""
 
         # Suspects and locations
