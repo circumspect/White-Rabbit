@@ -12,18 +12,6 @@ jobs:
     steps:
     - uses: actions/checkout@v2
 
-    - name: Read CSV
-      id: csv
-      uses: juliangruber/read-file-action@v1
-      with:
-        path: ./docs/source/user-guide/localizations.csv
-
-    - name: Create MD
-      uses: petems/csv-to-md-table-action@master
-      id: csv-to-md
-      with:
-        csvinput: ${{ steps.csv.outputs.content }}
-
     - name: Find Comment
       uses: peter-evans/find-comment@v2
       id: fc
@@ -38,6 +26,20 @@ jobs:
         issue-number: ${{ vars.LOCALIZATION_TRACKER_ISSUE_NUMBER }}
         body: |
           [github actions placeholder text]
+
+    - name: Read CSV
+      if: steps.fc.outputs.comment-id != ''
+      id: csv
+      uses: juliangruber/read-file-action@v1
+      with:
+        path: ./localization/localization-tracker.csv
+
+    - name: Create MD
+      if: steps.fc.outputs.comment-id != ''
+      id: csv-to-md
+      uses: petems/csv-to-md-table-action@master
+      with:
+        csvinput: ${{ steps.csv.outputs.content }}
 
     - name: Render template
       id: template
