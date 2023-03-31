@@ -27,6 +27,7 @@ jobs:
       env:
         TRACKER_FILE_PATH: ${{ vars.LOCALIZATION_TRACKER_CSV }}
       run: |
+        echo $(git log -1 --date=iso-local -- blahblahblah)
         echo $(git log -1 --date=iso-local -- $TRACKER_FILE_PATH)
         echo $(git log -1 --date=iso-local --format="%ad" -- $TRACKER_FILE_PATH)
         echo "TIMESTAMP=$(git log -1 --date=iso-local --format="%ad" -- $TRACKER_FILE_PATH)" >> ${GITHUB_OUTPUT}
