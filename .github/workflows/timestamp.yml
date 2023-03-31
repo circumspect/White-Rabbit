@@ -1,0 +1,26 @@
+name: Timestamp
+
+on:
+  push:
+    branches:
+      - 'actions-test'
+
+jobs:
+  find-timestamp:
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v3
+
+    - name: Get timestamp
+      id: timestamp
+      if: steps.fc.outputs.comment-id != ''
+      env:
+        TRACKER_FILE_PATH: ${{ vars.LOCALIZATION_TRACKER_CSV }}
+      run: |
+        pwd
+        ls
+        echo $(git log -1 --date=iso-local -- $TRACKER_FILE_PATH)
+        echo $(git log -1 --date=iso-local --format="%ad" -- $TRACKER_FILE_PATH)
+        echo "TIMESTAMP=$(git log -1 --date=iso-local --format="%ad" -- $TRACKER_FILE_PATH)" >> ${GITHUB_OUTPUT}
+
