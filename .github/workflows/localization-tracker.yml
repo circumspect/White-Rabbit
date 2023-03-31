@@ -50,7 +50,7 @@ jobs:
     - name: Render template
       id: template
       if: steps.fc.outputs.comment-id != ''
-      uses: chuhlomin/render-template@v1.4
+      uses: chuhlomin/render-template@v1.6
       with:
         template: .github/localization-tracker-header.md
         vars: |
