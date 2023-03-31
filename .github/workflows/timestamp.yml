@@ -19,7 +19,8 @@ jobs:
 
     - name: Print file
       env:
-        TRACKER_FILE_PATH: ${{ vars.LOCALIZATION_TRACKER_CSV }}
+        # TRACKER_FILE_PATH: ${{ vars.LOCALIZATION_TRACKER_CSV }}
+        TRACKER_FILE_PATH: .gitignore
       run: |
         cat $TRACKER_FILE_PATH
 
