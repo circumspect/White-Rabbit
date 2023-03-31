@@ -14,7 +14,6 @@ jobs:
 
     - name: Get timestamp
       id: timestamp
-      if: steps.fc.outputs.comment-id != ''
       env:
         TRACKER_FILE_PATH: ${{ vars.LOCALIZATION_TRACKER_CSV }}
       run: |
