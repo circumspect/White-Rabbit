@@ -12,13 +12,21 @@ jobs:
     steps:
     - uses: actions/checkout@v3
 
-    - name: Get timestamp
-      id: timestamp
-      env:
-        TRACKER_FILE_PATH: ${{ vars.LOCALIZATION_TRACKER_CSV }}
+    - name: Print file
       run: |
         pwd
         ls
+
+    - name: Print file
+      env:
+        TRACKER_FILE_PATH: ${{ vars.LOCALIZATION_TRACKER_CSV }}
+      run: |
+        cat $TRACKER_FILE_PATH
+
+    - name: Get timestamp
+      env:
+        TRACKER_FILE_PATH: ${{ vars.LOCALIZATION_TRACKER_CSV }}
+      run: |
         echo $(git log -1 --date=iso-local -- $TRACKER_FILE_PATH)
         echo $(git log -1 --date=iso-local --format="%ad" -- $TRACKER_FILE_PATH)
         echo "TIMESTAMP=$(git log -1 --date=iso-local --format="%ad" -- $TRACKER_FILE_PATH)" >> ${GITHUB_OUTPUT}
