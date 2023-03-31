@@ -13,8 +13,8 @@ jobs:
     - uses: actions/checkout@v3
 
     - name: Find Comment
-      uses: peter-evans/find-comment@v2
       id: fc
+      uses: peter-evans/find-comment@v2
       with:
         issue-number: ${{ vars.LOCALIZATION_TRACKER_ISSUE_NUMBER }}
         comment-author: 'github-actions[bot]'
@@ -28,15 +28,15 @@ jobs:
           [github actions placeholder text]
 
     - name: Read CSV
-      if: steps.fc.outputs.comment-id != ''
       id: csv
+      if: steps.fc.outputs.comment-id != ''
       uses: juliangruber/read-file-action@v1
       with:
         path: ${{ vars.LOCALIZATION_TRACKER_CSV }}
 
-    - name: Create MD
-      if: steps.fc.outputs.comment-id != ''
+    - name: CSV to markdown
       id: csv-to-md
+      if: steps.fc.outputs.comment-id != ''
       uses: petems/csv-to-md-table-action@master
       with:
         csvinput: ${{ steps.csv.outputs.content }}
