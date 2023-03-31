@@ -45,6 +45,7 @@ jobs:
       id: timestamp
       if: steps.fc.outputs.comment-id != ''
       run: |
+        echo $(git log -1 --date=iso-local --format="%ad" -- ${{ vars.LOCALIZATION_TRACKER_CSV }})
         echo "TIMESTAMP=$(git log -1 --date=iso-local --format="%ad" -- ${{ vars.LOCALIZATION_TRACKER_CSV }})" >> ${GITHUB_OUTPUT}
 
     - name: Render template
