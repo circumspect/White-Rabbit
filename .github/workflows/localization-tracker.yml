@@ -27,25 +27,11 @@ jobs:
         body: |
           [github actions placeholder text]
 
-    - name: Read CSV
-      id: csv
-      if: steps.fc.outputs.comment-id != ''
-      uses: juliangruber/read-file-action@v1
-      with:
-        path: ${{ vars.LOCALIZATION_TRACKER_CSV }}
-
-    - name: CSV to markdown
-      id: csv-to-md
-      if: steps.fc.outputs.comment-id != ''
-      uses: petems/csv-to-md-table-action@master
-      with:
-        csvinput: ${{ steps.csv.outputs.content }}
-
     - name: Get timestamp
       id: timestamp
       if: steps.fc.outputs.comment-id != ''
       env:
-        TRACKER_FILE_PATH: ${{ vars.LOCALIZATION_TRACKER_CSV }}
+        TRACKER_FILE_PATH: ${{ vars.LOCALIZATION_TRACKING_TABLES }}/tracker.csv
       run: |
         echo $(git log -1 --date=iso-local --format="%ad" -- $TRACKER_FILE_PATH)
         echo $(git log -1 --date=iso-local -- $TRACKER_FILE_PATH)
@@ -56,7 +42,7 @@ jobs:
       if: steps.fc.outputs.comment-id != ''
       uses: chuhlomin/render-template@v1.6
       with:
-        template: .github/localization-tracker-header.md
+        template: ${{ vars.LOCALIZATION_TRACKING_MARKDOWN }}/header.md
         vars: |
           timestamp: ${{ steps.timestamp.outputs.TIMESTAMP }}
 
@@ -68,10 +54,46 @@ jobs:
         edit-mode: replace
         body: ${{ steps.template.outputs.result }}
 
-    - name: Update comment
+    - name: Read main CSV
+      id: main-csv
+      if: steps.fc.outputs.comment-id != ''
+      uses: juliangruber/read-file-action@v1
+      with:
+        path: ${{ vars.LOCALIZATION_TRACKING_TABLES }}/tracker.csv
+
+    - name: Main table markdown
+      id: main-md
+      if: steps.fc.outputs.comment-id != ''
+      uses: petems/csv-to-md-table-action@master
+      with:
+        csvinput: ${{ steps.main-csv.outputs.content }}
+
+    - name: Insert main table
       if: steps.fc.outputs.comment-id != ''
       uses: peter-evans/create-or-update-comment@v2
       with:
         comment-id: ${{ steps.fc.outputs.comment-id }}
         edit-mode: append
-        body: ${{ steps.csv-to-md.outputs.markdown-table }}
+        body: ${{ steps.main-md.outputs.markdown-table }}
+
+    - name: Read clues CSV
+      id: clues-csv
+      if: steps.fc.outputs.comment-id != ''
+      uses: juliangruber/read-file-action@v1
+      with:
+        path: ${{ vars.LOCALIZATION_TRACKING_TABLES }}/clues.csv
+
+    - name: Clues table markdown
+      id: clues-md
+      if: steps.fc.outputs.comment-id != ''
+      uses: petems/csv-to-md-table-action@master
+      with:
+        csvinput: ${{ steps.clues-csv.outputs.content }}
+
+    - name: Insert clues table
+      if: steps.fc.outputs.comment-id != ''
+      uses: peter-evans/create-or-update-comment@v2
+      with:
+        comment-id: ${{ steps.fc.outputs.comment-id }}
+        edit-mode: append
+        body: ${{ steps.clues-md.outputs.markdown-table }}
