@@ -26,7 +26,8 @@ jobs:
 
     - name: Get timestamp
       env:
-        TRACKER_FILE_PATH: ${{ vars.LOCALIZATION_TRACKER_CSV }}
+        # TRACKER_FILE_PATH: ${{ vars.LOCALIZATION_TRACKER_CSV }}
+        TRACKER_FILE_PATH: .gitignore
       run: |
         echo $(git log -1 --date=iso-local -- blahblahblah)
         echo $(git log -1 --date=iso-local -- $TRACKER_FILE_PATH)
