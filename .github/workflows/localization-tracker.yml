@@ -27,8 +27,8 @@ jobs:
         body: |
           [github actions placeholder text]
 
-    - name: Get timestamp
-      id: timestamp
+    - name: Main table timestamp
+      id: main-timestamp
       if: steps.fc.outputs.comment-id != ''
       env:
         TRACKER_FILE_PATH: ${{ vars.LOCALIZATION_TRACKING_TABLES }}/tracker.csv
@@ -75,6 +75,33 @@ jobs:
         comment-id: ${{ steps.fc.outputs.comment-id }}
         edit-mode: append
         body: ${{ steps.main-md.outputs.markdown-table }}
+
+    - name: Clues table timestamp
+      id: clues-timestamp
+      if: steps.fc.outputs.comment-id != ''
+      env:
+        TRACKER_FILE_PATH: ${{ vars.LOCALIZATION_TRACKING_TABLES }}/tracker.csv
+      run: |
+        echo $(git log -1 --date=iso-local --format="%ad" -- $TRACKER_FILE_PATH)
+        echo $(git log -1 --date=iso-local -- $TRACKER_FILE_PATH)
+        echo "TIMESTAMP=$(git log -1 --date=iso-local --format="%ad" -- $TRACKER_FILE_PATH)" >> ${GITHUB_OUTPUT}
+
+    - name: Clues template
+      id: clues-template
+      if: steps.fc.outputs.comment-id != ''
+      uses: chuhlomin/render-template@v1.6
+      with:
+        template: ${{ vars.LOCALIZATION_TRACKING_MARKDOWN }}/clues.md
+        vars: |
+          timestamp: ${{ steps.clues-timestamp.outputs.TIMESTAMP }}
+
+    - name: Clues header
+      if: steps.fc.outputs.comment-id != ''
+      uses: peter-evans/create-or-update-comment@v2
+      with:
+        comment-id: ${{ steps.fc.outputs.comment-id }}
+        edit-mode: append
+        body: ${{ steps.clues-template.outputs.result }}
 
     - name: Read clues CSV
       id: clues-csv
