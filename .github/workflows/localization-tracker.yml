@@ -32,7 +32,7 @@ jobs:
       id: csv
       uses: juliangruber/read-file-action@v1
       with:
-        path: ./localization/localization-tracker.csv
+        path: ${{ vars.LOCALIZATION_TRACKER_CSV }}
 
     - name: Create MD
       if: steps.fc.outputs.comment-id != ''
@@ -45,7 +45,7 @@ jobs:
       id: timestamp
       if: steps.fc.outputs.comment-id != ''
       run: |
-        echo "TIMESTAMP=$(git log -1 --date=iso-local --format="%ad" -- ./localization/localization-tracker.csv)" >> ${GITHUB_OUTPUT}
+        echo "TIMESTAMP=$(git log -1 --date=iso-local --format="%ad" -- ${{ vars.LOCALIZATION_TRACKER_CSV }})" >> ${GITHUB_OUTPUT}
 
     - name: Render template
       id: template
