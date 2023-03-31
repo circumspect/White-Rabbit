@@ -8,4 +8,4 @@
 
 ❌: Missing
 
-## Table (last updated: {{ .timestamp }})
+## Table (last updated: ???)
