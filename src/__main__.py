@@ -17,10 +17,15 @@ from data.localization import LOCALIZATION_DATA
 import envvars
 import utils
 
+VERSION_CHECK_ERROR = """
+The White Rabbit does not support Python versions below 3.10.
+Please install a newer version.
+"""
+
 
 # Minimum Python version check
 if sys.version_info < (3, 10):
-    sys.exit("The White Rabbit does not support Python versions below 3.10. Please install a newer version")
+    sys.exit(VERSION_CHECK_ERROR)
 
 # Clear .pkl files on startup to avoid export bug
 utils.delete_files(dirs.FONT_DIR, "pkl")
@@ -28,7 +33,10 @@ utils.delete_files(dirs.FONT_DIR, "pkl")
 # Enable Server Members gateway intent to find all users
 intents = discord.Intents.all()
 
-bot = WhiteRabbit(command_prefix=commands.when_mentioned_or(constants.COMMAND_PREFIX), intents=intents)
+bot = WhiteRabbit(
+    command_prefix=commands.when_mentioned_or(constants.COMMAND_PREFIX),
+    intents=intents
+)
 bot.games = {}
 
 # Localization
@@ -51,7 +59,13 @@ def check_channel(ctx: Context) -> bool:
     assert ctx.command
     assert isinstance(ctx.channel, Union[discord.TextChannel, discord.Thread])
 
-    return ctx.channel.name == BOT_CHANNEL or ctx.command.name in ["server_setup", LOCALIZATION_DATA["commands"]["admin"]["server_setup"]]
+    if ctx.channel.name == BOT_CHANNEL:
+        return True
+
+    return ctx.command.name in (
+        "server_setup",
+        LOCALIZATION_DATA["commands"]["admin"]["server_setup"]
+    )
 
 
 @bot.check
@@ -109,8 +123,12 @@ async def on_command_error(ctx: Context, error):
 
             return
 
+        assert isinstance(
+            ctx.channel,
+            Union[discord.TextChannel, discord.Thread]
+        )
+
         # Commands must be in bot-channel
-        assert isinstance(ctx.channel, Union[discord.TextChannel, discord.Thread])
         if ctx.channel.name != BOT_CHANNEL and utils.is_command(ctx.message.clean_content):
             asyncio.create_task(bot_channel.send(f"{ctx.author.mention} " + LOCALIZATION_DATA["errors"]["CommandInWrongChannel"]))
             return
