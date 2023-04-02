@@ -1,10 +1,11 @@
 # Built-in
+from typing import Dict
 import envvars
 import random
 import sys
 import yaml
 # Local
-from data.card_types import *
+from data.card_types import Character, Location, Suspect, Searching
 from rabbit import WHITE_RABBIT_DIR
 
 

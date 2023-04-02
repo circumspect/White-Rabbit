@@ -1,7 +1,8 @@
 import datetime
+from typing import Optional
 import discord
 # Local
-from data.cards import *
+from data.cards import CHARACTERS, LOCATIONS, ROLES_TO_NAMES, SEARCHING, SUSPECTS
 from data.localization import LOCALIZATION_DATA
 
 # Message to send when reminding player

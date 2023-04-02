@@ -11,6 +11,7 @@ class Context(commands.Context):
     character: Optional[str]
     text_channels: Dict[str, TextChannel]
 
+
 class Bot(commands.Bot):
     dev_ids: List[int]
     games: Dict[int, Data]

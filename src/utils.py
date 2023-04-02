@@ -202,6 +202,7 @@ def ooc_strip(ctx: Context, text: str):
 
     return text
 
+
 def upload_file(path: Path):
     """Uploads a file and returns the download URL"""
 
