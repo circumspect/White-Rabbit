@@ -130,16 +130,21 @@ async def on_command_error(ctx: Context, error):
 
         # Commands must be in bot-channel
         if ctx.channel.name != BOT_CHANNEL and utils.is_command(ctx.message.clean_content):
-            asyncio.create_task(bot_channel.send(f"{ctx.author.mention} " + LOCALIZATION_DATA["errors"]["CommandInWrongChannel"]))
+            asyncio.create_task(bot_channel.send(
+                f"{ctx.author.mention} "
+                + LOCALIZATION_DATA["errors"]["CommandInWrongChannel"]
+            ))
             return
 
         # Check if running debug command without being listed as developer
-        # TODO: is there a better way to check this than testing against every command/alias?
+        # TODO: is there a better way to check this than testing against
+        # every command/alias?
         if ctx.author.id not in bot.dev_ids:
             message = ctx.message.clean_content
             for command in DEBUG_COMMAND_LIST:
-                aliases: list = LOCALIZATION_DATA["commands"]["debug"][command]["aliases"]
-                aliases.append(LOCALIZATION_DATA["commands"]["debug"][command]["name"])
+                command_loc = LOCALIZATION_DATA["commands"]["debug"][command]
+                aliases: list = command_loc["aliases"]
+                aliases.append(command_loc["name"])
                 for alias in aliases:
                     if message.startswith(constants.COMMAND_PREFIX + alias):
                         asyncio.create_task(ctx.send(LOCALIZATION_DATA["errors"]["MissingDeveloperPermissions"]))
@@ -147,23 +152,33 @@ async def on_command_error(ctx: Context, error):
 
         # Automatic/manual check
         if ctx.game.automatic:
-            asyncio.create_task(ctx.send(LOCALIZATION_DATA["errors"]["ManualCommandInAuto"]))
+            asyncio.create_task(
+                ctx.send(LOCALIZATION_DATA["errors"]["ManualCommandInAuto"])
+            )
             return
 
         # Couldn't determine a specific error; tell user to check console
-        asyncio.create_task(ctx.send(LOCALIZATION_DATA["errors"]["GenericCheckFailure"]))
+        asyncio.create_task(
+            ctx.send(LOCALIZATION_DATA["errors"]["GenericCheckFailure"])
+        )
 
     # Bad input
     elif isinstance(error, commands.errors.UserInputError):
-        asyncio.create_task(ctx.send(LOCALIZATION_DATA["errors"]["UserInputError"]))
+        asyncio.create_task(
+            ctx.send(LOCALIZATION_DATA["errors"]["UserInputError"])
+        )
 
     # Can't find command
     elif isinstance(error, commands.errors.CommandNotFound):
-        asyncio.create_task(ctx.send(LOCALIZATION_DATA["errors"]["CommandNotFound"]))
+        asyncio.create_task(
+            ctx.send(LOCALIZATION_DATA["errors"]["CommandNotFound"])
+        )
 
     # Everything else
     else:
-        asyncio.create_task(ctx.send(LOCALIZATION_DATA["errors"]["UnknownError"]))
+        asyncio.create_task(
+            ctx.send(LOCALIZATION_DATA["errors"]["UnknownError"])
+        )
         raise error
 
 
