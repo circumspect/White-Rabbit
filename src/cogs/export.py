@@ -454,7 +454,11 @@ class Export(commands.Cog):
             *(ctx, pdf, loc["pdf"]["group-chat"], PM_TITLE_FONT, '',
               MESSAGES_TITLE_Y, MESSAGES_TITLE_TEXT_GAP)
         )
-        await self.channel_export(ctx, pdf, ctx.text_channels[LOCALIZATION_DATA["channels"]["texts"]["group-chat"]])
+        await self.channel_export(
+            ctx,
+            pdf,
+            ctx.text_channels[LOCALIZATION_DATA["channels"]["texts"]["group-chat"]]
+        )
 
         # Chat message exports
         for a, b in pm_channels:

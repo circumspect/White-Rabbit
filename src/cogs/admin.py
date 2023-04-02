@@ -284,8 +284,12 @@ class Admin(commands.Cog):
 
             # Private message channels
             elif channel.name in LOCALIZATION_DATA["channels"]["texts"].values() and channel.name != GROUP_CHAT:
-                asyncio.create_task(channel.set_permissions(everyone, view_channel=False, send_messages=None))
-                asyncio.create_task(channel.set_permissions(spectator, view_channel=True, send_messages=False))
+                asyncio.create_task(
+                    channel.set_permissions(everyone, view_channel=False, send_messages=None)
+                )
+                asyncio.create_task(
+                    channel.set_permissions(spectator, view_channel=True, send_messages=False)
+                )
                 split_name = channel.name.split("-")
                 player_a = split_name[0].title()
                 player_b = split_name[1].title()
