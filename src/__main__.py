@@ -147,7 +147,9 @@ async def on_command_error(ctx: Context, error):
                 aliases.append(command_loc["name"])
                 for alias in aliases:
                     if message.startswith(constants.COMMAND_PREFIX + alias):
-                        asyncio.create_task(ctx.send(LOCALIZATION_DATA["errors"]["MissingDeveloperPermissions"]))
+                        asyncio.create_task(
+                            ctx.send(LOCALIZATION_DATA["errors"]["MissingDeveloperPermissions"])
+                        )
                         return
 
         # Automatic/manual check

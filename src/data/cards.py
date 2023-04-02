@@ -53,18 +53,26 @@ for expansion in expansions:
 if CARD_LIST is None:
     sys.exit("No expansions loaded!")
 
-CHARACTERS: Dict[str, Character] = { k: Character(k, v) for k, v in CARD_LIST["characters"].items() }
+CHARACTERS: Dict[str, Character] = {
+    k: Character(k, v) for k, v in CARD_LIST["characters"].items()
+}
 ROLES_TO_NAMES = { v.role: v.name for _, v in CHARACTERS.items() }
 
-ALL_SUSPECTS: Dict[str, Suspect] = { k: Suspect(k, v) for k, v in CARD_LIST["suspects"].items() }
+ALL_SUSPECTS: Dict[str, Suspect] = {
+    k: Suspect(k, v) for k, v in CARD_LIST["suspects"].items()
+}
 suspect_keys = random.sample(list(ALL_SUSPECTS), 5)
 SUSPECTS = { k: ALL_SUSPECTS[k] for k in suspect_keys }
 
-ALL_LOCATIONS: Dict[str, Location] = { k: Location(k, v) for k, v in CARD_LIST["locations"].items() }
+ALL_LOCATIONS: Dict[str, Location] = {
+    k: Location(k, v) for k, v in CARD_LIST["locations"].items()
+}
 location_keys = random.sample(list(ALL_LOCATIONS), 5)
 LOCATIONS = { k: ALL_LOCATIONS[k] for k in location_keys }
 
-SEARCHING: Dict[str, Searching] = { k: Searching(k, v) for k, v in CARD_LIST["searching"].items() }
+SEARCHING: Dict[str, Searching] = {
+    k: Searching(k, v) for k, v in CARD_LIST["searching"].items()
+}
 CLUES = CARD_LIST["clues"]
 
 assert STARTING_PLAYER in CLUES[90]
