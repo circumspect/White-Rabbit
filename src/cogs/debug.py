@@ -18,6 +18,7 @@ DEBUG_COMMAND_LIST = (
     "quit",
 )
 
+
 class Debug(commands.Cog):
     def __init__(self, bot: Bot):
         self.bot = bot

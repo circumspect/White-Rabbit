@@ -28,18 +28,20 @@ class Character:
         else:
             self.pdf_name_format = self.full_name.split()
 
+
 class Suspect:
     def __init__(self, name: str, description: Optional[str]):
         self.name = name
         self.description = description
+
 
 class Location:
     def __init__(self, name: str, description: Optional[str]):
         self.name = name
         self.description = description
 
+
 class Searching:
     def __init__(self, name: str, description: Optional[str]):
         self.name = name
         self.description = description
-

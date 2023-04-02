@@ -650,7 +650,6 @@ class Export(commands.Cog):
             pdf, TIMELINE_TITLE_Y, TIMELINE_TITLE_FONT, TIMELINE_TITLE
         )
 
-
     def page_title(self, pdf: PDF, y: float, font, text: str):
         """Add title to current page"""
 

@@ -6,9 +6,12 @@ exclude =
     venv,
 
 extend-ignore =
+    # Lines too long
+    # E501,
     # Spaces in keyword/parameter equals
     E251,
     # Missing spaces around parameter equals (default values)
     E252,
-    # Lines too long
-    # E501,
+    # Whitespace in middle of braces like { this }
+    E201,
+    E202,

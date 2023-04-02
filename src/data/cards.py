@@ -13,21 +13,24 @@ CARD_LIST_DIR = WHITE_RABBIT_DIR / "card_lists"
 EXPANSION_DIR = CARD_LIST_DIR / "expansions"
 PLAYSET_DIR = CARD_LIST_DIR / "playsets"
 
+
 # https://stackoverflow.com/a/7205107
 def merge(a, b, path=None):
     "merges b into a"
-    if path is None: path = []
+    if path is None:
+        path = []
     for key in b:
         if key in a:
             if isinstance(a[key], dict) and isinstance(b[key], dict):
                 merge(a[key], b[key], path + [str(key)])
             elif a[key] == b[key]:
-                pass # same leaf value
+                pass  # same leaf value
             else:
                 raise Exception('Conflict at %s' % '.'.join(path + [str(key)]))
         else:
             a[key] = b[key]
     return a
+
 
 with open(PLAYSET_DIR / f"{envvars.get_env_var('WHITE_RABBIT_PLAYSET')}.yaml", "r") as f:
     data = yaml.safe_load(f)

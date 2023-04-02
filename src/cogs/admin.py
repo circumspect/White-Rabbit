@@ -27,6 +27,7 @@ PERMS_NO_ACCESS.update(**{"read_messages": False, "send_messages": False})
 PERMS_SPECTATOR = PermissionOverwrite()
 PERMS_SPECTATOR.update(**{"read_messages": True, "send_messages": False})
 
+
 class Admin(commands.Cog):
     def __init__(self, bot: Bot):
         self.bot = bot
@@ -75,13 +76,15 @@ class Admin(commands.Cog):
 
         # TODO: Localization
         channel_categories = {
-            "general": await ctx.guild.create_category(LOCALIZATION_DATA["categories"]["general"]),
-            "game": await ctx.guild.create_category(LOCALIZATION_DATA["categories"]["game"],
-                overwrites = {
-                    ctx.guild.default_role: PERMS_NO_SENDING
-                }
+            "general": await ctx.guild.create_category(
+                LOCALIZATION_DATA["categories"]["general"]
             ),
-            "texts": await ctx.guild.create_category(LOCALIZATION_DATA["categories"]["texts"],
+            "game": await ctx.guild.create_category(
+                LOCALIZATION_DATA["categories"]["game"],
+                overwrites = { ctx.guild.default_role: PERMS_NO_SENDING }
+            ),
+            "texts": await ctx.guild.create_category(
+                LOCALIZATION_DATA["categories"]["texts"],
                 overwrites = { ctx.guild.default_role: PERMS_NO_SENDING }
             )
         }
@@ -144,9 +147,7 @@ class Admin(commands.Cog):
             overwrites = overwrites
         )
 
-
         # Private message channels
-
         for (c1, c2) in it.combinations(cards.CHARACTERS, 2):
             channel = await ctx.guild.create_text_channel(
                 LOCALIZATION_DATA["channels"]["texts"][f"{c1}-{c2}"],
@@ -158,7 +159,6 @@ class Admin(commands.Cog):
                     roles[c2]: PERMS_YES_READING,
                 }
             )
-
 
     @commands.command(
         name=loc["show_all"]["name"],

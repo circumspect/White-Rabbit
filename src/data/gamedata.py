@@ -29,6 +29,7 @@ CLUE_TYPES = {
     35: "location", 30: "suspect-drawn", 20: "location-drawn"
 }
 
+
 class Data:
     def __init__(self, guild: discord.Guild):
         self.guild = guild
@@ -101,7 +102,6 @@ class Data:
                 self.spectator_role = role
                 break
 
-
     def char_roles(self):
         """
         Returns a dictionary mapping character role names to their
@@ -115,7 +115,6 @@ class Data:
         }
 
         return dict(sorted(unsorted.items(), key=lambda item: item[0]))
-
 
     def active_chars(self):
         return [ROLES_TO_NAMES[role] for role in self.char_roles()]

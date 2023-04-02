@@ -127,7 +127,6 @@ async def on_command_error(ctx: Context, error):
                         asyncio.create_task(ctx.send(LOCALIZATION_DATA["errors"]["MissingDeveloperPermissions"]))
                         return
 
-
         # Automatic/manual check
         if ctx.game.automatic:
             asyncio.create_task(ctx.send(LOCALIZATION_DATA["errors"]["ManualCommandInAuto"]))
