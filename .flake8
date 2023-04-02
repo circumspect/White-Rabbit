@@ -8,3 +8,7 @@ exclude =
 extend-ignore =
     # Spaces in keyword/parameter equals
     E251,
+    # Missing spaces around parameter equals (default values)
+    E252,
+    # Lines too long
+    # E501,
