@@ -253,15 +253,16 @@ class Export(commands.Cog):
                 ctx.game.start_time = message.created_at
                 break
 
-        # Couldn't find exact match, use first message in channel
-        first_message = [message async for message in channel.history(limit=1, oldest_first=True)]
+        if ctx.game.start_time is None:
+            # Couldn't find exact match, use first message in channel
+            first_message = [message async for message in channel.history(limit=1, oldest_first=True)]
 
-        if not first_message:
-            # Channel is empty, so we quit
-            return
-        else:
-            first_message = first_message[0]
-            ctx.game.start_time = first_message.created_at
+            if not first_message:
+                # Channel is empty, so we quit
+                return
+            else:
+                first_message = first_message[0]
+                ctx.game.start_time = first_message.created_at
 
         # Alice
         channel = ctx.text_channels[LOCALIZATION_DATA["channels"]["resources"]]
