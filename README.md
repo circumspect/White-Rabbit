@@ -4,7 +4,7 @@
 [![Documentation Status](https://readthedocs.org/projects/white-rabbit/badge/?version=latest)](https://white-rabbit.readthedocs.io/en/latest/?badge=latest)
 [![GitHub release (latest SemVer)](https://img.shields.io/github/v/release/circumspect/White-Rabbit)](https://github.com/circumspect/White-Rabbit/releases)
 [![Docker Image Version (latest semver)](https://img.shields.io/docker/v/circumspect/white-rabbit?label=Docker%20Hub)](https://hub.docker.com/r/circumspect/white-rabbit)
-[![GitHub](https://img.shields.io/github/license/circumspect/White-Rabbit)](https://github.com/circumspect/White-Rabbit/blob/main/LICENSE)
+[![License](https://img.shields.io/github/license/circumspect/White-Rabbit)](https://github.com/circumspect/White-Rabbit/blob/main/LICENSE)
 
 A Discord bot for Alice is Missing. Server template: <https://discord.new/SfcBdbyhGMmR>.
 This is a fan-made project which is not affiliated in any way with the creators of Alice is Missing.
