@@ -1,13 +1,14 @@
 # Built-in
 import asyncio
 import itertools as it
+from typing import List, Union
 # 3rd-party
 import discord
 from discord.ext import commands
 from discord.permissions import PermissionOverwrite
 # Local
 from data import cards, constants
-from data.gamedata import Context
+from data.wrappers import Bot, Context
 from data.localization import LOCALIZATION_DATA
 
 loc = LOCALIZATION_DATA["commands"]["admin"]
@@ -26,12 +27,15 @@ PERMS_NO_ACCESS.update(**{"read_messages": False, "send_messages": False})
 PERMS_SPECTATOR = PermissionOverwrite()
 PERMS_SPECTATOR.update(**{"read_messages": True, "send_messages": False})
 
+
 class Admin(commands.Cog):
-    def __init__(self, bot: commands.Bot):
+    def __init__(self, bot: Bot):
         self.bot = bot
 
     async def cog_check(self, ctx: Context):
         """Commands for server admins only"""
+
+        assert isinstance(ctx.author, discord.Member)
 
         return ctx.author.guild_permissions.administrator
 
@@ -42,6 +46,8 @@ class Admin(commands.Cog):
     )
     async def server_setup(self, ctx: Context):
         """Deletes all channels and roles and creates new ones based on the given card list"""
+
+        assert ctx.guild
 
         # Delete roles and channels
         async_tasks = []
@@ -70,13 +76,15 @@ class Admin(commands.Cog):
 
         # TODO: Localization
         channel_categories = {
-            "general": await ctx.guild.create_category("General/OOC"),
-            "game": await ctx.guild.create_category("The Game",
-                overwrites = {
-                    ctx.guild.default_role: PERMS_NO_SENDING
-                }
+            "general": await ctx.guild.create_category(
+                LOCALIZATION_DATA["categories"]["general"]
             ),
-            "texts": await ctx.guild.create_category("Texts",
+            "game": await ctx.guild.create_category(
+                LOCALIZATION_DATA["categories"]["game"],
+                overwrites = { ctx.guild.default_role: PERMS_NO_SENDING }
+            ),
+            "texts": await ctx.guild.create_category(
+                LOCALIZATION_DATA["categories"]["texts"],
                 overwrites = { ctx.guild.default_role: PERMS_NO_SENDING }
             )
         }
@@ -139,9 +147,7 @@ class Admin(commands.Cog):
             overwrites = overwrites
         )
 
-
         # Private message channels
-
         for (c1, c2) in it.combinations(cards.CHARACTERS, 2):
             channel = await ctx.guild.create_text_channel(
                 LOCALIZATION_DATA["channels"]["texts"][f"{c1}-{c2}"],
@@ -154,7 +160,6 @@ class Admin(commands.Cog):
                 }
             )
 
-
     @commands.command(
         name=loc["show_all"]["name"],
         aliases=loc["show_all"]["aliases"],
@@ -162,6 +167,8 @@ class Admin(commands.Cog):
     )
     async def show_all(self, ctx: Context):
         """Reveal all channels and disable sending messages"""
+
+        assert ctx.guild
 
         for channel in ctx.guild.text_channels:
             asyncio.create_task(channel.edit(sync_permissions=True))
@@ -172,16 +179,66 @@ class Admin(commands.Cog):
         aliases=loc["wipe"]["aliases"],
         description=loc["wipe"]["description"]
     )
-    async def wipe(self, ctx: Context, *text_channels: discord.TextChannel):
-        """Erases all messages and clears game data"""
+    async def wipe(self, ctx: Context, *ids: Union[discord.CategoryChannel, discord.TextChannel, int, str]):
+        """
+        Erases all messages and clears game data
+
+        Arguments can be names of text channels, channel categories, or integers.
+        Integers will refer to channel categories, indexed from top to bottom,
+        starting at 0. By default this will be:
+        0: General/OOC
+        1: The Game
+        2: Texts
+        """
+
+        assert ctx.guild
+
+        to_wipe: List[discord.TextChannel] = []
+
+        # If no args given, wipe entire server
+        if not ids:
+            to_wipe = ctx.guild.text_channels
+        else:
+            for id in ids:
+                # Find category by index
+                if isinstance(id, int):
+                    if id < 0 or id >= len(ctx.guild.categories):
+                        await ctx.channel.send(LOCALIZATION_DATA["errors"]["UserInputError"])
+                        return
+                    id = ctx.guild.categories[id]
+
+                # Search categories, then channels
+                if isinstance(id, str):
+                    found = False
+                    for category in ctx.guild.categories:
+                        if id.lower() in category.name.lower():
+                            id = category
+                            found = True
+                            break
+
+                    if isinstance(id, str):
+                        for channel in ctx.guild.text_channels:
+                            if id.lower() in channel.name.lower():
+                                id = channel
+                                found = True
+                                break
+
+                    if not found:
+                        await ctx.channel.send(LOCALIZATION_DATA["errors"]["UserInputError"])
+                        return
+
+                if isinstance(id, discord.TextChannel):
+                    to_wipe.append(id)
+                elif isinstance(id, discord.CategoryChannel):
+                    to_wipe += id.text_channels
+                else:
+                    await ctx.channel.send(LOCALIZATION_DATA["errors"]["UserInputError"])
+                    return
 
         # Confirm command to user
         await ctx.send(loc["wipe"]["DeletingMessages"])
 
-        # Wipe messages
-        if not text_channels:
-            text_channels = ctx.guild.text_channels
-        for text_channel in text_channels:
+        for text_channel in to_wipe:
             asyncio.create_task(text_channel.purge(limit=None))
 
         # Reset game data
@@ -197,6 +254,8 @@ class Admin(commands.Cog):
     )
     async def reset_perms(self, ctx: Context):
         """Resets channel permissions to the default (undoes !show_all)"""
+
+        assert ctx.guild
 
         everyone = ctx.guild.default_role
         spectator = ctx.game.spectator_role
@@ -225,8 +284,12 @@ class Admin(commands.Cog):
 
             # Private message channels
             elif channel.name in LOCALIZATION_DATA["channels"]["texts"].values() and channel.name != GROUP_CHAT:
-                asyncio.create_task(channel.set_permissions(everyone, view_channel=False, send_messages=None))
-                asyncio.create_task(channel.set_permissions(spectator, view_channel=True, send_messages=False))
+                asyncio.create_task(
+                    channel.set_permissions(everyone, view_channel=False, send_messages=None)
+                )
+                asyncio.create_task(
+                    channel.set_permissions(spectator, view_channel=True, send_messages=False)
+                )
                 split_name = channel.name.split("-")
                 player_a = split_name[0].title()
                 player_b = split_name[1].title()
@@ -240,6 +303,8 @@ class Admin(commands.Cog):
         description=loc["reset_roles"]["description"]
     )
     async def reset_roles(self, ctx: Context):
+        assert ctx.guild
+
         # Removes character roles from everyone
         for member in ctx.guild.members:
             is_player = False
@@ -262,6 +327,8 @@ class Admin(commands.Cog):
     async def reset(self, ctx: Context):
         """Complete server reset"""
 
+        assert ctx.guild
+
         # Confirm command to user
         await ctx.send(loc["reset"]["ResettingServer"])
 
@@ -272,5 +339,5 @@ class Admin(commands.Cog):
         await asyncio.gather(self.wipe(ctx), self.reset_perms(ctx), self.reset_roles(ctx))
 
 
-async def setup(bot: commands.Bot):
+async def setup(bot: Bot):
     await bot.add_cog(Admin(bot))

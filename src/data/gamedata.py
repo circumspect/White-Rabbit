@@ -1,8 +1,8 @@
+import datetime
+from typing import Optional
 import discord
-from discord.ext import commands
-from discord import TextChannel
 # Local
-from data.cards import *
+from data.cards import CHARACTERS, LOCATIONS, ROLES_TO_NAMES, SEARCHING, SUSPECTS
 from data.localization import LOCALIZATION_DATA
 
 # Message to send when reminding player
@@ -29,6 +29,7 @@ CLUE_TYPES = {
     35: "location", 30: "suspect-drawn", 20: "location-drawn"
 }
 
+
 class Data:
     def __init__(self, guild: discord.Guild):
         self.guild = guild
@@ -36,18 +37,12 @@ class Data:
         # Status
         self.init = False
         self.setup = False
-        self.start_time = None
-
-        self.ten_char = None
-        self.three_flip = False
-        self.second_culprit = False
-
+        self.start_time: Optional[datetime.datetime] = None
 
         # Settings
         self.automatic = True
         self.show_timer = False
         self.stream_music = False
-
 
         # Enabled endings
         self.endings = {}
@@ -55,12 +50,13 @@ class Data:
             # Enable all endings
             self.endings[i] = True
 
-
         # Game data
         self.alice = 0
         self.motives = {}
         self.clue_assignments = {}
         self.picked_clues = {}
+        self.ten_char: Optional[str] = None
+        self.three_flip = False
         self.second_culprit = ""
 
         # Suspects and locations
@@ -106,7 +102,6 @@ class Data:
                 self.spectator_role = role
                 break
 
-
     def char_roles(self):
         """
         Returns a dictionary mapping character role names to their
@@ -121,10 +116,5 @@ class Data:
 
         return dict(sorted(unsorted.items(), key=lambda item: item[0]))
 
-
     def active_chars(self):
         return [ROLES_TO_NAMES[role] for role in self.char_roles()]
-
-class Context(commands.Context):
-    game: Data
-    text_channels: List[TextChannel]

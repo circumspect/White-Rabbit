@@ -1,4 +1,4 @@
-FROM python:3.9 as base
+FROM python:3.10 as base
 
 COPY requirements.txt /
 
@@ -8,6 +8,7 @@ COPY localization/ /whiterabbit/localization
 COPY resources/ /whiterabbit/resources
 COPY src/ /whiterabbit/src
 COPY example.env /whiterabbit/.env
+COPY card_lists /whiterabbit/card_lists
 
 workdir /whiterabbit
 

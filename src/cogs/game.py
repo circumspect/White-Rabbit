@@ -4,15 +4,15 @@
 import asyncio
 import datetime
 import random
-import typing
+from typing import Optional, Union
 # 3rd-party
 import discord
 from discord.ext import commands
 # Local
 from data import cards, dirs, filepaths, gamedata
 from data.cards import CLUES, STARTING_PLAYER
-from data.gamedata import Context
 from data.localization import LOCALIZATION_DATA
+from data.wrappers import Bot, Context
 import utils
 
 loc = LOCALIZATION_DATA["commands"]["game"]
@@ -182,6 +182,8 @@ class Game(commands.Cog):
     async def start(self, ctx: Context):
         """Begins the game"""
 
+        assert ctx.guild
+
         # Validity checks
         if not ctx.game.alice:
             asyncio.create_task(ctx.send(LOCALIZATION_DATA["errors"]["MissingAlice"]))
@@ -250,11 +252,13 @@ class Game(commands.Cog):
                     if minutes_remaining == 30 and ctx.game.picked_clues[minutes_remaining] == 1:
                         flip = utils.flip()
 
+                        channel = None
                         for character in ctx.game.clue_assignments:
                             if 30 in ctx.game.clue_assignments[character]:
                                 channel = LOCALIZATION_DATA["channels"]["clues"][character]
                                 break
 
+                        assert channel
                         channel = ctx.text_channels[channel]
                         asyncio.create_task(channel.send(flip))
 
@@ -316,11 +320,13 @@ class Game(commands.Cog):
                 # Check if player hasn't drawn the clue yet
                 if minutes_remaining <= ctx.game.next_clue:
                     # Find character who owns the clue
+                    character: Optional[str] = None
                     for name in ctx.game.clue_assignments:
                         if minutes_remaining in ctx.game.clue_assignments[name]:
                             character = name
                             break
 
+                    assert character
                     channel = ctx.text_channels[LOCALIZATION_DATA["channels"]["clues"][character]]
                     message = LOCALIZATION_DATA["messages"]["NextClueReminder"]
                     asyncio.create_task(channel.send(f"{message} ({ctx.game.next_clue})"))
@@ -370,12 +376,15 @@ class Game(commands.Cog):
         description=loc["ten_min_card"]["description"]
     )
     async def ten_min_card(
-        self, ctx: Context, mention: typing.Union[discord.Member, discord.Role]
+        self, ctx: Context, mention: Union[discord.Member, discord.Role]
     ):
         """Assign the 10 minute card to another player"""
 
         if isinstance(mention, discord.Member):
-            character = mention.nick.split()[0]
+            if mention.nick is None:
+                character = mention.name
+            else:
+                character = mention.nick.split()[0]
         else:
             character = mention.name
 
@@ -388,5 +397,5 @@ class Game(commands.Cog):
         asyncio.create_task(ctx.send(loc["ten_min_card"]["Assigned"]))
 
 
-async def setup(bot: commands.Bot):
+async def setup(bot: Bot):
     await bot.add_cog(Game(bot))

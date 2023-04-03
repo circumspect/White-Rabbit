@@ -5,7 +5,7 @@ from os import environ
 from discord.ext import commands
 # Local
 from data import filepaths, gamedata
-from data.gamedata import Context
+from data.wrappers import Bot, Context
 from data.localization import LOCALIZATION_DATA
 import utils
 
@@ -18,8 +18,9 @@ DEBUG_COMMAND_LIST = (
     "quit",
 )
 
+
 class Debug(commands.Cog):
-    def __init__(self, bot: commands.Bot):
+    def __init__(self, bot: Bot):
         self.bot = bot
 
         self.bot.dev_ids = []
@@ -65,7 +66,7 @@ class Debug(commands.Cog):
         aliases=loc["speed"]["aliases"],
         description=loc["speed"]["description"]
     )
-    async def speed(self, ctx: Context, speed: float = 1):
+    async def speed(self, ctx: Context, speed: int = 1):
         """Changes the speed of the game - DEBUG USE ONLY"""
 
         ctx.game.game_speed = speed
@@ -117,16 +118,16 @@ class Debug(commands.Cog):
             # avoid RuntimeError: dictionary keys changed during iteration
             extensions = list(self.bot.extensions.keys())
             for extension in extensions:
-                self.bot.reload_extension(extension)
+                await self.bot.reload_extension(extension)
             asyncio.create_task(ctx.send(f"Reloaded {', '.join(self.bot.extensions.keys())}"))
             return
 
         # Load extension
         try:
             if extension_name in self.bot.extensions:
-                self.bot.reload_extension(extension_name)
+                await self.bot.reload_extension(extension_name)
             else:
-                self.bot.load_extension(extension_name)
+                await self.bot.load_extension(extension_name)
             asyncio.create_task(ctx.send(f"Loaded {extension_name}"))
 
         except commands.errors.ExtensionNotFound:
@@ -140,7 +141,7 @@ class Debug(commands.Cog):
     async def unload(self, ctx: Context, extension_name: str):
         """Unloads a plugin"""
         try:
-            self.bot.unload_extension(extension_name)
+            await self.bot.unload_extension(extension_name)
             asyncio.create_task(ctx.send(f"Unloaded {extension_name}"))
         except commands.errors.ExtensionNotLoaded:
             asyncio.create_task(ctx.send(f"{extension_name} was never loaded"))

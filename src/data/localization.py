@@ -24,7 +24,8 @@ with open(localization_file, encoding='utf-8') as f:
 LOCALIZATION_DATA["channels"]["clues"] = {}
 characters = [name for name in cards.CHARACTERS]
 for character in characters:
-    LOCALIZATION_DATA["channels"]["clues"][character] = LOCALIZATION_DATA["channels"]["clue-channel-format"].format(character)
+    channel = LOCALIZATION_DATA["channels"]["clue-channel-format"].format(character)
+    LOCALIZATION_DATA["channels"]["clues"][character] = channel
 
 LOCALIZATION_DATA["channels"]["texts"] = {}
 LOCALIZATION_DATA["channels"]["texts"]["group-chat"] = LOCALIZATION_DATA["channels"]["group-chat"]
@@ -33,6 +34,7 @@ for i, char1 in enumerate(characters):
     # Create list of character pairs
     for j in range(i+1, len(characters)):
         char2 = characters[j]
-        LOCALIZATION_DATA["channels"]["texts"][f"{char1}-{char2}"] = LOCALIZATION_DATA["channels"]["pm-channel-format"].format(char1, char2)
+        channel = LOCALIZATION_DATA["channels"]["pm-channel-format"].format(char1, char2)
+        LOCALIZATION_DATA["channels"]["texts"][f"{char1}-{char2}"] = channel
 
 print("Done!")

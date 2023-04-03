@@ -4,7 +4,7 @@
 [![Documentation Status](https://readthedocs.org/projects/white-rabbit/badge/?version=latest)](https://white-rabbit.readthedocs.io/en/latest/?badge=latest)
 [![GitHub release (latest SemVer)](https://img.shields.io/github/v/release/circumspect/White-Rabbit)](https://github.com/circumspect/White-Rabbit/releases)
 [![Docker Image Version (latest semver)](https://img.shields.io/docker/v/circumspect/white-rabbit?label=Docker%20Hub)](https://hub.docker.com/r/circumspect/white-rabbit)
-[![GitHub](https://img.shields.io/github/license/circumspect/White-Rabbit)](https://github.com/circumspect/White-Rabbit/blob/main/LICENSE)
+[![License](https://img.shields.io/github/license/circumspect/White-Rabbit)](https://github.com/circumspect/White-Rabbit/blob/main/LICENSE)
 
 A Discord bot for Alice is Missing. Server template: <https://discord.new/SfcBdbyhGMmR>.
 This is a fan-made project which is not affiliated in any way with the creators of Alice is Missing.
@@ -63,6 +63,10 @@ Built with help from these wonderful people ([emoji key](https://allcontributors
       <td align="center" valign="top" width="14.28%"><a href="https://github.com/d-beezee"><img src="https://avatars.githubusercontent.com/u/59012086?v=4?s=100" width="100px;" alt="d-beezee"/><br /><sub><b>d-beezee</b></sub></a><br /><a href="#translation-d-beezee" title="Translation">🌍</a></td>
       <td align="center" valign="top" width="14.28%"><a href="https://github.com/Leujii"><img src="https://avatars.githubusercontent.com/u/126162473?v=4?s=100" width="100px;" alt="Leujii"/><br /><sub><b>Leujii</b></sub></a><br /><a href="https://github.com/circumspect/White-Rabbit/issues?q=author%3ALeujii" title="Bug reports">🐛</a></td>
       <td align="center" valign="top" width="14.28%"><a href="https://github.com/Sinesthesyc"><img src="https://avatars.githubusercontent.com/u/126390834?v=4?s=100" width="100px;" alt="Sinesthesyc"/><br /><sub><b>Sinesthesyc</b></sub></a><br /><a href="#translation-Sinesthesyc" title="Translation">🌍</a></td>
+    </tr>
+    <tr>
+      <td align="center" valign="top" width="14.28%"><a href="https://github.com/dracek1458"><img src="https://avatars.githubusercontent.com/u/32167387?v=4?s=100" width="100px;" alt="dracek1458"/><br /><sub><b>dracek1458</b></sub></a><br /><a href="https://github.com/circumspect/White-Rabbit/issues?q=author%3Adracek1458" title="Bug reports">🐛</a></td>
+      <td align="center" valign="top" width="14.28%"><a href="https://github.com/PokePango"><img src="https://avatars.githubusercontent.com/u/34710204?v=4?s=100" width="100px;" alt="PokePango"/><br /><sub><b>PokePango</b></sub></a><br /><a href="https://github.com/circumspect/White-Rabbit/commits?author=PokePango" title="Code">💻</a></td>
     </tr>
   </tbody>
 </table>

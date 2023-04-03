@@ -4,6 +4,12 @@
 
     "spectator-role": "Espectador",
 
+    "categories": {
+        "general": "General/OOC",
+        "game": "The Game",
+        "texts": "Texts"
+    },
+
     "channels": {
         "discussion": "charla",
         "bot-channel": "comandos-bot",

@@ -11,7 +11,7 @@ from fpdf import FPDF
 # Local
 from data import cards, constants, dirs, filepaths, gamedata
 from data.dirs import FONT_DIR
-from data.gamedata import Context
+from data.wrappers import Bot, Context
 from data.localization import LOCALIZATION_DATA
 from rabbit import WHITE_RABBIT_DIR
 import utils
@@ -211,7 +211,7 @@ class PDF(FPDF):
 
 
 class Export(commands.Cog):
-    def __init__(self, bot: commands.Bot):
+    def __init__(self, bot: Bot):
         self.bot = bot
 
     async def channel_attachments(self, channel: discord.TextChannel, oldest_first: bool = False):
@@ -253,15 +253,16 @@ class Export(commands.Cog):
                 ctx.game.start_time = message.created_at
                 break
 
-        # Couldn't find exact match, use first message in channel
-        first_message = [message async for message in channel.history(limit=1, oldest_first=True)]
+        if ctx.game.start_time is None:
+            # Couldn't find exact match, use first message in channel
+            first_message = [message async for message in channel.history(limit=1, oldest_first=True)]
 
-        if not first_message:
-            # Channel is empty, so we quit
-            return
-        else:
-            first_message = first_message[0]
-            ctx.game.start_time = first_message.created_at
+            if not first_message:
+                # Channel is empty, so we quit
+                return
+            else:
+                first_message = first_message[0]
+                ctx.game.start_time = first_message.created_at
 
         # Alice
         channel = ctx.text_channels[LOCALIZATION_DATA["channels"]["resources"]]
@@ -364,6 +365,8 @@ class Export(commands.Cog):
     async def pdf(self, ctx: Context, file_name: str=""):
         """Exports the game to a PDF"""
 
+        assert ctx.guild
+
         # Start timer
         start_time = timer()
 
@@ -452,7 +455,11 @@ class Export(commands.Cog):
             *(ctx, pdf, loc["pdf"]["group-chat"], PM_TITLE_FONT, '',
               MESSAGES_TITLE_Y, MESSAGES_TITLE_TEXT_GAP)
         )
-        await self.channel_export(ctx, pdf, ctx.text_channels[LOCALIZATION_DATA["channels"]["texts"]["group-chat"]])
+        await self.channel_export(
+            ctx,
+            pdf,
+            ctx.text_channels[LOCALIZATION_DATA["channels"]["texts"]["group-chat"]]
+        )
 
         # Chat message exports
         for a, b in pm_channels:
@@ -614,6 +621,7 @@ class Export(commands.Cog):
 
         # Images
         # Add character card
+        assert ctx.game.ten_char
         card = filepaths.MASTER_PATHS[ctx.game.ten_char]
         pdf.image(str(card), CONCLUSION_CHAR_CARD_X,
                   CONCLUSION_ROW1_IMAGE_Y, CONCLUSION_CARD_WIDTH)
@@ -647,7 +655,6 @@ class Export(commands.Cog):
             pdf, TIMELINE_TITLE_Y, TIMELINE_TITLE_FONT, TIMELINE_TITLE
         )
 
-
     def page_title(self, pdf: PDF, y: float, font, text: str):
         """Add title to current page"""
 
@@ -666,6 +673,8 @@ class Export(commands.Cog):
 
         pdf.set_font(*PM_FONT)
         async for message in channel.history(limit=None, oldest_first=True):
+            assert isinstance(message.author, discord.Member)
+
             # Name
             author = message.author.roles[1].name
 
@@ -683,6 +692,8 @@ class Export(commands.Cog):
             line = f"{author}: {line}"
 
             # Time remaining
+            if ctx.game.start_time is None:
+                return
             delta = message.created_at - ctx.game.start_time
             change = delta.seconds
             time = gamedata.GAME_LENGTH - change
@@ -701,6 +712,8 @@ class Export(commands.Cog):
     )
     async def upload(self, ctx: Context, file_name: str=""):
         """Uploads a file and prints out the download url"""
+
+        assert ctx.guild
 
         if not file_name:
             file_name = ctx.guild.name
@@ -747,5 +760,5 @@ class Export(commands.Cog):
         zip_file.unlink()
 
 
-async def setup(bot: commands.Bot):
+async def setup(bot: Bot):
     await bot.add_cog(Export(bot))

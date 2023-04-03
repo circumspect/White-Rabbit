@@ -7,13 +7,13 @@ from pathlib import Path
 import random
 import re
 import subprocess
-from typing import List, Union
+from typing import List, Optional, Union
 # 3rd-party
 import discord
 import requests
 # Local
 from data import constants
-from data.gamedata import Context
+from data.wrappers import Context
 from data.localization import DEFAULT_LOCALIZATION, LOCALIZATION_DATA, LANGUAGE_KEY
 import envvars
 from rabbit import WHITE_RABBIT_DIR
@@ -101,15 +101,19 @@ def get_image(directory: Path, name: str) -> Union[Path, str]:
         try:
             return find_url(localized_url, ImageResource.DEFAULT_EXTENSIONS)
         except FileNotFoundError:
+            fallback = None
             if parts[2] == LANGUAGE_KEY:
                 fallback = list(parts)
                 fallback[2] = DEFAULT_LOCALIZATION
+
+            if fallback is None:
+                raise FileNotFoundError
 
             fallback_url = f"{url}{'/'.join(fallback)}/{name}"
             return find_url(fallback_url, ImageResource.DEFAULT_EXTENSIONS)
 
 
-async def send_image(channel: discord.TextChannel, filepath: Union[Path, str], ctx: Context=None):
+async def send_image(channel: discord.TextChannel, filepath: Union[Path, str], ctx: Optional[Context]=None):
     """Sends an image to a specified channel"""
 
     if isinstance(channel, str):
@@ -127,7 +131,7 @@ async def send_image(channel: discord.TextChannel, filepath: Union[Path, str], c
         await channel.send(filepath)
 
 
-async def send_folder(channel, path, ctx: Context=None):
+async def send_folder(channel, path, ctx: Optional[Context]=None):
     """Sends all images in a folder in alphabetical order"""
 
     for image in sorted(path.glob("*.*")):
@@ -197,6 +201,7 @@ def ooc_strip(ctx: Context, text: str):
         re.sub(r'\([^)]*\)', '', text)
 
     return text
+
 
 def upload_file(path: Path):
     """Uploads a file and returns the download URL"""

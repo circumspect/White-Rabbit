@@ -4,6 +4,12 @@
 
     "spectator-role": "Spectateur",
 
+    "categories": {
+        "general": "Général/OOC",
+        "game": "Le jeu",
+        "texts": "Textos"
+    },
+
     "channels": {
         "discussion": "discussion",
         "bot-channel": "commandes-bot",
