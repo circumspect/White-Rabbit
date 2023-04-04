@@ -34,4 +34,6 @@ jobs:
         with:
           context: .
           push: true
-          tags: circumspect/white-rabbit:${{ github.event.release.tag_name }}
+          tags: |
+            circumspect/white-rabbit:latest
+            circumspect/white-rabbit:${{ github.event.release.tag_name }}
