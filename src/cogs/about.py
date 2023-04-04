@@ -16,6 +16,18 @@ class About(commands.Cog):
         self.bot = bot
 
     @commands.command(
+        name=loc["version"]["name"],
+        aliases=loc["version"]["aliases"],
+        description=loc["version"]["description"]
+    )
+    async def version(self, ctx: Context):
+        """Prints information about the bot"""
+
+        message = f"{constants.VERSION}"
+        message = utils.codeblock(message)
+        asyncio.create_task(ctx.send(message))
+
+    @commands.command(
         name=loc["credits"]["name"],
         aliases=loc["credits"]["aliases"],
         description=loc["credits"]["description"]

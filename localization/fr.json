@@ -33,6 +33,12 @@
 
     "commands": {
         "about": {
+            "version": {
+                "name": "version",
+                "aliases": [],
+                "description": "Afficher la version du bot"
+            },
+
             "credits": {
                 "name": "info",
                 "aliases": [],

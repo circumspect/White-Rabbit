@@ -33,6 +33,12 @@
 
     "commands": {
         "about": {
+            "version": {
+                "name": "version",
+                "aliases": [],
+                "description": "Print out the bot version"
+            },
+
             "credits": {
                 "name": "Credits",
                 "aliases": ["über", "info", "credits"],
