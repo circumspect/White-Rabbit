@@ -23,6 +23,7 @@ The White Rabbit does not support Python versions below 3.10.
 Please install a newer version.
 """
 
+logging.getLogger().handlers.clear()
 discord.utils.setup_logging()
 
 # Minimum Python version check
@@ -191,7 +192,7 @@ try:
     token = envvars.get_env_var("WHITE_RABBIT_TOKEN")
     assert isinstance(token, str)
     logging.info("Logging in...")
-    bot.run(token)
+    bot.run(token, log_handler=None)
 except FileNotFoundError:
     r = requests.get(constants.BLANK_DOTENV_URL)
     with open(envvars.ENV_FILE, 'xb') as env:
