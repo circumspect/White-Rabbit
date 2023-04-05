@@ -1,5 +1,6 @@
 # Built-in
 import asyncio
+import os
 from pathlib import Path
 import shutil
 from timeit import default_timer as timer
@@ -725,6 +726,11 @@ class Export(commands.Cog):
         if not file_name:
             file_name = ctx.guild.name
         path = (dirs.PDF_EXPORT_DIR / file_name).with_suffix(".pdf")
+
+        if not os.path.exists(path):
+            await ctx.send(LOCALIZATION_DATA["errors"]["IllegalPath"])
+            return
+
         url = utils.upload_file(path)
         await ctx.send(url)
 
