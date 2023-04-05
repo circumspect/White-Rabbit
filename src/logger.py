@@ -10,7 +10,10 @@ LOGGING_HANDLER.setFormatter(LOGGING_FORMATTER)
 
 
 def get_logger(name: str):
-    logger = logging.getLogger(f"white-rabbit.{name}")
+    if name == "__main__":
+        logger = logging.getLogger(f"white-rabbit")
+    else:
+        logger = logging.getLogger(f"white-rabbit.{name}")
     logger.setLevel(logging.INFO)
     logger.addHandler(LOGGING_HANDLER)
 
