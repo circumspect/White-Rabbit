@@ -27,7 +27,7 @@ def get_env_var(key: str):
 
         return var
     except KeyError:
-        return DEFAULTS[key]
+        return DEFAULTS.get(key)
 
 TOKEN = get_env_var("WHITE_RABBIT_TOKEN")
 LANGUAGE = get_env_var("WHITE_RABBIT_LANGUAGE")
