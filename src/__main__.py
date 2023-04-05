@@ -28,7 +28,7 @@ logging.getLogger().handlers.clear()
 discord.utils.setup_logging()
 
 if envvars.DEBUG:
-    print(logging_tree.format.build_description())
+    print(logging_tree.format.build_description()) # type: ignore
 
 # Minimum Python version check
 if sys.version_info < (3, 10):
