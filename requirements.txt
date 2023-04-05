@@ -1,5 +1,6 @@
 discord.py[voice] >= 2.0
 fpdf
+logging_tree
 python-dotenv
 pyyaml
 requests

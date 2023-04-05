@@ -13,5 +13,4 @@ class Context(commands.Context):
 
 
 class Bot(commands.Bot):
-    dev_ids: List[int]
     games: Dict[int, Data]

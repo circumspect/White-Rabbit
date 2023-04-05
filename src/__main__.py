@@ -8,6 +8,7 @@ from typing import Union
 # 3rd-party
 import discord
 from discord.ext import commands
+import logging_tree
 import requests
 # Local
 from bot import WhiteRabbit
@@ -25,6 +26,9 @@ Please install a newer version.
 
 logging.getLogger().handlers.clear()
 discord.utils.setup_logging()
+
+if envvars.DEBUG:
+    print(logging_tree.format.build_description())
 
 # Minimum Python version check
 if sys.version_info < (3, 10):
@@ -142,7 +146,7 @@ async def on_command_error(ctx: Context, error):
         # Check if running debug command without being listed as developer
         # TODO: is there a better way to check this than testing against
         # every command/alias?
-        if ctx.author.id not in bot.dev_ids:
+        if envvars.DEBUG:
             message = ctx.message.clean_content
             for command in DEBUG_COMMAND_LIST:
                 command_loc = LOCALIZATION_DATA["commands"]["debug"][command]

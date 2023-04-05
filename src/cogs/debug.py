@@ -5,9 +5,10 @@ from os import environ
 # 3rd-party
 from discord.ext import commands
 # Local
-from data import filepaths, gamedata
+from data import gamedata
 from data.wrappers import Bot, Context
 from data.localization import LOCALIZATION_DATA
+from envvars import get_env_var
 import utils
 
 loc = LOCALIZATION_DATA["commands"]["debug"]
@@ -24,34 +25,8 @@ class Debug(commands.Cog):
     def __init__(self, bot: Bot):
         self.bot = bot
 
-        self.bot.dev_ids = []
-
-        try:
-            with open(filepaths.DEV_ID_FILE) as f:
-                for line in f.readlines():
-                    line = line.strip()
-                    if line:
-                        try:
-                            # Ignore any lines that can't be read as numbers
-                            # This is mostly helpful for commenting out ids
-                            # when testing so you don't need to delete lines
-                            self.bot.dev_ids.append(int(line))
-                        except ValueError:
-                            pass
-        except FileNotFoundError:
-            # Create file if it doesn't exist
-            logging.info("No " + filepaths.DEV_ID_FILE.name + " found, making empty file")
-            with open(filepaths.DEV_ID_FILE, 'x') as f:
-                pass
-
-        env_id = environ.get("WHITE_RABBIT_DEV_ID")
-        if env_id:
-            self.bot.dev_ids.append(int(env_id))
-
     async def cog_check(self, ctx: Context):
-        """Only people with access to the code"""
-
-        return ctx.author.id in self.bot.dev_ids
+        return get_env_var("WHITE_RABBIT_DEBUG")
 
     @commands.Cog.listener()
     async def on_ready(self):
@@ -148,8 +123,7 @@ class Debug(commands.Cog):
             asyncio.create_task(ctx.send(f"{extension_name} was never loaded"))
 
     # DO NOT MOVE TO admin.py!!! This command will shut down the bot across
-    # ALL servers, and thus should only be able to be run by those listed
-    # in the dev_ids file
+    # ALL servers, and thus should only be able to be run in debug mode
     @commands.command(
         name=loc["quit"]["name"],
         aliases=loc["quit"]["aliases"],

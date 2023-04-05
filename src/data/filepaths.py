@@ -1,7 +1,6 @@
 from data import cards, dirs
 import utils
 
-DEV_ID_FILE = dirs.WHITE_RABBIT_DIR / "dev_ids.txt"
 TIMER_AUDIO = dirs.RESOURCE_DIR / "Alice.mp3"
 
 # Easy access filepaths

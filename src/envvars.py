@@ -9,10 +9,10 @@ ENV_FILE = WHITE_RABBIT_DIR / ".env"
 DEFAULTS = {
     "WHITE_RABBIT_TOKEN": "0",
     "WHITE_RABBIT_LANGUAGE": "en",
+    "WHITE_RABBIT_DEBUG": False,
     "WHITE_RABBIT_USE_LOCAL_IMAGES": False,
     "WHITE_RABBIT_PLAYSET": "base"
 }
-
 
 def get_env_var(key: str):
     try:
@@ -20,9 +20,13 @@ def get_env_var(key: str):
         if not var:
             raise KeyError
         var = var.strip()
+        if var.lower() == "true":
+            return True
         if var.lower() == "false":
             return False
 
         return var
     except KeyError:
         return DEFAULTS[key]
+
+DEBUG = get_env_var("WHITE_RABBIT_DEBUG")
