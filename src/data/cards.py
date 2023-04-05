@@ -32,7 +32,7 @@ def merge(a, b, path=None):
     return a
 
 
-with open(PLAYSET_DIR / f"{envvars.get_env_var('WHITE_RABBIT_PLAYSET')}.yaml", "r") as f:
+with open(PLAYSET_DIR / f"{envvars.PLAYSET}.yaml", "r") as f:
     data = yaml.safe_load(f)
     STARTING_PLAYER = data["starting-player"]
     expansions = data["expansions"]

@@ -7,7 +7,7 @@ from rabbit import WHITE_RABBIT_DIR
 ENV_FILE = WHITE_RABBIT_DIR / ".env"
 
 DEFAULTS = {
-    "WHITE_RABBIT_TOKEN": "0",
+    "WHITE_RABBIT_TOKEN": "",
     "WHITE_RABBIT_LANGUAGE": "en",
     "WHITE_RABBIT_DEBUG": False,
     "WHITE_RABBIT_USE_LOCAL_IMAGES": False,
@@ -29,4 +29,8 @@ def get_env_var(key: str):
     except KeyError:
         return DEFAULTS[key]
 
+TOKEN = get_env_var("WHITE_RABBIT_TOKEN")
+LANGUAGE = get_env_var("WHITE_RABBIT_LANGUAGE")
 DEBUG = get_env_var("WHITE_RABBIT_DEBUG")
+USE_LOCAL_IMAGES = get_env_var("WHITE_RABBIT_USE_LOCAL_IMAGES")
+PLAYSET = get_env_var("WHITE_RABBIT_PLAYSET")

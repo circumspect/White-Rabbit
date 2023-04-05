@@ -8,7 +8,7 @@ from discord.ext import commands
 from data import gamedata
 from data.wrappers import Bot, Context
 from data.localization import LOCALIZATION_DATA
-from envvars import get_env_var
+import envvars
 import utils
 
 loc = LOCALIZATION_DATA["commands"]["debug"]
@@ -26,7 +26,7 @@ class Debug(commands.Cog):
         self.bot = bot
 
     async def cog_check(self, ctx: Context):
-        return get_env_var("WHITE_RABBIT_DEBUG")
+        return envvars.DEBUG
 
     @commands.Cog.listener()
     async def on_ready(self):

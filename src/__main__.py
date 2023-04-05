@@ -193,7 +193,7 @@ async def on_command_error(ctx: Context, error):
 
 # Import bot token
 try:
-    token = envvars.get_env_var("WHITE_RABBIT_TOKEN")
+    token = envvars.TOKEN
     assert isinstance(token, str)
     logging.info("Logging in...")
     bot.run(token, log_handler=None)

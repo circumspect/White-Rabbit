@@ -79,7 +79,7 @@ def find_url(url: str, extensions: List[str]):
 
 
 def get_image(directory: Path, name: str) -> Union[Path, str]:
-    if envvars.get_env_var("WHITE_RABBIT_USE_LOCAL_IMAGES"):
+    if envvars.USE_LOCAL_IMAGES:
         img = ImageResource(ImageResource.DEFAULT_EXTENSIONS)
         try:
             return img.get(directory, name)
