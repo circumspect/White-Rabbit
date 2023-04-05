@@ -32,11 +32,6 @@ discord.utils.setup_logging(handler=LOGGING_HANDLER, root=False)
 
 logger = get_logger(__name__)
 
-if envvars.DEBUG:
-    logger.info("Logger tree:")
-    for line in logging_tree.format.describe(logging_tree.tree()):  # type: ignore
-        logger.info(line)
-
 # Minimum Python version check
 if sys.version_info < (3, 10):
     sys.exit(VERSION_CHECK_ERROR)
@@ -64,6 +59,11 @@ async def on_ready():
     await bot.change_presence(
         activity=discord.Game(LOCALIZATION_DATA["title"])
     )
+
+    if envvars.DEBUG:
+        logger.info("Logger tree:")
+        for line in logging_tree.format.describe(logging_tree.tree()):  # type: ignore
+            logger.info(line)
 
     logger.info("Bot has logged in!")
     if envvars.DEBUG:
