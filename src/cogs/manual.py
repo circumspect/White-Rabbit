@@ -33,7 +33,7 @@ class Manual(commands.Cog):
         # Console logging
         if ctx.game.automatic:
             if ctx.invoked_with != "help":
-                logging.warn(f"{ctx.author.name} tried to run {constants.COMMAND_PREFIX}{ctx.command.name} in automatic mode!")
+                logging.warning(f"{ctx.author.name} tried to run {constants.COMMAND_PREFIX}{ctx.command.name} in automatic mode!")
 
         return not ctx.game.automatic
 

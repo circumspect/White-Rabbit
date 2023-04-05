@@ -337,7 +337,7 @@ class Export(commands.Cog):
                     except ValueError:
                         # If still can't determine image type, log to console
                         # and ignore
-                        logging.warn(f"Unknown image found in {name.title()}'s clues during export: {filename}")
+                        logging.warning(f"Unknown image found in {name.title()}'s clues during export: {filename}")
 
         # Look for coin flip
         channel = ctx.text_channels[LOCALIZATION_DATA["channels"]["clues"][ctx.game.ten_char]]
