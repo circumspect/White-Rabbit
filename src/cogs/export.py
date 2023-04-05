@@ -716,6 +716,10 @@ class Export(commands.Cog):
     async def upload(self, ctx: Context, file_name: str=""):
         """Uploads a file and prints out the download url"""
 
+        if ".." in file_name:
+            await ctx.send(LOCALIZATION_DATA["errors"]["IllegalPath"])
+            return
+
         assert ctx.guild
 
         if not file_name:

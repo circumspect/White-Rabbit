@@ -418,6 +418,7 @@
     "AlreadyInitialized": "L'inizializzazione è già in corso!",
     "ServerOwnerNicknameChange": "Non riesco ad aggiornare il nickename in quanto sei il proprietario del server!",
     "PlayerNotFound": "Non riesco a trovare quel giocatore!",
+    "IllegalPath": "Illegal path!",
     "UnknownError": "Errore sconosciuto: controlla la console!"
   }
 }

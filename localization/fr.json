@@ -419,6 +419,7 @@
         "AlreadyInitialized": "L'initialisation est déjà faite !",
         "ServerOwnerNicknameChange": "Ton nom n'a pas pu être mis à jour car tu es l'admin !",
         "PlayerNotFound": "Ce joueur est introuvable !",
+        "IllegalPath": "Chemin illégal !",
         "UnknownError": "Erreur inconnue : regardez les logs !"
     }
 }

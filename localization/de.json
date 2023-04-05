@@ -419,6 +419,7 @@
         "AlreadyInitialized": "Initialisierung ist bereits gelaufen!",
         "ServerOwnerNicknameChange": "Konnte den Spitznamen nicht ändern, da du der Server-Inhaber bist!",
         "PlayerNotFound": "Konnte den Spieler nicht finden!",
+        "IllegalPath": "Illegal path!",
         "UnknownError": "Unbekannter Fehler: Konsole prüfen!"
     }
 }

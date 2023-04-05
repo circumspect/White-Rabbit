@@ -419,6 +419,7 @@
         "AlreadyInitialized": "¡La inicialización ya se ha ejecutado!",
         "ServerOwnerNicknameChange": "¡No se ha podido actualizar el nick porque eres el propietario del servidor!",
         "PlayerNotFound": "¡No se ha encontrado a ese jugador!",
+        "IllegalPath": "Illegal path!",
         "UnknownError": "Error desconocido: ¡revisa los logs!"
     }
 }

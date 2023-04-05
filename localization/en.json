@@ -419,6 +419,7 @@
         "AlreadyInitialized": "Initialization already run!",
         "ServerOwnerNicknameChange": "Couldn't update nickname because you are server owner!",
         "PlayerNotFound": "Couldn't find that player!",
+        "IllegalPath": "Illegal path!",
         "UnknownError": "Unknown error: check console!"
     }
 }
