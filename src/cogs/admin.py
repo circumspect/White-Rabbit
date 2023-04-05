@@ -1,13 +1,14 @@
 # Built-in
 import asyncio
 import itertools as it
+import logging
 from typing import List, Union
 # 3rd-party
 import discord
 from discord.ext import commands
 from discord.permissions import PermissionOverwrite
 # Local
-from data import cards, constants
+from data import cards
 from data.wrappers import Bot, Context
 from data.localization import LOCALIZATION_DATA
 
@@ -245,7 +246,7 @@ class Admin(commands.Cog):
         ctx.game.__init__(ctx.game.guild)
 
         # Console logging
-        print(f'{constants.INFO_PREFIX}Wiped messages from server: "{ctx.guild.name}" (ID: {ctx.guild.id})')
+        logging.info(f'Wiped messages from server: "{ctx.guild.name}" (ID: {ctx.guild.id})')
 
     @commands.command(
         name=loc["reset_perms"]["name"],
@@ -333,7 +334,7 @@ class Admin(commands.Cog):
         await ctx.send(loc["reset"]["ResettingServer"])
 
         # Console logging
-        print(f'{constants.INFO_PREFIX}Resetting server: "{ctx.guild.name}" (ID: {ctx.guild.id})')
+        logging.info(f'Resetting server: "{ctx.guild.name}" (ID: {ctx.guild.id})')
 
         # Erase all messages and reset channel permissions
         await asyncio.gather(self.wipe(ctx), self.reset_perms(ctx), self.reset_roles(ctx))

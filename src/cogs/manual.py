@@ -1,10 +1,11 @@
 # Built-in
 import asyncio
+import logging
 import random
 # 3rd-party
 from discord.ext import commands
 # Local
-from data import cards, constants, dirs, filepaths, gamedata
+from data import cards, dirs, filepaths, gamedata
 from data.cards import CLUES, STARTING_PLAYER
 from data.wrappers import Bot, Context
 from data.localization import LOCALIZATION_DATA
@@ -31,7 +32,7 @@ class Manual(commands.Cog):
         ctx.game = self.bot.games.setdefault(ctx.guild.id, gamedata.Data(ctx.guild))
         # Console logging
         if ctx.game.automatic:
-            print(f"{constants.WARNING_PREFIX}{ctx.author.name} tried to run {self.bot.command_prefix}{ctx.command.name} in automatic mode!")
+            logging.warn(f"{ctx.author.name} tried to run {self.bot.command_prefix}{ctx.command.name} in automatic mode!")
 
         return not ctx.game.automatic
 
@@ -79,8 +80,8 @@ class Manual(commands.Cog):
         }
 
         # Console logging
-        print(f"{constants.INFO_PREFIX}Shuffled motives!")
-        print(ctx.game.motives)
+        logging.info("Shuffled motives!")
+        logging.info(ctx.game.motives)
 
     @commands.command(
         name=loc["send_motives"]["name"],
@@ -186,7 +187,7 @@ class Manual(commands.Cog):
             elif suspect in cards.LOCATIONS:
                 await channel.send(LOCALIZATION_DATA["messages"]["AliceLocation"])
             else:
-                print("Something has gone very very wrong.")
+                logging.error("Something has gone very very wrong.")
                 await channel.send(LOCALIZATION_DATA["errors"]["UnknownError"])
         await utils.send_image(channel, path)
 
@@ -246,8 +247,8 @@ class Manual(commands.Cog):
         ctx.game.picked_clues[90] = random.choice([*CLUES[90][STARTING_PLAYER].keys()])
 
         # Console logging
-        print(f"{constants.INFO_PREFIX}Shuffled clue piles!")
-        print(ctx.game.picked_clues)
+        logging.info(f"Shuffled clue piles!")
+        logging.info(ctx.game.picked_clues)
 
     @commands.command(
         name=loc["assign_times"]["name"],
@@ -298,8 +299,8 @@ class Manual(commands.Cog):
             ctx.game.clue_assignments[name] = sorted(clue_buckets.pop(), reverse=True)
 
         # Console logging
-        print(f"{constants.INFO_PREFIX}Assigned clue cards!")
-        print(ctx.game.clue_assignments)
+        logging.info("Assigned clue cards!")
+        logging.info(ctx.game.clue_assignments)
 
     @commands.command(
         name=loc["print_times"]["name"],

@@ -1,5 +1,6 @@
 # Built-in
 import asyncio
+import logging
 from os import environ
 # 3rd-party
 from discord.ext import commands
@@ -39,7 +40,7 @@ class Debug(commands.Cog):
                             pass
         except FileNotFoundError:
             # Create file if it doesn't exist
-            print("No " + filepaths.DEV_ID_FILE.name + " found, making empty file")
+            logging.info("No " + filepaths.DEV_ID_FILE.name + " found, making empty file")
             with open(filepaths.DEV_ID_FILE, 'x') as f:
                 pass
 
@@ -55,10 +56,10 @@ class Debug(commands.Cog):
     @commands.Cog.listener()
     async def on_ready(self):
         # Console logging
-        print("Bot has logged in!")
+        logging.info("Bot has logged in!")
 
         if environ.get('WHITE_RABBIT_SHUTDOWN'):
-            print("Shutting down!")
+            logging.info("Shutting down!")
             quit()
 
     @commands.command(

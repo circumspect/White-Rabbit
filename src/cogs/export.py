@@ -1,5 +1,6 @@
 # Built-in
 import asyncio
+import logging
 from pathlib import Path
 import shutil
 from timeit import default_timer as timer
@@ -336,7 +337,7 @@ class Export(commands.Cog):
                     except ValueError:
                         # If still can't determine image type, log to console
                         # and ignore
-                        print(f"{constants.WARNING_PREFIX}Unknown image found in {name.title()}'s clues during export: {filename}")
+                        logging.warn(f"Unknown image found in {name.title()}'s clues during export: {filename}")
 
         # Look for coin flip
         channel = ctx.text_channels[LOCALIZATION_DATA["channels"]["clues"][ctx.game.ten_char]]
@@ -498,7 +499,7 @@ class Export(commands.Cog):
 
         end_time = timer()
         time = constants.TIMER_FORMAT % (end_time - start_time)
-        print(f"PDF generated in {time} seconds.")
+        logging.info(f"PDF generated in {time} seconds.")
 
         await ctx.send(loc["pdf"]["PDFCreated"])
 

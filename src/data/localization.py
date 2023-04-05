@@ -1,5 +1,6 @@
 # Built-in
 import json
+import logging
 # Local
 from data import cards
 import envvars
@@ -15,7 +16,7 @@ LANGUAGE_KEY = envvars.get_env_var("WHITE_RABBIT_LANGUAGE")
 
 localization_file = LOCALIZATION_DIR / f"{LANGUAGE_KEY}.json"
 
-print(f"Loading localization data ({LANGUAGE_KEY})... ", end="")
+logging.info(f"Loading localization data ({LANGUAGE_KEY})... ")
 
 LOCALIZATION_DATA = None
 with open(localization_file, encoding='utf-8') as f:
@@ -37,4 +38,4 @@ for i, char1 in enumerate(characters):
         channel = LOCALIZATION_DATA["channels"]["pm-channel-format"].format(char1, char2)
         LOCALIZATION_DATA["channels"]["texts"][f"{char1}-{char2}"] = channel
 
-print("Done!")
+logging.info("Localization data loaded!")

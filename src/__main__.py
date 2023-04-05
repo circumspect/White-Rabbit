@@ -2,6 +2,7 @@
 
 # Built-in
 import asyncio
+import logging
 import sys
 from typing import Union
 # 3rd-party
@@ -22,6 +23,7 @@ The White Rabbit does not support Python versions below 3.10.
 Please install a newer version.
 """
 
+discord.utils.setup_logging()
 
 # Minimum Python version check
 if sys.version_info < (3, 10):
@@ -188,7 +190,7 @@ async def on_command_error(ctx: Context, error):
 try:
     token = envvars.get_env_var("WHITE_RABBIT_TOKEN")
     assert isinstance(token, str)
-    print("Logging in...")
+    logging.info("Logging in...")
     bot.run(token)
 except FileNotFoundError:
     r = requests.get(constants.BLANK_DOTENV_URL)
