@@ -28,6 +28,8 @@ Please install a newer version.
 
 logging.getLogger().handlers.clear()
 logging.captureWarnings(True)
+discord.utils.setup_logging(handler=LOGGING_HANDLER, root=False)
+
 logger = get_logger(__name__)
 
 if envvars.DEBUG:
@@ -209,7 +211,7 @@ try:
     token = envvars.TOKEN
     assert isinstance(token, str)
     logger.info("Logging in...")
-    bot.run(token, log_handler=LOGGING_HANDLER)
+    bot.run(token, log_handler=None)
 except FileNotFoundError:
     r = requests.get(constants.BLANK_DOTENV_URL)
     with open(envvars.ENV_FILE, 'xb') as env:
