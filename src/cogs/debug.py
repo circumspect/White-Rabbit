@@ -37,6 +37,8 @@ class Debug(commands.Cog):
     async def on_ready(self):
         # Console logging
         logging.info("Bot has logged in!")
+        if envvars.DEBUG:
+            logging.warning("Currently running in debug mode! If this was not intentional, stop the bot and unset the WHITE_RABBIT_DEBUG environment variable.")
 
         if environ.get('WHITE_RABBIT_SHUTDOWN'):
             logging.info("Shutting down!")
