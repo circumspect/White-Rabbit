@@ -3,6 +3,7 @@
 # Built-in
 import asyncio
 import logging
+from os import environ
 import sys
 from typing import Union
 # 3rd-party
@@ -58,6 +59,14 @@ async def on_ready():
     await bot.change_presence(
         activity=discord.Game(LOCALIZATION_DATA["title"])
     )
+
+    logging.info("Bot has logged in!")
+    if envvars.DEBUG:
+        logging.warning("Currently running in debug mode! If this was not intentional, stop the bot and unset the WHITE_RABBIT_DEBUG environment variable.")
+
+    if environ.get('WHITE_RABBIT_SHUTDOWN'):
+        logging.info("Shutting down!")
+        quit()
 
 
 @bot.check

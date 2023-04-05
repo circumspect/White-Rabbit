@@ -1,7 +1,6 @@
 # Built-in
 import asyncio
 import logging
-from os import environ
 # 3rd-party
 from discord.ext import commands
 # Local
@@ -32,17 +31,6 @@ class Debug(commands.Cog):
         if not envvars.DEBUG:
             logging.warning(f"{ctx.author.name} tried to run {constants.COMMAND_PREFIX}{ctx.command.name} but debug was not enabled.")
         return envvars.DEBUG
-
-    @commands.Cog.listener()
-    async def on_ready(self):
-        # Console logging
-        logging.info("Bot has logged in!")
-        if envvars.DEBUG:
-            logging.warning("Currently running in debug mode! If this was not intentional, stop the bot and unset the WHITE_RABBIT_DEBUG environment variable.")
-
-        if environ.get('WHITE_RABBIT_SHUTDOWN'):
-            logging.info("Shutting down!")
-            quit()
 
     @commands.command(
         name=loc["speed"]["name"],
