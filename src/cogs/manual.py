@@ -5,7 +5,7 @@ import random
 # 3rd-party
 from discord.ext import commands
 # Local
-from data import cards, dirs, filepaths, gamedata
+from data import cards, constants, dirs, filepaths, gamedata
 from data.cards import CLUES, STARTING_PLAYER
 from data.wrappers import Bot, Context
 from data.localization import LOCALIZATION_DATA
@@ -32,7 +32,8 @@ class Manual(commands.Cog):
         ctx.game = self.bot.games.setdefault(ctx.guild.id, gamedata.Data(ctx.guild))
         # Console logging
         if ctx.game.automatic:
-            logging.warn(f"{ctx.author.name} tried to run {self.bot.command_prefix}{ctx.command.name} in automatic mode!")
+            if ctx.invoked_with != "help":
+                logging.warn(f"{ctx.author.name} tried to run {constants.COMMAND_PREFIX}{ctx.command.name} in automatic mode!")
 
         return not ctx.game.automatic
 
