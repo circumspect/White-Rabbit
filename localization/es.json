@@ -6,8 +6,8 @@
 
     "categories": {
         "general": "General/OOC",
-        "game": "The Game",
-        "texts": "Texts"
+        "game": "Juego",
+        "texts": "Chats"
     },
 
     "channels": {
@@ -60,7 +60,7 @@
             "server_setup": {
                 "name": "server_setup",
                 "aliases": [],
-                "description": "Elimina todos los canales y roles y crea unos nuevos en base a la lista de cartas dada"
+                "description": "Elimina todos los canales y roles y crea unos nuevos en base a la localización"
             },
 
             "show_all": {
@@ -379,7 +379,7 @@
 
         "background": "CHARLIE BARNES se mudó de Silent Falls con su madre al final del último curso después de que sus padres se divorciaran. Ha vuelto a la ciudad para quedarse con su padre durante las vacaciones de Navidad y espera ver a Alice y a los demás mientras esté aquí. Hace unos días, Alice dejó de responder. No ha sabido nada de ella desde entonces.",
 
-        "first-message": "¡Hola! Perdón por el mensaje grupal, pero acabo de llegar a casa de mi padre en la ciudad por las vacaciones de Navidad y no he podido contactar con Alice. Me pregunto si alguno de vosotros ha hablado con ella."
+        "first-message": "¡Hola! Perdón por el mensaje grupal, pero acabo de llegar a casa de mi padre en la ciudad por las vacaciones de Navidad y no he podido contactar con Alice. Me preguntaba si alguno de vosotros ha hablado con ella."
     },
 
     "messages": {
