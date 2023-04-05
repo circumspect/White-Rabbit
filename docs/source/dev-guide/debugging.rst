@@ -8,14 +8,8 @@ This page documents commands which may be useful for debugging and bot developme
 Enabling dev commands
 =====================
 
-To give yourself access to the debug commands, copy your Discord ID and paste
-it into the ``dev_ids.txt`` file in the bot's root directory. This file can
-contain multiple Discord IDs, one on each line. Any lines which cannot be
-interpreted as integers will be ignored, so you can temporarily remove a line
-from the list by (for example) putting a $ at the end of the line.
-Alternatively, you can use the ``WHITE_RABBIT_DEV_ID`` environment variable
-to pass in a single Discord ID (useful if you're using Docker or other
-environments where you don't have access to the file),
+To give yourself access to the debug commands, set the ``WHITE_RABBIT_DEBUG``
+environment variable to true.
 
 
 Setting the bot's game speed
