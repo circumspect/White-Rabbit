@@ -5,6 +5,7 @@ from os import environ
 # 3rd-party
 from discord.ext import commands
 # Local
+from data import constants
 from data import gamedata
 from data.wrappers import Bot, Context
 from data.localization import LOCALIZATION_DATA
@@ -26,6 +27,10 @@ class Debug(commands.Cog):
         self.bot = bot
 
     async def cog_check(self, ctx: Context):
+        assert ctx.command
+
+        if not envvars.DEBUG:
+            logging.warning(f"{ctx.author.name} tried to run {constants.COMMAND_PREFIX}{ctx.command.name} but debug was not enabled.")
         return envvars.DEBUG
 
     @commands.Cog.listener()
