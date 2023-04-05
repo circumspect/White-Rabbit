@@ -1,6 +1,5 @@
 # Built-in
 import asyncio
-import logging
 # 3rd-party
 from discord.ext import commands
 # Local
@@ -9,7 +8,11 @@ from data import gamedata
 from data.wrappers import Bot, Context
 from data.localization import LOCALIZATION_DATA
 import envvars
+from logger import get_logger
 import utils
+
+
+logger = get_logger(__name__)
 
 loc = LOCALIZATION_DATA["commands"]["debug"]
 DEBUG_COMMAND_LIST = (
@@ -29,7 +32,7 @@ class Debug(commands.Cog):
         assert ctx.command
 
         if not envvars.DEBUG:
-            logging.warning(f"{ctx.author.name} tried to run {constants.COMMAND_PREFIX}{ctx.command.name} but debug was not enabled.")
+            logger.warning(f"{ctx.author.name} tried to run {constants.COMMAND_PREFIX}{ctx.command.name} but debug was not enabled.")
         return envvars.DEBUG
 
     @commands.command(

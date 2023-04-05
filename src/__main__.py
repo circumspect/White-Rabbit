@@ -18,6 +18,7 @@ from data import cards, constants, dirs
 from data.wrappers import Context, Data
 from data.localization import LOCALIZATION_DATA
 import envvars
+from logger import get_logger, LOGGING_HANDLER
 import utils
 
 VERSION_CHECK_ERROR = """
@@ -26,8 +27,8 @@ Please install a newer version.
 """
 
 logging.getLogger().handlers.clear()
-discord.utils.setup_logging()
 logging.captureWarnings(True)
+logger = get_logger(__name__)
 
 if envvars.DEBUG:
     print(logging_tree.format.build_description()) # type: ignore
@@ -60,12 +61,12 @@ async def on_ready():
         activity=discord.Game(LOCALIZATION_DATA["title"])
     )
 
-    logging.info("Bot has logged in!")
+    logger.info("Bot has logged in!")
     if envvars.DEBUG:
-        logging.warning("Currently running in debug mode! If this was not intentional, stop the bot and unset the WHITE_RABBIT_DEBUG environment variable.")
+        logger.warning("Currently running in debug mode! If this was not intentional, stop the bot and unset the WHITE_RABBIT_DEBUG environment variable.")
 
     if environ.get('WHITE_RABBIT_SHUTDOWN'):
-        logging.info("Shutting down!")
+        logger.info("Shutting down!")
         quit()
 
 
@@ -205,8 +206,8 @@ async def on_command_error(ctx: Context, error):
 try:
     token = envvars.TOKEN
     assert isinstance(token, str)
-    logging.info("Logging in...")
-    bot.run(token, log_handler=None)
+    logger.info("Logging in...")
+    bot.run(token, log_handler=LOGGING_HANDLER)
 except FileNotFoundError:
     r = requests.get(constants.BLANK_DOTENV_URL)
     with open(envvars.ENV_FILE, 'xb') as env:

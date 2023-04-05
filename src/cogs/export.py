@@ -1,6 +1,5 @@
 # Built-in
 import asyncio
-import logging
 from pathlib import Path
 import shutil
 from timeit import default_timer as timer
@@ -14,8 +13,11 @@ from data import cards, constants, dirs, filepaths, gamedata
 from data.dirs import FONT_DIR
 from data.wrappers import Bot, Context
 from data.localization import LOCALIZATION_DATA
+from logger import get_logger
 from rabbit import WHITE_RABBIT_DIR
 import utils
+
+logger = get_logger(__name__)
 
 loc = LOCALIZATION_DATA["commands"]["export"]
 
@@ -337,7 +339,7 @@ class Export(commands.Cog):
                     except ValueError:
                         # If still can't determine image type, log to console
                         # and ignore
-                        logging.warning(f"Unknown image found in {name.title()}'s clues during export: {filename}")
+                        logger.warning(f"Unknown image found in {name.title()}'s clues during export: {filename}")
 
         # Look for coin flip
         channel = ctx.text_channels[LOCALIZATION_DATA["channels"]["clues"][ctx.game.ten_char]]
@@ -499,7 +501,7 @@ class Export(commands.Cog):
 
         end_time = timer()
         time = constants.TIMER_FORMAT % (end_time - start_time)
-        logging.info(f"PDF generated in {time} seconds.")
+        logger.info(f"PDF generated in {time} seconds.")
 
         await ctx.send(loc["pdf"]["PDFCreated"])
 

@@ -1,12 +1,15 @@
 # Built-in
 import json
-import logging
 # Local
 from data import cards
 import envvars
+from logger import get_logger
 
 # White-Rabbit/src/localization.py
 from rabbit import WHITE_RABBIT_DIR
+
+
+logger = get_logger(__name__)
 
 # Localization
 DEFAULT_LOCALIZATION = envvars.DEFAULTS["WHITE_RABBIT_LANGUAGE"]
@@ -16,7 +19,7 @@ LANGUAGE_KEY = envvars.LANGUAGE
 
 localization_file = LOCALIZATION_DIR / f"{LANGUAGE_KEY}.json"
 
-logging.info(f"Loading localization data ({LANGUAGE_KEY})... ")
+logger.info(f"Loading localization data ({LANGUAGE_KEY})... ")
 
 LOCALIZATION_DATA = None
 with open(localization_file, encoding='utf-8') as f:
@@ -38,4 +41,4 @@ for i, char1 in enumerate(characters):
         channel = LOCALIZATION_DATA["channels"]["pm-channel-format"].format(char1, char2)
         LOCALIZATION_DATA["channels"]["texts"][f"{char1}-{char2}"] = channel
 
-logging.info("Localization data loaded!")
+logger.info("Localization data loaded!")
