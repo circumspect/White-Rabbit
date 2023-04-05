@@ -26,6 +26,7 @@ Please install a newer version.
 
 logging.getLogger().handlers.clear()
 discord.utils.setup_logging()
+logging.captureWarnings(True)
 
 if envvars.DEBUG:
     print(logging_tree.format.build_description()) # type: ignore
