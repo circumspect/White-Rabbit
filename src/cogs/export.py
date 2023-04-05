@@ -735,6 +735,8 @@ class Export(commands.Cog):
         # TODO: Make this cleaner
         # Hidden from users until then
 
+        assert ctx.guild
+
         asyncio.create_task(ctx.send("Downloading..."))
         # make folder for messages
         message_dir = dirs.TEXT_EXPORT_DIR / ctx.guild.name
