@@ -14,6 +14,7 @@ DEFAULTS = {
     "WHITE_RABBIT_PLAYSET": "base"
 }
 
+
 def get_env_var(key: str):
     try:
         var = environ.get(key) or dotenv_values(ENV_FILE)[key]
@@ -28,6 +29,7 @@ def get_env_var(key: str):
         return var
     except KeyError:
         return DEFAULTS.get(key)
+
 
 TOKEN = get_env_var("WHITE_RABBIT_TOKEN")
 LANGUAGE = get_env_var("WHITE_RABBIT_LANGUAGE")

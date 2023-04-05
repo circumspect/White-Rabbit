@@ -31,7 +31,7 @@ logging.captureWarnings(True)
 logger = get_logger(__name__)
 
 if envvars.DEBUG:
-    print(logging_tree.format.build_description()) # type: ignore
+    print(logging_tree.format.build_description())  # type: ignore
 
 # Minimum Python version check
 if sys.version_info < (3, 10):
