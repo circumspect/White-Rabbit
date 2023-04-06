@@ -14,8 +14,10 @@ from data import cards, constants, dirs, filepaths, gamedata
 from data.dirs import FONT_DIR
 from data.wrappers import Bot, Context
 from data.localization import LOCALIZATION_DATA
+import envvars
 from logger import get_logger
 from rabbit import WHITE_RABBIT_DIR
+import stats
 import utils
 
 logger = get_logger(__name__)
@@ -503,6 +505,9 @@ class Export(commands.Cog):
         end_time = timer()
         time = constants.TIMER_FORMAT % (end_time - start_time)
         logger.info(f"PDF generated in {time} seconds.")
+
+        if envvars.TELEMETRY:
+            stats.increment_pdfs()
 
         await ctx.send(loc["pdf"]["PDFCreated"])
 

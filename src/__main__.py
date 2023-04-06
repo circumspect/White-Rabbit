@@ -19,6 +19,7 @@ from data.wrappers import Context, Data
 from data.localization import LOCALIZATION_DATA
 import envvars
 from logger import get_logger, LOGGING_HANDLER
+import stats
 import utils
 
 VERSION_CHECK_ERROR = """
@@ -101,11 +102,10 @@ def not_spectator(ctx: Context):
 
 @bot.before_invoke
 async def before_invoke(ctx: Context):
-    """Attaches stuff to ctx for convenience"""
-
     assert ctx.guild
     assert isinstance(ctx.author, discord.Member)
 
+    # Attach stuff to ctx for convenience
     # that guild's game
     ctx.game = bot.games.setdefault(ctx.guild.id, Data(ctx.guild))
 
@@ -121,6 +121,9 @@ async def before_invoke(ctx: Context):
         if role.name in cards.ROLES_TO_NAMES:
             ctx.character = cards.ROLES_TO_NAMES[role.name]
             break
+
+    if envvars.TELEMETRY:
+        stats.increment_commands_run()
 
 
 @bot.event

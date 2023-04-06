@@ -11,8 +11,10 @@ from discord.ext import commands
 # Local
 from data import cards, dirs, filepaths, gamedata
 from data.cards import CLUES, STARTING_PLAYER
-from data.localization import LOCALIZATION_DATA
+from data.localization import LANGUAGE_KEY, LOCALIZATION_DATA
 from data.wrappers import Bot, Context
+import envvars
+import stats
 import utils
 
 loc = LOCALIZATION_DATA["commands"]["game"]
@@ -222,6 +224,9 @@ class Game(commands.Cog):
 
         ctx.game.start_time = datetime.datetime.now()
         asyncio.create_task(ctx.send(LOCALIZATION_DATA["messages"]["StartingGame"]))
+
+        if envvars.TELEMETRY:
+            stats.increment_games_started(LANGUAGE_KEY)
 
         # Start timer and clue_check tasks simultaneously
         await asyncio.gather(self.timer(ctx), self.clue_check(ctx))

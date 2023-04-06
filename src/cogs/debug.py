@@ -35,6 +35,10 @@ class Debug(commands.Cog):
             logger.warning(f"{ctx.author.name} tried to run {constants.COMMAND_PREFIX}{ctx.command.name} but debug was not enabled.")
         return envvars.DEBUG
 
+    async def cog_before_invoke(self, ctx: Context):
+        # Don't track test runs
+        envvars.TELEMETRY = False
+
     @commands.command(
         name=loc["speed"]["name"],
         aliases=loc["speed"]["aliases"],
