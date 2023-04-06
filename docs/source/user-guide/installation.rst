@@ -93,5 +93,5 @@ Heroku Installation
 ===================
 
 Follow the Discord application setup above, skipping the steps relating to
-the `.env` file. Use the default Python buildpack. Make sure to set the
+the ``.env`` file. Use the default Python buildpack. Make sure to set the
 token and any other desired environment variables as necessary.
