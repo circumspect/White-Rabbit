@@ -6,14 +6,6 @@
 [![Docker Image Version (latest semver)](https://img.shields.io/docker/v/circumspect/white-rabbit?label=Docker%20Hub)](https://hub.docker.com/r/circumspect/white-rabbit)
 [![License](https://img.shields.io/github/license/circumspect/White-Rabbit)](https://github.com/circumspect/White-Rabbit/blob/main/LICENSE)
 
-# Contents
-
-- [The White Rabbit](#the-white-rabbit)
-- [Contents](#contents)
-- [Translations Wanted](#translations-wanted)
-- [Tips](#tips)
-- [Contributors](#contributors)
-
 A Discord bot for Alice is Missing. Server template: <https://discord.new/SfcBdbyhGMmR>.
 This is a fan-made project which is not affiliated in any way with the creators of Alice is Missing.
 Game and all Alice is Missing images are property of
