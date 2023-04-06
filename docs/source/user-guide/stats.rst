@@ -4,7 +4,8 @@ Stats
 
 Starting with version 0.15.1, the White Rabbit tracks some
 (non-personally identifiable) usage statistics. Collected stats are listed
-below, along with their current values.
+below, along with their current values. To opt out of stat collection,
+set the ``WHITE_RABBIT_STATS`` environment variable to ``false``.
 
 
 Games Played
