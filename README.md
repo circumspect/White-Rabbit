@@ -6,6 +6,14 @@
 [![Docker Image Version (latest semver)](https://img.shields.io/docker/v/circumspect/white-rabbit?label=Docker%20Hub)](https://hub.docker.com/r/circumspect/white-rabbit)
 [![License](https://img.shields.io/github/license/circumspect/White-Rabbit)](https://github.com/circumspect/White-Rabbit/blob/main/LICENSE)
 
+# Contents
+
+- [The White Rabbit](#the-white-rabbit)
+- [Contents](#contents)
+- [Translations Wanted](#translations-wanted)
+- [Tips](#tips)
+- [Contributors](#contributors)
+
 A Discord bot for Alice is Missing. Server template: <https://discord.new/SfcBdbyhGMmR>.
 This is a fan-made project which is not affiliated in any way with the creators of Alice is Missing.
 Game and all Alice is Missing images are property of
@@ -16,25 +24,17 @@ AGPLv3.
 
 Documentation can be found [here](https://white-rabbit.readthedocs.io/).
 
-## Translations Wanted
+# Translations Wanted
 
-If you would like to contribute translations, fork the repository, copy
-`en.json` in the `localization` folder, translate the values (leave
-the keys intact), and open a pull request. For an example, see the French
-translation in `fr.json`. Note that changing the names of the channels
-means you will need to run `!server_setup` so that the bot can generate
-channels with the correct names and permissions.
+See [TRANSLATIONS.md](https://github.com/circumspect/White-Rabbit/blob/main/CONTRIBUTING.md).
 
-You can also submit translations of the cards used in the game by copying the
-`templates` folder in `resources/images` and matching the new folder name to
-the key used for the language, then editing the `.kra` file and exporting the
-translated cards **AS PNG FILES**. The bot will default to the English
-versions of any cards it can't find. To edit the files, you will need
-[Krita](https://krita.org/en/), an open source tool for creating and modifying
-images. Not all of the cards currently have templates,
-so feel free to submit those as well!
+# Tips
 
-## Contributors ✨
+If you like the bot and want to support its development, you can send me a tip
+through [Ko-fi](https://ko-fi.com/circumspect) or
+[Github Sponsors](https://github.com/sponsors/circumspect).
+
+# Contributors
 
 This project follows the [all-contributors](https://github.com/all-contributors/all-contributors)
 specification. Contributions of any kind welcome!
