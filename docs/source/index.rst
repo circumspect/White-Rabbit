@@ -15,3 +15,4 @@ The White Rabbit Documentation
    user-guide/admin
    user-guide/manual-mode
    dev-guide/debugging
+   user-guide/stats
