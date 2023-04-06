@@ -23,3 +23,13 @@ PDFs generated
 
 .. image:: https://img.shields.io/badge/dynamic/json?color=blue&label=PDFs%20Created&query=value&url=https%3A%2F%2Fapi.countapi.xyz%2Fget%2Fwhite-rabbit-bot%2Fpdfs-created
    :alt: PDFs Created
+
+
+Messages Sent
+======================
+
+.. image:: https://img.shields.io/badge/dynamic/json?color=blue&label=Messages%20Sent&query=value&url=https%3A%2F%2Fapi.countapi.xyz%2Fget%2Fwhite-rabbit-bot%2Fplayer-messages
+   :alt: Messages Sent
+
+The total number of in-character messages sent (i.e., all messages sent in any
+of the channels in the ``texts`` category)

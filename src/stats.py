@@ -20,3 +20,5 @@ def increment_pdfs():
 def increment_commands_run():
     increment(COMMANDS_RUN)
 
+def increment_player_messages():
+    increment(PLAYER_MESSAGES)
