@@ -16,17 +16,17 @@ AGPLv3.
 
 Documentation can be found [here](https://white-rabbit.readthedocs.io/).
 
-# Translations Wanted
+## Translations Wanted
 
 See [TRANSLATIONS.md](https://github.com/circumspect/White-Rabbit/blob/main/TRANSLATIONS.md).
 
-# Tips
+## Tips
 
 If you like the bot and want to support its development, you can send me a tip
 through [Ko-fi](https://ko-fi.com/circumspect) or
 [Github Sponsors](https://github.com/sponsors/circumspect).
 
-# Contributors
+## Contributors
 
 This project follows the [all-contributors](https://github.com/all-contributors/all-contributors)
 specification. Contributions of any kind welcome!
