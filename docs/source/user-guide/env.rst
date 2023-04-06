@@ -37,3 +37,12 @@ intended for development or for custom cards
 (see :doc:`card-lists/custom-cards`),
 as it is much faster for the bot to send a link
 and allow Discord to render it.
+
+
+WHITE_RABBIT_STATS
+---------------------------
+
+Whether or not to allow the White Rabbit to collect usage data.
+Defaults to ``true``. No personally identifiable data
+(messages, usernames, etc.) is collected, and all stats collected can be
+found in :doc:`stats`.
