@@ -26,7 +26,7 @@ Documentation can be found [here](https://white-rabbit.readthedocs.io/).
 
 # Translations Wanted
 
-See [TRANSLATIONS.md](https://github.com/circumspect/White-Rabbit/blob/main/CONTRIBUTING.md).
+See [TRANSLATIONS.md](https://github.com/circumspect/White-Rabbit/blob/main/TRANSLATIONS.md).
 
 # Tips
 
