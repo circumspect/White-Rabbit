@@ -21,6 +21,7 @@ jobs:
         issue-number: ${{ vars.LOCALIZATION_TRACKER_ISSUE_NUMBER }}
         comment-author: 'github-actions[bot]'
 
+    # If comment doesn't exist, make a placeholder
     - name: Create comment
       if: steps.fc.outputs.comment-id == ''
       uses: peter-evans/create-or-update-comment@v2
@@ -29,57 +30,118 @@ jobs:
         body: |
           [github actions placeholder text]
 
-    - name: Main table timestamp
-      id: main-timestamp
-      if: steps.fc.outputs.comment-id != ''
-      env:
-        TRACKER_FILE_PATH: ${{ vars.LOCALIZATION_TRACKING_TABLES }}/tracker.csv
-      run: |
-        echo $(git log -1 --date=iso-local --format="%ad" -- $TRACKER_FILE_PATH)
-        echo $(git log -1 --date=iso-local -- $TRACKER_FILE_PATH)
-        echo "TIMESTAMP=$(git log -1 --date=iso-local --format="%ad" -- $TRACKER_FILE_PATH)" >> ${GITHUB_OUTPUT}
-
-    - name: Render template
-      id: template
-      if: steps.fc.outputs.comment-id != ''
-      uses: chuhlomin/render-template@v1.6
-      with:
-        template: ${{ vars.LOCALIZATION_TRACKING_MARKDOWN }}/header.md
-        vars: |
-          timestamp: ${{ steps.main-timestamp.outputs.TIMESTAMP }}
-
-    - name: Insert header
+    # Insert header
+    - name: Header
       if: steps.fc.outputs.comment-id != ''
       uses: peter-evans/create-or-update-comment@v2
       with:
         comment-id: ${{ steps.fc.outputs.comment-id }}
         edit-mode: replace
-        body: ${{ steps.template.outputs.result }}
+        body-file: ${{ vars.LOCALIZATION_TRACKING_MARKDOWN }}/header.md
 
-    - name: Read main CSV
-      id: main-csv
+    # Bot text strings localization table
+    - name: Bot table timestamp
+      id: bot-timestamp
       if: steps.fc.outputs.comment-id != ''
-      uses: juliangruber/read-file-action@v1
-      with:
-        path: ${{ vars.LOCALIZATION_TRACKING_TABLES }}/tracker.csv
+      env:
+        TRACKER_FILE_PATH: ${{ vars.LOCALIZATION_TRACKING_TABLES }}/bot.csv
+      run: |
+        echo $(git log -1 --date=iso-local --format="%ad" -- $TRACKER_FILE_PATH)
+        echo $(git log -1 --date=iso-local -- $TRACKER_FILE_PATH)
+        echo "TIMESTAMP=$(git log -1 --date=iso-local --format="%ad" -- $TRACKER_FILE_PATH)" >> ${GITHUB_OUTPUT}
 
-    - name: Main table markdown
-      id: main-md
+    - name: Render bot header
+      id: bot-header
       if: steps.fc.outputs.comment-id != ''
-      uses: petems/csv-to-md-table-action@master
+      uses: chuhlomin/render-template@v1.6
       with:
-        csvinput: ${{ steps.main-csv.outputs.content }}
+        template: ${{ vars.LOCALIZATION_TRACKING_MARKDOWN }}/bot.md
+        vars: |
+          timestamp: ${{ steps.bot-timestamp.outputs.TIMESTAMP }}
 
-    - name: Insert main table
+    - name: Insert bot header
       if: steps.fc.outputs.comment-id != ''
       uses: peter-evans/create-or-update-comment@v2
       with:
         comment-id: ${{ steps.fc.outputs.comment-id }}
         edit-mode: append
-        body: ${{ steps.main-md.outputs.markdown-table }}
+        body: ${{ steps.bot-header.outputs.result }}
 
-    - name: Clues table timestamp
-      id: clues-timestamp
+    - name: Read bot CSV
+      id: bot-csv
+      if: steps.fc.outputs.comment-id != ''
+      uses: juliangruber/read-file-action@v1
+      with:
+        path: ${{ vars.LOCALIZATION_TRACKING_TABLES }}/bot.csv
+
+    - name: Bot table markdown
+      id: bot-md
+      if: steps.fc.outputs.comment-id != ''
+      uses: petems/csv-to-md-table-action@master
+      with:
+        csvinput: ${{ steps.bot-csv.outputs.content }}
+
+    - name: Insert bot table
+      if: steps.fc.outputs.comment-id != ''
+      uses: peter-evans/create-or-update-comment@v2
+      with:
+        comment-id: ${{ steps.fc.outputs.comment-id }}
+        edit-mode: append
+        body: ${{ steps.bot-md.outputs.markdown-table }}
+
+
+    # Base expansion
+    - name: Base cards table timestamp
+      id: base-cards-timestamp
+      if: steps.fc.outputs.comment-id != ''
+      env:
+        TRACKER_FILE_PATH: ${{ vars.LOCALIZATION_TRACKING_TABLES }}/base-cards.csv
+      run: |
+        echo $(git log -1 --date=iso-local --format="%ad" -- $TRACKER_FILE_PATH)
+        echo $(git log -1 --date=iso-local -- $TRACKER_FILE_PATH)
+        echo "TIMESTAMP=$(git log -1 --date=iso-local --format="%ad" -- $TRACKER_FILE_PATH)" >> ${GITHUB_OUTPUT}
+
+    - name: Render base cards header
+      id: base-cards-header
+      if: steps.fc.outputs.comment-id != ''
+      uses: chuhlomin/render-template@v1.6
+      with:
+        template: ${{ vars.LOCALIZATION_TRACKING_MARKDOWN }}/base-cards.md
+        vars: |
+          timestamp: ${{ steps.base-cards-timestamp.outputs.TIMESTAMP }}
+
+    - name: Insert base cards header
+      if: steps.fc.outputs.comment-id != ''
+      uses: peter-evans/create-or-update-comment@v2
+      with:
+        comment-id: ${{ steps.fc.outputs.comment-id }}
+        edit-mode: append
+        body: ${{ steps.base-cards-header.outputs.result }}
+
+    - name: Read base cards CSV
+      id: base-cards-csv
+      if: steps.fc.outputs.comment-id != ''
+      uses: juliangruber/read-file-action@v1
+      with:
+        path: ${{ vars.LOCALIZATION_TRACKING_TABLES }}/base-cards.csv
+
+    - name: Base cards table markdown
+      id: base-cards-md
+      if: steps.fc.outputs.comment-id != ''
+      uses: petems/csv-to-md-table-action@master
+      with:
+        csvinput: ${{ steps.base-cards-csv.outputs.content }}
+
+    - name: Insert base cards table
+      if: steps.fc.outputs.comment-id != ''
+      uses: peter-evans/create-or-update-comment@v2
+      with:
+        comment-id: ${{ steps.fc.outputs.comment-id }}
+        edit-mode: append
+        body: ${{ steps.base-cards-md.outputs.markdown-table }}
+
+    - name: Base clues table timestamp
+      id: base-clues-timestamp
       if: steps.fc.outputs.comment-id != ''
       env:
         TRACKER_FILE_PATH: ${{ vars.LOCALIZATION_TRACKING_TABLES }}/base-clues.csv
@@ -88,41 +150,41 @@ jobs:
         echo $(git log -1 --date=iso-local -- $TRACKER_FILE_PATH)
         echo "TIMESTAMP=$(git log -1 --date=iso-local --format="%ad" -- $TRACKER_FILE_PATH)" >> ${GITHUB_OUTPUT}
 
-    - name: Clues template
-      id: clues-template
+    - name: Base clues template
+      id: base-clues-template
       if: steps.fc.outputs.comment-id != ''
       uses: chuhlomin/render-template@v1.6
       with:
         template: ${{ vars.LOCALIZATION_TRACKING_MARKDOWN }}/base-clues.md
         vars: |
-          timestamp: ${{ steps.clues-timestamp.outputs.TIMESTAMP }}
+          timestamp: ${{ steps.base-clues-timestamp.outputs.TIMESTAMP }}
 
-    - name: Clues header
+    - name: Base clues header
       if: steps.fc.outputs.comment-id != ''
       uses: peter-evans/create-or-update-comment@v2
       with:
         comment-id: ${{ steps.fc.outputs.comment-id }}
         edit-mode: append
-        body: ${{ steps.clues-template.outputs.result }}
+        body: ${{ steps.base-clues-template.outputs.result }}
 
-    - name: Read clues CSV
-      id: clues-csv
+    - name: Read base clues CSV
+      id: base-clues-csv
       if: steps.fc.outputs.comment-id != ''
       uses: juliangruber/read-file-action@v1
       with:
         path: ${{ vars.LOCALIZATION_TRACKING_TABLES }}/base-clues.csv
 
-    - name: Clues table markdown
-      id: clues-md
+    - name: Base clues table markdown
+      id: base-clues-md
       if: steps.fc.outputs.comment-id != ''
       uses: petems/csv-to-md-table-action@master
       with:
-        csvinput: ${{ steps.clues-csv.outputs.content }}
+        csvinput: ${{ steps.base-clues-csv.outputs.content }}
 
-    - name: Insert clues table
+    - name: Insert base clues table
       if: steps.fc.outputs.comment-id != ''
       uses: peter-evans/create-or-update-comment@v2
       with:
         comment-id: ${{ steps.fc.outputs.comment-id }}
         edit-mode: append
-        body: ${{ steps.clues-md.outputs.markdown-table }}
+        body: ${{ steps.base-clues-md.outputs.markdown-table }}
