@@ -3,22 +3,10 @@ Localization
 ************
 
 To change the language the bot runs in, modify the ``WHITE_RABBIT_LANGUAGE`` key in the
-``.env`` file. A table of languages with their key values is show below:
+``.env`` file. For a list of supported languages and the completeness of their
+translations, see `this issue`_.
 
-.. csv-table::
-   :file: ./localizations.csv
-   :header-rows: 1
-
-.. _circumspect: https://github.com/circumspect
-.. _Ylkhana: https://github.com/Ylkhana
-.. _Gabbalo: https://github.com/Gabbalo
-.. _d-beezee: https://github.com/d-beezee
-.. _wishmerhill: https://github.com/wishmerhill
-.. _Sinesthesyc: https://github.com/Sinesthesyc
-
-| ✔️: Complete
-| 🚧: Incomplete (usually means mostly done, but missing a translation for some cards or bot commands)
-| ❌: Missing
+.. _this issue: https://github.com/circumspect/White-Rabbit/issues/156
 
 If you would like to contribute translations, fork the repository, copy
 ``en.json`` in the ``localization`` folder, translate the values
