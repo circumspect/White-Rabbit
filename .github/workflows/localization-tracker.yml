@@ -46,7 +46,7 @@ jobs:
       with:
         template: ${{ vars.LOCALIZATION_TRACKING_MARKDOWN }}/header.md
         vars: |
-          timestamp: ${{ steps.timestamp.outputs.TIMESTAMP }}
+          timestamp: ${{ steps.main-timestamp.outputs.TIMESTAMP }}
 
     - name: Insert header
       if: steps.fc.outputs.comment-id != ''
