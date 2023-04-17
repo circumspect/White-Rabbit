@@ -82,7 +82,7 @@ jobs:
       id: clues-timestamp
       if: steps.fc.outputs.comment-id != ''
       env:
-        TRACKER_FILE_PATH: ${{ vars.LOCALIZATION_TRACKING_TABLES }}/tracker.csv
+        TRACKER_FILE_PATH: ${{ vars.LOCALIZATION_TRACKING_TABLES }}/base-clues.csv
       run: |
         echo $(git log -1 --date=iso-local --format="%ad" -- $TRACKER_FILE_PATH)
         echo $(git log -1 --date=iso-local -- $TRACKER_FILE_PATH)
@@ -93,7 +93,7 @@ jobs:
       if: steps.fc.outputs.comment-id != ''
       uses: chuhlomin/render-template@v1.6
       with:
-        template: ${{ vars.LOCALIZATION_TRACKING_MARKDOWN }}/clues.md
+        template: ${{ vars.LOCALIZATION_TRACKING_MARKDOWN }}/base-clues.md
         vars: |
           timestamp: ${{ steps.clues-timestamp.outputs.TIMESTAMP }}
 
@@ -110,7 +110,7 @@ jobs:
       if: steps.fc.outputs.comment-id != ''
       uses: juliangruber/read-file-action@v1
       with:
-        path: ${{ vars.LOCALIZATION_TRACKING_TABLES }}/clues.csv
+        path: ${{ vars.LOCALIZATION_TRACKING_TABLES }}/base-clues.csv
 
     - name: Clues table markdown
       id: clues-md
