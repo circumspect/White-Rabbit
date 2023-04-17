@@ -1,1 +1,1 @@
-## Clues
+## Clues (last updated: {{ .timestamp }})

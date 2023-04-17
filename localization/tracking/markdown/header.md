@@ -8,4 +8,4 @@
 
 ❌: Missing
 
-## Main
+## Main (last updated: {{ .timestamp }})
