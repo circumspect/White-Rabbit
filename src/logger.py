@@ -12,8 +12,8 @@ def get_logger(name: str):
     if name == "__main__":
         logger = logging.getLogger(f"white-rabbit")
         logger.setLevel(logging.INFO)
+        logger.addHandler(LOGGING_HANDLER)
     else:
         logger = logging.getLogger(f"white-rabbit.{name}")
-    logger.addHandler(LOGGING_HANDLER)
 
     return logger
