@@ -125,22 +125,6 @@ async def before_invoke(ctx: Context):
     if envvars.TELEMETRY:
         stats.increment_commands_run()
 
-@bot.event
-async def on_message(message: discord.Message):
-    if message.author == bot.user:
-        return
-
-    if not isinstance(message.channel, discord.TextChannel):
-        return
-
-    category = message.channel.category
-    if category is None:
-        return
-
-    if category.name == LOCALIZATION_DATA["categories"]["texts"]:
-        if envvars.TELEMETRY:
-            stats.increment_player_messages()
-
 
 @bot.event
 async def on_command_error(ctx: Context, error):
