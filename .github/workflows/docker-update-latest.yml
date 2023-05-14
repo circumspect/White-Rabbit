@@ -9,7 +9,7 @@
 
 # https://docs.github.com/en/actions/publishing-packages/publishing-docker-images#publishing-images-to-docker-hub
 
-name: Update Docker Hub Latest Tag
+name: 'Docker: Update Latest Tag'
 
 on:
   workflow_dispatch:
