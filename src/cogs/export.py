@@ -24,6 +24,8 @@ logger = get_logger(__name__)
 
 loc = LOCALIZATION_DATA["commands"]["export"]
 
+MAX_DISCORD_UPLOAD_SIZE = 25_000_000
+
 # PDF export constants - all measurements are in inches
 # Letter size paper
 PAGE_WIDTH = 8.5
@@ -499,8 +501,8 @@ class Export(commands.Cog):
         if not file_name:
             file_name = ctx.guild.name
 
-        out = (dirs.PDF_EXPORT_DIR / file_name).with_suffix(".pdf")
-        pdf.output(str(out))
+        path = (dirs.PDF_EXPORT_DIR / file_name).with_suffix(".pdf")
+        pdf.output(str(path))
 
         end_time = timer()
         time = constants.TIMER_FORMAT % (end_time - start_time)
@@ -736,8 +738,14 @@ class Export(commands.Cog):
             await ctx.send(LOCALIZATION_DATA["errors"]["IllegalPath"])
             return
 
-        url = utils.upload_file(path)
-        await ctx.send(url)
+        size = os.path.getsize(path)
+        if size < MAX_DISCORD_UPLOAD_SIZE:
+            await ctx.send(loc["upload"]["Uploading"])
+            await ctx.send(file = discord.File(path))
+        else:
+            await ctx.send(loc["upload"]["FileTooBig"])
+            url = utils.upload_to_host(path)
+            await ctx.send(url)
 
     @commands.command(hidden=True)
     async def txt(self, ctx: Context):

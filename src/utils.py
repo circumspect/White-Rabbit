@@ -203,9 +203,9 @@ def ooc_strip(ctx: Context, text: str):
     return text
 
 
-def upload_file(path: Path):
+def upload_to_host(path: Path):
     """Uploads a file and returns the download URL"""
 
-    return subprocess.run(["curl", "-T", path, "https://transfer.sh/Alice.pdf"],
+    return subprocess.run(["curl", "-T", path, "https://temp.sh/"],
                           check=True, capture_output=True, text=True
                           ).stdout.strip()
