@@ -55,7 +55,9 @@ class Admin(commands.Cog):
         # Delete roles and channels
         async_tasks = []
         for role in ctx.guild.roles:
-            if role.name != "The White Rabbit" and role != ctx.guild.default_role:
+            bot_member = ctx.guild.get_member(self.bot.user.id)
+            bot_role = bot_member.roles[-1]
+            if role.name != bot_role.name and role != ctx.guild.default_role:
                 async_tasks.append(role.delete())
 
         for channel in ctx.guild.text_channels:
