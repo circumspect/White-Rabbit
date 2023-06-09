@@ -1,13 +1,14 @@
 import requests
 
-API = "https://api.countapi.xyz/hit/white-rabbit-bot/"
+API = ""
 GAMES_PLAYED = "games-played"
 PDF_EXPORT = "pdfs-created"
 COMMANDS_RUN = "commands-run"
 PLAYER_MESSAGES = "player-messages"
 
 def increment(counter: str):
-    requests.get(API + counter)
+    # requests.get(API + counter)
+    return
 
 def increment_games_started(lang: str):
     increment(GAMES_PLAYED)
