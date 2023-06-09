@@ -5,9 +5,9 @@
     "spectator-role": "Zuhörer",
 
     "categories": {
-        "general": "General/OOC",
-        "game": "The Game",
-        "texts": "Texts"
+        "general": "Allgemeines/OOC",
+        "game": "Das Spiel",
+        "texts": "Textkanäle"
     },
 
     "channels": {
@@ -36,7 +36,7 @@
             "version": {
                 "name": "version",
                 "aliases": [],
-                "description": "Print out the bot version"
+                "description": "Zeigt die Bot-Version an"
             },
 
             "credits": {
@@ -60,7 +60,7 @@
             "server_setup": {
                 "name": "server_setup",
                 "aliases": [],
-                "description": "Deletes all channels and roles and creates new ones based on the given card list"
+                "description": "Löscht alle Kanäle und Rollen und erstellt auf Basis der verteilten Karten Neue"
             },
 
             "show_all": {
@@ -80,7 +80,7 @@
             "reset_perms": {
                 "name": "rechte_zurücksetzen",
                 "aliases": ["rechte_resetten", "reset_perms"],
-                "description": "Resets channel permissions to the default (undoes !show_all)"
+                "description": "Setzt alle Kanal-Rechte auf den Standard zurück (macht !show_all rückgängig)"
             },
 
             "reset_roles": {
@@ -162,7 +162,7 @@
             "upload": {
                 "name": "upload",
                 "aliases": [],
-                "description": "Uploads a file and prints out the download url"
+                "description": "Läd eine Datei hoch und zeigt die Download-URL an"
             }
         },
 
@@ -223,7 +223,7 @@
 
             "shuffle_motives": {
                 "name": "shuffle_motives",
-                "aliases": [],
+                "aliases": ["mische_motive"],
                 "description": "Mische Motive und weise Motiv-Karten zu",
 
                 "Shuffling": "Mische Motive!"
@@ -231,7 +231,7 @@
 
             "send_motives": {
                 "name": "send_motives",
-                "aliases": [],
+                "aliases": ["sende_motive"],
                 "description": "Verteile Motiv-Karten",
 
                 "NeedToShuffle": "Die Motive müssen zuerst gemischt werden!"
@@ -404,7 +404,7 @@
         "UserInputError": "Fehlerhafte Eingabe!",
         "CommandNotFound": "Befehl nicht gefunden!",
         "CommandInWrongChannel": "Du kannst Befehle nur in diesem Kanal nutzen!",
-        "MissingDeveloperPermissions": "That command is for developers only!",
+        "MissingDeveloperPermissions": "Dieser Befehl ist nur für Entwickler!",
         "ManualCommandInAuto": "Nicht ausführbar. Versuchst du einen manuellen Befehl im Automatik-Modus ausführen?",
         "SpectatorCommandAttempt": "Zuhörer können keine Befehle ausführen!",
         "GenericCheckFailure": "Du kannst das nicht machen!",
@@ -419,7 +419,7 @@
         "AlreadyInitialized": "Initialisierung ist bereits gelaufen!",
         "ServerOwnerNicknameChange": "Konnte den Spitznamen nicht ändern, da du der Server-Inhaber bist!",
         "PlayerNotFound": "Konnte den Spieler nicht finden!",
-        "IllegalPath": "Illegal path!",
+        "IllegalPath": "Nicht erlaubter Pfad!",
         "UnknownError": "Unbekannter Fehler: Konsole prüfen!"
     }
 }
