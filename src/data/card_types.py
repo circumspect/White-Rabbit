@@ -3,12 +3,14 @@ from typing import Dict, List, Optional, Union
 
 class Character:
     name: str
+    expansion: str
     role: str
     full_name: str
     pdf_name_format: List[str]
 
-    def __init__(self, name: str, data: Optional[Dict[str, Union[str, List[str]]]]):
+    def __init__(self, name: str, expansion: str, data: Optional[Dict[str, Union[str, List[str]]]]):
         self.name = name
+        self.expansion = expansion
 
         if data is None:
             data = {}
@@ -30,18 +32,21 @@ class Character:
 
 
 class Suspect:
-    def __init__(self, name: str, description: Optional[str]):
+    def __init__(self, name: str, expansion: str, description: Optional[str]):
         self.name = name
+        self.expansion = expansion
         self.description = description
 
 
 class Location:
-    def __init__(self, name: str, description: Optional[str]):
+    def __init__(self, name: str, expansion:str,  description: Optional[str]):
         self.name = name
+        self.expansion = expansion
         self.description = description
 
 
 class Searching:
-    def __init__(self, name: str, description: Optional[str]):
+    def __init__(self, name: str, expansion: str, description: Optional[str]):
         self.name = name
+        self.expansion = expansion
         self.description = description

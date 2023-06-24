@@ -113,6 +113,13 @@ def get_image(directory: Path, name: str) -> Union[Path, str]:
             return find_url(fallback_url, ImageResource.DEFAULT_EXTENSIONS)
 
 
+def get_expansion_url(name: str) -> str:
+    url = f"{constants.FILES_URL}/{name}-{LANGUAGE_KEY}/main"
+    if not url_is_good(url):
+        url = f"{constants.FILES_URL}/{name}-{DEFAULT_LOCALIZATION}/main"
+    return url
+
+
 async def send_image(channel: discord.TextChannel, filepath: Union[Path, str], ctx: Optional[Context]=None):
     """Sends an image to a specified channel"""
 
