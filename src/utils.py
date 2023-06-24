@@ -148,13 +148,6 @@ async def send_image(channel: discord.TextChannel, filepath: Union[Path, str], c
         await channel.send(filepath)
 
 
-async def send_folder(channel, path, ctx: Optional[Context]=None):
-    """Sends all images in a folder in alphabetical order"""
-
-    for image in sorted(path.glob("*.*")):
-        filepath = get_image(path, image.stem)
-        await send_image(channel, filepath, ctx)
-
 
 def is_command(message: str):  # sourcery skip: return-identity
     """Checks if a string seems like an attempt to send a command"""
