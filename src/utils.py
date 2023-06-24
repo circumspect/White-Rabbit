@@ -64,6 +64,10 @@ def rabbit_path(path: Path):
     return Path("/".join(parts[start:]))
 
 
+def expansion_path(path: Path) -> Path:
+    return Path(list(rabbit_path(path).parts)[3:])
+
+
 def url_is_good(url: str):
     r = requests.get(url)
     return r.status_code == 200
@@ -78,7 +82,7 @@ def find_url(url: str, extensions: List[str]):
     raise FileNotFoundError(url)
 
 
-def get_image(directory: Path, name: str) -> Union[Path, str]:
+def get_image(directory: Path, name: str, expansion: str = None) -> Union[Path, str]:
     if envvars.USE_LOCAL_IMAGES:
         img = ImageResource(ImageResource.DEFAULT_EXTENSIONS)
         try:
@@ -91,6 +95,12 @@ def get_image(directory: Path, name: str) -> Union[Path, str]:
                     break
 
             return img.get(Path("/".join(parts)), name)
+
+    elif expansion:
+        path = expansion_path(directory)
+        url = f"{get_expansion_url(expansion)}/{'/'.join(parts)}/{name}"
+
+        return find_url(url, ImageResource.DEFAULT_EXTENSIONS)
 
     else:
         path = rabbit_path(directory)
