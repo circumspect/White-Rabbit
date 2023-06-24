@@ -76,7 +76,7 @@ class Manual(commands.Cog):
         if not ctx.game.automatic:
             asyncio.create_task(ctx.send(loc["shuffle_motives"]["Shuffling"]))
 
-        motives = list(range(1, 6))
+        motives = list(cards.MOTIVES)
         random.shuffle(motives)
         ctx.game.motives = {
             character.lower(): motive
@@ -105,7 +105,7 @@ class Manual(commands.Cog):
             async_tasks.append(
                 utils.send_image(
                     channel,
-                    utils.get_image(dirs.MOTIVE_DIR, f"Motive-{motive}"),
+                    utils.get_image(dirs.MOTIVE_DIR, motive),
                     ctx
                 )
             )

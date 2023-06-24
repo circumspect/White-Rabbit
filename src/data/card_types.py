@@ -50,3 +50,9 @@ class Searching:
         self.name = name
         self.expansion = expansion
         self.description = description
+
+class Motive:
+    def __init__(self, name: str, expansion: str, description: Optional[str]):
+        self.name = name
+        self.expansion = expansion
+        self.description = description

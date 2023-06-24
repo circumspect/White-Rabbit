@@ -300,8 +300,8 @@ class Export(commands.Cog):
                     continue
 
                 # Motives
-                elif filename.split("-")[0] == "motive":
-                    ctx.game.motives[name] = filename.split("-")[1]
+                elif filename in cards.MOTIVES:
+                    ctx.game.motives[name] = filename
 
                 # Suspects
                 elif filename in cards.SUSPECTS:
@@ -541,7 +541,7 @@ class Export(commands.Cog):
         pdf.image(str(card), CHAR_CARD_LEFT, CHAR_CARD_TOP, CHAR_CARD_WIDTH)
 
         motive = ctx.game.motives[character]
-        card = utils.get_image(dirs.MOTIVE_DIR, f"Motive-{motive}")
+        card = utils.get_image(dirs.MOTIVE_DIR, motive)
         pdf.image(str(card), CHAR_CARD_LEFT, MOTIVE_CARD_TOP, CHAR_CARD_WIDTH)
 
         # Clues

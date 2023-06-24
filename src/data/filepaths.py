@@ -20,6 +20,12 @@ LEGACY_FILENAMES = {
     "broken-switchblade": "blade",
     "drops-of-blood": "blood",
     "white-van": "van",
+    # Motive Cards
+    "Motive-1": "blame",
+    "Motive-2": "questions",
+    "Motive-3": "calm",
+    "Motive-4": "fear",
+    "Motive-5": "defense",
 }
 
 for character in cards.CHARACTERS:

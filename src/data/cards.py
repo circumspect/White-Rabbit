@@ -8,7 +8,7 @@ import yaml
 import requests
 
 # Local
-from data.card_types import Character, Location, Suspect, Searching
+from data.card_types import Character, Location, Suspect, Searching, Motive
 from rabbit import WHITE_RABBIT_DIR
 import utils
 
@@ -46,6 +46,7 @@ CHARACTERS: Dict[str, Character] = {}
 ALL_SUSPECTS: Dict[str, Suspect] = {}
 ALL_LOCATIONS: Dict[str, Location] = {}
 SEARCHING: Dict[str, Searching] = {}
+MOTIVES: Dict[str, Motive] = {}
 
 for expansion in expansions:
     expansion_file = EXPANSION_DIR / f"{expansion}.yaml"
@@ -78,6 +79,11 @@ for expansion in expansions:
         for name, description in CARD_LIST["searching"].items():
             if name not in SEARCHING:
                 SEARCHING[name] = Searching(name, expansion, description)
+
+        for name, description in CARD_LIST["motives"].items():
+            if name not in MOTIVES:
+                MOTIVES[name] = Motive(name, expansion, description)
+
 
 
 if CARD_LIST is None:
