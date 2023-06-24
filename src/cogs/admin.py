@@ -10,7 +10,7 @@ from discord.permissions import PermissionOverwrite
 # Local
 from data import cards
 from data.wrappers import Bot, Context
-from data.localization import LOCALIZATION_DATA
+from data.localization import LANGUAGE_KEY, LOCALIZATION_DATA
 
 logger = get_logger(__name__)
 
@@ -52,11 +52,20 @@ class Admin(commands.Cog):
 
         assert ctx.guild
 
+        logger.info(f"Setting up server \"{ctx.guild.name}\" (ID: {ctx.guild.id}) with language key {LANGUAGE_KEY}.")
+
+        # Reset game data
+        ctx.game.__init__(ctx.game.guild)
+
         # Delete roles and channels
+        assert self.bot.user
+        bot_member = ctx.guild.get_member(self.bot.user.id)
+
+        assert bot_member
+        bot_role = bot_member.roles[-1]
+
         async_tasks = []
         for role in ctx.guild.roles:
-            bot_member = ctx.guild.get_member(self.bot.user.id)
-            bot_role = bot_member.roles[-1]
             if role.name != bot_role.name and role != ctx.guild.default_role:
                 async_tasks.append(role.delete())
 
