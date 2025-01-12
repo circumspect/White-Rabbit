@@ -1,0 +1,14 @@
+[project]
+name = "white-rabbit"
+version = "0.16.0"
+description = "A bot for playing Alice is Missing via Discord"
+readme = "README.md"
+requires-python = ">=3.10"
+dependencies = [
+    "discord-py[voice]>=2.0",
+    "fpdf>=1.7.2",
+    "logging-tree>=1.10",
+    "python-dotenv>=1.0.1",
+    "pyyaml>=6.0.2",
+    "requests>=2.32.3",
+]

@@ -11,6 +11,9 @@ temp/
 
 *.kra-autosave.kra
 
+# uv
+.python-version
+
 # PyCharm
 .idea/
 
